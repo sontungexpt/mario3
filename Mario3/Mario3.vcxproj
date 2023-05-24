@@ -130,6 +130,36 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="configs\WindowConfig.cpp" />
+    <ClCompile Include="GameObjects\Brick.cpp" />
+    <ClCompile Include="utils\debug.cpp" />
+    <ClCompile Include="utils\Game.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="GameObjects\GameObject.cpp" />
+    <ClCompile Include="GameObjects\Mario.cpp" />
+    <ClCompile Include="utils\Texture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\brick.ico" />
+    <Image Include="assets\brick.png" />
+    <Image Include="assets\mario.png" />
+    <Image Include="assets\mario_full.png" />
+    <Image Include="assets\misc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="configs\WindowConfig.h" />
+    <ClInclude Include="GameObjects\Brick.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="utils\debug.h" />
+    <ClInclude Include="utils\Game.h" />
+    <ClInclude Include="GameObjects\GameObject.h" />
+    <ClInclude Include="GameObjects\Mario.h" />
+    <ClInclude Include="utils\Texture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Mario3.rc" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets" Condition="Exists('..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets')" />
