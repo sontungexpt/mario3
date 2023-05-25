@@ -15,11 +15,28 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Image Include="assets\textures\brick.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\brick.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\mario.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\mario_full.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\misc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

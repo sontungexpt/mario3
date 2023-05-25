@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{0407b4c7-774f-430d-8524-27d624bd448d}</ProjectGuid>
-    <RootNamespace>Game</RootNamespace>
+    <ProjectGuid>{ed3ac390-f2d7-4bd7-a936-f29294ad2992}</ProjectGuid>
+    <RootNamespace>Core</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -104,12 +104,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Core\src;$(SolutionDir)Game\assets</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Core\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d10.lib;dxguid.lib;dinput8.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -129,22 +128,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Image Include="assets\textures\brick.ico" />
-    <Image Include="assets\textures\brick.png" />
-    <Image Include="assets\textures\mario.png" />
-    <Image Include="assets\textures\mario_full.png" />
-    <Image Include="assets\textures\misc.png" />
+    <ClInclude Include="src\Animation.h" />
+    <ClInclude Include="src\AnimationFrame.h" />
+    <ClInclude Include="src\configs\mario.h" />
+    <ClInclude Include="src\configs\window.h" />
+    <ClInclude Include="src\debug.h" />
+    <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\objects\Gameobject.h" />
+    <ClInclude Include="src\objects\Mario.h" />
+    <ClInclude Include="src\Sprite.h" />
+    <ClInclude Include="src\Texture.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\Animation.cpp" />
+    <ClCompile Include="src\debug.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\objects\GameObject.cpp" />
+    <ClCompile Include="src\objects\Mario.cpp" />
+    <ClCompile Include="src\AnimationFrame.cpp" />
+    <ClCompile Include="src\Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Core\Core.vcxproj">
-      <Project>{ed3ac390-f2d7-4bd7-a936-f29294ad2992}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
