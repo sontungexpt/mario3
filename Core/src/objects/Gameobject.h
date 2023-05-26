@@ -4,7 +4,7 @@
 
 #include <Windows.h>
 #include <d3dx10.h>
-#include "Texture.h"
+#include "components/Texture/Texture.h"
 
 namespace core {
 	class GameObject {

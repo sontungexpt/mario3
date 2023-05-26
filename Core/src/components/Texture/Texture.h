@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _TEXTURE_h
-#define _TEXTURE_h
+#ifndef _TEXTURE_H_
+#define _TEXTURE_H_
 #include <d3d10.h>
 #include <d3dx10.h>
 
@@ -48,4 +48,4 @@ namespace core {
 	typedef Texture* LPTEXTURE;
 }
 
-#endif // !_TEXTURE_h
+#endif // !_TEXTURE_H_

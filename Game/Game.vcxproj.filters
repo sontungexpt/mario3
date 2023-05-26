@@ -39,4 +39,18 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="configs\mario.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="configs\window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="configs\brick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="configs\id.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

@@ -64,7 +64,7 @@ namespace core {
 		}
 
 		// create the render target view
-		hresult = device_ptr_->CreateRenderTargetView(back_buffer_ptr, NULL, &render_target_view_ptr_);
+		hresult = device_ptr_->CreateRenderTargetView(back_buffer_ptr, nullptr, &render_target_view_ptr_);
 
 		back_buffer_ptr->Release();
 
@@ -75,7 +75,7 @@ namespace core {
 		}
 
 		// set the render target
-		device_ptr_->OMSetRenderTargets(1, &render_target_view_ptr_, NULL);
+		device_ptr_->OMSetRenderTargets(1, &render_target_view_ptr_, nullptr);
 
 		// create and set the viewport
 		D3D10_VIEWPORT view_port;
@@ -212,22 +212,22 @@ namespace core {
 	/// <returns></returns>
 	LPTEXTURE Game::LoadTexture(LPCWSTR texture_path)
 	{
-		ID3D10Resource* resource_ptr = NULL;
-		ID3D10Texture2D* tex = NULL;
+		ID3D10Resource* resource_ptr = nullptr;
+		ID3D10Texture2D* tex = nullptr;
 
 		// Loads the texture into a temporary ID3D10Resource object
 		HRESULT hr = D3DX10CreateTextureFromFile(device_ptr_,
 			texture_path,
-			NULL, //&info,
-			NULL,
+			nullptr, //&info,
+			nullptr,
 			&resource_ptr,
-			NULL);
+			nullptr);
 
 		// Make sure the texture was loaded successfully
 		if (FAILED(hr))
 		{
 			DebugOut((wchar_t*)L"[ERROR] Failed to load texture file: %s with error: %d\n", texture_path, hr);
-			return NULL;
+			return nullptr;
 		}
 
 		// Translates the ID3D10Resource object into a ID3D10Texture2D object
@@ -236,7 +236,7 @@ namespace core {
 
 		if (!tex) {
 			DebugOut((wchar_t*)L"[ERROR] Failed to convert from ID3D10Resource to ID3D10Texture2D \n");
-			return NULL;
+			return nullptr;
 		}
 
 		//
@@ -259,7 +259,7 @@ namespace core {
 		SRVDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
 		SRVDesc.Texture2D.MipLevels = desc.MipLevels;
 
-		ID3D10ShaderResourceView* gSpriteTextureRV = NULL;
+		ID3D10ShaderResourceView* gSpriteTextureRV = nullptr;
 
 		device_ptr_->CreateShaderResourceView(tex, &SRVDesc, &gSpriteTextureRV);
 
@@ -267,7 +267,6 @@ namespace core {
 
 		return new Texture(tex, gSpriteTextureRV);
 	}
-
 	Game* Game::GetInstance()
 	{
 		if (instance == nullptr) instance = new Game();

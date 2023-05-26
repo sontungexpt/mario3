@@ -11,6 +11,7 @@ namespace core {
 	class Mario : public GameObject
 	{
 	private:
+		bool is_sitting;
 		float vx_;
 		float vy_;
 
@@ -22,6 +23,7 @@ namespace core {
 		~Mario() {}
 
 		void Update(DWORD dt);
+		void Render();
 	};
 }
 

@@ -1,6 +1,6 @@
 #include "debug.h"
 
-HWND _hwnd = NULL;
+HWND _hwnd = nullptr;
 
 void DebugOut(const wchar_t* fmt, ...)
 {

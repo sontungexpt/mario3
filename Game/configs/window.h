@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef _WINDOW_CONFIG_h
-#define _WINDOW_CONFIG_h
+#ifndef _WINDOW_CONFIG_H_
+#define _WINDOW_CONFIG_H_
 
 #include <d3dx10.h>
 

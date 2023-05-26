@@ -117,10 +117,17 @@ int WINAPI wWinMain(
 
 	Game* game = Game::GetInstance();
 
+	// Initiate Direct3D 10
 	game->Init(hwnd);
+
 	SetWindowPos(hwnd, 0, 0, 0, windowrc::SCREEN_WIDTH * 2, windowrc::SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
+	// Game loop
 	Run();
+
+	//Load a texture and create a sprite
+	//Render world
+	//Update world
 
 	return 0;
 }
