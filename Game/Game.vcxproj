@@ -136,6 +136,7 @@
     <Image Include="assets\textures\misc.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="configs\coin.h" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

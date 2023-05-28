@@ -34,7 +34,7 @@ namespace core {
 
 		D3DXMATRIX mat_translation;
 		D3DXMatrixTranslation(&mat_translation, x, (game->GetBackBufferHeight() - y), 0.1f);
-		this->sprite_.matWorld = (mat_scaling_ * mat_translation);
+		sprite_.matWorld = (mat_scaling_ * mat_translation);
 
 		game->GetSpriteHandler()->DrawSpritesImmediate(&sprite_, 1, 0, 0);
 	}

@@ -18,19 +18,22 @@ namespace configs {
 
 		const float MARIO_GRAVITY = 0.002f;
 
+		const float GROUND_Y = 160.0f;
+		const float MARIO_SIT_HEIGHT_ADJUST = 4.0f;
+
 		//state
-		const float MARIO_STATE_IDLE = 0;
-		const float MARIO_STATE_WALKING_RIGHT = 100;
-		const float MARIO_STATE_WALKING_LEFT = 200;
+		const int MARIO_STATE_IDLE = 0;
+		const int MARIO_STATE_WALKING_RIGHT = 100;
+		const int MARIO_STATE_WALKING_LEFT = 200;
 
-		const float MARIO_STATE_JUMP = 300;
-		const float MARIO_STATE_RELEASE_JUMP = 301;
+		const int MARIO_STATE_JUMP = 300;
+		const int MARIO_STATE_RELEASE_JUMP = 301;
 
-		const float MARIO_STATE_RUNNING_RIGHT = 400;
-		const float MARIO_STATE_RUNNING_LEFT = 500;
+		const int MARIO_STATE_RUNNING_RIGHT = 400;
+		const int MARIO_STATE_RUNNING_LEFT = 500;
 
-		const float MARIO_STATE_SIT = 600;
-		const float MARIO_STATE_SIT_RELEASE = 601;
+		const int MARIO_STATE_SIT = 600;
+		const int MARIO_STATE_SIT_RELEASE = 601;
 	}
 }
 

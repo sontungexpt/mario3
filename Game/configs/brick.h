@@ -5,6 +5,8 @@
 namespace configs {
 	namespace brick {
 		const float BRICK_WIDTH = 16.0f;
+		const float BRICK_BBOX_WIDTH = 16.0f;
+		const float BRICK_BBOX_HEIGHT = 16.0f;
 	}
 }
 

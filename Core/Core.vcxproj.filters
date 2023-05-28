@@ -54,6 +54,9 @@
     <ClInclude Include="src\components\Animation\Animations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\objects\Coin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\objects\GameObject.cpp">
@@ -86,8 +89,20 @@
     <ClCompile Include="src\components\Animation\Animations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\Coin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\settings\brick.txt" />
+    <Text Include="src\settings\cloud.txt" />
+    <Text Include="src\settings\coin.txt" />
+    <Text Include="src\settings\mario.txt" />
+    <Text Include="src\settings\scene01.txt" />
+    <Text Include="src\settings\scene02.txt" />
+    <Text Include="src\settings\scene0005.txt" />
   </ItemGroup>
 </Project>

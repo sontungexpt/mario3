@@ -136,6 +136,7 @@
     <ClInclude Include="src\components\Sprite\Sprites.h" />
     <ClInclude Include="src\debug.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\objects\Coin.h" />
     <ClInclude Include="src\objects\Gameobject.h" />
     <ClInclude Include="src\objects\Mario.h" />
     <ClInclude Include="src\components\Sprite\Sprite.h" />
@@ -149,6 +150,7 @@
     <ClCompile Include="src\components\Sprite\Sprites.cpp" />
     <ClCompile Include="src\debug.cpp" />
     <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\objects\Coin.cpp" />
     <ClCompile Include="src\objects\GameObject.cpp" />
     <ClCompile Include="src\objects\Mario.cpp" />
     <ClCompile Include="src\components\Sprite\Sprite.cpp" />
@@ -156,6 +158,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\settings\brick.txt" />
+    <Text Include="src\settings\cloud.txt" />
+    <Text Include="src\settings\coin.txt" />
+    <Text Include="src\settings\mario.txt" />
+    <Text Include="src\settings\scene0005.txt" />
+    <Text Include="src\settings\scene01.txt" />
+    <Text Include="src\settings\scene02.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,6 +9,7 @@
 #include "Game.h"
 
 using namespace core;
+using namespace windowrc;
 
 LRESULT CALLBACK WinProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
 {
@@ -34,19 +35,19 @@ HWND CreateGameWindow(HINSTANCE hinstance, int ncmd_show, int screen_width, int 
 	wc.lpfnWndProc = (WNDPROC)WinProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
-	wc.hIcon = (HICON)LoadImage(hinstance, windowrc::WINDOW_ICON_PATH, IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
+	wc.hIcon = (HICON)LoadImage(hinstance, WINDOW_ICON_PATH, IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	wc.lpszMenuName = NULL;
-	wc.lpszClassName = windowrc::WINDOW_CLASS_NAME;
+	wc.lpszClassName = WINDOW_CLASS_NAME;
 	wc.hIconSm = NULL;
 
 	RegisterClassEx(&wc);
 
 	HWND hwnd =
 		CreateWindow(
-			windowrc::WINDOW_CLASS_NAME,
-			windowrc::WINDOW_TITLE,
+			WINDOW_CLASS_NAME,
+			WINDOW_TITLE,
 			WS_OVERLAPPEDWINDOW, // WS_EX_TOPMOST | WS_VISIBLE | WS_POPUP,
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,
@@ -77,7 +78,7 @@ int Run()
 	MSG msg;
 	int done = 0;
 	ULONGLONG frame_start = GetTickCount64();
-	ULONGLONG tick_per_frame = 1000 / windowrc::MAX_FRAME_RATE;
+	ULONGLONG tick_per_frame = 1000 / MAX_FRAME_RATE;
 
 	while (!done)
 	{
@@ -113,14 +114,14 @@ int WINAPI wWinMain(
 	int         ncmd_show
 )
 {
-	HWND hwnd = CreateGameWindow(hinstance, ncmd_show, windowrc::SCREEN_WIDTH, windowrc::SCREEN_HEIGHT);
+	HWND hwnd = CreateGameWindow(hinstance, ncmd_show, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	Game* game = Game::GetInstance();
 
 	// Initiate Direct3D 10
 	game->Init(hwnd);
 
-	SetWindowPos(hwnd, 0, 0, 0, windowrc::SCREEN_WIDTH * 2, windowrc::SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+	SetWindowPos(hwnd, 0, 0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 	// Game loop
 	Run();

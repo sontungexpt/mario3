@@ -3,14 +3,34 @@
 namespace core {
 	Game* Game::instance = nullptr;
 
+	Game* Game::GetInstance()
+	{
+		if (instance == nullptr)
+		{
+			instance = new Game();
+		}
+		return instance;
+	}
+
+	Game::~Game() {
+		plend_state_alpha_ptr_->Release();
+		sprite_->Release();
+		render_target_view_ptr_->Release();
+		swap_chain_ptr_->Release();
+		device_ptr_->Release();
+	}
+
 	/// <summary>
 	/// Initialize DirectX,
 	/// Create a Direct3D device for rendering within the window
 	/// Initial Sprite library for rendering 2D images
 	/// </summary>
 	/// <param name="hwnd">Application window handle</param>
-	void Game::Init(HWND hwnd)
+	void Game::Init(HWND hwnd, HINSTANCE hinstance)
 	{
+		hwnd_ = hwnd;
+		hinstance_ = hinstance;
+
 		// retrieve client area width & height so that we can create backbuffer height & width accordingly
 		RECT rect;
 		GetClientRect(hwnd, &rect);
@@ -99,13 +119,15 @@ namespace core {
 		D3DXMATRIX mat_projection;
 
 		// Create the projection matrix using the values in the viewport
-		D3DXMatrixOrthoOffCenterLH(&mat_projection,
+		D3DXMatrixOrthoOffCenterLH(
+			&mat_projection,
 			(float)view_port.TopLeftX,
 			(float)view_port.Width,
 			(float)view_port.TopLeftY,
 			(float)view_port.Height,
 			0.1f,
-			10);
+			10
+		);
 		hresult = sprite_->SetProjectionTransform(&mat_projection);
 
 		// Initialize the blend state for alpha drawing
@@ -208,8 +230,8 @@ namespace core {
 	/// <summary>
 	/// Utility function to wrap D3DX10CreateTextureFromFileEx
 	/// </summary>
-	/// <param name="texturePath"></param>
-	/// <returns></returns>
+	/// <param name="texture_path">path to texture</param>
+	/// <returns>A new Texture</returns>
 	LPTEXTURE Game::LoadTexture(LPCWSTR texture_path)
 	{
 		ID3D10Resource* resource_ptr = nullptr;
@@ -239,9 +261,8 @@ namespace core {
 			return nullptr;
 		}
 
-		//
 		// Create the Share Resource View for this texture
-		//
+
 		// Get the texture details
 		D3D10_TEXTURE2D_DESC desc;
 		tex->GetDesc(&desc);
@@ -267,9 +288,113 @@ namespace core {
 
 		return new Texture(tex, gSpriteTextureRV);
 	}
-	Game* Game::GetInstance()
+
+	bool Game::IsKeyDown(int KeyCode)
 	{
-		if (instance == nullptr) instance = new Game();
-		return instance;
+		return (key_states_[KeyCode] & 0x80) > 0;
+	}
+
+	void Game::InitKeyboard(LPKEYEVENTHANDLER handler)
+	{
+		HRESULT hresult = DirectInput8Create(hinstance_, DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)&dinput_device_, NULL);
+		if (hresult != DI_OK)
+		{
+			DebugOut(L"[ERROR] DirectInput8Create failed!\n");
+			return;
+		}
+
+		hresult = dinput8_->CreateDevice(GUID_SysKeyboard, &dinput_device_, nullptr);
+		if (hresult != DI_OK)
+		{
+			DebugOut(L"[ERROR] CreateDevice failed!\n");
+			return;
+		}
+
+		// Set the data format to "keyboard format" - a predefined data format
+		// A data format specifies which controls on a device we
+		// are interested in, and how they should be reported.
+		// This tells DirectInput that we will be passing an array
+		// of 256 bytes to IDirectInputDevice::GetDeviceState.
+
+		hresult = dinput_device_->SetDataFormat(&c_dfDIKeyboard);
+
+		hresult = dinput_device_->SetCooperativeLevel(hwnd_, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+
+		// IMPORTANT STEP TO USE BUFFERED DEVICE DATA!
+		//
+		// DirectInput uses unbuffered I/O (buffer size = 0) by default.
+		// If you want to read buffered data, you need to set a nonzero
+		// buffer size.
+		//
+		// Set the buffer size to DINPUT_BUFFERSIZE (defined above) elements.
+		//
+		// The buffer size is a DWORD property associated with the device.
+		DIPROPDWORD dipdw;
+
+		dipdw.diph.dwSize = sizeof(DIPROPDWORD);
+		dipdw.diph.dwHeaderSize = sizeof(DIPROPHEADER);
+		dipdw.diph.dwObj = 0;
+		dipdw.diph.dwHow = DIPH_DEVICE;
+		dipdw.dwData = KEYBOARD_BUFFER_SIZE;
+
+		hresult = dinput_device_->SetProperty(DIPROP_BUFFERSIZE, &dipdw.diph);
+
+		hresult = dinput_device_->Acquire();
+		if (hresult != DI_OK)
+		{
+			DebugOut(L"[ERROR] DINPUT8::Acquire failed!\n");
+			return;
+		}
+
+		key_event_handler_ = handler;
+
+		DebugOut(L"[INFO] Keyboard has been initialized successfully\n");
+	}
+	void Game::ProcessKeyboard()
+	{
+		HRESULT hresult;
+
+		// Collect all key states first
+		hresult = dinput_device_->GetDeviceState(sizeof(key_states_), key_states_);
+		if (FAILED(hresult))
+		{
+			// If the keyboard lost focus or was not acquired then try to get control back.
+			if ((hresult == DIERR_INPUTLOST) || (hresult == DIERR_NOTACQUIRED))
+			{
+				HRESULT h = dinput_device_->Acquire();
+				if (h == DI_OK)
+				{
+					DebugOut(L"[INFO] Keyboard re-acquired!\n");
+				}
+				else return;
+			}
+			else
+			{
+				//DebugOut(L"[ERROR] DINPUT::GetDeviceState failed. Error: %d\n", hr);
+				return;
+			}
+		}
+
+		key_event_handler_->KeyState((BYTE*)&key_states_);
+
+		// Collect all buffered events
+		DWORD dwelements = KEYBOARD_BUFFER_SIZE;
+		hresult = dinput_device_->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), key_events_, &dwelements, 0);
+		if (FAILED(hresult))
+		{
+			DebugOut(L"[ERROR] DINPUT::GetDeviceData failed. Error: %d\n", hresult);
+			return;
+		}
+
+		// Scan through all buffered events, check if the key is pressed or released
+		for (DWORD i = 0; i < dwelements; i++)
+		{
+			int key_code = key_events_[i].dwOfs;
+			int key_state = key_events_[i].dwData;
+			if ((key_state & 0x80) > 0)
+				key_event_handler_->OnKeyDown(key_code);
+			else
+				key_event_handler_->OnKeyUp(key_code);
+		}
 	}
 }

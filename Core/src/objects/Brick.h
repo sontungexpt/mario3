@@ -8,12 +8,15 @@
 #include "configs/brick.h"
 #include "configs/id.h"
 
+using namespace brickrc;
+
 namespace core {
 	class Brick : public GameObject
 	{
 		Brick(float x, float y) : GameObject(x, y) {}
 		void Render();
 		void Update(DWORD dt) {}
+		void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	};
 }
 
