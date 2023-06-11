@@ -1,0 +1,18 @@
+[SETTINGS]
+start	1
+width	3200
+height	240
+
+#id		type	file
+# type: 0: intro, 1: play scene 
+[SCENES]
+1	src\settings\scenes\scene01.txt
+2	src\settings\scenes\scene02.txt
+5	src\settings\scenes\scene05.txt
+
+# id	file 
+[TEXTURES]
+-100	src\assets\textures\bbox.png
+0	src\assets\textures\mario.png
+10	src\assets\textures\enemies.png
+20	src\assets\textures\misc.png
