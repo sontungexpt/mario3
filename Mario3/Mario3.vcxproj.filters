@@ -93,6 +93,9 @@
     <ClCompile Include="src\objects\QuestionBrick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\Mushroom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\Animation\Animation.h">
@@ -176,7 +179,7 @@
     <ClInclude Include="src\objects\Pipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\Pipe.h">
+    <ClInclude Include="src\configs\Pipe110000.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\Plant.h">
@@ -203,9 +206,6 @@
     <ClInclude Include="src\configs\ids\ObjectTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\ids\ObjectIds.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\objects\Grass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -224,7 +224,25 @@
     <ClInclude Include="src\objects\QuestionBrick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\QuestionBrick.h">
+    <ClInclude Include="src\configs\QuestionBrick100000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\Leaf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\Mushroom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\Mushroom120000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\ids\SceneIds.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\All.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\Gommba.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

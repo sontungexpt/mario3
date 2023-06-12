@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "configs/AssetIDs.h"
+#include "configs/All.h"
 
 #include "PlayScene.h"
 #include "utils/Utils.h"

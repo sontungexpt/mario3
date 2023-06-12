@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -132,6 +132,7 @@
     <ClCompile Include="src\GameData.cpp" />
     <ClCompile Include="src\objects\Door.cpp" />
     <ClCompile Include="src\objects\Grass.cpp" />
+    <ClCompile Include="src\objects\Mushroom.cpp" />
     <ClCompile Include="src\objects\Pipe.cpp" />
     <ClCompile Include="src\objects\Plant.cpp" />
     <ClCompile Include="src\objects\QuestionBrick.cpp" />
@@ -157,21 +158,26 @@
     <ClCompile Include="src\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\configs\All.h" />
     <ClInclude Include="src\configs\Brick.h" />
     <ClInclude Include="src\configs\Door.h" />
     <ClInclude Include="src\configs\Game.h" />
     <ClInclude Include="src\configs\GameData.h" />
     <ClInclude Include="src\configs\GameObject.h" />
+    <ClInclude Include="src\configs\Gommba.h" />
     <ClInclude Include="src\configs\Grass.h" />
-    <ClInclude Include="src\configs\ids\ObjectIds.h" />
+    <ClInclude Include="src\configs\ids\SceneIds.h" />
     <ClInclude Include="src\configs\ids\ObjectTypes.h" />
     <ClInclude Include="src\configs\ids\Texture.h" />
-    <ClInclude Include="src\configs\Pipe.h" />
+    <ClInclude Include="src\configs\Mushroom120000.h" />
+    <ClInclude Include="src\configs\Pipe110000.h" />
     <ClInclude Include="src\configs\Plant.h" />
-    <ClInclude Include="src\configs\QuestionBrick.h" />
+    <ClInclude Include="src\configs\QuestionBrick100000.h" />
     <ClInclude Include="src\GameData.h" />
     <ClInclude Include="src\objects\Door.h" />
     <ClInclude Include="src\objects\Grass.h" />
+    <ClInclude Include="src\objects\Leaf.h" />
+    <ClInclude Include="src\objects\Mushroom.h" />
     <ClInclude Include="src\objects\Pipe.h" />
     <ClInclude Include="src\objects\Plant.h" />
     <ClInclude Include="src\objects\QuestionBrick.h" />

@@ -1,5 +1,6 @@
 #include "Goomba.h"
 #include "debug.h"
+#include "configs/Gommba.h"
 
 CGoomba::CGoomba(float x, float y) :CGameObject(x, y)
 {
@@ -50,14 +51,22 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vy += ay * dt;
-	vx += ax * dt;
+	// move out of screen >> delete
+	if (x + GOOMBA_BBOX_HEIGHT <= 0)
+	{
+		isDeleted = true;
+		return;
+	}
 
+	// die >> delete
 	if ((state == GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT))
 	{
 		isDeleted = true;
 		return;
 	}
+
+	vy += ay * dt;
+	vx += ax * dt;
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);

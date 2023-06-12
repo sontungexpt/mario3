@@ -1,8 +1,9 @@
 #include "QuestionBrick.h"
 #include "Mario.h"
-#include "scenes/PlayScene.h"
 #include "Coin.h"
-#include "configs/QuestionBrick.h"
+
+#include "scenes/PlayScene.h"
+#include "configs/QuestionBrick100000.h"
 
 void CQuestionBrick::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {

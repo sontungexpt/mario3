@@ -1,0 +1,21 @@
+#pragma once
+// configs
+#define MUSHROOM_GRAVITY 0.001f
+#define MUSHROOM_SPEED 0.055f
+#define OUT_BRICK -0.016f
+
+#define	MUSHROOM_WIDTH 10
+#define MUSHROOM_BBOX_WIDTH 10
+#define MUSHROOM_BBOX_HEIGHT 16
+#define MUSHROOM_STATE_WALKING 100
+#define MUSHROOM_STATE_OUTSIDE 200
+
+#define MUSHROOM_RED 1
+#define MUSHROOM_GREEN 2
+
+#pragma region ANIMATION_ID_120000
+
+#define ID_ANI_MUSHROOM_RED 120001
+#define ID_ANI_MUSHROOM_GREEN 120002
+
+#pragma endregion

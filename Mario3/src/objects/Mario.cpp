@@ -11,6 +11,7 @@
 #include "components/Collision/Collision.h"
 #include "Door.h"
 #include "Game.h"
+#include "configs/Gommba.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
