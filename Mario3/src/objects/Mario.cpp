@@ -10,6 +10,7 @@
 
 #include "components/Collision/Collision.h"
 #include "Door.h"
+#include "Game.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -25,7 +26,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 	}
 
-	isOnPlatform = false;
+	isOnPlatform = FALSE;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -142,6 +143,7 @@ int CMario::GetAniIdSmall()
 				aniId = ID_ANI_MARIO_SIT_LEFT;
 		}
 		else
+		{
 			if (vx == 0)
 			{
 				if (nx > 0) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
@@ -165,6 +167,7 @@ int CMario::GetAniIdSmall()
 				else if (ax == -MARIO_ACCEL_WALK_X)
 					aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
 			}
+		}
 
 	if (aniId == -1) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
 
@@ -248,12 +251,29 @@ void CMario::Render()
 
 	LPANIMATION ani = animations->Get(aniId);
 
+	ResetPositionIfOutOfScreen(x, y);
+
 	if (ani != NULL)
 		ani->Render(x, y);
 
-	//RenderBoundingBox();
-
 	DebugOutTitle(L"Coins: %d", coin);
+}
+
+void CMario::ResetPositionIfOutOfScreen(float& curr_x, float& curr_y) {
+	float cam_x, cam_y;
+	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
+	float left, top, right, bottom;
+	GetBoundingBox(left, top, right, bottom);
+
+	// no permit move out of screen
+	if (curr_x - (right - left) / 2 <= cam_x)
+	{
+		curr_x = cam_x + (right - left) / 2;
+	}
+	else if (right > cam_x + SCREEN_WIDTH)
+	{
+		curr_x = cam_x + SCREEN_WIDTH;
+	}
 }
 
 void CMario::SetState(int state)
@@ -282,11 +302,13 @@ void CMario::SetState(int state)
 		nx = 1;
 		break;
 	case MARIO_STATE_WALKING_LEFT:
+	{
 		if (isSitting) break;
 		maxVx = -MARIO_WALKING_SPEED;
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
 		break;
+	}
 	case MARIO_STATE_JUMP:
 		if (isSitting) break;
 		if (isOnPlatform)

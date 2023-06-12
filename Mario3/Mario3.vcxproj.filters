@@ -212,6 +212,12 @@
     <ClInclude Include="src\configs\GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\configs\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\Brick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -229,5 +235,11 @@
     <Text Include="src\settings\objects\door.txt" />
     <Text Include="src\settings\scenes\levelmap.txt" />
     <Text Include="src\settings\objects\grass.txt" />
+    <Text Include="src\settings\objects\QuestionBrick.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="src\assets\textures\misc_left.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -15,10 +15,7 @@ using namespace std;
 #include "components/KeyboardHandler/KeyEventHandler.h"
 #include "components/Scene/Scene.h"
 #include <string>
-
-#define MAX_FRAME_RATE 100
-#define KEYBOARD_BUFFER_SIZE 1024
-#define KEYBOARD_STATE_SIZE 256
+#include "configs/Game.h"
 
 class CGame
 {

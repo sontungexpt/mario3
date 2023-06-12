@@ -1,5 +1,5 @@
 [SETTINGS]
-start	10
+start	1
 width	310
 height	240
 
@@ -21,3 +21,4 @@ height	240
 10	src\assets\textures\enemies.png
 20	src\assets\textures\misc.png
 30	src\assets\textures\levelmap.png
+40	src\assets\textures\misc_left.png

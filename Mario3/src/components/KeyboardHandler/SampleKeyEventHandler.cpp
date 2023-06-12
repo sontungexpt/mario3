@@ -9,7 +9,6 @@
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-
 	switch (KeyCode)
 	{
 	case DIK_DOWN:
@@ -29,6 +28,8 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_R: // reset
 		//Reload();
+		break;
+	default:
 		break;
 	}
 }

@@ -25,6 +25,7 @@ class CMario : public CGameObject
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithDoor(LPCOLLISIONEVENT e);
 
+	void ResetPositionIfOutOfScreen(float& curr_x, float& curr_y);
 	int GetAniIdBig();
 	int GetAniIdSmall();
 

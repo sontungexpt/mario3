@@ -1,4 +1,5 @@
 #include "Brick.h"
+#include "configs/Brick.h"
 
 void CBrick::Render()
 {

@@ -156,7 +156,9 @@
     <ClCompile Include="src\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\configs\Brick.h" />
     <ClInclude Include="src\configs\Door.h" />
+    <ClInclude Include="src\configs\Game.h" />
     <ClInclude Include="src\configs\GameData.h" />
     <ClInclude Include="src\configs\GameObject.h" />
     <ClInclude Include="src\configs\Grass.h" />
@@ -209,10 +211,14 @@
     <Text Include="src\settings\game-mario.txt" />
     <Text Include="src\settings\objects\grass.txt" />
     <Text Include="src\settings\objects\mario.txt" />
+    <Text Include="src\settings\objects\QuestionBrick.txt" />
     <Text Include="src\settings\scenes\scene05.txt" />
     <Text Include="src\settings\scenes\scene01.txt" />
     <Text Include="src\settings\scenes\scene02.txt" />
     <Text Include="src\settings\scenes\levelmap.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="src\assets\textures\misc_left.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

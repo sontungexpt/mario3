@@ -16,6 +16,7 @@ CGame* CGame::__instance = NULL;
 	rendering 2D images
 	- hWnd: Application window handle
 */
+
 void CGame::Init(HWND hWnd, HINSTANCE hInstance)
 {
 	this->hWnd = hWnd;
@@ -481,7 +482,7 @@ void CGame::Load(LPCWSTR gameFile)
 	{
 		string line(str);
 
-		if (line[0] == '#') continue;	// skip comment lines
+		if (line[0] == '#' || line[0] == '/') continue;	// skip comment lines
 
 		if (line == "[SETTINGS]") { section = GAME_FILE_SECTION_SETTINGS; continue; }
 		if (line == "[TEXTURES]") { section = GAME_FILE_SECTION_TEXTURES; continue; }
