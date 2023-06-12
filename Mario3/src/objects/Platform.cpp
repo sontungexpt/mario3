@@ -4,6 +4,8 @@
 #include "components/Sprite/Sprites.h"
 
 #include "components/Texture/Textures.h"
+#include "configs/GameObject.h"
+#include <debug.h>
 
 void CPlatform::RenderBoundingBox()
 {
@@ -24,8 +26,7 @@ void CPlatform::RenderBoundingBox()
 	CGame::GetInstance()->GetCamPos(cx, cy);
 
 	float xx = x - this->cellWidth / 2 + rect.right / 2;
-
-	CGame::GetInstance()->Draw(xx - cx, y - cy, bbox, nullptr, BBOX_ALPHA, rect.right - 1, rect.bottom - 1);
+	CGame::GetInstance()->Draw(xx - cx, y - cy, bbox, nullptr, TRANSPARENT_COLOR, rect.right - 1, rect.bottom - 1);
 }
 
 void CPlatform::Render()

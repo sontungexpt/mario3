@@ -1,0 +1,13 @@
+#pragma once
+
+#define PIPE_BBOX_WIDTH 32
+#define PIPE_BBOX_HEIGHT_SHORT 32
+#define	PIPE_BBOX_HEIGHT_LONG 48
+
+#define ID_ANI_PIPE_SHORT 201
+#define ID_ANI_PIPE_LONG 202
+
+#define PIPE_SHORT_MODEL 1
+#define PIPE_LONG_MODEL	2
+
+#define PLANT_NOTHING 10

@@ -129,6 +129,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\GameData.cpp" />
+    <ClCompile Include="src\objects\Door.cpp" />
+    <ClCompile Include="src\objects\Grass.cpp" />
+    <ClCompile Include="src\objects\Pipe.cpp" />
+    <ClCompile Include="src\objects\Plant.cpp" />
+    <ClCompile Include="src\scenes\LevelMapScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\components\Animation\Animation.cpp" />
     <ClCompile Include="src\components\Animation\Animations.cpp" />
@@ -150,6 +156,21 @@
     <ClCompile Include="src\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\configs\Door.h" />
+    <ClInclude Include="src\configs\GameData.h" />
+    <ClInclude Include="src\configs\GameObject.h" />
+    <ClInclude Include="src\configs\Grass.h" />
+    <ClInclude Include="src\configs\ids\ObjectIds.h" />
+    <ClInclude Include="src\configs\ids\ObjectTypes.h" />
+    <ClInclude Include="src\configs\ids\Texture.h" />
+    <ClInclude Include="src\configs\Pipe.h" />
+    <ClInclude Include="src\configs\Plant.h" />
+    <ClInclude Include="src\GameData.h" />
+    <ClInclude Include="src\objects\Door.h" />
+    <ClInclude Include="src\objects\Grass.h" />
+    <ClInclude Include="src\objects\Pipe.h" />
+    <ClInclude Include="src\objects\Plant.h" />
+    <ClInclude Include="src\scenes\LevelMapScene.h" />
     <ClInclude Include="src\components\Animation\Animation.h" />
     <ClInclude Include="src\components\Animation\AnimationFrame.h" />
     <ClInclude Include="src\components\Animation\Animations.h" />
@@ -183,12 +204,15 @@
     <Text Include="src\settings\objects\brick.txt" />
     <Text Include="src\settings\objects\cloud.txt" />
     <Text Include="src\settings\objects\coin.txt" />
+    <Text Include="src\settings\objects\door.txt" />
     <Text Include="src\settings\objects\goomba.txt" />
     <Text Include="src\settings\game-mario.txt" />
+    <Text Include="src\settings\objects\grass.txt" />
     <Text Include="src\settings\objects\mario.txt" />
     <Text Include="src\settings\scenes\scene05.txt" />
     <Text Include="src\settings\scenes\scene01.txt" />
     <Text Include="src\settings\scenes\scene02.txt" />
+    <Text Include="src\settings\scenes\levelmap.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

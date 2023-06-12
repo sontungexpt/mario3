@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "components/Sprite/Sprites.h"
+#include "configs/GameObject.h"
 
 CGameObject::CGameObject()
 {
@@ -34,9 +35,7 @@ void CGameObject::RenderBoundingBox()
 	float cx, cy;
 	CGame::GetInstance()->GetCamPos(cx, cy);
 
-	CGame::GetInstance()->Draw(x - cx, y - cy, bbox, &rect, BBOX_ALPHA);
+	CGame::GetInstance()->Draw(x - cx, y - cy, bbox, &rect, CALCULATE_COLOR(0.7, 0, 0.2));
 }
 
-CGameObject::~CGameObject()
-{
-}
+CGameObject::~CGameObject() {}

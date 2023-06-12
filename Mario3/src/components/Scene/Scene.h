@@ -2,9 +2,6 @@
 
 #include "components/KeyboardHandler/KeyEventHandler.h"
 
-/*
-*  Abstract class for a game scene
-*/
 class CScene
 {
 protected:

@@ -3,10 +3,11 @@
 #include "Game.h"
 #include "debug.h"
 #include "utils/Utils.h"
-
+#include "configs/ids/ObjectIds.h"
 #include "components/Texture/Textures.h"
 #include "components/Animation/Animations.h"
 #include "scenes/PlayScene.h"
+#include "scenes/LevelMapScene.h"
 
 CGame* CGame::__instance = NULL;
 
@@ -452,14 +453,19 @@ void CGame::_ParseSection_SCENES(string line)
 	if (tokens.size() < 2) return;
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);   // file: ASCII format (single-byte char) => Wide Char
-
-	LPSCENE scene = new CPlayScene(id, path);
+	LPSCENE scene = NULL;
+	switch (id)
+	{
+	case LEVEL_MAP_SCENE:
+		scene = new CLevelMapScene(id, path);
+		break;
+	default:
+		scene = new CPlayScene(id, path);
+		break;
+	}
 	scenes[id] = scene;
 }
 
-/*
-	Load game campaign file and load/initiate first scene
-*/
 void CGame::Load(LPCWSTR gameFile)
 {
 	DebugOut(L"[INFO] Start loading game file : %s\n", gameFile);
@@ -507,12 +513,13 @@ void CGame::Load(LPCWSTR gameFile)
 void CGame::SwitchScene()
 {
 	if (next_scene < 0 || next_scene == current_scene) return;
-	if (current_scene != -1)
+	if (current_scene != -1) // not first scene
+	{
 		scenes[current_scene]->Unload();
 
-	CSprites::GetInstance()->Clear();
-	CAnimations::GetInstance()->Clear();
-
+		CSprites::GetInstance()->Clear();
+		CAnimations::GetInstance()->Clear();
+	}
 	current_scene = next_scene;
 	LPSCENE s = scenes[next_scene];
 	this->SetKeyHandler(s->GetKeyEventHandler());

@@ -2,11 +2,9 @@
 
 #include "GameObject.h"
 
-/*
-	Object that triggers scene switching
-*/
 class CPortal : public CGameObject
 {
+protected:
 	int scene_id;	// target scene to switch to
 
 	float width;
@@ -16,7 +14,7 @@ public:
 	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 
-	void RenderBoundingBox(void);
+	virtual void RenderBoundingBox(void);
 
 	int GetSceneId() { return scene_id; }
 	int IsBlocking() { return 0; }

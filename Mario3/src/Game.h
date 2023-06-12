@@ -20,9 +20,6 @@ using namespace std;
 #define KEYBOARD_BUFFER_SIZE 1024
 #define KEYBOARD_STATE_SIZE 256
 
-/*
-	Our simple game framework
-*/
 class CGame
 {
 	static CGame* __instance;

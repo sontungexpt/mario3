@@ -9,6 +9,7 @@
 #include "Portal.h"
 
 #include "components/Collision/Collision.h"
+#include "Door.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -54,6 +55,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
+	else if (dynamic_cast<CDoor*>(e->obj))
+		OnCollisionWithDoor(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -100,6 +103,11 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
 	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
+}
+
+void CMario::OnCollisionWithDoor(LPCOLLISIONEVENT e) {
+	CDoor* door = (CDoor*)e->obj;
+	CGame::GetInstance()->InitiateSwitchScene(door->GetSceneId());
 }
 
 //
@@ -240,10 +248,10 @@ void CMario::Render()
 
 	LPANIMATION ani = animations->Get(aniId);
 
-	if(ani != NULL)
+	if (ani != NULL)
 		ani->Render(x, y);
 
-		//RenderBoundingBox();
+	//RenderBoundingBox();
 
 	DebugOutTitle(L"Coins: %d", coin);
 }

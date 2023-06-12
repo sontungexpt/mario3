@@ -88,9 +88,6 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	CAnimations::GetInstance()->Add(ani_id, ani);
 }
 
-/*
-	Parse a line in section [OBJECTS]
-*/
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
@@ -107,6 +104,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
+	{
 		if (player != NULL)
 		{
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
@@ -116,7 +114,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (CMario*)obj;
 
 		DebugOut(L"[INFO] Player object has been created!\n");
-		break;
+	}
+	break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
@@ -219,8 +218,8 @@ void CPlayScene::Load()
 		//
 		switch (section)
 		{
-		case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
-		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case SCENE_SECTION_ASSETS: this->_ParseSection_ASSETS(line); break;
+		case SCENE_SECTION_OBJECTS: this->_ParseSection_OBJECTS(line); break;
 		}
 	}
 
@@ -269,9 +268,6 @@ void CPlayScene::Render()
 		objects[i]->Render();
 }
 
-/*
-*	Clear all objects from this scene
-*/
 void CPlayScene::Clear()
 {
 	vector<LPGAMEOBJECT>::iterator it;
@@ -282,12 +278,6 @@ void CPlayScene::Clear()
 	objects.clear();
 }
 
-/*
-	Unload scene
-
-	TODO: Beside objects, we need to clean up sprites, animations and textures as well
-
-*/
 void CPlayScene::Unload()
 {
 	for (int i = 0; i < objects.size(); i++)
