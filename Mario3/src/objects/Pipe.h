@@ -9,7 +9,9 @@ protected:
 	int plant_type;
 
 public:
-	CPipe(float x, float y) : CGameObject(x, y) {};
+	CPipe(float x, float y) : CGameObject(x, y) {
+		state = PIPE_SHORT_STATE;
+	};
 
 	void Render();
 	void Update(DWORD dt) {}

@@ -11,6 +11,5 @@
 #define PLANT_NOTHING 10
 
 // animations
-#define ID_ANI_PIPE 110001
 #define ID_ANI_PIPE_SHORT 110001
 #define ID_ANI_PIPE_LONG 110001

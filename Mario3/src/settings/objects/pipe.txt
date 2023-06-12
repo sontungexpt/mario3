@@ -1,7 +1,7 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 # Pipe only
-110001	4	84	36	119	50
+110001	4	86	36	119	50
 
 //110002	321	84	330	119	50
 //110003	338	84	347	119	50

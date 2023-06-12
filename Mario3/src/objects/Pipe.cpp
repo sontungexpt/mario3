@@ -7,11 +7,15 @@ void CPipe::Render()
 	if (!IsInCamera()) return;
 
 	CAnimations* animations = CAnimations::GetInstance();
-	int aniId = ID_ANI_PIPE;
-	/*int aniId = -1;
-	if (model == PIPE_SHORT_MODEL) aniId = ID_ANI_PIPE_SHORT;
-	if (model == PIPE_LONG_MODEL) aniId = ID_ANI_PIPE_LONG;*/
+	int aniId = -1;
+	if (state == PIPE_SHORT_STATE) aniId = ID_ANI_PIPE_SHORT;
+	if (state == PIPE_LONG_STATE) aniId = ID_ANI_PIPE_LONG;
 
+	if (aniId == -1)
+	{
+		DebugOut(L"[ERROR FROM PIPE CLASS] No animation found");
+		return; // not in any animation
+	}
 	animations->Get(aniId)->Render(x, y);
 }
 

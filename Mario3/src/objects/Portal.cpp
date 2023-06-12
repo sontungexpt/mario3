@@ -35,6 +35,8 @@ void CPortal::RenderBoundingBox()
 
 void CPortal::Render()
 {
+	if (!IsInCamera()) return; // lazy load
+
 	RenderBoundingBox();
 }
 

@@ -18,6 +18,7 @@ void CQuestionBrick::Update(DWORD dt)
 
 void CQuestionBrick::Render()
 {
+	if (!IsInCamera()) return; // lazy load
 	CAnimations* animations = CAnimations::GetInstance();
 	animations->Get(ID_ANI_QUESTION_BRICK)->Render(x, y);
 }

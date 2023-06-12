@@ -3,6 +3,8 @@
 
 void CBrick::Render()
 {
+	if (!IsInCamera()) return; // lazy load
+
 	CAnimations* animations = CAnimations::GetInstance();
 	animations->Get(ID_ANI_BRICK)->Render(x, y);
 }
