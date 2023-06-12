@@ -1,4 +1,5 @@
 #include "Goomba.h"
+#include "debug.h"
 
 CGoomba::CGoomba(float x, float y) :CGameObject(x, y)
 {
@@ -64,6 +65,8 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CGoomba::Render()
 {
+	if (!IsInCamera()) return; // lazy load
+
 	int aniId = ID_ANI_GOOMBA_WALKING;
 	if (state == GOOMBA_STATE_DIE)
 	{

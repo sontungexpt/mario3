@@ -1,12 +1,12 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
-# Short brick
-20001	372	153	387	168	20
+# Pipe only
+110001	4	84	36	119	50
 
-# Zebra brick
-20002	258	189	268	203	40
+//110002	321	84	330	119	50
+//110003	338	84	347	119	50
+
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
-# Short brick
-10000	20001	1000
+110001	110001	100

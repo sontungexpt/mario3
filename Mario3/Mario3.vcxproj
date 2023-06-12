@@ -134,6 +134,7 @@
     <ClCompile Include="src\objects\Grass.cpp" />
     <ClCompile Include="src\objects\Pipe.cpp" />
     <ClCompile Include="src\objects\Plant.cpp" />
+    <ClCompile Include="src\objects\QuestionBrick.cpp" />
     <ClCompile Include="src\scenes\LevelMapScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\components\Animation\Animation.cpp" />
@@ -167,11 +168,13 @@
     <ClInclude Include="src\configs\ids\Texture.h" />
     <ClInclude Include="src\configs\Pipe.h" />
     <ClInclude Include="src\configs\Plant.h" />
+    <ClInclude Include="src\configs\QuestionBrick.h" />
     <ClInclude Include="src\GameData.h" />
     <ClInclude Include="src\objects\Door.h" />
     <ClInclude Include="src\objects\Grass.h" />
     <ClInclude Include="src\objects\Pipe.h" />
     <ClInclude Include="src\objects\Plant.h" />
+    <ClInclude Include="src\objects\QuestionBrick.h" />
     <ClInclude Include="src\scenes\LevelMapScene.h" />
     <ClInclude Include="src\components\Animation\Animation.h" />
     <ClInclude Include="src\components\Animation\AnimationFrame.h" />
@@ -211,7 +214,8 @@
     <Text Include="src\settings\game-mario.txt" />
     <Text Include="src\settings\objects\grass.txt" />
     <Text Include="src\settings\objects\mario.txt" />
-    <Text Include="src\settings\objects\QuestionBrick.txt" />
+    <Text Include="src\settings\objects\pipe.txt" />
+    <Text Include="src\settings\objects\question_brick.txt" />
     <Text Include="src\settings\scenes\scene05.txt" />
     <Text Include="src\settings\scenes\scene01.txt" />
     <Text Include="src\settings\scenes\scene02.txt" />

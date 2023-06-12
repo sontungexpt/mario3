@@ -9,6 +9,8 @@
 #include "objects/Portal.h"
 #include "objects/Coin.h"
 #include "objects/Platform.h"
+#include "objects/QuestionBrick.h"
+#include "objects/Pipe.h"
 
 #include "components/KeyboardHandler/SampleKeyEventHandler.h"
 
@@ -76,12 +78,14 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	LPANIMATION ani = new CAnimation();
 
 	int ani_id = atoi(tokens[0].c_str());
-	DebugOut(L"[ERROR] Texture ID %d not found!\n", tokens.size());
+	//DebugOut(L"[ERROR] Texture ID %d not found!\n", tokens.size());
 
 	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time
 	{
 		int sprite_id = atoi(tokens[i].c_str());
 		int frame_time = atoi(tokens[i + 1].c_str());
+
+		DebugOut(L"[INFO] Sprite Id %d add", sprite_id);
 		ani->Add(sprite_id, frame_time);
 	}
 
@@ -116,10 +120,21 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object has been created!\n");
 	}
 	break;
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
-	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
-
+	case OBJECT_TYPE_GOOMBA:
+		obj = new CGoomba(x, y);
+		break;
+	case OBJECT_TYPE_BRICK:
+		obj = new CBrick(x, y);
+		break;
+	case OBJECT_TYPE_COIN:
+		obj = new CCoin(x, y);
+		break;
+	case OBJECT_TYPE_QUESTION_BRICK:
+		obj = new CQuestionBrick(x, y);
+		break;
+	case OBJECT_TYPE_PIPE:
+		obj = new CPipe(x, y);
+		break;
 	case OBJECT_TYPE_PLATFORM:
 	{
 		float cell_width = (float)atof(tokens[3].c_str());
@@ -128,16 +143,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int sprite_begin = atoi(tokens[6].c_str());
 		int sprite_middle = atoi(tokens[7].c_str());
 		int sprite_end = atoi(tokens[8].c_str());
-
 		obj = new CPlatform(
 			x, y,
 			cell_width, cell_height, length,
 			sprite_begin, sprite_middle, sprite_end
 		);
-
 		break;
 	}
-
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = (float)atof(tokens[3].c_str());

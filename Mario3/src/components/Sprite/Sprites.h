@@ -9,9 +9,6 @@
 
 using namespace std;
 
-/*
-	Manage sprite database
-*/
 class CSprites
 {
 	static CSprites* __instance;

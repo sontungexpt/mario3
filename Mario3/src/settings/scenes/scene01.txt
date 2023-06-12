@@ -5,24 +5,43 @@ src\settings\objects\brick.txt
 src\settings\objects\coin.txt
 src\settings\objects\goomba.txt
 src\settings\objects\cloud.txt
-
+src\settings\objects\question_brick.txt
+src\settings\objects\pipe.txt
 
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
 # See OBJECT_TYPE constants in AssetIDs.h
 
+
 # MARIO
-0	50	10
+0	20	10
+
+
+
+# Question Brick
+8	140	130
+8	156	130
+8	188	80
+8	204	80
+
+8	500	115
+8	650	149
+8	700	105
+
+# Pipe
+9	260	156
 
 #Goomba
 2	300	10
 
 #Platform
-5	0	180	10	16	500	20002	20002	20002
+5	0	180	10	16	40	20002	20002	20002
+5	0	195	10	16	40	20002	20002	20002
+5	400	165	10	16	60	20002	20002	20002
+5	400	180	10	16	60	20002	20002	20002
+5	400	195	10	16	60	20002	20002	20002
 
-#Portal 
-50	300	110	316	140	5
+5	1050	180	10	16	60	20002	20002	20002
+5	1050	195	10	16	60	20002	20002	20002
 
-# Question Brick
-8	50	100

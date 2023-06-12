@@ -259,23 +259,6 @@ void CMario::Render()
 	DebugOutTitle(L"Coins: %d", coin);
 }
 
-void CMario::ResetPositionIfOutOfScreen(float& curr_x, float& curr_y) {
-	float cam_x, cam_y;
-	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
-	float left, top, right, bottom;
-	GetBoundingBox(left, top, right, bottom);
-
-	// no permit move out of screen
-	if (curr_x - (right - left) / 2 <= cam_x)
-	{
-		curr_x = cam_x + (right - left) / 2;
-	}
-	else if (right > cam_x + SCREEN_WIDTH)
-	{
-		curr_x = cam_x + SCREEN_WIDTH;
-	}
-}
-
 void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed!

@@ -27,6 +27,8 @@ protected:
 
 	bool isDeleted;
 
+	virtual void ResetPositionIfOutOfScreen(float& curr_x, float& curr_y);
+
 public:
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
@@ -38,6 +40,7 @@ public:
 	bool IsDeleted() { return isDeleted; }
 
 	void RenderBoundingBox();
+	BOOLEAN IsInCamera(); // use for lazy load
 
 	CGameObject();
 	CGameObject(float x, float y) :CGameObject() { this->x = x; this->y = y; }
@@ -45,11 +48,9 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {};
 	virtual void Render() = 0;
-	virtual void SetState(int state) { this->state = state; }
+	virtual void SetState(int state) { this->state = state; };
 
-	//
 	// Collision ON or OFF ? This can change depending on object's state. For example: die
-	//
 	virtual int IsCollidable() { return 0; };
 
 	// When no collision has been detected (triggered by CCollision::Process)
