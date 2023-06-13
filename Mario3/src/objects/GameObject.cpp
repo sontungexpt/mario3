@@ -55,6 +55,20 @@ void CGameObject::RenderBoundingBox()
 	CGame::GetInstance()->Draw(x - cx, y - cy, bbox, &rect, CALCULATE_COLOR(0.7, 0, 0.2));
 }
 
+float CGameObject::GetWidth()
+{
+	float left, top, right, bottom;
+	GetBoundingBox(left, top, right, bottom);
+	return right - left;
+}
+
+float CGameObject::GetHeight()
+{
+	float left, top, right, bottom;
+	GetBoundingBox(left, top, right, bottom);
+	return bottom - top;
+}
+
 BOOLEAN CGameObject::IsInCamera() {
 	float cam_x, cam_y;
 	float left, top, right, bottom;

@@ -7,6 +7,7 @@ src\settings\objects\goomba.txt
 src\settings\objects\cloud.txt
 src\settings\objects\question_brick.txt
 src\settings\objects\pipe.txt
+src\settings\objects\koopa.txt
 
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -31,8 +32,14 @@ src\settings\objects\pipe.txt
 # Pipe
 9	320	156
 
-#Goomba
+
+### Monsters ###
+#Goombas
 2	300	160
+
+# Koopas
+10	320	40
+
 
 #Platform
 5	0	180	10	16	125	20002	20002	20002

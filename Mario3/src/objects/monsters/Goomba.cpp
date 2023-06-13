@@ -52,7 +52,7 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	// move out of screen >> delete
-	if (x + GOOMBA_BBOX_HEIGHT <= 0)
+	if (x + GetWidth() <= 0)
 	{
 		isDeleted = true;
 		return;

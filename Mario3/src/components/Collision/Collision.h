@@ -46,6 +46,8 @@ struct CCollisionEvent
 	int IsCollidedFromBottom() { return ny > 0; }
 	int IsCollidedFromLeft() { return nx > 0; }
 	int IsCollidedFromRight() { return nx < 0; }
+	int IsCollidedInXDimension() { return nx != 0; }
+	int IsCollidedInYDimension() { return ny != 0; }
 };
 
 class CCollision

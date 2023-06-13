@@ -1,28 +1,31 @@
-﻿#include "configs/Koopa.h"
+﻿#include "configs/Koopa130000.h"
 #include "Monster.h"
 
 class CKoopa : public CMonster
 {
 private:
 	ULONGLONG defend_start;
-	//ULONGLONG comeback_start;
 
-	//bool isUpside;
-	//bool isDefend;
-	//bool isHeld;
-	//bool isKicked;
-	//bool isWing;
-	//bool isOnPlatform;
-	//bool isComeback;
+	BOOLEAN is_defend;
+	BOOLEAN is_mario_kicked;
+
+	void OnCollisionWithMonster(LPCOLLISIONEVENT e);
+
 public:
-	CKoopa(float x, float y) : CMonster(x, y) {};
+	CKoopa(float x, float y) : CMonster(x, y) {
+		is_defend = FALSE;
+		is_mario_kicked = FALSE;
 
-	//void OnCollisionWith(LPCOLLISIONEVENT e);
+		// always move to mario in the first time
+		SetState(MONSTER_STATE_WALKING_LEFT);
+	};
+
+	void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	//virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
-	int PositionWithMario();
-	int IsCollidable() { return !dead; };
-	virtual int IsEnemy() { return 1; }
+	void SetState(int state);
+
+	//int GetPositionWithMario() { return x; }
 };

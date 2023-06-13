@@ -1,18 +1,24 @@
 #include <iostream>
 #include <fstream>
+
 #include "configs/All.h"
 
 #include "PlayScene.h"
 #include "utils/Utils.h"
+
 #include "components/Texture/Textures.h"
 #include "components/Sprite/Sprites.h"
-#include "objects/materials/Portal.h"
-#include "objects/items/Coin.h"
+#include "components/KeyboardHandler/SampleKeyEventHandler.h"
+
 #include "objects/Platform.h"
+
+#include "objects/materials/Portal.h"
 #include "objects/materials/QuestionBrick.h"
 #include "objects/materials/Pipe.h"
 
-#include "components/KeyboardHandler/SampleKeyEventHandler.h"
+#include "objects/items/Coin.h"
+
+#include "objects/monsters/Koopa.h"
 
 using namespace std;
 
@@ -135,6 +141,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_PIPE:
 		obj = new CPipe(x, y);
 		break;
+	case OBJECT_TYPE_KOOPA:
+	{
+		obj = new CKoopa(x, y);
+		break;
+	}
 	case OBJECT_TYPE_PLATFORM:
 	{
 		float cell_width = (float)atof(tokens[3].c_str());

@@ -6,10 +6,15 @@ class CQuestionBrick : public CBrick
 private:
 	BOOLEAN is_unbox = false;
 
+	float collied_y;
+	float ax;
+
 public:
 
 	CQuestionBrick(float x, float y) : CBrick(x, y) {
 		is_unbox = FALSE;
+		collied_y = y;
+		ax = 0;
 	};
 
 	BOOLEAN GetIsUnbox() { return is_unbox; }

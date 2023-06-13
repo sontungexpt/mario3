@@ -1,10 +1,10 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 # Pipe only
-110001	4	86	36	119	50
+110001	4	86	36	119	10
 
-//110002	321	84	330	119	50
-//110003	338	84	347	119	50
+//110002	321	84	330	119	10
+//110003	338	84	347	119	10
 
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...

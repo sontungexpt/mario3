@@ -13,17 +13,19 @@ using namespace std;
 
 class CGameObject
 {
+private:
+
 protected:
 
 	float x;
 	float y;
 
+	int state;
+
 	float vx;
 	float vy;
 
 	int nx;
-
-	int state;
 
 	bool isDeleted;
 
@@ -34,6 +36,8 @@ public:
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
 	void GetSpeed(float& vx, float& vy) { vx = this->vx; vy = this->vy; }
+	float GetWidth();
+	float GetHeight();
 
 	int GetState() { return this->state; }
 	virtual void Delete() { isDeleted = true; }
@@ -48,6 +52,8 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {};
 	virtual void Render() = 0;
+
+	// call this function when you want to change object's state
 	virtual void SetState(int state) { this->state = state; };
 
 	// Collision ON or OFF ? This can change depending on object's state. For example: die
