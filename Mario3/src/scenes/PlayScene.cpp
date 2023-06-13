@@ -6,11 +6,11 @@
 #include "utils/Utils.h"
 #include "components/Texture/Textures.h"
 #include "components/Sprite/Sprites.h"
-#include "objects/Portal.h"
-#include "objects/Coin.h"
+#include "objects/materials/Portal.h"
+#include "objects/items/Coin.h"
 #include "objects/Platform.h"
-#include "objects/QuestionBrick.h"
-#include "objects/Pipe.h"
+#include "objects/materials/QuestionBrick.h"
+#include "objects/materials/Pipe.h"
 
 #include "components/KeyboardHandler/SampleKeyEventHandler.h"
 

@@ -36,16 +36,16 @@
     <ClCompile Include="src\components\Texture\Textures.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\Brick.cpp">
+    <ClCompile Include="src\objects\materials\Brick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\Coin.cpp">
+    <ClCompile Include="src\objects\items\Coin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\objects\GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\Goomba.cpp">
+    <ClCompile Include="src\objects\monsters\Goomba.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\objects\Mario.cpp">
@@ -54,7 +54,7 @@
     <ClCompile Include="src\objects\Platform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\Portal.cpp">
+    <ClCompile Include="src\objects\materials\Portal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\scenes\PlayScene.cpp">
@@ -75,25 +75,28 @@
     <ClCompile Include="src\scenes\LevelMapScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\Pipe.cpp">
+    <ClCompile Include="src\objects\materials\Pipe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\Plant.cpp">
+    <ClCompile Include="src\objects\monsters\Plant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\Door.cpp">
+    <ClCompile Include="src\objects\materials\Door.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\GameData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\Grass.cpp">
+    <ClCompile Include="src\objects\materials\Grass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\QuestionBrick.cpp">
+    <ClCompile Include="src\objects\materials\QuestionBrick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\Mushroom.cpp">
+    <ClCompile Include="src\objects\items\Mushroom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\items\Bullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,16 +137,16 @@
     <ClInclude Include="src\configs\id.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\Brick.h">
+    <ClInclude Include="src\objects\materials\Brick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\Coin.h">
+    <ClInclude Include="src\objects\items\Coin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\Goomba.h">
+    <ClInclude Include="src\objects\monsters\Goomba.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\Mario.h">
@@ -152,7 +155,7 @@
     <ClInclude Include="src\objects\Platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\Portal.h">
+    <ClInclude Include="src\objects\materials\Portal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\scenes\PlayScene.h">
@@ -176,19 +179,19 @@
     <ClInclude Include="src\scenes\LevelMapScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\Pipe.h">
+    <ClInclude Include="src\objects\materials\Pipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\configs\Pipe110000.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\Plant.h">
+    <ClInclude Include="src\objects\monsters\Plant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\configs\Plant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\Door.h">
+    <ClInclude Include="src\objects\materials\Door.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\configs\Door.h">
@@ -206,7 +209,7 @@
     <ClInclude Include="src\configs\ids\ObjectTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\Grass.h">
+    <ClInclude Include="src\objects\materials\Grass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\configs\Grass.h">
@@ -221,16 +224,16 @@
     <ClInclude Include="src\configs\Brick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\QuestionBrick.h">
+    <ClInclude Include="src\objects\materials\QuestionBrick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\configs\QuestionBrick100000.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\Leaf.h">
+    <ClInclude Include="src\objects\materials\Leaf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\Mushroom.h">
+    <ClInclude Include="src\objects\items\Mushroom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\configs\Mushroom120000.h">
@@ -243,6 +246,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\configs\Gommba.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\items\Bullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

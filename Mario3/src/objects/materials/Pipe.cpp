@@ -1,5 +1,5 @@
 #include "Pipe.h"
-#include "Plant.h"
+#include "objects/monsters/Plant.h"
 #include "scenes/PlayScene.h"
 
 void CPipe::Render()

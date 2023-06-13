@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.h"
+#include "objects/GameObject.h"
 #include "configs/Pipe110000.h"
 
 class CPipe : public CGameObject

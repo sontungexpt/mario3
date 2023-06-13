@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "objects/GameObject.h"
 #include "configs/Plant.h"
 
 class CPlant : public CGameObject

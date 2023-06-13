@@ -1,12 +1,12 @@
 #pragma once
-#include "GameObject.h"
+#include "objects/GameObject.h"
 #include "Game.h"
 #include "GameData.h"
 
 #include "components/Animation/Animation.h"
 #include "components/Animation/Animations.h"
 #include "scenes/PlayScene.h"
-#include "objects/Portal.h"
+#include "objects/materials/Portal.h"
 #include "configs/Door.h"
 
 class CDoor : public CPortal

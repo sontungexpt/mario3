@@ -11,9 +11,9 @@
 #include "components/Animation/Animations.h"
 
 #include "objects/Mario.h"
-#include "objects/Brick.h"
-#include "objects/Goomba.h"
-#include "objects/Coin.h"
+#include "objects/materials/Brick.h"
+#include "objects/monsters/Goomba.h"
+#include "objects/items/Coin.h"
 #include "objects/Platform.h"
 
 #include "components/KeyboardHandler/SampleKeyEventHandler.h"

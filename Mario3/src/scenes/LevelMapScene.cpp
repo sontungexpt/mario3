@@ -1,8 +1,8 @@
 #include "LevelMapScene.h"
 #include "configs/ids/ObjectTypes.h"
-#include "objects/Grass.h"
+#include "objects/materials/Grass.h"
 #include "objects/Platform.h"
-#include "objects/Door.h"
+#include "objects/materials/Door.h"
 #include "utils/Utils.h"
 
 void CLevelMapScene::_ParseSection_OBJECTS(string line)

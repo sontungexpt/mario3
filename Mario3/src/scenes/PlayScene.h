@@ -4,9 +4,9 @@
 #include "components/Texture/Textures.h"
 #include "components/Scene/Scene.h"
 #include "objects/GameObject.h"
-#include "objects/Brick.h"
+#include "objects/materials/Brick.h"
 #include "objects/Mario.h"
-#include "objects/Goomba.h"
+#include "objects/monsters/Goomba.h"
 #include "components/Collision/Collision.h"
 
 class CPlayScene : public CScene

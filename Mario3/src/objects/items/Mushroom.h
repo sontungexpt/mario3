@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "objects/GameObject.h"
 #include "components/Animation/Animation.h"
 #include "components/Animation/Animations.h"
 #include "configs/All.h"

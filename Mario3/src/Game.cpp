@@ -3,7 +3,7 @@
 #include "Game.h"
 #include "debug.h"
 #include "utils/Utils.h"
-#include "configs/ids/ObjectIds.h"
+#include "configs/ids/SceneIds.h"
 #include "components/Texture/Textures.h"
 #include "components/Animation/Animations.h"
 #include "scenes/PlayScene.h"

@@ -1,7 +1,7 @@
 #include "MushRoom.h"
-#include "Platform.h"
+#include "objects/Platform.h"
 #include "scenes/PlayScene.h"
-#include "Mario.h"
+#include "objects/Mario.h"
 
 CMushRoom::CMushRoom(float x, float y) :CGameObject(x, y)
 {

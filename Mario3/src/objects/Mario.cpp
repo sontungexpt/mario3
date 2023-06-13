@@ -4,14 +4,16 @@
 #include "Mario.h"
 #include "Game.h"
 
-#include "Goomba.h"
-#include "Coin.h"
-#include "Portal.h"
+#include "monsters/Goomba.h"
+#include "items/Coin.h"
+#include "materials/Portal.h"
+#include "materials/QuestionBrick.h"
 
 #include "components/Collision/Collision.h"
-#include "Door.h"
+#include "materials/Door.h"
 #include "Game.h"
 #include "configs/Gommba.h"
+#include "configs/QuestionBrick100000.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -59,6 +61,63 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CDoor*>(e->obj))
 		OnCollisionWithDoor(e);
+	else if (dynamic_cast<CQuestionBrick*>(e->obj))
+		OnCollisionWithQuestionBrick(e);
+}
+
+void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
+{
+	CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
+	if (questionBrick->GetIsUnbox()) return; // if question brick is unbox, return immediately
+
+	// not unbox, check collision
+	//LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+
+	if (e->IsCollidedFromBottom())
+	{
+		DebugOut(L"collision with question");
+		questionBrick->SetState(QUESTION_BRICK_STATE_UP);
+	}
+
+	//if (e->ny < 0) BlockIfNoBlock(questionBrick);
+
+	/*else if (((e->ny > 0) || (isTailAttack && (e->nx != 0))) && !isUnbox && !isEmpty) {
+		float xTemp, yTemp, minY;
+		xTemp = questionBrick->GetX();
+		yTemp = questionBrick->GetY();
+		minY = questionBrick->GetMinY();
+
+		questionBrick->SetState(QUESTION_BRICK_STATE_UP);
+
+		if (questionBrick->GetModel() == QUESTION_BRICK_ITEM) {
+			if (GetLevel() == MARIO_LEVEL_SMALL) {
+				CMushRoom* mushroom = new CMushRoom(xTemp, yTemp);
+				scene->AddObject(mushroom);
+			}
+			else if (GetLevel() >= MARIO_LEVEL_BIG) {
+				CLeaf* leaf = new CLeaf(xTemp, yTemp);
+				scene->AddObject(leaf);
+			}
+			questionBrick->SetIsEmpty(true);
+		}
+		else if (questionBrick->GetModel() == QUESTION_BRICK_COIN) {
+			SetCoin(GetCoin() + 1);
+			CCoin* coin = new CCoin(xTemp, yTemp);
+			coin->SetState(COIN_SUMMON_STATE);
+			questionBrick->SetIsEmpty(true);
+			scene->AddObject(coin);
+		}
+		else if (questionBrick->GetModel() == QUESTION_BRICK_MUSHROOM_GREEN) {
+			CMushRoom* mushroom = new CMushRoom(xTemp, yTemp, MUSHROOM_GREEN);
+			scene->AddObject(mushroom);
+			questionBrick->SetIsEmpty(true);
+		}
+		else {
+			CButton* button = new CButton(xTemp, yTemp);
+			scene->AddObject(button);
+			questionBrick->SetIsEmpty(true);
+		}
+		}*/
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -66,7 +125,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 
 	// jump on top >> kill Goomba and deflect a bit
-	if (e->ny < 0)
+	if (e->IsCollidedFromTop())
 	{
 		if (goomba->GetState() != GOOMBA_STATE_DIE)
 		{
@@ -112,9 +171,6 @@ void CMario::OnCollisionWithDoor(LPCOLLISIONEVENT e) {
 	CGame::GetInstance()->InitiateSwitchScene(door->GetSceneId());
 }
 
-//
-// Get animation ID for small Mario
-//
 int CMario::GetAniIdSmall()
 {
 	int aniId = -1;
@@ -175,9 +231,6 @@ int CMario::GetAniIdSmall()
 	return aniId;
 }
 
-//
-// Get animdation ID for big Mario
-//
 int CMario::GetAniIdBig()
 {
 	int aniId = -1;

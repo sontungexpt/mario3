@@ -130,12 +130,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\GameData.cpp" />
-    <ClCompile Include="src\objects\Door.cpp" />
-    <ClCompile Include="src\objects\Grass.cpp" />
-    <ClCompile Include="src\objects\Mushroom.cpp" />
-    <ClCompile Include="src\objects\Pipe.cpp" />
-    <ClCompile Include="src\objects\Plant.cpp" />
-    <ClCompile Include="src\objects\QuestionBrick.cpp" />
+    <ClCompile Include="src\objects\items\Bullet.cpp" />
+    <ClCompile Include="src\objects\materials\Door.cpp" />
+    <ClCompile Include="src\objects\materials\Grass.cpp" />
+    <ClCompile Include="src\objects\items\Mushroom.cpp" />
+    <ClCompile Include="src\objects\materials\Pipe.cpp" />
+    <ClCompile Include="src\objects\monsters\Plant.cpp" />
+    <ClCompile Include="src\objects\materials\QuestionBrick.cpp" />
     <ClCompile Include="src\scenes\LevelMapScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\components\Animation\Animation.cpp" />
@@ -147,13 +148,13 @@
     <ClCompile Include="src\components\Texture\Textures.cpp" />
     <ClCompile Include="src\debug.cpp" />
     <ClCompile Include="src\Game.cpp" />
-    <ClCompile Include="src\objects\Brick.cpp" />
-    <ClCompile Include="src\objects\Coin.cpp" />
+    <ClCompile Include="src\objects\materials\Brick.cpp" />
+    <ClCompile Include="src\objects\items\Coin.cpp" />
     <ClCompile Include="src\objects\GameObject.cpp" />
-    <ClCompile Include="src\objects\Goomba.cpp" />
+    <ClCompile Include="src\objects\monsters\Goomba.cpp" />
     <ClCompile Include="src\objects\Mario.cpp" />
     <ClCompile Include="src\objects\Platform.cpp" />
-    <ClCompile Include="src\objects\Portal.cpp" />
+    <ClCompile Include="src\objects\materials\Portal.cpp" />
     <ClCompile Include="src\scenes\PlayScene.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />
   </ItemGroup>
@@ -174,13 +175,14 @@
     <ClInclude Include="src\configs\Plant.h" />
     <ClInclude Include="src\configs\QuestionBrick100000.h" />
     <ClInclude Include="src\GameData.h" />
-    <ClInclude Include="src\objects\Door.h" />
-    <ClInclude Include="src\objects\Grass.h" />
-    <ClInclude Include="src\objects\Leaf.h" />
-    <ClInclude Include="src\objects\Mushroom.h" />
-    <ClInclude Include="src\objects\Pipe.h" />
-    <ClInclude Include="src\objects\Plant.h" />
-    <ClInclude Include="src\objects\QuestionBrick.h" />
+    <ClInclude Include="src\objects\items\Bullet.h" />
+    <ClInclude Include="src\objects\materials\Door.h" />
+    <ClInclude Include="src\objects\materials\Grass.h" />
+    <ClInclude Include="src\objects\materials\Leaf.h" />
+    <ClInclude Include="src\objects\items\Mushroom.h" />
+    <ClInclude Include="src\objects\materials\Pipe.h" />
+    <ClInclude Include="src\objects\monsters\Plant.h" />
+    <ClInclude Include="src\objects\materials\QuestionBrick.h" />
     <ClInclude Include="src\scenes\LevelMapScene.h" />
     <ClInclude Include="src\components\Animation\Animation.h" />
     <ClInclude Include="src\components\Animation\AnimationFrame.h" />
@@ -198,13 +200,13 @@
     <ClInclude Include="src\configs\Mario.h" />
     <ClInclude Include="src\debug.h" />
     <ClInclude Include="src\Game.h" />
-    <ClInclude Include="src\objects\Brick.h" />
-    <ClInclude Include="src\objects\Coin.h" />
+    <ClInclude Include="src\objects\materials\Brick.h" />
+    <ClInclude Include="src\objects\items\Coin.h" />
     <ClInclude Include="src\objects\GameObject.h" />
-    <ClInclude Include="src\objects\Goomba.h" />
+    <ClInclude Include="src\objects\monsters\Goomba.h" />
     <ClInclude Include="src\objects\Mario.h" />
     <ClInclude Include="src\objects\Platform.h" />
-    <ClInclude Include="src\objects\Portal.h" />
+    <ClInclude Include="src\objects\materials\Portal.h" />
     <ClInclude Include="src\scenes\PlayScene.h" />
     <ClInclude Include="src\utils\utils.h" />
   </ItemGroup>

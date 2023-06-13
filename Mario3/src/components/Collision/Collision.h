@@ -41,6 +41,11 @@ struct CCollisionEvent
 	{
 		return a->t < b->t;
 	}
+
+	int IsCollidedFromTop() { return ny < 0; }
+	int IsCollidedFromBottom() { return ny > 0; }
+	int IsCollidedFromLeft() { return nx > 0; }
+	int IsCollidedFromRight() { return nx < 0; }
 };
 
 class CCollision

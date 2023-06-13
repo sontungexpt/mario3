@@ -1,6 +1,6 @@
 #include "QuestionBrick.h"
-#include "Mario.h"
-#include "Coin.h"
+#include "objects/Mario.h"
+#include "objects/items/Coin.h"
 
 #include "scenes/PlayScene.h"
 #include "configs/QuestionBrick100000.h"
