@@ -29,6 +29,9 @@ public:
 		is_enemy = TRUE;
 
 		this->disapear_time = disapear_time;
+
+		// default is moving left
+		SetState(MONSTER_STATE_WALKING_LEFT);
 	};
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects);
@@ -41,3 +44,5 @@ public:
 	virtual void SetState(int state);
 	virtual int IsEnemy() { return is_enemy; }
 };
+
+typedef  CMonster* LPCMONSTER;

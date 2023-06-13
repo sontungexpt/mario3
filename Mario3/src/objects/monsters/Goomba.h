@@ -1,25 +1,19 @@
 #pragma once
 #include "objects/GameObject.h"
-
-class CGoomba : public CGameObject
+#include "objects/monsters/Monster.h"
+class CGoomba : public CMonster
 {
 private:
-	float ax;
-	float ay;
 
 	ULONGLONG die_start;
 
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	virtual void Render();
-
-	virtual int IsCollidable() { return 1; };
-	virtual int IsBlocking() { return 0; }
-	virtual void OnNoCollision(DWORD dt);
-
-	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
-
 public:
-	CGoomba(float x, float y);
-	virtual void SetState(int state);
+
+	CGoomba(float x, float y) :CMonster(x, y) {}
+
+	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void Render();
+
+	void OnCollisionWith(LPCOLLISIONEVENT e);
+	void SetState(int state);
 };

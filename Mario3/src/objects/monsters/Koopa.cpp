@@ -18,12 +18,16 @@ void CKoopa::OnCollisionWithMonster(LPCOLLISIONEVENT e)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	CMonster::OnCollisionWith(e);
 }
 
 void CKoopa::Render()
 {
-	int aniId = -1;
-	aniId = ID_ANI_KOOPA_WALKING_LEFT;
+	int aniId = ID_ANI_KOOPA_WALKING_LEFT;
+	if (dead) {
+		aniId = ID_ANI_KOOPA_DEFEND;
+	}
+
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 }
 void CKoopa::SetState(int state)
@@ -51,9 +55,4 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 		right = left + KOOPA_BBOX_WIDTH;
 		bottom = top + KOOPA_BBOX_HEIGHT;
 	}
-}
-
-void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
-{
-	CMonster::Update(dt, coObjects);
 }

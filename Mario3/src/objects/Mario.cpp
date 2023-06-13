@@ -5,6 +5,7 @@
 #include "Game.h"
 
 #include "monsters/Goomba.h"
+#include "monsters/Koopa.h"
 #include "items/Coin.h"
 #include "materials/Portal.h"
 #include "materials/QuestionBrick.h"
@@ -42,16 +43,15 @@ void CMario::OnNoCollision(DWORD dt)
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->ny != 0 && e->obj->IsBlocking())
+	if (e->IsCollidedInYDimension() != 0 && e->obj->IsBlocking())
 	{
 		vy = 0;
 		if (e->ny < 0) isOnPlatform = true;
 	}
-	else
-		if (e->nx != 0 && e->obj->IsBlocking())
-		{
-			vx = 0;
-		}
+	else if (e->IsCollidedInXDimension() && e->obj->IsBlocking())
+	{
+		vx = 0;
+	}
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
@@ -63,6 +63,42 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithDoor(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
+	else if (dynamic_cast<CKoopa*>(e->obj))
+		OnCollisionWithKoopa(e);
+}
+
+void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
+{
+	CKoopa* goomba = dynamic_cast<CKoopa*>(e->obj);
+
+	// jump on top >> kill Goomba and deflect a bit
+	if (e->IsCollidedFromTop())
+	{
+		if (goomba->GetState() != MONSTER_STATE_DEAD)
+		{
+			goomba->SetState(MONSTER_STATE_DEAD);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+	}
+	else // hit by Goomba
+	{
+		if (untouchable == 0)
+		{
+			if (goomba->GetState() != MONSTER_STATE_DEAD)
+			{
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
+			}
+		}
+	}
 }
 
 void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
@@ -127,9 +163,9 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	// jump on top >> kill Goomba and deflect a bit
 	if (e->IsCollidedFromTop())
 	{
-		if (goomba->GetState() != GOOMBA_STATE_DIE)
+		if (goomba->GetState() != MONSTER_STATE_DEAD)
 		{
-			goomba->SetState(GOOMBA_STATE_DIE);
+			goomba->SetState(MONSTER_STATE_DEAD);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
@@ -137,7 +173,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	{
 		if (untouchable == 0)
 		{
-			if (goomba->GetState() != GOOMBA_STATE_DIE)
+			if (goomba->GetState() != MONSTER_STATE_DEAD)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{

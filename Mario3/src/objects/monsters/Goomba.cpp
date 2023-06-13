@@ -2,14 +2,6 @@
 #include "debug.h"
 #include "configs/Gommba.h"
 
-CGoomba::CGoomba(float x, float y) :CGameObject(x, y)
-{
-	this->ax = 0;
-	this->ay = GOOMBA_GRAVITY;
-	die_start = -1;
-	SetState(GOOMBA_STATE_WALKING);
-}
-
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (state == GOOMBA_STATE_DIE)
@@ -28,15 +20,10 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 	}
 }
 
-void CGoomba::OnNoCollision(DWORD dt)
-{
-	x += vx * dt;
-	y += vy * dt;
-};
-
 void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (!e->obj->IsBlocking()) return;
+	CMonster::OnCollisionWith(e); // use general collision for monster
+	/*if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CGoomba*>(e->obj)) return;
 
 	if (e->ny != 0)
@@ -46,30 +33,7 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (e->nx != 0)
 	{
 		vx = -vx;
-	}
-}
-
-void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
-{
-	// move out of screen >> delete
-	if (x + GetWidth() <= 0)
-	{
-		isDeleted = true;
-		return;
-	}
-
-	// die >> delete
-	if ((state == GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT))
-	{
-		isDeleted = true;
-		return;
-	}
-
-	vy += ay * dt;
-	vx += ax * dt;
-
-	CGameObject::Update(dt, coObjects);
-	CCollision::GetInstance()->Process(this, dt, coObjects);
+	}*/
 }
 
 void CGoomba::Render()
@@ -77,29 +41,23 @@ void CGoomba::Render()
 	if (!IsInCamera()) return; // lazy load
 
 	int aniId = ID_ANI_GOOMBA_WALKING;
-	if (state == GOOMBA_STATE_DIE)
+	if (dead)
 	{
 		aniId = ID_ANI_GOOMBA_DIE;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	//RenderBoundingBox();
 }
 
 void CGoomba::SetState(int state)
 {
-	CGameObject::SetState(state);
+	CMonster::SetState(state); // use general state for monster
+
+	// specific state for goomba
 	switch (state)
 	{
-	case GOOMBA_STATE_DIE:
-		die_start = GetTickCount64();
+	case MONSTER_STATE_DEAD:
 		y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2;
-		vx = 0;
-		vy = 0;
-		ay = 0;
-		break;
-	case GOOMBA_STATE_WALKING:
-		vx = -GOOMBA_WALKING_SPEED;
 		break;
 	}
 }
