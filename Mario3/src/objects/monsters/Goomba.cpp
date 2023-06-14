@@ -3,6 +3,7 @@
 
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
+	if (isDeleted) return;
 	if (dead)
 	{
 		left = x - GOOMBA_BBOX_WIDTH / 2;
@@ -26,6 +27,7 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CGoomba::Render()
 {
+	if (isDeleted) return;
 	if (!IsInCamera()) return; // lazy load
 
 	int aniId = ID_ANI_GOOMBA_WALKING; // default animation
@@ -41,6 +43,9 @@ void CGoomba::Render()
 	case MONSTER_STATE_DIE:
 		aniId = ID_ANI_GOOMBA_DIE;
 		break;
+	default:
+		DebugOut(L"[ERROR] Unhandled monster state %d\n in Function CGoomba Render", state);
+		break;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
@@ -55,6 +60,9 @@ void CGoomba::SetState(int state)
 	{
 	case MONSTER_STATE_DIE:
 		y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2;
+		break;
+	default:
+		DebugOut(L"[ERROR] Unhandled monster state %d\n in Function CGoomba Set State", state);
 		break;
 	}
 }

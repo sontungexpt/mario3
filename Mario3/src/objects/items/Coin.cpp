@@ -3,13 +3,6 @@
 #include "debug.h"
 #include "objects/Mario.h"
 
-void CCoin::OnNoCollision(DWORD dt)
-{
-	if (isDeleted) return;
-	x += vx * dt;
-	y += vy * dt;
-}
-
 void CCoin::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	// make sure that the coin will not meet mario by collision framework
@@ -45,6 +38,8 @@ void CCoin::SetState(int state)
 		// max_height_zoom = (0 - v0^2) / 2a (a< 0)
 		collect_y = y - (-(vy * vy) / (2 * (-COIN_GRAVITY))) * 1 / 2;
 		break;
+	default:
+		break;
 	}
 }
 
@@ -59,14 +54,7 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 		return;
 	}
 
-	if (!IsInCamera()) return;
-
-	// not moving
-	vx += ax * dt;
-	vy += ay * dt;
-
-	CGameObject::Update(dt, co_objects);
-	CCollision::GetInstance()->Process(this, dt, co_objects);
+	CItem::Update(dt, co_objects);
 }
 
 void CCoin::GetBoundingBox(float& l, float& t, float& r, float& b)

@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="src\GameData.cpp" />
     <ClCompile Include="src\objects\items\Bullet.cpp" />
+    <ClCompile Include="src\objects\items\Item.cpp" />
     <ClCompile Include="src\objects\materials\Door.cpp" />
     <ClCompile Include="src\objects\materials\Grass.cpp" />
     <ClCompile Include="src\objects\items\Mushroom.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="src\configs\materials\QuestionBrick100000.h" />
     <ClInclude Include="src\GameData.h" />
     <ClInclude Include="src\objects\items\Bullet.h" />
+    <ClInclude Include="src\objects\items\Item.h" />
     <ClInclude Include="src\objects\materials\Door.h" />
     <ClInclude Include="src\objects\materials\Grass.h" />
     <ClInclude Include="src\objects\materials\Leaf.h" />
@@ -228,11 +230,12 @@
   <ItemGroup>
     <Text Include="src\settings\objects\brick.txt" />
     <Text Include="src\settings\objects\cloud.txt" />
-    <Text Include="src\settings\objects\coin.txt" />
+    <Text Include="src\settings\objects\items\coin.txt" />
     <Text Include="src\settings\objects\door.txt" />
     <Text Include="src\settings\objects\goomba.txt" />
     <Text Include="src\settings\game-mario.txt" />
     <Text Include="src\settings\objects\grass.txt" />
+    <Text Include="src\settings\objects\items\mushroom.txt" />
     <Text Include="src\settings\objects\koopa.txt" />
     <Text Include="src\settings\objects\mario.txt" />
     <Text Include="src\settings\objects\pipe.txt" />

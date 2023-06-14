@@ -136,8 +136,19 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CCoin(x, y);
 		break;
 	case OBJECT_TYPE_QUESTION_BRICK:
-		obj = new CQuestionBrick(x, y);
-		break;
+	{
+		if (tokens.size() == 4)
+		{
+			int item_type = atoi(tokens[3].c_str());
+			obj = new CQuestionBrick(x, y, item_type);
+			break;
+		}
+		else
+		{
+			obj = new CQuestionBrick(x, y);
+			break;
+		}
+	}
 	case OBJECT_TYPE_PIPE:
 		obj = new CPipe(x, y);
 		break;

@@ -3,6 +3,7 @@
 #include "QuestionBrick.h"
 #include "objects/Mario.h"
 #include "objects/items/Coin.h"
+#include "objects/items/Mushroom.h"
 
 void CQuestionBrick::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -25,8 +26,7 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 
 void CQuestionBrick::OnNoCollision(DWORD dt)
 {
-	// the brick is unboxed
-	// so it can move anywhere
+	// if it is not unboxed, it will not bounce
 	if (!is_unboxed) return;
 
 	x += vx * dt;
@@ -73,19 +73,18 @@ void CQuestionBrick::SetState(int state)
 		switch (item_type) {
 		case QUESTION_BRICK_COIN:
 		{
-			float item_x, item_y;
-
-			float x_axis_centroid_brick = x + QUESTION_BRICK_BBOX_WIDTH / 2;
-
-			// don't know why it deflect to right
-			item_x = x_axis_centroid_brick - (COIN_BBOX_WIDTH / 2) - 1;
-			item_y = this->y - COIN_BBOX_HEIGHT;
-
-			CCoin* coin = (CCoin*)scene->AddObject(new CCoin(item_x, item_y));
-			coin->SetPosition(item_x, item_y);
+			CCoin* coin = (CCoin*)CreateItem(new CCoin());
 			coin->JumpOutQuestionBrick();
 		}
 		break;
+		case QUESTION_BRICK_MUSHROOM:
+		{
+			CMushroom* mushroom = (CMushroom*)CreateItem(new CMushroom());
+			mushroom->Walk();
+		}
+		break;
+		case QUESTION_BRICK_NONE:
+			break;
 		}
 	}
 	break;
@@ -94,4 +93,11 @@ void CQuestionBrick::SetState(int state)
 		y = orginal_y;
 		break;
 	}
+}
+
+CItem* CQuestionBrick::CreateItem(CItem* item) {
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+
+	item->SetPosition(GetItemReferenceX(item), GetItemReferenceY(item));
+	return (CItem*)scene->AddObject(item);
 }

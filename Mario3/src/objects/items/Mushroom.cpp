@@ -1,93 +1,60 @@
-#include "MushRoom.h"
+﻿#include "MushRoom.h"
 #include "objects/Platform.h"
 #include "scenes/PlayScene.h"
 #include "objects/Mario.h"
 
-CMushRoom::CMushRoom(float x, float y) :CGameObject(x, y)
+// not work now because the code dirty in the update function in playscene file
+void CMushroom::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
-	this->ax = 0;
-	this->ay = MUSHROOM_GRAVITY;
-	vy = 0;
-	state = MUSHROOM_RED;
-	start_y = y;
-	//SetState(MUSHROOM_STATE_OUTSIDE);
+	CMario* mario = (CMario*)e->obj;
+
+	if (mario->IsSmall())
+	{
+		mario->Zoom();
+		isDeleted = true;
+	}
 }
 
-void CMushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	if (!IsInCamera()) return; // lazy update
+void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
+	//if (!IsInCamera()) return; // lazy update
 
-	LPSCENE curr_scene = CGame::GetInstance()->GetCurrentScene();
-	if (curr_scene == NULL) {
-		DebugOut(L"[ERROR] In CMushRoom::Update, scene is NULL\n");
+	//	NOTE: need to create a general function for this code
+	// move out of screen >> delete
+	// fall to to the hole >> delete
+	if (x + GetWidth() <= 0 || y > SCREEN_HEIGHT)
+	{
+		isDeleted = true;
 		return;
 	}
-	CMario* mario = (CMario*)((LPPLAYSCENE)curr_scene)->GetPlayer();
-	if (mario == NULL) {
-		DebugOut(L"[ERROR] In CMushRoom::Update, mario is NULL\n");
-		return;
-	}
-
-	if (mario->GetState() == MARIO_LEVEL_BIG) return; // big mario can't eat mushroom
 
 	if (state == MUSHROOM_STATE_WALKING) {
-		vy += ay * dt;
-		vx += ax * dt;
-	}
-	else if (state == MUSHROOM_STATE_OUTSIDE) {
-		if (start_y - y < MUSHROOM_BBOX_HEIGHT) {
-			vy = OUT_BRICK;
-			vx = 0;
-		}
-		else SetState(MUSHROOM_STATE_WALKING);
+		CItem::Update(dt, coObjects);
 	}
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
-void CMushRoom::OnNoCollision(DWORD dt)
-{
-	x += vx * dt;
-	y += vy * dt;
-};
 
-//void CMushRoom::OnCollisionWith(LPCOLLISIONEVENT e)
-//{
-//	if (!e->obj->IsBlocking() && !e->obj->IsPlatform()) return;
-//	if (!e->obj->IsPlayer()) {
-//		if (e->ny != 0)
-//		{
-//			vy = 0;
-//		}
-//		else if (e->nx != 0)
-//		{
-//			vx = -vx;
-//		}
-//	}
-//
-//	if (dynamic_cast<CMushRoom*>(e->obj)) {}
-//	else if (dynamic_cast<CPlatform*>(e->obj))
-//		OnCollisionWithPlatForm(e);
-//}
-
-void CMushRoom::Render()
+void CMushroom::Render()
 {
 	if (!IsInCamera()) return;
 
-	CAnimations* animations = CAnimations::GetInstance();
-
-	int ani_id = -1;
-	//if (model == MUSHROOM_RED) ani_id = ID_ANI_MUSHROOM_RED;
-	//if (model == MUSHROOM_GREEN) ani_id = ID_ANI_MUSHROOM_GREEN;
-
-	if (ani_id == -1) {
-		DebugOut(L"[ERROR] In CMushRoom::Render, ani_id is -1\n");
-		return;
+	int ani_id = ID_ANI_MUSHROOM_RED;
+	switch (state)
+	{
+	case MUSHROOM_STATE_WALKING:
+		ani_id = ID_ANI_MUSHROOM_RED;
+		break;
+	default:
+		DebugOut(L"[ERROR] In CMushRoom::Render animation id = %d", ani_id);
+		break;
 	}
 
+	CAnimations* animations = CAnimations::GetInstance();
 	animations->Get(ani_id)->Render(x, y);
 }
 
-void CMushRoom::GetBoundingBox(float& l, float& t, float& r, float& b)
+void CMushroom::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x - MUSHROOM_BBOX_WIDTH / 2;
 	t = y - MUSHROOM_BBOX_HEIGHT / 2;
@@ -95,16 +62,18 @@ void CMushRoom::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = t + MUSHROOM_BBOX_HEIGHT;
 }
 
-//void CMushRoom::SetState(int state)
-//{
-//	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-//
-//	switch (state)
-//	{
-//	case MUSHROOM_STATE_WALKING:
-//		if (x < mario->GetX()) vx = -MUSHROOM_SPEED;
-//		else vx = MUSHROOM_SPEED;
-//		break;
-//	}
-//	CGameObject::SetState(state);
-//}
+void CMushroom::SetState(int state)
+{
+	switch (state)
+	{
+	case MUSHROOM_STATE_WALKING:
+	{
+		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+		CMario* mario = (CMario*)scene->GetPlayer();
+
+		vx = x < mario->GetX() ? MUSHROOM_SPEED : -MUSHROOM_SPEED;
+	}
+	break;
+	}
+	CGameObject::SetState(state);
+}

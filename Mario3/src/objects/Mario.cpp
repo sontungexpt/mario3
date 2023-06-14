@@ -15,6 +15,7 @@
 #include "Game.h"
 #include "configs/monsters/Gommba600000.h"
 #include "configs/materials/QuestionBrick100000.h"
+#include "items/Mushroom.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -49,11 +50,12 @@ void CMario::OnNoCollision(DWORD dt)
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->IsCollidedInYDimension() != 0 && e->obj->IsBlocking())
+	if (e->IsCollidedInYDimension() && e->obj->IsBlocking())
 	{
 		vy = 0;
-		if (e->ny < 0) isOnPlatform = true;
+		if (e->IsCollidedFromTop()) isOnPlatform = true;
 	}
+
 	else if (e->IsCollidedInXDimension() && e->obj->IsBlocking())
 	{
 		vx = 0;
@@ -71,6 +73,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithQuestionBrick(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
+	else if (dynamic_cast<CMushroom*>(e->obj))
+		OnCollisionWithMushroom(e);
 }
 
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
@@ -94,6 +98,15 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			}
 		}
 	}
+}
+
+void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
+{
+	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
+
+	if (this->IsSmall())
+		this->Zoom();
+	mushroom->Delete();
 }
 
 void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)

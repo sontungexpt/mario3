@@ -108,6 +108,9 @@
     <ClCompile Include="src\objects\monsters\Monster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\items\Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\Animation\Animation.h">
@@ -287,6 +290,9 @@
     <ClInclude Include="src\configs\items\All.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\objects\items\Item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -294,7 +300,7 @@
   <ItemGroup>
     <Text Include="src\settings\objects\brick.txt" />
     <Text Include="src\settings\objects\cloud.txt" />
-    <Text Include="src\settings\objects\coin.txt" />
+    <Text Include="src\settings\objects\items\coin.txt" />
     <Text Include="src\settings\objects\goomba.txt" />
     <Text Include="src\settings\game-mario.txt" />
     <Text Include="src\settings\objects\mario.txt" />
@@ -307,6 +313,7 @@
     <Text Include="src\settings\objects\question_brick.txt" />
     <Text Include="src\settings\objects\pipe.txt" />
     <Text Include="src\settings\objects\koopa.txt" />
+    <Text Include="src\settings\objects\items\mushroom.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\assets\textures\misc_left.png">

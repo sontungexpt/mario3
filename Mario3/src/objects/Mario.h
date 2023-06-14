@@ -26,6 +26,7 @@ class CMario : public CGameObject
 	void OnCollisionWithDoor(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
+	void OnCollisionWithMushroom(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -48,22 +49,18 @@ public:
 	void Render();
 	void SetState(int state);
 
-	int IsCollidable()
-	{
-		return (state != MARIO_STATE_DIE);
-	}
-
+	int IsCollidable() { return (state != MARIO_STATE_DIE); }
 	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable == 0); }
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	void SetLevel(int l);
-
+	int GetLevel() { return level; }
 	BOOLEAN IsSmall() { return level == MARIO_LEVEL_SMALL; };
 	BOOLEAN IsBig() { return level == MARIO_LEVEL_BIG; };
-	void Shrink() { level = MARIO_LEVEL_SMALL; }
-	void Zoom() { level = MARIO_LEVEL_BIG; }
+	void Shrink() { SetLevel(MARIO_LEVEL_SMALL); }
+	void Zoom() { SetLevel(MARIO_LEVEL_BIG); }
 	void Die() { SetState(MARIO_STATE_DIE); }
 
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }

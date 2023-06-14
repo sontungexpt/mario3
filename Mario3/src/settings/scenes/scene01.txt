@@ -2,12 +2,16 @@
 [ASSETS]
 src\settings\objects\mario.txt
 src\settings\objects\brick.txt
-src\settings\objects\coin.txt
 src\settings\objects\goomba.txt
 src\settings\objects\cloud.txt
 src\settings\objects\question_brick.txt
 src\settings\objects\pipe.txt
 src\settings\objects\koopa.txt
+
+# items
+src\settings\objects\items\mushroom.txt
+src\settings\objects\items\coin.txt
+
 
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -19,8 +23,9 @@ src\settings\objects\koopa.txt
 0	20	10
 
 # Question Brick
-8	140	130
-8	156	130
+# type	x	y	item_type
+8	140	130	1
+8	156	130	2
 
 8	188	80
 8	204	80

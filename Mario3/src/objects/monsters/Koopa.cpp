@@ -26,12 +26,12 @@ void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	/*if (dynamic_cast<CGoomba*>(e->obj))
+	if (dynamic_cast<CMario*>(e->obj))
 	{
-		OnCollisionWithGoomba(e);
+		DebugOut(L"[INFO] Item::OnCollisionWithPlayer\n");
 
 		return;
-	};*/
+	};
 
 	CMonster::OnCollisionWith(e); // this code will update vx = -vx when collide with something
 }

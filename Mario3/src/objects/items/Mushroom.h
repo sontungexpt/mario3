@@ -1,27 +1,26 @@
 #pragma once
-#include "objects/GameObject.h"
 #include "components/Animation/Animation.h"
 #include "components/Animation/Animations.h"
-#include "configs/All.h"
 #include "debug.h"
-#include "configs/items/Mushroom301000.h"
 
-class CMushRoom : public CGameObject {
-	float ax;
-	float ay;
-	float start_y;
-	//int model;
+#include "configs/items/Mushroom301000.h"
+#include "Item.h"
+
+class CMushroom : public CItem {
+	void OnCollisionWithPlayer(LPCOLLISIONEVENT e);
 
 public:
-	CMushRoom(float x, float y);
-	void Render();
 
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	virtual int IsCollidable() { return 1; }
+	CMushroom() :CItem() {};
+	CMushroom(float x, float y) :CItem(x, y) {};
+	CMushroom(float x, float y, int state) :CItem(x, y, state) {};
 
-	void OnNoCollision(DWORD dt);
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+
+	int IsCollidable() { return 1; }
+
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
-	int IsBlocking() { return 0; }
-
-	virtual bool IsItem() { return 1; }
+	void Render();
+	void SetState(int state);
+	void Walk() { SetState(MUSHROOM_STATE_WALKING); }
 };
