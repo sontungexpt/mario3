@@ -1,5 +1,5 @@
 #include "LevelMapScene.h"
-#include "configs/ids/ObjectTypes.h"
+#include "configs/core/ObjectTypes.h"
 #include "objects/materials/Grass.h"
 #include "objects/Platform.h"
 #include "objects/materials/Door.h"

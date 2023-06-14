@@ -1,28 +1,49 @@
 ﻿#pragma once
 #include "Brick.h"
+#include "configs/materials/QuestionBrick100000.h"
 
 class CQuestionBrick : public CBrick
 {
 private:
-	BOOLEAN is_unbox = false;
+	BOOLEAN is_unboxed = FALSE;
+	int item_type;
 
-	float collied_y;
+	// the value of y at the first time the brick is colliding with mario
+	// NOTE: it is the top-left corner of the brick
+	float orginal_y;
+
 	float ax;
+	float ay;
 
 public:
 
-	CQuestionBrick(float x, float y) : CBrick(x, y) {
-		is_unbox = FALSE;
-		collied_y = y;
+	CQuestionBrick(float x, float y, int item_type = QUESTION_BRICK_COIN) : CBrick(x, y) {
+		is_unboxed = FALSE;
+		this->item_type = item_type;
+
+		orginal_y = y;
 		ax = 0;
+		ay = 0;
 	};
 
-	BOOLEAN GetIsUnbox() { return is_unbox; }
-	void SetIsUnbox(BOOLEAN is_unbox) { this->is_unbox = is_unbox; }
-
-	int IsCollidable() { return is_unbox == FALSE; };
-
+	// core
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	virtual void Update(DWORD dt);
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects);
 	void Render();
+	void SetState(int state);
+
+	BOOLEAN GetIsUnbox() { return is_unboxed; }
+	void SetIsUnbox(BOOLEAN is_unboxed) { this->is_unboxed = is_unboxed; }
+
+	// collision
+	void OnNoCollision(DWORD dt);
+
+	int IsCollidable() { return !is_unboxed; };
+
+	// is wall
+	int IsBlocking() { return 1; };
+
+	// this part is the other name to call SetState
+	void Bounce() { SetState(QUESTION_BRICK_STATE_UNBOXING); };
+	void Disable() { SetState(QUESTION_BRICK_STATE_DISABLED); };
 };

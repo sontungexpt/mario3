@@ -1,7 +1,7 @@
 #pragma once
 
 #include "objects/GameObject.h"
-#include "configs/Pipe110000.h"
+#include "configs/materials/Pipe10100.h"
 
 class CPipe : public CGameObject
 {

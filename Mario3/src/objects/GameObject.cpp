@@ -79,5 +79,3 @@ BOOLEAN CGameObject::IsInCamera() {
 		return false;
 	return true;
 }
-
-CGameObject::~CGameObject() {}

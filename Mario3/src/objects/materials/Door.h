@@ -7,7 +7,7 @@
 #include "components/Animation/Animations.h"
 #include "scenes/PlayScene.h"
 #include "objects/materials/Portal.h"
-#include "configs/Door.h"
+#include "configs/materials/Door.h"
 
 class CDoor : public CPortal
 {

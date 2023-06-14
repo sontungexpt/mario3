@@ -53,6 +53,7 @@ class CGame
 
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
+	void _ParseSection_TEXTURES(string line);
 
 public:
 	// Init DirectX, Sprite Handler
@@ -99,13 +100,13 @@ public:
 
 	void SetCamPos(float x, float y) { cam_x = x; cam_y = y; }
 	void GetCamPos(float& x, float& y) { x = cam_x; y = cam_y; }
+	float GetCamXPos() { return cam_x; }
+	float GetCamYPos() { return cam_y; }
 
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void Load(LPCWSTR gameFile);
 	void SwitchScene();
 	void InitiateSwitchScene(int scene_id);
-
-	void _ParseSection_TEXTURES(string line);
 
 	~CGame();
 };

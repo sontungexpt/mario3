@@ -35,7 +35,7 @@ src\settings\objects\koopa.txt
 
 ### Monsters ###
 #Goombas
-2	400	160
+2	200	160
 2	450	160
 
 # Koopas

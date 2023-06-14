@@ -59,7 +59,14 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	void SetLevel(int l);
-	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
+	BOOLEAN IsSmall() { return level == MARIO_LEVEL_SMALL; };
+	BOOLEAN IsBig() { return level == MARIO_LEVEL_BIG; };
+	void Shrink() { level = MARIO_LEVEL_SMALL; }
+	void Zoom() { level = MARIO_LEVEL_BIG; }
+	void Die() { SetState(MARIO_STATE_DIE); }
+
+	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
+	void JumpDeflect() { vy = -MARIO_JUMP_DEFLECT_SPEED; }
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

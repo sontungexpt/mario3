@@ -1,6 +1,6 @@
 #pragma once
 #include "objects/GameObject.h"
-#include "configs/Plant.h"
+#include "configs/monsters/Plant.h"
 
 class CPlant : public CGameObject
 {

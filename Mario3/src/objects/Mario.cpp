@@ -13,11 +13,17 @@
 #include "components/Collision/Collision.h"
 #include "materials/Door.h"
 #include "Game.h"
-#include "configs/Gommba.h"
-#include "configs/QuestionBrick100000.h"
+#include "configs/monsters/Gommba600000.h"
+#include "configs/materials/QuestionBrick100000.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (y > SCREEN_HEIGHT)
+	{
+		DebugOut(L"Mario die");
+		return;
+	}
+
 	vy += ay * dt;
 	vx += ax * dt;
 
@@ -69,33 +75,22 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
-	CKoopa* goomba = dynamic_cast<CKoopa*>(e->obj);
+	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 
-	// jump on top >> kill Goomba and deflect a bit
 	if (e->IsCollidedFromTop())
 	{
-		if (goomba->GetState() != MONSTER_STATE_DEAD)
+		if (!koopa->IsDefend())
 		{
-			goomba->SetState(MONSTER_STATE_DEAD);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			koopa->Defend();
+			this->JumpDeflect();
 		}
 	}
 	else // hit by Goomba
 	{
-		if (untouchable == 0)
+		if (!untouchable) // not untouchable -> can die
 		{
-			if (goomba->GetState() != MONSTER_STATE_DEAD)
-			{
-				if (level > MARIO_LEVEL_SMALL)
-				{
-					level = MARIO_LEVEL_SMALL;
-					StartUntouchable();
-				}
-				else
-				{
-					DebugOut(L">>> Mario DIE >>> \n");
-					SetState(MARIO_STATE_DIE);
-				}
+			if (koopa->IsDefend() && !koopa->IsMarioKicked()) {
+				koopa->BeKick(vx);
 			}
 		}
 	}
@@ -107,53 +102,10 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	if (questionBrick->GetIsUnbox()) return; // if question brick is unbox, return immediately
 
 	// not unbox, check collision
-	//LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-
 	if (e->IsCollidedFromBottom())
 	{
-		DebugOut(L"collision with question");
-		questionBrick->SetState(QUESTION_BRICK_STATE_UP);
+		questionBrick->Bounce();
 	}
-
-	//if (e->ny < 0) BlockIfNoBlock(questionBrick);
-
-	/*else if (((e->ny > 0) || (isTailAttack && (e->nx != 0))) && !isUnbox && !isEmpty) {
-		float xTemp, yTemp, minY;
-		xTemp = questionBrick->GetX();
-		yTemp = questionBrick->GetY();
-		minY = questionBrick->GetMinY();
-
-		questionBrick->SetState(QUESTION_BRICK_STATE_UP);
-
-		if (questionBrick->GetModel() == QUESTION_BRICK_ITEM) {
-			if (GetLevel() == MARIO_LEVEL_SMALL) {
-				CMushRoom* mushroom = new CMushRoom(xTemp, yTemp);
-				scene->AddObject(mushroom);
-			}
-			else if (GetLevel() >= MARIO_LEVEL_BIG) {
-				CLeaf* leaf = new CLeaf(xTemp, yTemp);
-				scene->AddObject(leaf);
-			}
-			questionBrick->SetIsEmpty(true);
-		}
-		else if (questionBrick->GetModel() == QUESTION_BRICK_COIN) {
-			SetCoin(GetCoin() + 1);
-			CCoin* coin = new CCoin(xTemp, yTemp);
-			coin->SetState(COIN_SUMMON_STATE);
-			questionBrick->SetIsEmpty(true);
-			scene->AddObject(coin);
-		}
-		else if (questionBrick->GetModel() == QUESTION_BRICK_MUSHROOM_GREEN) {
-			CMushRoom* mushroom = new CMushRoom(xTemp, yTemp, MUSHROOM_GREEN);
-			scene->AddObject(mushroom);
-			questionBrick->SetIsEmpty(true);
-		}
-		else {
-			CButton* button = new CButton(xTemp, yTemp);
-			scene->AddObject(button);
-			questionBrick->SetIsEmpty(true);
-		}
-		}*/
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -163,28 +115,25 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	// jump on top >> kill Goomba and deflect a bit
 	if (e->IsCollidedFromTop())
 	{
-		if (goomba->GetState() != MONSTER_STATE_DEAD)
+		if (!goomba->IsDead())
 		{
-			goomba->SetState(MONSTER_STATE_DEAD);
+			goomba->Die();
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
 	else // hit by Goomba
 	{
-		if (untouchable == 0)
+		if (!untouchable && !goomba->IsDead())
 		{
-			if (goomba->GetState() != MONSTER_STATE_DEAD)
+			if (level > MARIO_LEVEL_SMALL)
 			{
-				if (level > MARIO_LEVEL_SMALL)
-				{
-					level = MARIO_LEVEL_SMALL;
-					StartUntouchable();
-				}
-				else
-				{
-					DebugOut(L">>> Mario DIE >>> \n");
-					SetState(MARIO_STATE_DIE);
-				}
+				level = MARIO_LEVEL_SMALL;
+				StartUntouchable();
+			}
+			else
+			{
+				DebugOut(L">>> Mario DIE >>> \n");
+				SetState(MARIO_STATE_DIE);
 			}
 		}
 	}
@@ -192,8 +141,12 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
-	e->obj->Delete();
-	coin++;
+	DebugOut(L"Collision with coin");
+	if (e->IsCollidedInXDimension() || e->IsCollidedInYDimension())
+	{
+		e->obj->Delete();
+		coin++;
+	}
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)

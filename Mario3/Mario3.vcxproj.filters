@@ -191,19 +191,19 @@
     <ClInclude Include="src\objects\materials\Pipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\Pipe110000.h">
+    <ClInclude Include="src\configs\materials\Pipe10100.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\monsters\Plant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\Plant.h">
+    <ClInclude Include="src\configs\monsters\Plant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\materials\Door.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\Door.h">
+    <ClInclude Include="src\configs\materials\Door.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\GameData.h">
@@ -212,16 +212,16 @@
     <ClInclude Include="src\configs\GameData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\ids\Texture.h">
+    <ClInclude Include="src\configs\core\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\ids\ObjectTypes.h">
+    <ClInclude Include="src\configs\core\ObjectTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\materials\Grass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\Grass.h">
+    <ClInclude Include="src\configs\materials\Grass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\configs\GameObject.h">
@@ -230,13 +230,13 @@
     <ClInclude Include="src\configs\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\Brick.h">
+    <ClInclude Include="src\configs\materials\Brick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\materials\QuestionBrick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\QuestionBrick100000.h">
+    <ClInclude Include="src\configs\materials\QuestionBrick100000.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\materials\Leaf.h">
@@ -245,16 +245,16 @@
     <ClInclude Include="src\objects\items\Mushroom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\Mushroom120000.h">
+    <ClInclude Include="src\configs\items\Mushroom301000.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\ids\SceneIds.h">
+    <ClInclude Include="src\configs\core\SceneIds.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\configs\All.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\Gommba.h">
+    <ClInclude Include="src\configs\monsters\Gommba600000.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\items\Bullet.h">
@@ -269,7 +269,22 @@
     <ClInclude Include="src\objects\monsters\Monster.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\Koopa130000.h">
+    <ClInclude Include="src\configs\monsters\Koopa601000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\monsters\Monster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\items\Coin300000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\monsters\All.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\materials\All.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\items\All.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

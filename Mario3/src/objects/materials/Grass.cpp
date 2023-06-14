@@ -1,5 +1,5 @@
 #include "Grass.h"
-#include "configs/Grass.h"
+#include "configs/materials/Grass.h"
 #include "components/Animation/Animation.h"
 #include "components/Animation/Animations.h"
 

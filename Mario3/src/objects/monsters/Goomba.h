@@ -1,6 +1,8 @@
 #pragma once
 #include "objects/GameObject.h"
 #include "objects/monsters/Monster.h"
+#include "configs/monsters/Gommba600000.h"
+
 class CGoomba : public CMonster
 {
 private:
@@ -9,7 +11,8 @@ private:
 
 public:
 
-	CGoomba(float x, float y) :CMonster(x, y) {}
+	CGoomba(float x, float y) :CMonster(x, y) {
+	}
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Render();

@@ -22,3 +22,4 @@ height	240
 20	src\assets\textures\misc.png
 30	src\assets\textures\levelmap.png
 40	src\assets\textures\misc_left.png
+50	src\assets\textures\enemies_2.png

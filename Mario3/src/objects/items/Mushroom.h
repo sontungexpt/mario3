@@ -4,7 +4,7 @@
 #include "components/Animation/Animations.h"
 #include "configs/All.h"
 #include "debug.h"
-#include "configs/Mushroom120000.h"
+#include "configs/items/Mushroom301000.h"
 
 class CMushRoom : public CGameObject {
 	float ax;

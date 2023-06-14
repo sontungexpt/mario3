@@ -1,10 +1,9 @@
 #include "Goomba.h"
 #include "debug.h"
-#include "configs/Gommba.h"
 
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == GOOMBA_STATE_DIE)
+	if (dead)
 	{
 		left = x - GOOMBA_BBOX_WIDTH / 2;
 		top = y - GOOMBA_BBOX_HEIGHT_DIE / 2;
@@ -23,27 +22,25 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	CMonster::OnCollisionWith(e); // use general collision for monster
-	/*if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<CGoomba*>(e->obj)) return;
-
-	if (e->ny != 0)
-	{
-		vy = 0;
-	}
-	else if (e->nx != 0)
-	{
-		vx = -vx;
-	}*/
 }
 
 void CGoomba::Render()
 {
 	if (!IsInCamera()) return; // lazy load
 
-	int aniId = ID_ANI_GOOMBA_WALKING;
-	if (dead)
+	int aniId = ID_ANI_GOOMBA_WALKING; // default animation
+
+	switch (state)
 	{
+	case MONSTER_STATE_WALKING_LEFT:
+		aniId = ID_ANI_GOOMBA_WALKING;
+		break;
+	case MONSTER_STATE_WALKING_RIGHT:
+		aniId = ID_ANI_GOOMBA_WALKING;
+		break;
+	case MONSTER_STATE_DIE:
 		aniId = ID_ANI_GOOMBA_DIE;
+		break;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
@@ -56,7 +53,7 @@ void CGoomba::SetState(int state)
 	// specific state for goomba
 	switch (state)
 	{
-	case MONSTER_STATE_DEAD:
+	case MONSTER_STATE_DIE:
 		y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2;
 		break;
 	}
