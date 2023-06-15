@@ -6,7 +6,12 @@
 
 #include "monsters/Goomba.h"
 #include "monsters/Koopa.h"
+#include "monsters/Plant.h"
+
+#include "items/Bullet.h"
 #include "items/Coin.h"
+#include "items/Mushroom.h"
+
 #include "materials/Portal.h"
 #include "materials/QuestionBrick.h"
 
@@ -15,7 +20,6 @@
 #include "Game.h"
 #include "configs/monsters/Gommba600000.h"
 #include "configs/materials/QuestionBrick100000.h"
-#include "items/Mushroom.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -50,17 +54,6 @@ void CMario::OnNoCollision(DWORD dt)
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->IsCollidedInYDimension() && e->obj->IsBlocking())
-	{
-		vy = 0;
-		if (e->IsCollidedFromTop()) isOnPlatform = true;
-	}
-
-	else if (e->IsCollidedInXDimension() && e->obj->IsBlocking())
-	{
-		vx = 0;
-	}
-
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
@@ -75,6 +68,35 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithKoopa(e);
 	else if (dynamic_cast<CMushroom*>(e->obj))
 		OnCollisionWithMushroom(e);
+	else if (dynamic_cast<CBullet*>(e->obj))
+		OnCollisionWithBullet(e);
+	else if (dynamic_cast<CPlant*>(e->obj))
+		OnCollisionWithPlant(e);
+
+	if (e->IsCollidedInYDimension() && e->obj->IsBlocking())
+	{
+		vy = 0;
+		if (e->IsCollidedFromTop()) isOnPlatform = true;
+	}
+
+	else if (e->IsCollidedInXDimension() && e->obj->IsBlocking())
+	{
+		vx = 0;
+	}
+}
+
+void CMario::OnCollisionWithBullet(LPCOLLISIONEVENT e)
+{
+	if (level > MARIO_LEVEL_SMALL)
+	{
+		level = MARIO_LEVEL_SMALL;
+		StartUntouchable();
+	}
+	else
+	{
+		DebugOut(L">>> Mario DIE >>> \n");
+		SetState(MARIO_STATE_DIE);
+	}
 }
 
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
@@ -97,6 +119,22 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 				koopa->BeKick(vx);
 			}
 		}
+	}
+}
+
+void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
+{
+	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
+
+	if (level > MARIO_LEVEL_SMALL)
+	{
+		level = MARIO_LEVEL_SMALL;
+		StartUntouchable();
+	}
+	else
+	{
+		DebugOut(L">>> Mario DIE >>> \n");
+		SetState(MARIO_STATE_DIE);
 	}
 }
 
@@ -318,7 +356,7 @@ void CMario::Render()
 void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed!
-	if (this->state == MARIO_STATE_DIE) return;
+	if (this->IsDead()) return;
 
 	switch (state)
 	{
@@ -386,7 +424,6 @@ void CMario::SetState(int state)
 		ax = 0.0f;
 		vx = 0.0f;
 		break;
-
 	case MARIO_STATE_DIE:
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		vx = 0;

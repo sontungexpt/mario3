@@ -1,7 +1,7 @@
 #pragma once
 
 // bounding box size
-#define PLANT_BBOX_WIDTH 32
+#define PLANT_BBOX_WIDTH 28
 #define PLANT_BBOX_HEIGHT 32
 
 // speed and other
