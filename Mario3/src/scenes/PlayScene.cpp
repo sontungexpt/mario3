@@ -150,6 +150,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 	}
 	case OBJECT_TYPE_PIPE:
+		if (tokens.size() == 4)
+		{
+			int plant_type = atoi(tokens[3].c_str());
+			obj = new CPipe(x, y, plant_type);
+			break;
+		}
 		obj = new CPipe(x, y);
 		break;
 	case OBJECT_TYPE_KOOPA:

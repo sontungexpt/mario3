@@ -13,9 +13,9 @@ using namespace std;
 
 class CGameObject
 {
-private:
-
 protected:
+	int is_blocking = 1;
+	int is_collidable = 0;
 
 	float x;
 	float y;
@@ -92,7 +92,8 @@ public:
 	int GetState() { return this->state; }
 
 	// Collision ON or OFF ? This can change depending on object's state. For example: die
-	virtual int IsCollidable() { return 0; };
+	void SetIsColliable(int is_colliable) { this->is_collidable = is_colliable; }
+	virtual int IsCollidable() { return is_collidable; };
 
 	// When no collision has been detected (triggered by CCollision::Process)
 	virtual void OnNoCollision(DWORD dt) {};
@@ -101,7 +102,8 @@ public:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e) {};
 
 	// Is this object blocking other object? If YES, collision framework will automatically push the other object
-	virtual int IsBlocking() { return 1; }
+	virtual int IsBlocking() { return is_blocking; }
+	void SetIsBlocking(int is_blocking) { this->is_blocking = is_blocking; }
 
 	static bool IsDeleted(const LPGAMEOBJECT& o) { return o->isDeleted; }
 };

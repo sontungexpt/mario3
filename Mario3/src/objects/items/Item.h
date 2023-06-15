@@ -18,6 +18,7 @@ protected:
 	// so we need to have a function to handle it
 	// if we move this to mario, we will have to check for each item type and
 	// i think it's not good
+	// but now it not work because dirty code in update function in playscene file
 	virtual void OnCollisionWithPlayer(LPCOLLISIONEVENT e) = 0;
 
 public:

@@ -4,6 +4,8 @@
 
 void CMonster::OnNoCollision(DWORD dt)
 {
+	if (isDeleted) return;
+
 	x += vx * dt;
 	y += vy * dt;
 };
@@ -74,6 +76,11 @@ void CMonster::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
+	case MONSTER_STATE_IDLE:
+		vx = 0;
+		vy = 0;
+		ax = 0;
+		break;
 	case MONSTER_STATE_DIE:
 		dead_time = GetTickCount64();
 		dead = true;

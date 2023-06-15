@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="src\configs\All.h" />
     <ClInclude Include="src\configs\items\All.h" />
+    <ClInclude Include="src\configs\items\Bullet302000.h" />
     <ClInclude Include="src\configs\materials\All.h" />
     <ClInclude Include="src\configs\materials\Brick.h" />
     <ClInclude Include="src\configs\materials\Door.h" />
@@ -182,8 +183,8 @@
     <ClInclude Include="src\configs\monsters\Monster.h" />
     <ClInclude Include="src\configs\items\Mushroom301000.h" />
     <ClInclude Include="src\configs\materials\Pipe10100.h" />
-    <ClInclude Include="src\configs\monsters\Plant.h" />
     <ClInclude Include="src\configs\materials\QuestionBrick100000.h" />
+    <ClInclude Include="src\configs\monsters\Plant602000.h" />
     <ClInclude Include="src\GameData.h" />
     <ClInclude Include="src\objects\items\Bullet.h" />
     <ClInclude Include="src\objects\items\Item.h" />
@@ -230,15 +231,17 @@
   <ItemGroup>
     <Text Include="src\settings\objects\brick.txt" />
     <Text Include="src\settings\objects\cloud.txt" />
+    <Text Include="src\settings\objects\items\bullet.txt" />
     <Text Include="src\settings\objects\items\coin.txt" />
     <Text Include="src\settings\objects\door.txt" />
-    <Text Include="src\settings\objects\goomba.txt" />
+    <Text Include="src\settings\objects\monsters\goomba.txt" />
     <Text Include="src\settings\game-mario.txt" />
     <Text Include="src\settings\objects\grass.txt" />
     <Text Include="src\settings\objects\items\mushroom.txt" />
-    <Text Include="src\settings\objects\koopa.txt" />
+    <Text Include="src\settings\objects\monsters\koopa.txt" />
     <Text Include="src\settings\objects\mario.txt" />
     <Text Include="src\settings\objects\pipe.txt" />
+    <Text Include="src\settings\objects\monsters\plant.txt" />
     <Text Include="src\settings\objects\question_brick.txt" />
     <Text Include="src\settings\scenes\scene05.txt" />
     <Text Include="src\settings\scenes\scene01.txt" />

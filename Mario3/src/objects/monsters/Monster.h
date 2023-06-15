@@ -6,6 +6,22 @@
 
 class CMonster : public CGameObject
 {
+private:
+	void Init() {
+		ax = 0; // acceleration x
+		ay = GRAVITY; // acceleration y
+
+		max_speed = -1; // no limit speed
+		vx = MONSTER_WALKING_SPEED;
+		// TODO: need to create new class for moving object
+		// This is a temporary solution
+
+		dead_time = 0; // the time when monster die
+		dead = FALSE; // is dead or not
+
+		is_enemy = TRUE;
+	};
+
 protected:
 	float ax;
 	float ay;
@@ -17,24 +33,20 @@ protected:
 	float disapear_time; // time to disappear after dead
 
 public:
+
 	CMonster(float x, float y, float disapear_time = MONSTER_DISAPPEAR_TIME) : CGameObject(x, y)
 	{
-		ax = 0; // acceleration x
-		ay = GRAVITY; // acceleration y
-		max_speed = -1; // no limit speed
-		vx = MONSTER_WALKING_SPEED;
-		// TODO: need to create new class for moving object
-		// This is a temporary solution
-
-		dead_time = 0; // the time when monster die
-		dead = FALSE; // is dead or not
-
-		is_enemy = TRUE;
+		Init();
 
 		this->disapear_time = disapear_time;
 
 		// default is moving left
 		SetState(MONSTER_STATE_WALKING_LEFT);
+	};
+
+	CMonster(float x, float y, int state) : CGameObject(x, y, state)
+	{
+		Init();
 	};
 
 	virtual void LimitSpeed(float speed) { max_speed = speed; };

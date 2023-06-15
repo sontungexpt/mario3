@@ -1,0 +1,12 @@
+#pragma once
+
+#define BULLET_BBOX_WIDTH	8
+#define BULLET_BBOX_HEIGHT	8
+
+#define BULLET_SPEED	0.08f
+#define BULLET_GRAVITY	0.000008f
+
+#define ID_ANI_BULLET 302001
+
+#define BULLET_STATE_IDLE 100
+#define BULLET_STATE_SHOOT 200

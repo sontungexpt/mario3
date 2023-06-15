@@ -200,9 +200,6 @@
     <ClInclude Include="src\objects\monsters\Plant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\monsters\Plant.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\objects\materials\Door.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -293,6 +290,12 @@
     <ClInclude Include="src\objects\items\Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\configs\monsters\Plant602000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\items\Bullet302000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -301,7 +304,7 @@
     <Text Include="src\settings\objects\brick.txt" />
     <Text Include="src\settings\objects\cloud.txt" />
     <Text Include="src\settings\objects\items\coin.txt" />
-    <Text Include="src\settings\objects\goomba.txt" />
+    <Text Include="src\settings\objects\monsters\goomba.txt" />
     <Text Include="src\settings\game-mario.txt" />
     <Text Include="src\settings\objects\mario.txt" />
     <Text Include="src\settings\scenes\scene01.txt" />
@@ -312,8 +315,10 @@
     <Text Include="src\settings\objects\grass.txt" />
     <Text Include="src\settings\objects\question_brick.txt" />
     <Text Include="src\settings\objects\pipe.txt" />
-    <Text Include="src\settings\objects\koopa.txt" />
+    <Text Include="src\settings\objects\monsters\koopa.txt" />
     <Text Include="src\settings\objects\items\mushroom.txt" />
+    <Text Include="src\settings\objects\monsters\plant.txt" />
+    <Text Include="src\settings\objects\items\bullet.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\assets\textures\misc_left.png">

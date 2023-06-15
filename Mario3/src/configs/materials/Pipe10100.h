@@ -9,6 +9,7 @@
 #define PIPE_LONG_STATE	2
 
 #define PLANT_NOTHING 10
+#define PLANT_SHOOTER 11
 
 // animations
 #define ID_ANI_PIPE_SHORT 101001

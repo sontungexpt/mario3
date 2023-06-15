@@ -5,7 +5,6 @@
 void CPipe::Render()
 {
 	if (!IsInCamera()) return;
-
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = -1;
 	if (state == PIPE_SHORT_STATE) aniId = ID_ANI_PIPE_SHORT;

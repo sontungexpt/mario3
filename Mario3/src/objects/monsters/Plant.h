@@ -1,35 +1,59 @@
 #pragma once
-#include "objects/GameObject.h"
-#include "configs/monsters/Plant.h"
+#include "Monster.h"
+#include "configs/monsters/Plant602000.h"
 
-class CPlant : public CGameObject
+class CPlant : public CMonster
 {
-protected:
-	float startY;
-	float minY;
-	bool isShoot = false;
-	int model;
-	bool isUpping, isDowning;
-	ULONGLONG time_out_pipe;
-	ULONGLONG time_shoot;
-	ULONGLONG time_down_pipe;
+private:
+	BOOLEAN is_shooted;
+	BOOLEAN is_upping;
+	BOOLEAN is_downing;
 
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	virtual void Render();
-	int PositionYWithMario(); //1 if mario on top plant, -1 if mario underplant
-	int PositionXWithMario(); //1 if mario left to plant, -1 if mario right to plant
+	// because in game y dimension is reversed so min_y y the position of top of plant when it is up
+	float min_y;
+	float start_y;
 
-	virtual int IsCollidable() { return 1; };
-	virtual int IsBlocking() { return 0; }
-	virtual int IsEnemy() { return 1; }
+	ULONGLONG time_down_start;
+	ULONGLONG time_up_start;
+	ULONGLONG time_reload_bullet_start;
 
-	virtual void OnNoCollision(DWORD dt);
+	void Init(float y) {
+		ay = 0; // no gravity
+		ax = 0;
+
+		vx = 0; // no walk
+		vy = PLANT_SPEED_UP_DOWN; // move up and down
+
+		is_shooted = FALSE;
+		is_upping = FALSE;
+		is_downing = FALSE;
+
+		time_down_start = 0;
+		time_up_start = 0;
+		time_reload_bullet_start = 0;
+
+		start_y = y;
+		min_y = start_y - PLANT_BBOX_HEIGHT;
+	};
 
 public:
+	CPlant(float x, float y) : CMonster(x, y) {
+		Init(y);
+	};
 
-	CPlant(float x, float y, int model);
+	CPlant(float x, float y, int state) :CMonster(x, y, state) {
+		Init(y);
+	};
+
+	// core
+	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	//void OnNoCollision(DWORD dt);
+	void OnCollisionWith(LPCOLLISIONEVENT e);
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void Render();
+
+	int CompareYWithMario(); //1 if mario on top plant, -1 if mario underplant
+	int CompareXWithMario(); //1 if mario left to plant, -1 if mario right to plant
+
 	virtual void SetState(int state);
-	void SetModel(int model) { this->model = model; }
-	int GetModel() { return model; }
 };

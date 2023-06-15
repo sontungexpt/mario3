@@ -1,194 +1,191 @@
-//#include "Plant.h"
-//#include "GameObject.h"
-//#include "Mario.h"
-//#include "scenes/PlayScene.h"
-//#include "Goomba.h"
-//
-//CPlant::CPlant(float x, float y, int model) : CGameObject(x, y)
-//{
-//	this->model = model;
-//	startY = y;
-//	minY = startY - PLANT_BBOX_HEIGHT;
-//	SetState(PLANT_STATE_UP);
-//}
-//
-//void CPlant::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
-//	if (state == PLANT_STATE_DEATH) return;
-//	if (model == PLANT_SHOOT_RED) {
-//		left = x - PLANT_BBOX_WIDTH / 2;
-//		top = y - PLANT_BBOX_HEIGHT / 2 + 4;
-//		right = left + PLANT_BBOX_WIDTH;
-//		bottom = top + PLANT_BBOX_HEIGHT;
-//	}
-//	else {
-//		left = x - PLANT_BBOX_WIDTH / 2;
-//		top = y - PLANT_BBOX_HEIGHT_SMALL / 2 + 4;
-//		right = left + PLANT_BBOX_WIDTH;
-//		bottom = top + PLANT_BBOX_HEIGHT_SMALL;
-//	}
-//}
-//void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
-//{
-//	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-//	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-//	if (mario->GetIsChanging() || mario->GetState() == MARIO_STATE_DIE) return;
-//	if (isUpping) {
-//		if (y > minY) {
-//			vy = -PLANT_SPEED_UP_DOWN;
-//		}
-//		else {
-//			time_shoot = GetTickCount64();
-//			vy = 0;
-//			y = minY;
-//			if (GetTickCount64() - time_out_pipe > TIME_OUT_PIPE) {
-//				SetState(PLANT_STATE_DOWN);
-//			}
-//			else {
-//				if ((model == PLANT_SHOOT_GREEN) || (model == PLANT_SHOOT_RED)) {
-//					if (!isShoot) {
-//						if (GetTickCount64() - time_shoot < TIME_SHOOT_INTERVAl) {
-//							isShoot = true;
-//							bool isOnTop = false, isLeft = false;
-//							if (PositionXWithMario() == 1) {
-//								isOnTop = true;
-//							}
-//							if (PositionYWithMario() == 1) {
-//								isLeft = true;
-//							}
-//							/*if (isOnTop && isLeft)
-//							{
-//								CFireFromPlant* fire = new CFireFromPlant(x, y, isLeft, !isOnTop);
-//								scene->AddObject(fire);
-//							}
-//							else if (isOnTop && !isLeft) {
-//								CFireFromPlant* fire = new CFireFromPlant(x, y, isLeft, !isOnTop);
-//								scene->AddObject(fire);
-//							}
-//							else if (!isOnTop && !isLeft) {
-//								CFireFromPlant* fire = new CFireFromPlant(x, y, isLeft, !isOnTop);
-//								scene->AddObject(fire);
-//							}
-//							else if (!isOnTop && isLeft) {
-//								CFireFromPlant* fire = new CFireFromPlant(x, y, isLeft, !isOnTop);
-//								scene->AddObject(fire);
-//							}*/
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
-//	else if (isDowning) {
-//		if (model == PLANT_SHOOT_GREEN || model == PLANT_SHOOT_RED) {
-//			if ((y < startY + 2)) {
-//				vy = PLANT_SPEED_UP_DOWN;
-//			}
-//			else {
-//				vy = 0;
-//				y = startY + 2;
-//				if (GetTickCount64() - time_down_pipe > TIME_DOWN_PIPE) {
-//					SetState(PLANT_STATE_UP);
-//				}
-//			}
-//		}
-//		else {
-//			if (y < startY + 2 - DISTANCE_PIPE_LONG_SHORT) {
-//				vy = PLANT_SPEED_UP_DOWN;
-//			}
-//			else {
-//				vy = 0;
-//				y = startY + 2 - DISTANCE_PIPE_LONG_SHORT;
-//				if (GetTickCount64() - time_down_pipe > TIME_DOWN_PIPE) {
-//					SetState(PLANT_STATE_UP);
-//				}
-//			}
-//		}
-//	}
-//	CGameObject::Update(dt, coObjects);
-//	CCollision::GetInstance()->Process(this, dt, coObjects);
-//}
-////int CPlant::PositionXWithMario() {
-////	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-////	if (mario->GetX() < GetX()) //mario left, plant right
-////	{
-////		return 1;
-////	}
-////	else return -1;
-////}
-//
-//void CPlant::OnNoCollision(DWORD dt) {
-//	x += vx * dt;
-//	y += vy * dt;
-//}
-//
-////int CPlant::PositionYWithMario() {
-////	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-////	if (mario->GetY() < GetY()) //mario top, plant under
-////	{
-////		return 1;
-////	}
-////	else return -1;
-////}
-//
-//void CPlant::Render() {
-//	CAnimations* animations = CAnimations::GetInstance();
-//	int aniId = -1;
-//	if (model == PLANT_SHOOT_RED) {
-//		if (PositionXWithMario() == 1 && PositionYWithMario() == -1)
-//			if (!isShoot) aniId = ID_ANI_PLANT_LEFT_UNDER_NOT_SHOOT;
-//			else aniId = ID_ANI_PLANT_LEFT_UNDER_SHOOT;
-//		else if (PositionXWithMario() == 1 && PositionYWithMario() == 1)
-//			if (!isShoot) aniId = ID_ANI_PLANT_LEFT_TOP_NOT_SHOOT;
-//			else aniId = ID_ANI_PLANT_LEFT_TOP_SHOOT;
-//		else if (PositionXWithMario() == -1 && PositionYWithMario() == 1)
-//			if (!isShoot) aniId = ID_ANI_PLANT_RIGHT_TOP_NOT_SHOOT;
-//			else aniId = ID_ANI_PLANT_RIGHT_TOP_SHOOT;
-//		else {
-//			if (!isShoot) aniId = ID_ANI_PLANT_RIGHT_UNDER_NOT_SHOOT;
-//			else aniId = ID_ANI_PLANT_RIGHT_UNDER_SHOOT;
-//		}
-//	}
-//	else if (model == PLANT_SHOOT_GREEN) {
-//		if (PositionXWithMario() == 1 && PositionYWithMario() == -1)
-//			if (!isShoot) aniId = ID_ANI_PLANT_LEFT_UNDER_NOT_SHOOT_GREEN;
-//			else aniId = ID_ANI_PLANT_LEFT_UNDER_SHOOT_GREEN;
-//		else if (PositionXWithMario() == 1 && PositionYWithMario() == 1)
-//			if (!isShoot) aniId = ID_ANI_PLANT_LEFT_TOP_NOT_SHOOT_GREEN;
-//			else aniId = ID_ANI_PLANT_LEFT_TOP_SHOOT_GREEN;
-//		else if (PositionXWithMario() == -1 && PositionYWithMario() == 1)
-//			if (!isShoot) aniId = ID_ANI_PLANT_RIGHT_TOP_NOT_SHOOT_GREEN;
-//			else aniId = ID_ANI_PLANT_RIGHT_TOP_SHOOT_GREEN;
-//		else {
-//			if (!isShoot) aniId = ID_ANI_PLANT_RIGHT_UNDER_NOT_SHOOT_GREEN;
-//			else aniId = ID_ANI_PLANT_RIGHT_UNDER_SHOOT_GREEN;
-//		}
-//	}
-//	else if (model == PLANT_NOT_SHOOT) {
-//		aniId = ID_ANI_PLANT_NOT_SHOOT;
-//	}
-//
-//	animations->Get(aniId)->Render(x, y);
-//}
-//
-//void CPlant::SetState(int state) {
-//	switch (state) {
-//	case PLANT_STATE_UP:
-//		isUpping = true;
-//		isDowning = false;
-//		isShoot = false;
-//		time_out_pipe = GetTickCount64();
-//		time_down_pipe = 0;
-//		break;
-//	case PLANT_STATE_DOWN:
-//		isShoot = false;
-//		isUpping = false;
-//		isDowning = true;
-//		time_down_pipe = GetTickCount64();
-//		time_out_pipe = 0;
-//		break;
-//	case PLANT_STATE_DEATH:
-//		isDeleted = true;
-//		break;
-//	}
-//	CGameObject::SetState(state);
-//}
+#include "scenes/PlayScene.h"
+
+#include "Plant.h"
+#include "objects/Mario.h"
+#include "objects/items/Bullet.h"
+#include "objects/materials/Pipe.h"
+
+void CPlant::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
+	if (isDeleted) return; // notthing to get
+
+	left = x - PLANT_BBOX_WIDTH / 2;
+	top = y - PLANT_BBOX_HEIGHT / 2 + 4;
+	right = left + PLANT_BBOX_WIDTH;
+	bottom = top + PLANT_BBOX_HEIGHT;
+}
+
+void CPlant::OnCollisionWith(LPCOLLISIONEVENT e)
+{
+	if (dynamic_cast<CPipe*>(e->obj))
+		return;
+
+	CMonster::OnCollisionWith(e);
+}
+
+void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (mario->IsDead()) return; // if mario dead, plant not need to update
+
+	if (is_upping) {
+		// make sure that the plant will moving after create
+		if (y > min_y) {
+			vy = -PLANT_SPEED_UP_DOWN;
+		}
+		else {
+			// move to min_y // that means the plant is finish create
+			vy = 0;
+			y = min_y;
+
+			// time out up state of plant move to down state
+			if (GetTickCount64() - time_up_start > TIME_OUT_UP_STATE) {
+				SetState(PLANT_STATE_DOWN);
+				return;
+			}
+
+			if (is_shooted) return; // just one bullet per state up
+
+			// if plant is up and not shooted, then reload bullet
+			if (time_reload_bullet_start <= 0)
+			{
+				time_reload_bullet_start = GetTickCount64();
+				return;
+			}
+
+			// reloaded bullet
+
+			// shoot bullet
+			if (!is_shooted)
+			{
+				if (GetTickCount64() - time_reload_bullet_start > TIME_RELOAD_BULLET) {
+					float bullet_y = y + 2;
+					float bullet_x = CompareXWithMario() == 1 ? x - 2 : x + GetWidth();
+
+					CBullet* bullet = (CBullet*)scene->AddObject(new CBullet(bullet_x, bullet_y));
+
+					bullet->Shoot(mario->GetX(), mario->GetY());
+					is_shooted = TRUE;
+					time_reload_bullet_start = 0;
+				}
+			}
+
+			DebugOut(L"render");
+		}
+	}
+	else // is downing
+	{
+		if (GetTickCount64() - time_down_start > TIME_OUT_DOWN_STATE) {
+			SetState(PLANT_STATE_UP);
+			return;
+		}
+	}
+	CGameObject::Update(dt, coObjects);
+	CCollision::GetInstance()->Process(this, dt, coObjects);
+}
+
+void CPlant::Render()
+{
+	if (isDeleted) return; // notthing to render
+	if (!IsInCamera()) return; // lazy load
+
+	int aniId = -1;
+	if (state == PLANT_STATE_UP || state == PLANT_STATE_DOWN)
+	{
+		if (CompareXWithMario() == 1)
+		{
+			if (CompareYWithMario() == 1)
+				aniId = ID_ANI_PLANT_LEFT_NOT_SHOOT_UNDER;
+			else //plant under right with mario
+				aniId = ID_ANI_PLANT_LEFT_NOT_SHOOT_TOP;
+		}
+		// plant top left with mario
+		else if (CompareXWithMario() == -1)
+		{
+			if (CompareYWithMario() == 1)
+				aniId = ID_ANI_PLANT_RIGHT_NOT_SHOOT_UNDER;
+			else // plant under left with mario
+				aniId = ID_ANI_PLANT_RIGHT_NOT_SHOOT_TOP;
+		}
+	}
+	else
+	{
+		DebugOut(L"[ERROR] Unhandled state at CPlant::Render %d\n", state);
+		return;
+	}
+	CAnimations* animations = CAnimations::GetInstance();
+	animations->Get(aniId)->Render(x, y);
+}
+
+/// <summary>
+/// Compare position y of plant with mario
+/// </summary>
+/// <returns>
+/// -1: plant under mario,
+/// 1: plant on top mario,
+/// 0: plant and mario in same position,
+///	-2: mario is null,
+/// -3: plant is deleted,
+/// </returns>
+int CPlant::CompareYWithMario()
+{
+	if (isDeleted || dead) return -3; // plant is deleted
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (mario == NULL) return -2;
+
+	if (mario->GetY() < y) return -1; // plant under mario
+	else if (mario->GetY() > y)	return 1; // plant on top mario
+	else return 0; // plant and mario in same position
+}
+
+/// <summary>
+///	Compare position x of plant with mario
+/// </summary>
+/// <returns>
+/// -1: plant left mario,
+/// 1: plant right top mario,
+/// 0: plant and mario in same position,
+///	-2: mario is null,
+/// -3: plant is deleted,
+/// </returns>
+int CPlant::CompareXWithMario()
+{
+	if (isDeleted || dead) return -3; // plant is deleted
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+
+	if (mario == NULL) return -2;
+
+	if (mario->GetX() < x)return 1; // plant right mario
+	else if (mario->GetX() > y)	return -1; // plant left mario
+	else return 0; // plant and mario in same position
+}
+
+void CPlant::SetState(int state)
+{
+	CMonster::SetState(state);
+	switch (state) {
+	case PLANT_STATE_UP:
+		is_downing = FALSE;
+		is_upping = TRUE;
+		is_shooted = FALSE;
+		time_up_start = GetTickCount64();
+		time_down_start = 0;
+		time_reload_bullet_start = 0;
+		vy = -PLANT_SPEED_UP_DOWN;
+		break;
+	case PLANT_STATE_DOWN:
+		is_upping = FALSE;
+		is_downing = TRUE;
+		is_shooted = FALSE;
+		time_down_start = GetTickCount64();
+		time_up_start = 0;
+		time_reload_bullet_start = 0;
+		vy = PLANT_SPEED_UP_DOWN;
+		break;
+	case MONSTER_STATE_DIE: // ovveride state die in monster class
+		isDeleted = true;
+		break;
+	}
+}

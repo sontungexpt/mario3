@@ -2,15 +2,22 @@
 [ASSETS]
 src\settings\objects\mario.txt
 src\settings\objects\brick.txt
-src\settings\objects\goomba.txt
 src\settings\objects\cloud.txt
 src\settings\objects\question_brick.txt
 src\settings\objects\pipe.txt
-src\settings\objects\koopa.txt
+
 
 # items
 src\settings\objects\items\mushroom.txt
 src\settings\objects\items\coin.txt
+src\settings\objects\items\bullet.txt
+
+
+# monster
+src\settings\objects\monsters\plant.txt
+src\settings\objects\monsters\koopa.txt
+src\settings\objects\monsters\goomba.txt
+
 
 
 [OBJECTS]
@@ -35,7 +42,7 @@ src\settings\objects\items\coin.txt
 8	740	105
 
 # Pipe
-9	320	156
+9	320	156	11
 
 
 ### Monsters ###

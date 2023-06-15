@@ -62,6 +62,7 @@ public:
 	void Shrink() { SetLevel(MARIO_LEVEL_SMALL); }
 	void Zoom() { SetLevel(MARIO_LEVEL_BIG); }
 	void Die() { SetState(MARIO_STATE_DIE); }
+	BOOLEAN IsDead() { return state == MARIO_STATE_DIE; }
 
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void JumpDeflect() { vy = -MARIO_JUMP_DEFLECT_SPEED; }
