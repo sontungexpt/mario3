@@ -65,6 +65,30 @@ public:
 	virtual int IsEnemy() { return is_enemy; }
 	virtual void SetIsEnemy(BOOLEAN is_enemy) { this->is_enemy = is_enemy; }
 
+	/// <summary>
+	/// Compare position y of plant with mario
+	/// </summary>
+	/// <returns>
+	///		-1: monster under mario,
+	///		 1: monster on top mario,
+	///		 0: monster and mario in same position,
+	///		-2: monster is null,
+	///		-3: monster is deleted,
+	/// </returns>
+	int CompareYWithMario(); //1 if mario on top plant, -1 if mario underplant
+
+	/// <summary>
+	///	Compare position x of plant with mario
+	/// </summary>
+	/// <returns>
+	///		-1: monster left mario,
+	///		 1: monster right mario,
+	///		 0: monster and mario in same position,
+	///		-2: monster is null,
+	///		-3: monster is deleted,
+	/// </returns>
+	int CompareXWithMario(); //1 if mario left to plant, -1 if mario right to plant
+
 	// this part is a other name for the same state
 	BOOLEAN IsDead() { return dead == TRUE; }
 	void Die() { SetState(MONSTER_STATE_DIE); }

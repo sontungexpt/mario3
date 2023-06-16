@@ -1,6 +1,8 @@
 #include "debug.h"
 #include "Monster.h"
 #include "Goomba.h"
+#include "objects/Mario.h"
+#include "scenes/PlayScene.h"
 
 void CMonster::OnNoCollision(DWORD dt)
 {
@@ -51,6 +53,7 @@ void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (!e->obj->IsBlocking()) return;
 
+	// collide with blocking
 	if (e->IsCollidedInYDimension())
 	{
 		vy = 0;
@@ -95,10 +98,12 @@ void CMonster::SetState(int state)
 		// if you use the custom velocity then you should to change it by self
 		// this line just help you to reset the velocity to default state of monster abstract class
 		vx = fabs(vx) > 0 ? -fabs(vx) : -MONSTER_WALKING_SPEED;
+		vy = 0;
 		ax = -fabs(ax);
 		break;
 	case MONSTER_STATE_WALKING_RIGHT:
 		// same as above
+		vy = 0;
 		vx = fabs(vx) > 0 ? fabs(vx) : MONSTER_WALKING_SPEED;
 		ax = fabs(ax);
 		break;
@@ -110,7 +115,7 @@ void CMonster::SetState(int state)
 void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
 	//move out of screen >> delete
-	if (x + GetWidth() <= 0)
+	if (x + GetWidth() / 2 <= 0)
 	{
 		dead = true;
 		isDeleted = true;
@@ -142,4 +147,29 @@ void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 
 	CGameObject::Update(dt, co_objects);
 	CCollision::GetInstance()->Process(this, dt, co_objects);
+}
+
+int CMonster::CompareYWithMario()
+{
+	if (isDeleted || dead) return -3; // plant is deleted
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (mario == NULL) return -2;
+
+	if (mario->GetY() < y) return -1; // plant under mario
+	else if (mario->GetY() > y)	return 1; // plant on top mario
+	else return 0; // plant and mario in same position
+}
+
+int CMonster::CompareXWithMario()
+{
+	if (isDeleted || dead) return -3; // plant is deleted
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+
+	if (mario == NULL) return -2;
+
+	if (mario->GetX() < x) return 1; // plant right mario
+	else if (mario->GetX() > y)	return -1; // plant left mario
+	else return 0; // plant and mario in same position
 }

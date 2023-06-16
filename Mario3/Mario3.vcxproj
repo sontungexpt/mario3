@@ -132,6 +132,7 @@
     <ClCompile Include="src\GameData.cpp" />
     <ClCompile Include="src\objects\items\Bullet.cpp" />
     <ClCompile Include="src\objects\items\Item.cpp" />
+    <ClCompile Include="src\objects\items\Leaf.cpp" />
     <ClCompile Include="src\objects\materials\Door.cpp" />
     <ClCompile Include="src\objects\materials\Grass.cpp" />
     <ClCompile Include="src\objects\items\Mushroom.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="src\objects\monsters\Monster.cpp" />
     <ClCompile Include="src\objects\monsters\Plant.cpp" />
     <ClCompile Include="src\objects\materials\QuestionBrick.cpp" />
+    <ClCompile Include="src\objects\monsters\WindGoomba.cpp" />
     <ClCompile Include="src\objects\MovingObject.cpp" />
     <ClCompile Include="src\scenes\LevelMapScene.cpp" />
     <ClCompile Include="main.cpp" />
@@ -166,6 +168,7 @@
     <ClInclude Include="src\configs\All.h" />
     <ClInclude Include="src\configs\items\All.h" />
     <ClInclude Include="src\configs\items\Bullet302000.h" />
+    <ClInclude Include="src\configs\items\Leaf303000.h" />
     <ClInclude Include="src\configs\materials\All.h" />
     <ClInclude Include="src\configs\materials\Brick.h" />
     <ClInclude Include="src\configs\materials\Door.h" />
@@ -190,13 +193,14 @@
     <ClInclude Include="src\objects\items\Item.h" />
     <ClInclude Include="src\objects\materials\Door.h" />
     <ClInclude Include="src\objects\materials\Grass.h" />
-    <ClInclude Include="src\objects\materials\Leaf.h" />
+    <ClInclude Include="src\objects\items\Leaf.h" />
     <ClInclude Include="src\objects\items\Mushroom.h" />
     <ClInclude Include="src\objects\materials\Pipe.h" />
     <ClInclude Include="src\objects\monsters\Koopa.h" />
     <ClInclude Include="src\objects\monsters\Monster.h" />
     <ClInclude Include="src\objects\monsters\Plant.h" />
     <ClInclude Include="src\objects\materials\QuestionBrick.h" />
+    <ClInclude Include="src\objects\monsters\WindGoomba.h" />
     <ClInclude Include="src\objects\MovingObject.h" />
     <ClInclude Include="src\scenes\LevelMapScene.h" />
     <ClInclude Include="src\components\Animation\Animation.h" />

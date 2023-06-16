@@ -111,6 +111,12 @@
     <ClCompile Include="src\objects\items\Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\items\Leaf.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\monsters\WindGoomba.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\Animation\Animation.h">
@@ -239,7 +245,7 @@
     <ClInclude Include="src\configs\materials\QuestionBrick100000.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\materials\Leaf.h">
+    <ClInclude Include="src\objects\items\Leaf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\items\Mushroom.h">
@@ -294,6 +300,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\configs\items\Bullet302000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\items\Leaf303000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\monsters\WindGoomba.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

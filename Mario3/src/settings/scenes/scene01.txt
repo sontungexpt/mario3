@@ -127,6 +127,7 @@ src\settings\objects\monsters\goomba.txt
 8	140	130	1
 8	156	130	2
 
+
 8	188	80
 8	204	80
 
@@ -141,6 +142,8 @@ src\settings\objects\monsters\goomba.txt
 #Goombas
 2	200	160
 2	450	160
+
+2	1072	160	1
 
 # Koopas
 10	480	40

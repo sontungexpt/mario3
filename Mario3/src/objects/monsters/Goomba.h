@@ -5,18 +5,17 @@
 
 class CGoomba : public CMonster
 {
-private:
-
-	ULONGLONG die_start;
+protected:
 
 public:
 
-	CGoomba(float x, float y) :CMonster(x, y) {
-	}
+	CGoomba(float x, float y) :CMonster(x, y) {}
 
-	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void Render();
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	virtual void Render();
 
-	void OnCollisionWith(LPCOLLISIONEVENT e);
-	void SetState(int state);
+	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	virtual void SetState(int state);
+
+	virtual void Die() { SetState(MONSTER_STATE_DIE); };
 };

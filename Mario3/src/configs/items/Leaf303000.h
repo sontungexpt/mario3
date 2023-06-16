@@ -1,0 +1,18 @@
+#pragma once
+
+#define	LEAF_WIDTH 10
+#define LEAF_BBOX_WIDTH 18
+#define LEAF_BBOX_HEIGHT 16
+
+#define MAX_VY 0.02f
+
+#define LEAF_FALL_SPEED 0.0001f
+
+#define LEAF_SPEED 0.04f
+#define ADJUST_AX_WHEN_FALL 0.0001f
+
+#define LEAF_STATE_FALL 100
+#define LEAF_STATE_FLY 200
+
+#define ID_ANI_LEAF_LEFT 303001
+#define ID_ANI_LEAF_RIGHT 303002

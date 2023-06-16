@@ -19,6 +19,7 @@
 #include "objects/items/Coin.h"
 
 #include "objects/monsters/Koopa.h"
+#include "objects/monsters/WindGoomba.h"
 
 using namespace std;
 
@@ -127,8 +128,19 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	break;
 	case OBJECT_TYPE_GOOMBA:
+	{
+		if (tokens.size() == 4)
+		{
+			int goomba_type = atoi(tokens[3].c_str());
+			if (goomba_type == GOOMBA_TYPE_FLY)
+			{
+				obj = new CWindGoomba(x, y);
+				break;
+			}
+		}
 		obj = new CGoomba(x, y);
-		break;
+	}
+	break;
 	case OBJECT_TYPE_BRICK:
 		obj = new CBrick(x, y);
 		break;

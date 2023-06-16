@@ -42,6 +42,8 @@ public:
 	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
 	float GetX() { return x; }
 	float GetY() { return y; }
+	float GetXAtTopLeft() { return x - GetWidth() / 2; }
+	float GetYAtTopRight() { return y - GetHeight() / 2; }
 	void SetX(float x) { this->x = x; }
 	void SetY(float y) { this->y = y; }
 

@@ -49,11 +49,6 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	//void OnCollisionWith(LPCOLLISIONEVENT e);
-	//int IsCollidable() { return is_collidable; }
-
-	int CompareYWithMario(); //1 if mario on top plant, -1 if mario underplant
-	int CompareXWithMario(); //1 if mario left to plant, -1 if mario right to plant
 
 	virtual void SetState(int state);
 };

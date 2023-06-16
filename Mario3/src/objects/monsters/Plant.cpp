@@ -1,7 +1,6 @@
 #include "scenes/PlayScene.h"
 
 #include "Plant.h"
-#include "objects/Mario.h"
 #include "objects/items/Bullet.h"
 #include "objects/materials/Pipe.h"
 
@@ -109,51 +108,6 @@ void CPlant::Render()
 	animations->Get(aniId)->Render(x, y);
 }
 
-/// <summary>
-/// Compare position y of plant with mario
-/// </summary>
-/// <returns>
-/// -1: plant under mario,
-/// 1: plant on top mario,
-/// 0: plant and mario in same position,
-///	-2: mario is null,
-/// -3: plant is deleted,
-/// </returns>
-int CPlant::CompareYWithMario()
-{
-	if (isDeleted || dead) return -3; // plant is deleted
-	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CMario* mario = (CMario*)scene->GetPlayer();
-	if (mario == NULL) return -2;
-
-	if (mario->GetY() < y) return -1; // plant under mario
-	else if (mario->GetY() > y)	return 1; // plant on top mario
-	else return 0; // plant and mario in same position
-}
-
-/// <summary>
-///	Compare position x of plant with mario
-/// </summary>
-/// <returns>
-/// -1: plant left mario,
-/// 1: plant right top mario,
-/// 0: plant and mario in same position,
-///	-2: mario is null,
-/// -3: plant is deleted,
-/// </returns>
-int CPlant::CompareXWithMario()
-{
-	if (isDeleted || dead) return -3; // plant is deleted
-	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CMario* mario = (CMario*)scene->GetPlayer();
-
-	if (mario == NULL) return -2;
-
-	if (mario->GetX() < x) return 1; // plant right mario
-	else if (mario->GetX() > y)	return -1; // plant left mario
-	else return 0; // plant and mario in same position
-}
-
 void CPlant::SetState(int state)
 {
 	CMonster::SetState(state);
@@ -178,6 +132,9 @@ void CPlant::SetState(int state)
 		break;
 	case MONSTER_STATE_DIE: // ovveride state die in monster class
 		isDeleted = true;
+		break;
+	default:
+		DebugOut(L"[ERROR] Unhandled state at CPlant::SetState %d\n", state);
 		break;
 	}
 }

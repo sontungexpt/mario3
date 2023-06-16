@@ -30,7 +30,7 @@ void CGoomba::Render()
 	if (isDeleted) return;
 	if (!IsInCamera()) return; // lazy load
 
-	int aniId = ID_ANI_GOOMBA_WALKING; // default animation
+	int aniId = -1; // default animation
 
 	switch (state)
 	{
@@ -47,7 +47,7 @@ void CGoomba::Render()
 		DebugOut(L"[ERROR] Unhandled monster state %d\n in Function CGoomba Render", state);
 		break;
 	}
-
+	if (aniId == -1) return;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 }
 
