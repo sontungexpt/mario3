@@ -2,8 +2,10 @@
 
 #include "QuestionBrick.h"
 #include "objects/Mario.h"
+
 #include "objects/items/Coin.h"
 #include "objects/items/Mushroom.h"
+#include "objects/items/Leaf.h"
 
 void CQuestionBrick::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -77,8 +79,14 @@ void CQuestionBrick::SetState(int state)
 			coin->JumpOutQuestionBrick();
 		}
 		break;
-		case QUESTION_BRICK_MUSHROOM:
+		case QUESTION_BRICK_ITEM_SUPPORT:
 		{
+			CMario* mario = (CMario*)scene->GetPlayer();
+			if (mario->IsBig()) {
+				CLeaf* leaf = (CLeaf*)CreateItem(new CLeaf());
+				leaf->Fly();
+				break;
+			}
 			CMushroom* mushroom = (CMushroom*)CreateItem(new CMushroom());
 			mushroom->Walk();
 		}

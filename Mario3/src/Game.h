@@ -22,6 +22,8 @@ class CGame
 	static CGame* __instance;
 	HWND hWnd;									// Window handle
 
+	static ULONGLONG count_time;
+
 	int backBufferWidth = 0;					// Backbuffer width & height, will be set during Direct3D initialization
 	int backBufferHeight = 0;
 
@@ -107,6 +109,13 @@ public:
 	void Load(LPCWSTR gameFile);
 	void SwitchScene();
 	void InitiateSwitchScene(int scene_id);
+
+	// This function will help you count time between the first and second you call this function
+	// First time you call this it will return the curent time;
+	// Second time you call this it will return the current time - the time before you got
+	// exp: first return 2 -> this is current time
+	// second it return 5 - 2 -> (5 is current time)
+	static ULONGLONG CountTime();
 
 	~CGame();
 };

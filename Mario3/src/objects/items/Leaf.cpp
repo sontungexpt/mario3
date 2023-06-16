@@ -2,24 +2,26 @@
 
 void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
-	CItem::Update(dt, co_objects);
+	// if have time we should use phýycal for this it will make the game more real
+	if (!IsInCamera())return;
 
-	/*if (isOnPlatForm) {
+	if (!is_falling && fabs(start_y - y) >= LEAF_MAX_FLY_HEIGHT)
+	{
 		vy = 0;
-		ay = 0;
+		ax = LEAF_ADJUST_AX_WHEN_FALL;
+		is_falling = TRUE;
 	}
-	else {
-		if (vy < MAX_VY) {
-			vy += ay * dt;
-		}
-		else vy = ay * dt;
-		if (vy > 0) {
-			if (vx <= ADJUST_MAX_VX) {
-				vx += ax * dt;
-			}
-			else vx = -vx;
-		}
-	}*/
+
+	if (fabs(x - start_x) >= LEAF_MAX__FALING_WIDTH)
+	{
+		vx = -vx;
+		ax = -ax;
+	}
+
+	if (fabs(vx) > LEAF_ADJUST_MAX_VX)
+		vx = vx > 0 ? LEAF_ADJUST_MAX_VX : -LEAF_ADJUST_MAX_VX;
+
+	CItem::Update(dt, co_objects);
 }
 
 void CLeaf::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -30,30 +32,7 @@ void CLeaf::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = t + LEAF_BBOX_HEIGHT;
 }
 
-//void CLeaf::OnCollisionWith(LPCOLLISIONEVENT e)
-//{
-//	if (!e->obj->IsBlocking() && !e->obj->IsPlatform()) return;
-//	if (dynamic_cast<CLeaf*>(e->obj)) return;
-//
-//	if (e->ny != 0)
-//	{
-//		isOnPlatForm = true;
-//		vy = 0;
-//		vx = 0;
-//	}
-//	else if (dynamic_cast<CPlatform*>(e->obj))
-//		OnCollisionWithPlatForm(e);
-//}
-
-//void CLeaf::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
-//{
-//	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
-//	if (platform->IsBlocking()) {}
-//	else if (e->ny < 0) {
-//		SetY(platform->GetY() - LEAF_BBOX_HEIGHT);
-//		isOnPlatForm = true;
-//	}
-//}
+void CLeaf::OnCollisionWithPlayer(LPCOLLISIONEVENT e) {}
 
 void CLeaf::Render()
 {
@@ -68,16 +47,26 @@ void CLeaf::SetState(int state)
 {
 	switch (state)
 	{
-	case LEAF_STATE_FALL:
-		ax += ADJUST_AX_WHEN_FALL;
-		break;
 	case LEAF_STATE_FLY:
-		ax = 0;
-
-		/*vx = LEAF_FLY_SPEED_X;
-		vy = LEAF_FLY_SPEED_Y;*/
+		start_y = y;
+		start_x = x;
+		is_falling = FALSE;
+		vy = -LEAF_SPEED_Y;
+		ay = LEAF_SPEED_FALLING;
 		break;
 	}
 
 	CGameObject::SetState(state);
+}
+
+void CLeaf::OnCollisionWith(LPCOLLISIONEVENT e)
+{
+	if (e->obj->IsBlocking())
+	{
+		this->SetIsCollidable(0);
+		return;
+	}
+	this->SetIsCollidable(1);
+
+	CItem::OnCollisionWith(e);
 }

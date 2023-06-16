@@ -21,23 +21,22 @@ protected:
 	// but now it not work because dirty code in update function in playscene file
 	virtual void OnCollisionWithPlayer(LPCOLLISIONEVENT e) = 0;
 
-public:
-	CItem() :CGameObject() {
+	void Init() {
 		ax = 0;
 		ay = GRAVITY;
 		is_collected = FALSE;
+	}
+public:
+	CItem() :CGameObject() {
+		Init();
 	};
 
 	CItem(float x, float y) :CGameObject(x, y) {
-		ax = 0;
-		ay = GRAVITY;
-		is_collected = FALSE;
+		Init();
 	};
 
 	CItem(float x, float y, int state) :CGameObject(x, y, state) {
-		ax = 0;
-		ay = GRAVITY;
-		is_collected = FALSE;
+		Init();
 	};
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

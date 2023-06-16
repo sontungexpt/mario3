@@ -31,7 +31,7 @@ protected:
 
 	bool isDeleted;
 
-	virtual void ResetPositionIfOutOfScreen(float& curr_x, float& curr_y);
+	virtual void ResetPositionIfOutOfWidthScreen(float& curr_x, float& curr_y);
 
 public:
 	float GetWidth();
@@ -42,10 +42,24 @@ public:
 	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
 	float GetX() { return x; }
 	float GetY() { return y; }
-	float GetXAtTopLeft() { return x - GetWidth() / 2; }
-	float GetYAtTopRight() { return y - GetHeight() / 2; }
 	void SetX(float x) { this->x = x; }
 	void SetY(float y) { this->y = y; }
+
+	// this function is return the coordinateX of Ox of the sprite
+	// Ox have dimension from left to right and same  with top edge
+	float GetOxAtTopLeft() {
+		float left, top, right, bottom;
+		GetBoundingBox(left, top, right, bottom);
+		return left;
+	}
+
+	// this function is return the coordinateY Oy of the sprite
+	// Oy have dimension from top to bottom and same with left edge
+	float GetOyAtTopRight() {
+		float left, top, right, bottom;
+		GetBoundingBox(left, top, right, bottom);
+		return top;
+	}
 
 	// velocity
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
@@ -59,7 +73,7 @@ public:
 	virtual void Delete() { isDeleted = true; }
 	bool IsDeleted() { return isDeleted; }
 
-	// constructor & destructor
+#pragma region CONSTRUCTOR_DESTRUCTOR
 	CGameObject();
 	CGameObject(float x, float y) :CGameObject()
 	{
@@ -81,11 +95,12 @@ public:
 	}
 	~CGameObject() {}
 
+#pragma endregion
 	// core
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
-	void RenderBoundingBox();
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {};
 	virtual void Render() = 0;
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {};
+	void RenderBoundingBox();
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 
 	BOOLEAN IsInCamera(); // use for lazy load
 
@@ -93,9 +108,7 @@ public:
 	virtual void SetState(int state) { this->state = state; };
 	int GetState() { return this->state; }
 
-	// Collision ON or OFF ? This can change depending on object's state. For example: die
-	void SetIsColliable(int is_colliable) { this->is_collidable = is_colliable; }
-	virtual int IsCollidable() { return is_collidable; };
+#pragma region COLLISION
 
 	// When no collision has been detected (triggered by CCollision::Process)
 	virtual void OnNoCollision(DWORD dt) {};
@@ -107,5 +120,11 @@ public:
 	virtual int IsBlocking() { return is_blocking; }
 	void SetIsBlocking(int is_blocking) { this->is_blocking = is_blocking; }
 
+	// Collision ON or OFF ? This can change depending on object's state. For example: die
+	void SetIsCollidable(int is_colliable) { this->is_collidable = is_colliable; }
+	virtual int IsCollidable() { return is_collidable; };
+
 	static bool IsDeleted(const LPGAMEOBJECT& o) { return o->isDeleted; }
+
+#pragma endregion
 };

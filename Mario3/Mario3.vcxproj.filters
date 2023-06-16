@@ -332,6 +332,7 @@
     <Text Include="src\settings\objects\monsters\plant.txt" />
     <Text Include="src\settings\objects\items\bullet.txt" />
     <Text Include="src\settings\objects\platform.txt" />
+    <Text Include="src\settings\objects\items\leaf.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\assets\textures\misc_left.png">

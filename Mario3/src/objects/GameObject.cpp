@@ -17,7 +17,7 @@ CGameObject::CGameObject()
 	isDeleted = false;
 }
 
-void CGameObject::ResetPositionIfOutOfScreen(float& curr_x, float& curr_y) {
+void CGameObject::ResetPositionIfOutOfWidthScreen(float& curr_x, float& curr_y) {
 	float cam_x, cam_y;
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 	float left, top, right, bottom;

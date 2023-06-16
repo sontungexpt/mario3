@@ -28,6 +28,7 @@ class CMario : public CGameObject
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithDoor(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithPlatform(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushroom(LPCOLLISIONEVENT e);
@@ -69,6 +70,8 @@ public:
 	// states
 	void SetLevel(int l);
 	int GetLevel() { return level; }
+	void LevelUp() { level = MARIO_LEVEL_BIG; }
+	void LevelDown() { level = MARIO_LEVEL_SMALL; }
 	BOOLEAN IsSmall() { return level == MARIO_LEVEL_SMALL; };
 	BOOLEAN IsBig() { return level == MARIO_LEVEL_BIG; };
 	void Shrink() { SetLevel(MARIO_LEVEL_SMALL); }

@@ -10,6 +10,17 @@
 #include "scenes/LevelMapScene.h"
 
 CGame* CGame::__instance = NULL;
+ULONGLONG CGame::count_time = -1;
+ULONGLONG CGame::CountTime() {
+	if (count_time == -1)
+	{
+		count_time = GetTickCount64();
+		return count_time;
+	}
+	ULONGLONG time = GetTickCount64() - count_time;
+	count_time = -1;
+	return time;
+}
 
 /// <summary>
 /// Initialize DirectX,

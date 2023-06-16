@@ -18,7 +18,6 @@ public:
 		has_wind = TRUE;
 		is_on_platform = FALSE;
 		time_start = 0;
-
 		SetState(GOOMBA_STATE_FLY);
 	}
 

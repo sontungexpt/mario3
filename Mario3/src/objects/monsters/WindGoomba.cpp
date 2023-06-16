@@ -1,5 +1,7 @@
 #include "WindGoomba.h"
 #include "debug.h"
+#include "objects/items/Item.h"
+#include "objects/Platform.h"
 
 void CWindGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -46,7 +48,10 @@ void CWindGoomba::SetState(int state)
 	switch (state)
 	{
 	case GOOMBA_STATE_FLY:
+
 		time_start = GetTickCount64();
+		DebugOut(L"[ERROR]", state);
+
 		vx = CompareXWithMario() == 1 ? -fabs(vx) : fabs(vx);
 		vy = -GOOMBA_FLY_SPEED_Y;
 		ay = GRAVITY;
@@ -71,11 +76,11 @@ void CWindGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		return;
 
 	// if  it fall down from platform, then it can fly again
-	if (is_on_platform && GetTickCount64() - time_start > GOOMBA_TIME_FOR_EACH_FLY)
+	if (is_on_platform &&
+		GetTickCount64() - time_start > GOOMBA_TIME_FOR_EACH_FLY
+		)
 	{
 		SetState(GOOMBA_STATE_FLY);
-		is_on_platform = FALSE;
-		return;
 	}
 }
 
@@ -83,12 +88,17 @@ void CWindGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	CMonster::OnCollisionWith(e);
 
-	if (e->obj->IsBlocking())
+	if (!has_wind)return;
+	if (e->IsCollidedFromTop())
 	{
 		is_on_platform = TRUE;
-		ay = 0;
-		vy = 0;
-		return;
+		if (dynamic_cast<CItem*>(e->obj)) return;
+		else if (dynamic_cast<CMonster*>(e->obj)) return;
+		//else if (dynamic_cast<CPlatform*>(e->obj)) {
+		//	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
+		//	if (platform->CanBeSteppedOn())
+		//		is_on_platform = TRUE;
+		//}
 	}
 }
 
@@ -96,13 +106,13 @@ void CWindGoomba::Die()
 {
 	if (has_wind) {
 		CutWind();
-
 		// adjust height at new state
 		y -= GOOMBA_BBOX_HEIGHT_FLY - GOOMBA_BBOX_HEIGHT;
 		if (vx > 0)
 			SetState(MONSTER_STATE_WALKING_RIGHT);
 		else
 			SetState(MONSTER_STATE_WALKING_LEFT);
+		ay = GRAVITY;
 		return;
 	}
 	CGoomba::Die();

@@ -6,6 +6,8 @@
 #include "Mario.h"
 #include "Game.h"
 
+#include "objects/Platform.h"
+
 #include "monsters/Goomba.h"
 #include "monsters/Koopa.h"
 #include "monsters/Plant.h"
@@ -47,32 +49,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
-//void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
-//{
-//	// jump to hole
-//	if (y > SCREEN_HEIGHT)
-//	{
-//		DebugOut(L"Mario die\n");
-//		return;
-//	}
-//
-//	vy += ay * dt;
-//	vx += ax * dt;
-//
-//	if (abs(vx) > abs(max_vx)) vx = max_vx;
-//
-//	// reset untouchable timer if untouchable time has passed
-//	if (GetTickCount64() - time_untouchable_start > MARIO_UNTOUCHABLE_TIME)
-//	{
-//		time_untouchable_start = 0;
-//		untouchable = 0;
-//	}
-//
-//	is_on_platform = FALSE;
-//
-//	CCollision::GetInstance()->Process(this, dt, coObjects);
-//}
-
 void CMario::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
@@ -99,6 +75,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithBullet(e);
 	else if (dynamic_cast<CPlant*>(e->obj))
 		OnCollisionWithPlant(e);
+	else if (dynamic_cast<CPlatform*>(e->obj))
+		OnCollisionWithPlatform(e);
 
 	if (e->IsCollidedInYDimension() && e->obj->IsBlocking())
 	{
@@ -174,6 +152,14 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	if (e->IsCollidedFromBottom())
 	{
 		questionBrick->Bounce();
+	}
+}
+
+void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
+{
+	if (e->obj->IsCollidable() && e->IsCollidedFromTop())
+	{
+		DebugOut(L"collide");
 	}
 }
 
@@ -363,7 +349,7 @@ void CMario::Render()
 
 	LPANIMATION ani = animations->Get(aniId);
 
-	ResetPositionIfOutOfScreen(x, y);
+	ResetPositionIfOutOfWidthScreen(x, y);
 
 	if (ani != NULL)
 		ani->Render(x, y);
@@ -451,84 +437,7 @@ void CMario::SetState(int state)
 
 	CGameObject::SetState(state);
 }
-//void CMario::SetState(int state)
-//{
-//	// DIE is the end state, cannot be changed!
-//	if (this->IsDead()) return;
-//
-//	switch (state)
-//	{
-//	case MARIO_STATE_RUNNING_RIGHT:
-//		if (is_sitting) break;
-//		ax = MARIO_ACCEL_RUN_X;
-//		nx = 1;
-//		break;
-//	case MARIO_STATE_RUNNING_LEFT:
-//		if (is_sitting) break;
-//		ax = -MARIO_ACCEL_RUN_X;
-//		nx = -1;
-//		break;
-//	case MARIO_STATE_WALKING_RIGHT:
-//		if (is_sitting) break;
-//		ax = MARIO_ACCEL_WALK_X;
-//		nx = 1;
-//		break;
-//	case MARIO_STATE_WALKING_LEFT:
-//	{
-//		if (is_sitting) break;
-//		ax = -MARIO_ACCEL_WALK_X;
-//		nx = -1;
-//		break;
-//	}
-//	case MARIO_STATE_JUMP:
-//		if (is_sitting) break;
-//		if (is_on_platform)
-//		{
-//			if (abs(this->vx) == MARIO_RUNNING_SPEED)
-//				vy = -MARIO_JUMP_RUN_SPEED_Y;
-//			else
-//				vy = -MARIO_JUMP_SPEED_Y;
-//		}
-//		break;
-//
-//	case MARIO_STATE_RELEASE_JUMP:
-//		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
-//		break;
-//
-//	case MARIO_STATE_SIT:
-//		if (is_on_platform && level != MARIO_LEVEL_SMALL)
-//		{
-//			state = MARIO_STATE_IDLE;
-//			is_sitting = true;
-//			ax = 0.0f;
-//			vx = 0.0f;
-//			y += MARIO_SIT_HEIGHT_ADJUST;
-//		}
-//		break;
-//
-//	case MARIO_STATE_SIT_RELEASE:
-//		if (is_sitting)
-//		{
-//			is_sitting = false;
-//			state = MARIO_STATE_IDLE;
-//			y -= MARIO_SIT_HEIGHT_ADJUST;
-//		}
-//		break;
-//
-//	case MARIO_STATE_IDLE:
-//		ax = 0.0f;
-//		vx = 0.0f;
-//		break;
-//	case MARIO_STATE_DIE:
-//		vx = 0;
-//		ax = 0;
-//		dead = TRUE;
-//		vy = -MARIO_JUMP_DEFLECT_SPEED; //Mario jump deflect when die
-//		break;
-//	}
-//
-//	CGameObject::SetState(state);
-//}
+
 void CMario::Die()
 {
 	if (this->IsBig())

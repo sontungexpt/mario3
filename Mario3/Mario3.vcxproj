@@ -233,6 +233,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="src\settings\objects\items\leaf.txt" />
     <Text Include="src\settings\objects\materials\brick.txt" />
     <Text Include="src\settings\objects\materials\cloud.txt" />
     <Text Include="src\settings\objects\items\bullet.txt" />

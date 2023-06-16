@@ -194,6 +194,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			);
 			break;
 		}
+		else if (tokens.size() == 11)
+		{
+			int is_blocking = atoi(tokens[9].c_str());
+			BOOLEAN canbe_stepped = atoi(tokens[10].c_str());
+			obj = new CPlatform(
+				x, y,
+				cell_width, cell_height, length,
+				sprite_begin, sprite_middle, sprite_end,
+				is_blocking, canbe_stepped
+			);
+			break;
+		}
 		obj = new CPlatform(
 			x, y,
 			cell_width, cell_height, length,
@@ -299,10 +311,20 @@ void CPlayScene::Update(DWORD dt)
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way
 
+	// temp fix for render // mario is object 2 from the end
+	//int index_mario = objects.size() - 4;
+
 	vector<LPGAMEOBJECT> coObjects;
 
-	for (size_t i = 1; i < objects.size(); i++)
+	//for (size_t i = 1; i < objects.size(); i++)
+	//{
+	//	coObjects.push_back(objects[i]);
+	//}
+
+	for (size_t i = 0; i < objects.size(); i++)
 	{
+		if (dynamic_cast<CMario*>(objects[i]))
+			continue;
 		coObjects.push_back(objects[i]);
 	}
 
@@ -381,7 +403,6 @@ void CPlayScene::PurgeDeletedObjects()
 
 LPGAMEOBJECT CPlayScene::AddObject(LPGAMEOBJECT obj)
 {
-	// because mario is the 0th object in the
 	objects.push_back(obj);
 	return objects.back();
 }

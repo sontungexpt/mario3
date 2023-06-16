@@ -136,6 +136,8 @@ void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 		return;
 	}
 
+	if (dead) return;
+
 	vy += ay * dt;
 	vx += ax * dt;
 

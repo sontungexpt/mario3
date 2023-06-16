@@ -25,3 +25,5 @@ height	240
 50	src\assets\textures\enemies_2.png
 60	src\assets\textures\misc2-removebg.png
 70	src\assets\textures\misc3.png
+80	src\assets\textures\misc_right_rmbg.png
+

@@ -13,10 +13,10 @@ void CBullet::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (e->obj->IsBlocking())
 	{
-		this->SetIsColliable(0);
+		this->SetIsCollidable(0);
 		return;
 	}
-	this->SetIsColliable(1);
+	this->SetIsCollidable(1);
 
 	CItem::OnCollisionWith(e);
 }
