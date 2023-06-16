@@ -22,12 +22,6 @@ void CPipe::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	if (state == PIPE_SHORT_STATE) {
 		l = x - PIPE_BBOX_WIDTH / 2;
-		t = y - PIPE_BBOX_HEIGHT_SHORT / 2;
-		r = l + PIPE_BBOX_WIDTH;
-		b = t + PIPE_BBOX_HEIGHT_SHORT;
-	}
-	else {
-		l = x - PIPE_BBOX_WIDTH / 2;
 		t = y - PIPE_BBOX_HEIGHT_LONG / 2;
 		r = l + PIPE_BBOX_WIDTH;
 		b = t + PIPE_BBOX_HEIGHT_LONG;

@@ -229,20 +229,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="src\settings\objects\brick.txt" />
-    <Text Include="src\settings\objects\cloud.txt" />
+    <Text Include="src\settings\objects\materials\brick.txt" />
+    <Text Include="src\settings\objects\materials\cloud.txt" />
     <Text Include="src\settings\objects\items\bullet.txt" />
     <Text Include="src\settings\objects\items\coin.txt" />
-    <Text Include="src\settings\objects\door.txt" />
+    <Text Include="src\settings\objects\materials\door.txt" />
     <Text Include="src\settings\objects\monsters\goomba.txt" />
     <Text Include="src\settings\game-mario.txt" />
-    <Text Include="src\settings\objects\grass.txt" />
+    <Text Include="src\settings\objects\materials\grass.txt" />
     <Text Include="src\settings\objects\items\mushroom.txt" />
     <Text Include="src\settings\objects\monsters\koopa.txt" />
     <Text Include="src\settings\objects\mario.txt" />
-    <Text Include="src\settings\objects\pipe.txt" />
+    <Text Include="src\settings\objects\materials\pipe.txt" />
     <Text Include="src\settings\objects\monsters\plant.txt" />
-    <Text Include="src\settings\objects\question_brick.txt" />
+    <Text Include="src\settings\objects\materials\question_brick.txt" />
+    <Text Include="src\settings\objects\platform.txt" />
     <Text Include="src\settings\scenes\scene05.txt" />
     <Text Include="src\settings\scenes\scene01.txt" />
     <Text Include="src\settings\scenes\scene02.txt" />

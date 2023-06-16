@@ -9,17 +9,9 @@ void CPlant::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	if (isDeleted) return; // notthing to get
 
 	left = x - PLANT_BBOX_WIDTH / 2;
-	top = y - PLANT_BBOX_HEIGHT / 2 + 4;
+	top = y - PLANT_BBOX_HEIGHT / 2;
 	right = left + PLANT_BBOX_WIDTH;
 	bottom = top + PLANT_BBOX_HEIGHT;
-}
-
-void CPlant::OnCollisionWith(LPCOLLISIONEVENT e)
-{
-	if (dynamic_cast<CPipe*>(e->obj))
-		return;
-
-	CMonster::OnCollisionWith(e);
 }
 
 void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -59,8 +51,8 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (!is_shooted)
 			{
 				if (GetTickCount64() - time_reload_bullet_start > TIME_RELOAD_BULLET) {
-					float bullet_y = y + 2;
-					float bullet_x = CompareXWithMario() == 1 ? x - 2 : x + GetWidth();
+					float bullet_y = y - 4;
+					float bullet_x = CompareXWithMario() == 1 ? x - GetWidth() / 2 - 2 : x + GetWidth() / 2 + 2;
 
 					CBullet* bullet = (CBullet*)scene->AddObject(new CBullet(bullet_x, bullet_y));
 
@@ -157,7 +149,7 @@ int CPlant::CompareXWithMario()
 
 	if (mario == NULL) return -2;
 
-	if (mario->GetX() < x)return 1; // plant right mario
+	if (mario->GetX() < x) return 1; // plant right mario
 	else if (mario->GetX() > y)	return -1; // plant left mario
 	else return 0; // plant and mario in same position
 }

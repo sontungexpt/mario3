@@ -1,9 +1,11 @@
 #include "Bullet.h"
 #include "configs/Mario.h"
 #include "objects/Platform.h"
+#include "objects/Mario.h"
 
 void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
+	if (!IsInCamera()) return; // lazy load
 	CItem::Update(dt, co_objects);
 }
 
@@ -17,6 +19,11 @@ void CBullet::OnCollisionWith(LPCOLLISIONEVENT e)
 	this->SetIsColliable(1);
 
 	CItem::OnCollisionWith(e);
+}
+
+void CBullet::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
+{
+	//DebugOut(L"[INFO] Bullet::OnCollisionWithPlayer\n");
 }
 
 void CBullet::Render()

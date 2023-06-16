@@ -1,8 +1,7 @@
 #pragma once
 
 #define PIPE_BBOX_WIDTH 32
-#define PIPE_BBOX_HEIGHT_SHORT 32
-#define	PIPE_BBOX_HEIGHT_LONG 48
+#define PIPE_BBOX_HEIGHT_LONG 48
 
 // state
 #define PIPE_SHORT_STATE 1

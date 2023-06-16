@@ -8,7 +8,7 @@ protected:
 	float target_x;
 	float target_y;
 
-	void OnCollisionWithPlayer(LPCOLLISIONEVENT e) {};
+	void OnCollisionWithPlayer(LPCOLLISIONEVENT e);
 
 public:
 	CBullet(float x, float y) : CItem(x, y) {

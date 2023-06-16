@@ -1,7 +1,7 @@
 #pragma once
 
 // bounding box size
-#define PLANT_BBOX_WIDTH 28
+#define PLANT_BBOX_WIDTH 16
 #define PLANT_BBOX_HEIGHT 32
 
 // speed and other
@@ -9,8 +9,8 @@
 #define DISTANCE_PIPE_LONG_SHORT 8
 
 // time out
-#define TIME_OUT_UP_STATE 5000 // the time between after down and then up
-#define TIME_OUT_DOWN_STATE 3000	// the time between after up and then down
+#define TIME_OUT_UP_STATE 7000 // the time between after down and then up
+#define TIME_OUT_DOWN_STATE 10000	// the time between after up and then down
 #define TIME_RELOAD_BULLET 100
 
 // type

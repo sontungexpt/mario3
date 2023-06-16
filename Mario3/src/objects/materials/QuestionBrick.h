@@ -29,7 +29,7 @@ public:
 	};
 
 	float GetItemReferenceY(CItem* item) { return y - item->GetHeight() - 1; };
-	float GetItemReferenceX(CItem* item) { return x - item->GetWidth() / 2 + 1; };
+	float GetItemReferenceX(CItem* item) { return x; };
 
 	// core
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);

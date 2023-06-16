@@ -1,8 +1,9 @@
 #pragma once
 #include "scenes/PlayScene.h"
 #include "objects/GameObject.h"
-#include "configs/materials/Pipe10100.h"
+
 #include "objects/monsters/Plant.h"
+#include "configs/materials/Pipe10100.h"
 
 class CPipe : public CGameObject
 {
@@ -17,14 +18,13 @@ public:
 		{
 			DebugOut(L"create plant");
 			LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-
-			// create plant
-			float plant_x = (x + GetWidth() / 2 - PLANT_BBOX_WIDTH / 2);
-			float plant_y = y + 3;
-
-			CPlant* plant = (CPlant*)scene->AddObject(new CPlant(plant_x, plant_y, PLANT_STATE_DOWN));
+			//
+			// y + 1 to make plant y alway > pipe y then it will never be collide with pipe and it can move down
+			CPlant* plant = (CPlant*)scene->AddObject(new CPlant(x, y - (GetHeight() / 2 - PLANT_BBOX_HEIGHT / 2) + 1, PLANT_STATE_DOWN));
 		}
 	};
+	int IsCollidable() { return is_collidable; };
+	int IsBlocking() { return 1; }
 
 	void Render();
 	void Update(DWORD dt) {}

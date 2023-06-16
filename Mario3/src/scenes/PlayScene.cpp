@@ -171,6 +171,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int sprite_begin = atoi(tokens[6].c_str());
 		int sprite_middle = atoi(tokens[7].c_str());
 		int sprite_end = atoi(tokens[8].c_str());
+		if (tokens.size() == 10)
+		{
+			int is_blocking = atoi(tokens[9].c_str());
+			obj = new CPlatform(
+				x, y,
+				cell_width, cell_height, length,
+				sprite_begin, sprite_middle, sprite_end,
+				is_blocking
+			);
+			break;
+		}
 		obj = new CPlatform(
 			x, y,
 			cell_width, cell_height, length,
@@ -358,6 +369,7 @@ void CPlayScene::PurgeDeletedObjects()
 
 LPGAMEOBJECT CPlayScene::AddObject(LPGAMEOBJECT obj)
 {
+	// because mario is the 0th object in the
 	objects.push_back(obj);
-	return objects[objects.size() - 1];
+	return objects.back();
 }
