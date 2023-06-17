@@ -2,15 +2,17 @@
 #include "Brick.h"
 #include "configs/materials/QuestionBrick100000.h"
 #include "objects/items/Item.h"
+
 class CQuestionBrick : public CBrick
 {
 private:
-	BOOLEAN is_unboxed = FALSE;
+	BOOLEAN is_unboxed;
+
 	int item_type;
 
-	// the value of y at the first time the brick is colliding with mario
+	// the value of y at the first time the brick bounce
 	// NOTE: it is the top-left corner of the brick
-	float orginal_y;
+	float start_y;
 
 	float ax;
 	float ay;
@@ -23,7 +25,7 @@ public:
 		is_unboxed = FALSE;
 		this->item_type = item_type;
 
-		orginal_y = y;
+		start_y = y;
 		ax = 0;
 		ay = 0;
 	};

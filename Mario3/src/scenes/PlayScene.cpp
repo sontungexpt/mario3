@@ -185,24 +185,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int sprite_end = atoi(tokens[8].c_str());
 		if (tokens.size() == 10)
 		{
-			int is_blocking = atoi(tokens[9].c_str());
+			BOOLEAN canbe_stepped = atoi(tokens[9].c_str());
 			obj = new CPlatform(
 				x, y,
 				cell_width, cell_height, length,
 				sprite_begin, sprite_middle, sprite_end,
-				is_blocking
-			);
-			break;
-		}
-		else if (tokens.size() == 11)
-		{
-			int is_blocking = atoi(tokens[9].c_str());
-			BOOLEAN canbe_stepped = atoi(tokens[10].c_str());
-			obj = new CPlatform(
-				x, y,
-				cell_width, cell_height, length,
-				sprite_begin, sprite_middle, sprite_end,
-				is_blocking, canbe_stepped
+				canbe_stepped
 			);
 			break;
 		}

@@ -36,7 +36,7 @@ private:
 		min_y = start_y - PLANT_BBOX_HEIGHT;
 	};
 
-	void AdjustHeight() {};
+	void AdjustY() {};
 public:
 	CPlant(float x, float y) : CMonster(x, y) {
 		Init(y);

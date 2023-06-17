@@ -17,7 +17,7 @@ void CQuestionBrick::GetBoundingBox(float& left, float& top, float& right, float
 
 void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
-	if (!is_unboxed)return;
+	if (!is_unboxed) return;
 
 	vx += ax * dt;
 	vy += ay * dt;
@@ -34,7 +34,8 @@ void CQuestionBrick::OnNoCollision(DWORD dt)
 	x += vx * dt;
 	y += vy * dt;
 
-	if (y > orginal_y)
+	// make sure that the question brick can't fall
+	if (y >= start_y)
 	{
 		Disable();
 	}
@@ -63,8 +64,10 @@ void CQuestionBrick::SetState(int state)
 	{
 	case QUESTION_BRICK_STATE_UNBOXING:
 	{
+		if (is_unboxed) return; // can not open anymore
+
 		is_unboxed = TRUE;
-		orginal_y = y;
+		start_y = y;
 
 		// this is the first velocity of brick  when mario collides with the brick
 		vy = -QUESTION_BRICK_SPEED;
@@ -93,12 +96,18 @@ void CQuestionBrick::SetState(int state)
 		break;
 		case QUESTION_BRICK_NONE:
 			break;
+		default:
+			DebugOut(L"[ERROR] Can not handle item_type of question brick in CQuestionBrick::SetState(int state): ", item_type);
+			break;
 		}
 	}
 	break;
 	case QUESTION_BRICK_STATE_DISABLED:
+		y = start_y;
 		vy = 0;
-		y = orginal_y;
+		ay = 0;
+		ax = 0;
+		vx = 0;
 		break;
 	}
 }

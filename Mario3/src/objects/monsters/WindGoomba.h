@@ -12,7 +12,7 @@ private:
 	ULONGLONG time_start;
 	BOOLEAN is_on_platform;
 
-	void AdjustHeight() {};
+	void AdjustY() {};
 public:
 
 	CWindGoomba(float x, float y) :CGoomba(x, y) {

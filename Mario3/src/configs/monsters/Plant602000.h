@@ -9,8 +9,8 @@
 #define DISTANCE_PIPE_LONG_SHORT 8
 
 // time out
-#define TIME_OUT_UP_STATE 7000 // the time between after down and then up
-#define TIME_OUT_DOWN_STATE 10000	// the time between after up and then down
+#define TIME_OUT_UP_STATE 5000 // the time between after down and then up
+#define TIME_OUT_DOWN_STATE 90000	// the time between after up and then down
 #define TIME_RELOAD_BULLET 100
 
 // type

@@ -27,8 +27,6 @@ protected:
 	float vy;
 	// end refactor
 
-	int nx;
-
 	bool isDeleted;
 
 	virtual void ResetPositionIfOutOfWidthScreen(float& curr_x, float& curr_y);

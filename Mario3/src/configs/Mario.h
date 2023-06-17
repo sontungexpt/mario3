@@ -1,9 +1,11 @@
 #pragma once
 #define GROUND_Y 160.0f
 
+// levels
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
 
+//appearances
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
 #define MARIO_BIG_SITTING_BBOX_WIDTH  14
@@ -42,6 +44,9 @@
 
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
+
+#define MARIO_STATE_HOLDING_KOOPA	700
+#define MARIO_STATE_HOLDING_KOOPA_RELEASE	701
 
 #pragma region ANIMATION_ID
 

@@ -10,18 +10,20 @@ private:
 	BOOLEAN is_defend;
 	BOOLEAN is_comback;
 	BOOLEAN is_mario_kicked;
+	BOOLEAN is_mario_holding;
 
 	float mario_speed_when_kicked;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
-	void AdjustHeight();
+	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
+	void AdjustY();
 
 public:
 	CKoopa(float x, float y) : CMonster(x, y) {
 		is_defend = FALSE;
 		is_comback = FALSE;
 		is_mario_kicked = FALSE;
-
+		is_mario_holding = FALSE;
 		max_speed = KOOPA_MAX_SPEED;
 
 		defend_time = -1;
@@ -46,6 +48,8 @@ public:
 		mario_speed_when_kicked = v;
 		SetState(KOOPA_STATE_IS_KICKED);
 	};
+
+	void BeHold() { SetState(KOOPA_STATE_IS_HOLDING); }
 	BOOLEAN IsMarioKicked() { return is_mario_kicked; }
 	void CombackAfterDefend() { SetState(KOOPA_STATE_COMEBACK); };
 	void MoveRight() { SetState(MONSTER_STATE_WALKING_RIGHT); };

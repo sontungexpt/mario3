@@ -7,10 +7,9 @@
 #include "Game.h"
 
 #include "objects/Platform.h"
-
 #include "monsters/Goomba.h"
-#include "monsters/Koopa.h"
 #include "monsters/Plant.h"
+#include "monsters/Koopa.h"
 
 #include "items/Bullet.h"
 #include "items/Coin.h"
@@ -23,32 +22,6 @@
 #include "configs/monsters/Gommba600000.h"
 #include "configs/materials/QuestionBrick100000.h"
 
-void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
-{
-	// jump to hole
-	if (y > SCREEN_HEIGHT)
-	{
-		DebugOut(L"Mario die\n");
-		return;
-	}
-
-	vy += ay * dt;
-	vx += ax * dt;
-
-	if (abs(vx) > abs(max_vx)) vx = max_vx;
-
-	// reset untouchable timer if untouchable time has passed
-	if (GetTickCount64() - time_untouchable_start > MARIO_UNTOUCHABLE_TIME)
-	{
-		time_untouchable_start = 0;
-		untouchable = 0;
-	}
-
-	is_on_platform = FALSE;
-
-	CCollision::GetInstance()->Process(this, dt, coObjects);
-}
-
 void CMario::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
@@ -57,6 +30,25 @@ void CMario::OnNoCollision(DWORD dt)
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	// collide in y dimension and the object is a blocking object like platform
+	if (e->obj->IsBlocking())
+	{
+		if (e->IsCollidedInYDimension())
+		{
+			if (e->IsCollidedFromTop())
+			{
+				is_on_platform = true;
+			}
+
+			vy = 0;
+		}
+
+		else if (e->IsCollidedInXDimension())
+		{
+			vx = 0;
+		}
+	}
+
 	// monster
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
@@ -77,27 +69,12 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithDoor(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
-	else if (dynamic_cast<CPlatform*>(e->obj))
-		OnCollisionWithPlatform(e);
-
-	// collide in y dimension and the object is a blocking object like platform
-	if (e->IsCollidedInYDimension() && e->obj->IsBlocking())
-	{
-		vy = 0;
-		if (e->IsCollidedFromTop()) is_on_platform = true;
-	}
-
-	else if (e->IsCollidedInXDimension() && e->obj->IsBlocking())
-	{
-		vx = 0;
-	}
 }
 
 // collision with monster
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
-
 	if (!koopa->IsDefend())
 	{
 		if (e->IsCollidedFromTop())
@@ -118,18 +95,32 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	// koopa is defend
 	// koopa is kicked by mario then it can kill any thing
 	// on the road include mario and another monster
+	// exclude that mario is collide on top koopa
+
 	if (koopa->IsMarioKicked())
 	{
+		if (e->IsCollidedFromTop())
+		{
+			this->JumpDeflect();
+			return;
+		}
 		this->Die();
 		return;
 	}
+	else {
+		if (is_want_holding_koopa)
+		{
+			koopa->BeHold();
+			return;
+		}
+	}
+
+	// mario is not kick then kick koopa
 	koopa->BeKick(vx);
 }
 
 void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
-	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
-
 	this->Die();
 }
 
@@ -211,14 +202,6 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	}
 }
 
-void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
-{
-	if (e->obj->IsCollidable() && e->IsCollidedFromTop())
-	{
-		//DebugOut(L"collide");
-	}
-}
-
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
@@ -230,13 +213,12 @@ void CMario::OnCollisionWithDoor(LPCOLLISIONEVENT e) {
 	CGame::GetInstance()->InitiateSwitchScene(door->GetSceneId());
 }
 
-//
 int CMario::GetAniIdSmall()
 {
 	int aniId = -1;
 	if (!is_on_platform)
 	{
-		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		if (fabs(ax) == MARIO_ACCEL_RUN_X)
 		{
 			if (nx >= 0)
 				aniId = ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT;
@@ -252,6 +234,7 @@ int CMario::GetAniIdSmall()
 		}
 	}
 	else
+	{
 		if (is_sitting)
 		{
 			if (nx > 0)
@@ -285,6 +268,7 @@ int CMario::GetAniIdSmall()
 					aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
 			}
 		}
+	}
 
 	if (aniId == -1) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
 
@@ -312,6 +296,7 @@ int CMario::GetAniIdBig()
 		}
 	}
 	else
+	{
 		if (is_sitting)
 		{
 			if (nx > 0)
@@ -320,6 +305,7 @@ int CMario::GetAniIdBig()
 				aniId = ID_ANI_MARIO_SIT_LEFT;
 		}
 		else
+		{
 			if (vx == 0)
 			{
 				if (nx > 0) aniId = ID_ANI_MARIO_IDLE_RIGHT;
@@ -343,6 +329,8 @@ int CMario::GetAniIdBig()
 				else if (ax == -MARIO_ACCEL_WALK_X)
 					aniId = ID_ANI_MARIO_WALKING_LEFT;
 			}
+		}
+	}
 
 	if (aniId == -1) {
 		aniId = ID_ANI_MARIO_IDLE_RIGHT;
@@ -353,7 +341,6 @@ int CMario::GetAniIdBig()
 
 void CMario::Render()
 {
-	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = -1;
 
 	if (state == MARIO_STATE_DIE)
@@ -363,6 +350,7 @@ void CMario::Render()
 	else if (level == MARIO_LEVEL_SMALL)
 		aniId = GetAniIdSmall();
 
+	CAnimations* animations = CAnimations::GetInstance();
 	LPANIMATION ani = animations->Get(aniId);
 
 	ResetPositionIfOutOfWidthScreen(x, y);
@@ -373,6 +361,34 @@ void CMario::Render()
 	DebugOutTitle(L"Coins: %d", coin);
 }
 
+void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	// jump to hole
+	if (y > SCREEN_HEIGHT)
+	{
+		DebugOut(L"Mario die\n");
+		return;
+	}
+
+	vy += ay * dt;
+	vx += ax * dt;
+
+	// cannot exceed the allowed speed
+	if (fabs(vx) > fabs(max_vx))
+		vx = max_vx;
+
+	// reset untouchable timer if untouchable time has passed
+	if (GetTickCount64() - time_untouchable_start > MARIO_UNTOUCHABLE_TIME)
+	{
+		time_untouchable_start = 0;
+		untouchable = 0;
+	}
+
+	is_on_platform = FALSE;
+
+	CCollision::GetInstance()->Process(this, dt, coObjects);
+}
+
 void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed!
@@ -380,6 +396,12 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
+	case MARIO_STATE_HOLDING_KOOPA:
+		is_want_holding_koopa = TRUE;
+		break;
+	case MARIO_STATE_HOLDING_KOOPA_RELEASE:
+		is_want_holding_koopa = FALSE;
+		break;
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (is_sitting) break;
 		max_vx = MARIO_RUNNING_SPEED;
@@ -410,7 +432,7 @@ void CMario::SetState(int state)
 		if (is_sitting) break;
 		if (is_on_platform)
 		{
-			if (abs(this->vx) == MARIO_RUNNING_SPEED)
+			if (fabs(vx) == MARIO_RUNNING_SPEED)
 				vy = -MARIO_JUMP_RUN_SPEED_Y;
 			else
 				vy = -MARIO_JUMP_SPEED_Y;
@@ -424,22 +446,20 @@ void CMario::SetState(int state)
 	case MARIO_STATE_SIT:
 		if (is_on_platform && level != MARIO_LEVEL_SMALL)
 		{
-			state = MARIO_STATE_IDLE;
 			is_sitting = true;
 			vx = 0; vy = 0.0f;
 			y += MARIO_SIT_HEIGHT_ADJUST;
+			SetState(MARIO_STATE_IDLE);
 		}
 		break;
-
 	case MARIO_STATE_SIT_RELEASE:
 		if (is_sitting)
 		{
 			is_sitting = false;
-			state = MARIO_STATE_IDLE;
 			y -= MARIO_SIT_HEIGHT_ADJUST;
+			SetState(MARIO_STATE_IDLE);
 		}
 		break;
-
 	case MARIO_STATE_IDLE:
 		ax = 0.0f;
 		vx = 0.0f;
@@ -496,7 +516,7 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 void CMario::SetLevel(int l)
 {
 	// Adjust position to avoid falling off platform
-	if (this->level == MARIO_LEVEL_SMALL)
+	if (level == MARIO_LEVEL_SMALL)
 	{
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
