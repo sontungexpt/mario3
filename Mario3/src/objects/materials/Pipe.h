@@ -20,7 +20,7 @@ public:
 			LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 			//
 			// y + 1 to make plant y alway > pipe y then it will never be collide with pipe and it can move down
-			CPlant* plant = (CPlant*)scene->AddObject(new CPlant(x, y - (GetHeight() / 2 - PLANT_BBOX_HEIGHT / 2) + 1, PLANT_STATE_DOWN));
+			CPlant* plant = (CPlant*)scene->AddObject(new CPlant(x, y - (GetHeight() - PLANT_BBOX_HEIGHT) / 2 + 1, PLANT_STATE_DOWN));
 		}
 	};
 	int IsCollidable() { return is_collidable; };

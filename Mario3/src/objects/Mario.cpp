@@ -57,27 +57,30 @@ void CMario::OnNoCollision(DWORD dt)
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	// monster
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
+	else if (dynamic_cast<CPlant*>(e->obj))
+		OnCollisionWithPlant(e);
+	else if (dynamic_cast<CKoopa*>(e->obj))
+		OnCollisionWithKoopa(e);
+	// items
 	else if (dynamic_cast<CCoin*>(e->obj))
 		OnCollisionWithCoin(e);
+	else if (dynamic_cast<CMushroom*>(e->obj))
+		OnCollisionWithMushroom(e);
+	else if (dynamic_cast<CBullet*>(e->obj))
+		OnCollisionWithBullet(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CDoor*>(e->obj))
 		OnCollisionWithDoor(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
-	else if (dynamic_cast<CKoopa*>(e->obj))
-		OnCollisionWithKoopa(e);
-	else if (dynamic_cast<CMushroom*>(e->obj))
-		OnCollisionWithMushroom(e);
-	else if (dynamic_cast<CBullet*>(e->obj))
-		OnCollisionWithBullet(e);
-	else if (dynamic_cast<CPlant*>(e->obj))
-		OnCollisionWithPlant(e);
 	else if (dynamic_cast<CPlatform*>(e->obj))
 		OnCollisionWithPlatform(e);
 
+	// collide in y dimension and the object is a blocking object like platform
 	if (e->IsCollidedInYDimension() && e->obj->IsBlocking())
 	{
 		vy = 0;
@@ -90,41 +93,37 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 }
 
-void CMario::OnCollisionWithBullet(LPCOLLISIONEVENT e)
-{
-	if (level > MARIO_LEVEL_SMALL)
-	{
-		level = MARIO_LEVEL_SMALL;
-		StartUntouchable();
-	}
-	else
-	{
-		DebugOut(L">>> Mario DIE >>> \n");
-		SetState(MARIO_STATE_DIE);
-	}
-}
-
+// collision with monster
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 
-	if (e->IsCollidedFromTop())
+	if (!koopa->IsDefend())
 	{
-		if (!koopa->IsDefend())
+		if (e->IsCollidedFromTop())
 		{
 			koopa->Defend();
 			this->JumpDeflect();
+			return;
 		}
+
+		// hit by Goomba
+		if (untouchable) return;
+
+		// not untouchable -> can die
+		this->Die();
+		return;
 	}
-	else // hit by Goomba
+
+	// koopa is defend
+	// koopa is kicked by mario then it can kill any thing
+	// on the road include mario and another monster
+	if (koopa->IsMarioKicked())
 	{
-		if (!untouchable) // not untouchable -> can die
-		{
-			if (koopa->IsDefend() && !koopa->IsMarioKicked()) {
-				koopa->BeKick(vx);
-			}
-		}
+		this->Die();
+		return;
 	}
+	koopa->BeKick(vx);
 }
 
 void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
@@ -132,35 +131,6 @@ void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
 
 	this->Die();
-}
-
-void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
-{
-	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
-
-	if (this->IsSmall())
-		this->Zoom();
-	mushroom->Delete();
-}
-
-void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
-{
-	CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
-	if (questionBrick->GetIsUnbox()) return; // if question brick is unbox, return immediately
-
-	// not unbox, check collision
-	if (e->IsCollidedFromBottom())
-	{
-		questionBrick->Bounce();
-	}
-}
-
-void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
-{
-	if (e->obj->IsCollidable() && e->IsCollidedFromTop())
-	{
-		DebugOut(L"collide");
-	}
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -194,6 +164,21 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	}
 }
 
+// collision with items
+void CMario::OnCollisionWithBullet(LPCOLLISIONEVENT e)
+{
+	if (level > MARIO_LEVEL_SMALL)
+	{
+		level = MARIO_LEVEL_SMALL;
+		StartUntouchable();
+	}
+	else
+	{
+		DebugOut(L">>> Mario DIE >>> \n");
+		SetState(MARIO_STATE_DIE);
+	}
+}
+
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
 	DebugOut(L"Collision with coin");
@@ -201,6 +186,36 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 	{
 		e->obj->Delete();
 		coin++;
+	}
+}
+
+void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
+{
+	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
+
+	if (this->IsSmall())
+		this->Zoom();
+	mushroom->Delete();
+}
+
+// collision with materials
+void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
+{
+	CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
+	if (questionBrick->GetIsUnbox()) return; // if question brick is unbox, return immediately
+
+	// not unbox, check collision
+	if (e->IsCollidedFromBottom())
+	{
+		questionBrick->Bounce();
+	}
+}
+
+void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
+{
+	if (e->obj->IsCollidable() && e->IsCollidedFromTop())
+	{
+		//DebugOut(L"collide");
 	}
 }
 
@@ -215,6 +230,7 @@ void CMario::OnCollisionWithDoor(LPCOLLISIONEVENT e) {
 	CGame::GetInstance()->InitiateSwitchScene(door->GetSceneId());
 }
 
+//
 int CMario::GetAniIdSmall()
 {
 	int aniId = -1;

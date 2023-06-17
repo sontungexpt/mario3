@@ -14,6 +14,7 @@ private:
 	float mario_speed_when_kicked;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void AdjustHeight();
 
 public:
 	CKoopa(float x, float y) : CMonster(x, y) {
@@ -52,5 +53,4 @@ public:
 
 	// reset to default state
 	void Reset();
-	void AdjustHeight();
 };

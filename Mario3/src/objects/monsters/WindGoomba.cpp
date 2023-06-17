@@ -48,10 +48,7 @@ void CWindGoomba::SetState(int state)
 	switch (state)
 	{
 	case GOOMBA_STATE_FLY:
-
 		time_start = GetTickCount64();
-		DebugOut(L"[ERROR]", state);
-
 		vx = CompareXWithMario() == 1 ? -fabs(vx) : fabs(vx);
 		vy = -GOOMBA_FLY_SPEED_Y;
 		ay = GRAVITY;
@@ -91,9 +88,9 @@ void CWindGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (!has_wind)return;
 	if (e->IsCollidedFromTop())
 	{
-		is_on_platform = TRUE;
 		if (dynamic_cast<CItem*>(e->obj)) return;
 		else if (dynamic_cast<CMonster*>(e->obj)) return;
+		is_on_platform = TRUE;
 		//else if (dynamic_cast<CPlatform*>(e->obj)) {
 		//	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 		//	if (platform->CanBeSteppedOn())

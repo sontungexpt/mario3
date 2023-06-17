@@ -132,8 +132,8 @@ src\settings\objects\monsters\goomba.txt
 8	220	80	1
 8	236	80	2
 
-8	650	162	1
-8	740	105	2
+8	650	162	2
+8	740	105	1
 
 # Pipe
 9	352	160	11

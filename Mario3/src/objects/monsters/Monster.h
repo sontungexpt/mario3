@@ -32,6 +32,7 @@ protected:
 	BOOLEAN is_enemy; // is enemy with mario or not
 	float disapear_time; // time to disappear after dead
 
+	virtual void AdjustHeight() = 0; // adjust height when change animation render
 public:
 
 	CMonster(float x, float y, float disapear_time = MONSTER_DISAPPEAR_TIME) : CGameObject(x, y)

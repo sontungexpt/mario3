@@ -28,8 +28,12 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<CMario*>(e->obj))
 	{
-		DebugOut(L"[INFO] Item::OnCollisionWithPlayer\n");
-
+		DebugOut(L"[INFO] KOOPA::OnCollisionWithPlayer\n");
+		return;
+	}
+	else if (dynamic_cast<CGoomba*>(e->obj))
+	{
+		OnCollisionWithGoomba(e);
 		return;
 	};
 
@@ -52,10 +56,10 @@ void CKoopa::AdjustHeight() {
 	switch (state)
 	{
 	case KOOPA_STATE_DEFEND:
-		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2;
+		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2 - 1;
 		break;
 	case KOOPA_STATE_COMEBACK:
-		y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2;
+		y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2 + 1;
 		break;
 	}
 }
@@ -79,6 +83,9 @@ void CKoopa::Render()
 		break;
 	case KOOPA_STATE_COMEBACK:
 		aniId = ID_ANI_KOOPA_COMEBACK;
+		break;
+	default:
+		DebugOut(L"[ERROR] Can not handle state %d, ", state);
 		break;
 	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
