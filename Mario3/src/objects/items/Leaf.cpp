@@ -12,7 +12,7 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 		is_falling = TRUE;
 	}
 
-	if (fabs(x - start_x) >= LEAF_MAX__FALING_WIDTH)
+	if (fabs(x - start_x) >= LEAF_MAX_FALING_WIDTH)
 	{
 		vx = -vx;
 		ax = -ax;

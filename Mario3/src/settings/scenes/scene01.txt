@@ -126,14 +126,14 @@ src\settings\objects\monsters\goomba.txt
 
 # Question Brick
 # type	x	y	item_type
-8	170	130	2
-8	186	130	2
+8	170	130	1
+8	186	130	1
 
-8	220	80	2
+8	220	80	1
 8	236	80	2
 
-8	650	162
-8	740	105
+8	650	162	1
+8	740	105	2
 
 # Pipe
 9	352	160	11

@@ -4,7 +4,7 @@
 #define LEAF_BBOX_HEIGHT 14
 
 #define LEAF_MAX_FLY_HEIGHT 40.0f
-#define LEAF_MAX__FALING_WIDTH 15.0f
+#define LEAF_MAX_FALING_WIDTH 20.0f
 
 #define LEAF_SPEED_Y 0.25f
 #define LEAF_SPEED_X 0.6f
