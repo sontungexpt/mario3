@@ -21,7 +21,7 @@ void CWindGoomba::Render()
 {
 	if (!IsInCamera())
 		return;
-	if (isDeleted)
+	if (is_deleted)
 		return;
 
 	CGoomba::Render();
@@ -64,7 +64,7 @@ void CWindGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (!IsInCamera())
 		return;
-	if (isDeleted)
+	if (is_deleted)
 		return;
 
 	CMonster::Update(dt, coObjects);

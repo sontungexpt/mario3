@@ -5,11 +5,12 @@
 
 #define BLOCK_PUSH_FACTOR 0.4f
 
-CCollision* CCollision::__instance = NULL;
+CCollision* CCollision::__instance = nullptr;
 
 CCollision* CCollision::GetInstance()
 {
-	if (__instance == NULL) __instance = new CCollision();
+	if (__instance == nullptr)
+		__instance = new CCollision();
 	return __instance;
 }
 
@@ -187,7 +188,7 @@ void CCollision::Filter(LPGAMEOBJECT objSrc,
 	for (UINT i = 0; i < coEvents.size(); i++)
 	{
 		LPCOLLISIONEVENT c = coEvents[i];
-		if (c->isDeleted) continue;
+		if (c->is_deleted) continue;
 		if (c->obj->IsDeleted()) continue;
 
 		// ignore collision event with object having IsBlocking = 0 (like coin, mushroom, etc)
@@ -216,8 +217,8 @@ void CCollision::Filter(LPGAMEOBJECT objSrc,
 void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vector<LPCOLLISIONEVENT> coEvents;
-	LPCOLLISIONEVENT colX = NULL;
-	LPCOLLISIONEVENT colY = NULL;
+	LPCOLLISIONEVENT colX = nullptr;
+	LPCOLLISIONEVENT colY = nullptr;
 
 	coEvents.clear();
 
@@ -241,7 +242,7 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 		dx = vx * dt;
 		dy = vy * dt;
 
-		if (colX != NULL && colY != NULL)
+		if (colX != nullptr && colY != nullptr)
 		{
 			if (colY->t < colX->t)	// was collision on Y first ?
 			{
@@ -253,12 +254,12 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 				//
 				// see if after correction on Y, is there still a collision on X ?
 				//
-				LPCOLLISIONEVENT colX_other = NULL;
+				LPCOLLISIONEVENT colX_other = nullptr;
 
 				//
 				// check again if there is true collision on X
 				//
-				colX->isDeleted = true;		// remove current collision event on X
+				colX->is_deleted = true;		// remove current collision event on X
 
 				// replace with a new collision event using corrected location
 				coEvents.push_back(SweptAABB(objSrc, dt, colX->obj));
@@ -266,7 +267,7 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 				// re-filter on X only
 				Filter(objSrc, coEvents, colX_other, colY, /*filterBlock = */ 1, 1, /*filterY=*/0);
 
-				if (colX_other != NULL)
+				if (colX_other != nullptr)
 				{
 					x += colX_other->t * dx + colX_other->nx * BLOCK_PUSH_FACTOR;
 					objSrc->OnCollisionWith(colX_other);
@@ -286,12 +287,12 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 				//
 				// see if after correction on X, is there still a collision on Y ?
 				//
-				LPCOLLISIONEVENT colY_other = NULL;
+				LPCOLLISIONEVENT colY_other = nullptr;
 
 				//
 				// check again if there is true collision on Y
 				//
-				colY->isDeleted = true;		// remove current collision event on Y
+				colY->is_deleted = true;		// remove current collision event on Y
 
 				// replace with a new collision event using corrected location
 				coEvents.push_back(SweptAABB(objSrc, dt, colY->obj));
@@ -299,7 +300,7 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 				// re-filter on Y only
 				Filter(objSrc, coEvents, colX, colY_other, /*filterBlock = */ 1, /*filterX=*/0, /*filterY=*/1);
 
-				if (colY_other != NULL)
+				if (colY_other != nullptr)
 				{
 					y += colY_other->t * dy + colY_other->ny * BLOCK_PUSH_FACTOR;
 					objSrc->OnCollisionWith(colY_other);
@@ -312,20 +313,20 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 		}
 		else
 		{
-			if (colX != NULL)
+			if (colX != nullptr)
 			{
 				x += colX->t * dx + colX->nx * BLOCK_PUSH_FACTOR;
 				y += dy;
 				objSrc->OnCollisionWith(colX);
 			}
 			else
-				if (colY != NULL)
+				if (colY != nullptr)
 				{
 					x += dx;
 					y += colY->t * dy + colY->ny * BLOCK_PUSH_FACTOR;
 					objSrc->OnCollisionWith(colY);
 				}
-				else // both colX & colY are NULL
+				else // both colX & colY are nullptr
 				{
 					x += dx;
 					y += dy;
@@ -341,11 +342,16 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 	for (UINT i = 0; i < coEvents.size(); i++)
 	{
 		LPCOLLISIONEVENT e = coEvents[i];
-		if (e->isDeleted) continue;
+		if (e->is_deleted) continue;
 		if (e->obj->IsBlocking()) continue;  // blocking collisions were handled already, skip them
 
 		objSrc->OnCollisionWith(e);
 	}
 
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+}
+
+int CCollisionEvent::WasCollided() {
+	return
+		t >= 0.0f && t <= 1.0f && obj->IsDirectionColliable(nx, ny) == 1;
 }

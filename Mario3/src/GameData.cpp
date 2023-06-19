@@ -1,10 +1,10 @@
 #include "GameData.h"
 
-CGameData* CGameData::instance = NULL;
+CGameData* CGameData::instance = nullptr;
 
 CGameData* CGameData::GetInstance()
 {
-	if (instance == NULL)
+	if (instance == nullptr)
 	{
 		instance = new CGameData();
 	}

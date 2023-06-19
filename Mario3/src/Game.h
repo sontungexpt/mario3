@@ -27,10 +27,10 @@ class CGame
 	int backBufferWidth = 0;					// Backbuffer width & height, will be set during Direct3D initialization
 	int backBufferHeight = 0;
 
-	ID3D10Device* pD3DDevice = NULL;
-	IDXGISwapChain* pSwapChain = NULL;
-	ID3D10RenderTargetView* pRenderTargetView = NULL;
-	ID3D10BlendState* pBlendStateAlpha = NULL;			// To store alpha blending state
+	ID3D10Device* pD3DDevice = nullptr;
+	IDXGISwapChain* pSwapChain = nullptr;
+	ID3D10RenderTargetView* pRenderTargetView = nullptr;
+	ID3D10BlendState* pBlendStateAlpha = nullptr;			// To store alpha blending state
 
 	LPD3DX10SPRITE spriteObject;						// Sprite handling object, BIG MYSTERY: it has to be in this place OR will lead to access violation in D3D11.dll ????
 
@@ -63,9 +63,9 @@ public:
 
 	//
 	// Draw a portion or ALL the texture at position (x,y) on the screen. (x,y) is at the CENTER of the image
-	// rect : if NULL, the whole texture will be drawn
-	//        if NOT NULL, only draw that portion of the texture
-	void Draw(float x, float y, LPTEXTURE tex, RECT* rect = NULL, float alpha = 1.0f, int sprite_width = 0, int sprite_height = 0);
+	// rect : if nullptr, the whole texture will be drawn
+	//        if NOT nullptr, only draw that portion of the texture
+	void Draw(float x, float y, LPTEXTURE tex, RECT* rect = nullptr, float alpha = 1.0f, int sprite_width = 0, int sprite_height = 0);
 
 	void Draw(float x, float y, LPTEXTURE tex, int l, int t, int r, int b, float alpha = 1.0f, int sprite_width = 0, int sprite_height = 0)
 	{

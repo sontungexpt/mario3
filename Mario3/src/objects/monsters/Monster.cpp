@@ -6,7 +6,7 @@
 
 void CMonster::OnNoCollision(DWORD dt)
 {
-	if (isDeleted) return;
+	if (is_deleted) return;
 
 	x += vx * dt;
 	y += vy * dt;
@@ -97,8 +97,8 @@ void CMonster::SetState(int state)
 		// this line will help you, if not has this line then the you need to change vx = something by self
 		// if you use the custom velocity then you should to change it by self
 		// this line just help you to reset the velocity to default state of monster abstract class
-		vx = fabs(vx) > 0 ? -fabs(vx) : -MONSTER_WALKING_SPEED;
 		vy = 0;
+		vx = fabs(vx) > 0 ? -fabs(vx) : -MONSTER_WALKING_SPEED;
 		ax = -fabs(ax);
 		break;
 	case MONSTER_STATE_WALKING_RIGHT:
@@ -118,21 +118,21 @@ void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	if (x + GetWidth() / 2 <= 0)
 	{
 		dead = true;
-		isDeleted = true;
+		is_deleted = true;
 		return;
 	}
 	// fall to to the hole >> delete
 	if (y > SCREEN_HEIGHT)
 	{
 		dead = true;
-		isDeleted = true;
+		is_deleted = true;
 		return;
 	}
 
 	// die >> delete
 	if (dead && (GetTickCount64() - dead_time > disapear_time))
 	{
-		isDeleted = true;
+		is_deleted = true;
 		return;
 	}
 
@@ -141,10 +141,10 @@ void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if (max_speed > 0 && abs(vx) > max_speed)
+	if (max_vx > 0 && abs(vx) > max_vx)
 	{
 		ax = 0;
-		vx = vx > 0 ? max_speed : -max_speed;
+		vx = vx > 0 ? max_vx : -max_vx;
 	}
 
 	CGameObject::Update(dt, co_objects);
@@ -153,10 +153,10 @@ void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 
 int CMonster::CompareYWithMario()
 {
-	if (isDeleted || dead) return -3; // plant is deleted
+	if (is_deleted || dead) return -3; // plant is deleted
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
-	if (mario == NULL) return -2;
+	if (mario == nullptr) return -2;
 
 	if (mario->GetY() < y) return -1; // plant under mario
 	else if (mario->GetY() > y)	return 1; // plant on top mario
@@ -165,11 +165,11 @@ int CMonster::CompareYWithMario()
 
 int CMonster::CompareXWithMario()
 {
-	if (isDeleted || dead) return -3; // plant is deleted
+	if (is_deleted || dead) return -3; // plant is deleted
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 
-	if (mario == NULL) return -2;
+	if (mario == nullptr) return -2;
 
 	if (mario->GetX() < x) return 1; // plant right mario
 	else if (mario->GetX() > y)	return -1; // plant left mario

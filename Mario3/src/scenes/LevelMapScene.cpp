@@ -16,12 +16,12 @@ void CLevelMapScene::_ParseSection_OBJECTS(string line)
 	float x = (float)atof(tokens[1].c_str());
 	float y = (float)atof(tokens[2].c_str());
 
-	CGameObject* obj = NULL;
+	CGameObject* obj = nullptr;
 
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
-		if (player != NULL)
+		if (player != nullptr)
 		{
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;

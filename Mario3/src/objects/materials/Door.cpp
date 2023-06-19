@@ -37,7 +37,7 @@ void CDoor::Render() {
 
 	LPANIMATION ani = animations->Get(aniId);
 
-	if (ani != NULL)
+	if (ani != nullptr)
 		ani->Render(x, y);
 	else
 		DebugOut(L"can not render animation", aniId);

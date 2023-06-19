@@ -16,7 +16,7 @@ private:
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
-	void AdjustY();
+	void AdjustPos();
 
 public:
 	CKoopa(float x, float y) : CMonster(x, y) {
@@ -24,7 +24,7 @@ public:
 		is_comback = FALSE;
 		is_mario_kicked = FALSE;
 		is_mario_holding = FALSE;
-		max_speed = KOOPA_MAX_SPEED;
+		max_vx = KOOPA_MAX_SPEED;
 
 		defend_time = -1;
 		comeback_time = -1;

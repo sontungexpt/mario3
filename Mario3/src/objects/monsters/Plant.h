@@ -11,7 +11,6 @@ private:
 
 	// because in game y dimension is reversed so min_y y the position of top of plant when it is up
 	float min_y;
-	float start_y;
 
 	ULONGLONG time_down_start;
 	ULONGLONG time_up_start;
@@ -32,11 +31,10 @@ private:
 		time_up_start = 0;
 		time_reload_bullet_start = 0;
 
-		start_y = y;
 		min_y = start_y - PLANT_BBOX_HEIGHT;
 	};
 
-	void AdjustY() {};
+	void AdjustPos() {};
 public:
 	CPlant(float x, float y) : CMonster(x, y) {
 		Init(y);

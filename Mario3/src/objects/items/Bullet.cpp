@@ -9,18 +9,6 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	CItem::Update(dt, co_objects);
 }
 
-void CBullet::OnCollisionWith(LPCOLLISIONEVENT e)
-{
-	if (e->obj->IsBlocking())
-	{
-		this->SetIsCollidable(0);
-		return;
-	}
-	this->SetIsCollidable(1);
-
-	CItem::OnCollisionWith(e);
-}
-
 void CBullet::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
 	//DebugOut(L"[INFO] Bullet::OnCollisionWithPlayer\n");

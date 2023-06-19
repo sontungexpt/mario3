@@ -12,8 +12,13 @@ CGameObject::CGameObject()
 {
 	x = y = 0;
 	vx = vy = 0;
+	ax = ay = 0;
+	start_x, start_y = 0;
+	max_vx = max_vy = -1; // no limit
 	state = -1;
-	isDeleted = false;
+	is_deleted = false;
+	is_collidable = 0;
+	is_blocking = 1;
 }
 
 void CGameObject::ResetPositionIfOutOfWidthScreen(float& curr_x, float& curr_y) {
@@ -74,7 +79,14 @@ BOOLEAN CGameObject::IsInCamera() {
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 	GetBoundingBox(left, top, right, bottom);
 
+	// out of width screen
 	if (right < cam_x || left > cam_x + SCREEN_WIDTH)
 		return false;
+
+	// out of height screen
+	if (top < cam_y || bottom > cam_y + SCREEN_HEIGHT)
+		return false;
+
+	// in camera
 	return true;
 }

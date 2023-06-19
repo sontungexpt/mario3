@@ -16,8 +16,8 @@ protected:
 public:
 	CTexture()
 	{
-		_tex = NULL;
-		_rsview = NULL;
+		_tex = nullptr;
+		_rsview = nullptr;
 		_width = -1;
 		_height = -1;
 	}
@@ -40,8 +40,8 @@ public:
 
 	~CTexture()
 	{
-		if (_rsview != NULL) this->_rsview->Release();
-		if (_tex != NULL) this->_tex->Release();
+		if (_rsview != nullptr) this->_rsview->Release();
+		if (_tex != nullptr) this->_tex->Release();
 	}
 };
 

@@ -14,20 +14,28 @@ using namespace std;
 class CGameObject
 {
 protected:
-	int is_blocking = 1;
-	int is_collidable = 0;
+	int state;
+	int is_blocking;
+	int is_collidable;
+	bool is_deleted;
 
+	// x and y is the center of the object
 	float x;
 	float y;
 
-	int state;
+	float start_x;
+	float start_y;
 
-	// this part need to be refactor
+	// moving speed
 	float vx;
 	float vy;
-	// end refactor
 
-	bool isDeleted;
+	float max_vx;
+	float max_vy;
+
+	// acceleration
+	float ax;
+	float ay;
 
 	virtual void ResetPositionIfOutOfWidthScreen(float& curr_x, float& curr_y);
 
@@ -66,10 +74,11 @@ public:
 	float GetVy() { return vy; }
 	void SetVx(float vx) { this->vx = vx; }
 	void SetVy(float vy) { this->vy = vy; }
+	virtual void AdjustPos() {}; // adjust height when change animation render
 
 	// delete
-	virtual void Delete() { isDeleted = true; }
-	bool IsDeleted() { return isDeleted; }
+	virtual void Delete() { is_deleted = true; }
+	bool IsDeleted() { return is_deleted; }
 
 #pragma region CONSTRUCTOR_DESTRUCTOR
 	CGameObject();
@@ -77,17 +86,15 @@ public:
 	{
 		this->x = x;
 		this->y = y;
+		this->start_x = x;
+		this->start_y = y;
 	}
-	CGameObject(float x, float y, int  state) :CGameObject()
+	CGameObject(float x, float y, int  state) :CGameObject(x, y)
 	{
-		this->x = x;
-		this->y = y;
 		SetState(state);
 	}
-	CGameObject(float x, float y, float v0x, float v0y) :CGameObject()
+	CGameObject(float x, float y, float v0x, float v0y) :CGameObject(x, y)
 	{
-		this->x = x;
-		this->y = y;
 		this->vx = v0x;
 		this->vy = v0y;
 	}
@@ -96,15 +103,15 @@ public:
 #pragma endregion
 	// core
 	virtual void Render() = 0;
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {};
-	void RenderBoundingBox();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr) {};
+	void RenderBoundingBox();
 
 	BOOLEAN IsInCamera(); // use for lazy load
 
 	// call this function when you want to change object's state
 	virtual void SetState(int state) { this->state = state; };
-	int GetState() { return this->state; }
+	int GetState() { return state; }
 
 #pragma region COLLISION
 
@@ -121,8 +128,9 @@ public:
 	// Collision ON or OFF ? This can change depending on object's state. For example: die
 	void SetIsCollidable(int is_colliable) { this->is_collidable = is_colliable; }
 	virtual int IsCollidable() { return is_collidable; };
+	virtual int IsDirectionColliable(float nx, float ny) { return 1; }
 
-	static bool IsDeleted(const LPGAMEOBJECT& o) { return o->isDeleted; }
+	static bool IsDeleted(const LPGAMEOBJECT& o) { return o->is_deleted; }
 
 #pragma endregion
 };

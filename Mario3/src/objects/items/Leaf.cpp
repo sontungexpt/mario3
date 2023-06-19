@@ -58,15 +58,3 @@ void CLeaf::SetState(int state)
 
 	CGameObject::SetState(state);
 }
-
-void CLeaf::OnCollisionWith(LPCOLLISIONEVENT e)
-{
-	if (e->obj->IsBlocking())
-	{
-		this->SetIsCollidable(0);
-		return;
-	}
-	this->SetIsCollidable(1);
-
-	CItem::OnCollisionWith(e);
-}

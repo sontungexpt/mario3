@@ -11,28 +11,27 @@ private:
 		ax = 0; // acceleration x
 		ay = GRAVITY; // acceleration y
 
-		max_speed = -1; // no limit speed
+		max_vx = -1; // no limit speed
 		vx = MONSTER_WALKING_SPEED;
 		// TODO: need to create new class for moving object
 		// This is a temporary solution
 
 		dead_time = 0; // the time when monster die
-		dead = FALSE; // is dead or not
+		disapear_time = MONSTER_DISAPPEAR_TIME; // the time to disappear after dead
 
+		dead = FALSE; // is dead or not
 		is_enemy = TRUE;
 	};
 
 protected:
-	float ax;
-	float ay;
-	float max_speed;
+	float max_vx;
 
 	BOOLEAN dead; // is dead or not
-	ULONGLONG dead_time; // time die
 	BOOLEAN is_enemy; // is enemy with mario or not
-	float disapear_time; // time to disappear after dead
 
-	virtual void AdjustY() = 0; // adjust height when change animation render
+	ULONGLONG dead_time; // time die
+	ULONGLONG disapear_time; // time to disappear after dead
+
 public:
 
 	CMonster(float x, float y, float disapear_time = MONSTER_DISAPPEAR_TIME) : CGameObject(x, y)
@@ -50,7 +49,7 @@ public:
 		Init();
 	};
 
-	virtual void LimitSpeed(float speed) { max_speed = speed; };
+	virtual void LimitSpeed(float speed) { max_vx = speed; };
 	virtual void SetIdle() { vx = 0; vy = 0; ax = 0; };
 
 	// core
@@ -95,4 +94,4 @@ public:
 	void Die() { SetState(MONSTER_STATE_DIE); }
 };
 
-typedef  CMonster* LPCMONSTER;
+typedef  CMonster* LPMONSTER;

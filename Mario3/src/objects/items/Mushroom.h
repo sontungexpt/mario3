@@ -17,8 +17,6 @@ public:
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 
-	int IsCollidable() { return 1; }
-
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	void Render();
 	void SetState(int state);

@@ -30,25 +30,6 @@ void CMario::OnNoCollision(DWORD dt)
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	// collide in y dimension and the object is a blocking object like platform
-	if (e->obj->IsBlocking())
-	{
-		if (e->IsCollidedInYDimension())
-		{
-			if (e->IsCollidedFromTop())
-			{
-				is_on_platform = true;
-			}
-
-			vy = 0;
-		}
-
-		else if (e->IsCollidedInXDimension())
-		{
-			vx = 0;
-		}
-	}
-
 	// monster
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
@@ -56,6 +37,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPlant(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
+
 	// items
 	else if (dynamic_cast<CCoin*>(e->obj))
 		OnCollisionWithCoin(e);
@@ -69,6 +51,24 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithDoor(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
+
+	// collide in y dimension and the object is a blocking object like platform
+	if (e->obj->IsBlocking())
+	{
+		if (e->IsCollidedInYDimension())
+		{
+			if (e->IsCollidedFromTop())
+			{
+				is_on_platform = true;
+			}
+			vy = 0;
+		}
+
+		else if (e->IsCollidedInXDimension())
+		{
+			vx = 0;
+		}
+	}
 }
 
 // collision with monster
@@ -108,9 +108,12 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		return;
 	}
 	else {
-		if (is_want_holding_koopa)
+		if (is_want_holding_koopa && weapon_monster == nullptr)
 		{
+			weapon_monster = koopa;
 			koopa->BeHold();
+			//koopa->BeHold();
+
 			return;
 		}
 	}
@@ -355,7 +358,7 @@ void CMario::Render()
 
 	ResetPositionIfOutOfWidthScreen(x, y);
 
-	if (ani != NULL)
+	if (ani != nullptr)
 		ani->Render(x, y);
 
 	DebugOutTitle(L"Coins: %d", coin);
@@ -368,6 +371,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		DebugOut(L"Mario die\n");
 		return;
+	}
+
+	if (weapon_monster != nullptr)
+	{
+		CKoopa* koopa = dynamic_cast<CKoopa*>(weapon_monster);
+		koopa->BeKick(vx);
+		weapon_monster = nullptr;
 	}
 
 	vy += ay * dt;
@@ -429,20 +439,9 @@ void CMario::SetState(int state)
 		break;
 	}
 	case MARIO_STATE_JUMP:
-		if (is_sitting) break;
-		if (is_on_platform)
-		{
-			if (fabs(vx) == MARIO_RUNNING_SPEED)
-				vy = -MARIO_JUMP_RUN_SPEED_Y;
-			else
-				vy = -MARIO_JUMP_SPEED_Y;
-		}
+		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
+		vy = -MARIO_JUMP_SPEED_Y;
 		break;
-
-	case MARIO_STATE_RELEASE_JUMP:
-		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
-		break;
-
 	case MARIO_STATE_SIT:
 		if (is_on_platform && level != MARIO_LEVEL_SMALL)
 		{
@@ -521,4 +520,12 @@ void CMario::SetLevel(int l)
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
 	level = l;
+}
+
+void CMario::Reset()
+{
+	SetState(MARIO_STATE_IDLE);
+	SetLevel(MARIO_LEVEL_BIG);
+	SetPosition(start_x, start_y);
+	SetSpeed(0, 0);
 }

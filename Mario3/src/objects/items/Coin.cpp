@@ -14,7 +14,7 @@ void CCoin::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CCoin::Render()
 {
-	if (isDeleted) return; // nothing to render
+	if (is_deleted) return; // nothing to render
 	if (!IsInCamera()) return; // lazy load
 
 	CAnimations* animations = CAnimations::GetInstance();
@@ -50,7 +50,7 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 
 	if (is_collected && y >= collect_y)
 	{
-		isDeleted = TRUE;
+		is_deleted = TRUE;
 		return;
 	}
 
@@ -59,7 +59,7 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 
 void CCoin::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	if (isDeleted) return; // nothing to get
+	if (is_deleted) return; // nothing to get
 
 	l = x - COIN_BBOX_WIDTH / 2;
 	t = y - COIN_BBOX_HEIGHT / 2;

@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\GameData.cpp" />
+    <ClCompile Include="src\objects\GameObject.cpp" />
     <ClCompile Include="src\objects\items\Bullet.cpp" />
     <ClCompile Include="src\objects\items\Item.cpp" />
     <ClCompile Include="src\objects\items\Leaf.cpp" />
@@ -142,7 +143,6 @@
     <ClCompile Include="src\objects\monsters\Plant.cpp" />
     <ClCompile Include="src\objects\materials\QuestionBrick.cpp" />
     <ClCompile Include="src\objects\monsters\WindGoomba.cpp" />
-    <ClCompile Include="src\objects\MovingObject.cpp" />
     <ClCompile Include="src\scenes\LevelMapScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\components\Animation\Animation.cpp" />
@@ -156,7 +156,6 @@
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\objects\materials\Brick.cpp" />
     <ClCompile Include="src\objects\items\Coin.cpp" />
-    <ClCompile Include="src\objects\GameObject.cpp" />
     <ClCompile Include="src\objects\monsters\Goomba.cpp" />
     <ClCompile Include="src\objects\Mario.cpp" />
     <ClCompile Include="src\objects\Platform.cpp" />
@@ -201,7 +200,6 @@
     <ClInclude Include="src\objects\monsters\Plant.h" />
     <ClInclude Include="src\objects\materials\QuestionBrick.h" />
     <ClInclude Include="src\objects\monsters\WindGoomba.h" />
-    <ClInclude Include="src\objects\MovingObject.h" />
     <ClInclude Include="src\scenes\LevelMapScene.h" />
     <ClInclude Include="src\components\Animation\Animation.h" />
     <ClInclude Include="src\components\Animation\AnimationFrame.h" />

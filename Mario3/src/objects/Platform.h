@@ -11,9 +11,10 @@ protected:
 	int spriteIdBegin;
 	int spriteIdMiddle;
 	int spriteIdEnd;
-	BOOLEAN canbe_step_on;
+	int isColliableAllDirection;
 
 public:
+
 	CPlatform(
 		float x, float y,
 		float cell_width,
@@ -22,7 +23,8 @@ public:
 		int sprite_id_begin,
 		int sprite_id_middle,
 		int sprite_id_end,
-		int canbe_step_on = 0
+		int is_blocking = 0,
+		int isColliableAllDirection = -1
 	) :CGameObject(x, y)
 	{
 		this->length = length;
@@ -31,15 +33,16 @@ public:
 		this->spriteIdBegin = sprite_id_begin;
 		this->spriteIdMiddle = sprite_id_middle;
 		this->spriteIdEnd = sprite_id_end;
-		this->canbe_step_on = canbe_step_on;
+		this->is_blocking = is_blocking;
+		this->isColliableAllDirection = isColliableAllDirection;
 	}
+
+	int IsDirectionColliable(float nx, float ny);
 
 	void Render();
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	void RenderBoundingBox();
-	int IsBlocking() { return canbe_step_on; }
-	BOOLEAN CanBeStepOn() { return canbe_step_on; }
 };
 
 typedef CPlatform* LPPLATFORM;

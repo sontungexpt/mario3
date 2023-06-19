@@ -20,10 +20,10 @@ struct CCollisionEvent
 	float t, nx, ny;
 
 	float dx, dy;				// *RELATIVE* movement distance between this object and obj
-	bool isDeleted;
+	bool is_deleted;
 
 	CCollisionEvent(float t, float nx, float ny, float dx = 0, float dy = 0,
-		LPGAMEOBJECT obj = NULL, LPGAMEOBJECT src_obj = NULL)
+		LPGAMEOBJECT obj = nullptr, LPGAMEOBJECT src_obj = nullptr)
 	{
 		this->t = t;
 		this->nx = nx;
@@ -32,10 +32,10 @@ struct CCollisionEvent
 		this->dy = dy;
 		this->obj = obj;
 		this->src_obj = src_obj;
-		this->isDeleted = false;
+		this->is_deleted = false;
 	}
 
-	int WasCollided() { return t >= 0.0f && t <= 1.0f; }
+	int WasCollided();
 
 	static bool compare(const LPCOLLISIONEVENT& a, LPCOLLISIONEVENT& b)
 	{

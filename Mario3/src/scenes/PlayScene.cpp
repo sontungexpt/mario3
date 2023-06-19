@@ -26,7 +26,7 @@ using namespace std;
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
-	player = NULL;
+	player = nullptr;
 	key_handler = new CSampleKeyHandler(this);
 }
 
@@ -54,7 +54,7 @@ void CPlayScene::_ParseSection_SPRITES(string line)
 	int texID = atoi(tokens[5].c_str());
 
 	LPTEXTURE tex = CTextures::GetInstance()->Get(texID);
-	if (tex == NULL)
+	if (tex == nullptr)
 	{
 		DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
 		return;
@@ -110,13 +110,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	float x = (float)atof(tokens[1].c_str());
 	float y = (float)atof(tokens[2].c_str());
 
-	CGameObject* obj = NULL;
+	CGameObject* obj = nullptr;
 
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
 	{
-		if (player != NULL)
+		if (player != nullptr)
 		{
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
@@ -183,21 +183,22 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int sprite_begin = atoi(tokens[6].c_str());
 		int sprite_middle = atoi(tokens[7].c_str());
 		int sprite_end = atoi(tokens[8].c_str());
-		if (tokens.size() == 10)
+		int is_blocking = 0;
+		int is_colliable_all_direction = -1;
+
+		if (tokens.size() >= 10)
 		{
-			BOOLEAN canbe_stepped = atoi(tokens[9].c_str());
-			obj = new CPlatform(
-				x, y,
-				cell_width, cell_height, length,
-				sprite_begin, sprite_middle, sprite_end,
-				canbe_stepped
-			);
-			break;
+			is_blocking = atoi(tokens[9].c_str());
+		}
+		if (tokens.size() >= 11)
+		{
+			is_colliable_all_direction = atoi(tokens[10].c_str());
 		}
 		obj = new CPlatform(
 			x, y,
 			cell_width, cell_height, length,
-			sprite_begin, sprite_middle, sprite_end
+			sprite_begin, sprite_middle, sprite_end,
+			is_blocking, is_colliable_all_direction
 		);
 		break;
 	}
@@ -323,7 +324,7 @@ void CPlayScene::Update(DWORD dt)
 
 	// skip the rest if scene was already unloaded
 	// (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return;
+	if (player == nullptr) return;
 
 	// Update camera to follow mario
 	float cx, cy;
@@ -362,12 +363,12 @@ void CPlayScene::Unload()
 		delete objects[i];
 
 	objects.clear();
-	player = NULL;
+	player = nullptr;
 
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
 
-bool CPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
+bool CPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == nullptr; }
 
 void CPlayScene::PurgeDeletedObjects()
 {
@@ -378,7 +379,7 @@ void CPlayScene::PurgeDeletedObjects()
 		if (o->IsDeleted())
 		{
 			delete o;
-			*it = NULL;
+			*it = nullptr;
 		}
 	}
 

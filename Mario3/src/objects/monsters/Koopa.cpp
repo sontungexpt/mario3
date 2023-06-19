@@ -61,11 +61,11 @@ void CKoopa::Reset() {
 	defend_time = -1;
 	comeback_time = -1;
 	ax = 0;
-	AdjustY();
+	AdjustPos();
 	SetState(MONSTER_STATE_WALKING_LEFT);
 };
 
-void CKoopa::AdjustY() {
+void CKoopa::AdjustPos() {
 	switch (state)
 	{
 	case KOOPA_STATE_DEFEND:
@@ -97,6 +97,8 @@ void CKoopa::AdjustY() {
 
 void CKoopa::Render()
 {
+	if (!IsInCamera()) return;
+
 	int aniId = ID_ANI_KOOPA_WALKING_LEFT; // default is walking left
 
 	switch (state) {
@@ -136,7 +138,7 @@ void CKoopa::SetState(int state)
 	case KOOPA_STATE_DEFEND:
 		is_defend = TRUE;
 		defend_time = GetTickCount64();
-		AdjustY();
+		AdjustPos();
 		SetIdle();
 		break;
 	case KOOPA_STATE_IS_KICKED:
@@ -186,8 +188,6 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	//if (!IsInCamera()) return;
-
 	if (is_defend && GetTickCount64() - defend_time > KOOPA_DEFEND_TIMEOUT)
 	{
 		if (!is_comback)
@@ -204,7 +204,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 	if (is_mario_holding) {
-		AdjustY();
+		AdjustPos();
 		return;
 	}
 	CMonster::Update(dt, coObjects);

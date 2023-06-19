@@ -9,9 +9,6 @@
 class CItem : public CGameObject
 {
 protected:
-	float ax;
-	float ay;
-
 	BOOLEAN is_collected;
 
 	// because in the future, we will have many features for item type
@@ -40,6 +37,7 @@ public:
 	};
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+
 	virtual int IsCollidable() { return 1; }
 	virtual int IsBlocking() { return 0; }
 

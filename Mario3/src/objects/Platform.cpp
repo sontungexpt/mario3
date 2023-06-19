@@ -7,6 +7,15 @@
 #include "configs/GameObject.h"
 #include <debug.h>
 
+int CPlatform::IsDirectionColliable(float nx, float ny)
+{
+	if (isColliableAllDirection > 0)
+		return 1;
+
+	if (nx == 0 && ny == -1) return 1;
+	else return 0;
+}
+
 void CPlatform::RenderBoundingBox()
 {
 	D3DXVECTOR3 p(x, y, 0);

@@ -6,16 +6,16 @@
 #include "components/Animation/Animations.h"
 
 #include "configs/Mario.h"
+#include "objects/monsters/Monster.h"
 
 class CMario : public CGameObject
 {
-	float max_vx;
-	float ax;				// acceleration on x
-	float ay;				// acceleration on y
 	int nx;
 
 	int level;
 	int coin;
+
+	LPMONSTER weapon_monster;
 
 	ULONGLONG time_untouchable_start;
 
@@ -31,7 +31,6 @@ class CMario : public CGameObject
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithDoor(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
-	//void OnCollisionWithPlatform(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushroom(LPCOLLISIONEVENT e);
@@ -45,8 +44,10 @@ public:
 	{
 		coin = 0;
 		nx = 1;
+
 		ax = 0.0f;
 		ay = MARIO_GRAVITY;
+
 		max_vx = MARIO_RUNNING_SPEED;
 
 		is_sitting = FALSE;
@@ -55,6 +56,8 @@ public:
 		untouchable = FALSE;
 		is_on_platform = FALSE;
 		is_want_holding_koopa = FALSE;
+
+		weapon_monster = nullptr;
 
 		this->level = level;
 		time_untouchable_start = -1;
@@ -93,4 +96,6 @@ public:
 		time_untouchable_start = GetTickCount64();
 	}
 	void JumpDeflect() { vy = -MARIO_JUMP_DEFLECT_SPEED; }
+
+	void Reset();
 };

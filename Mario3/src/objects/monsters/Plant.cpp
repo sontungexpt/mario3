@@ -5,7 +5,7 @@
 #include "objects/materials/Pipe.h"
 
 void CPlant::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
-	if (isDeleted) return; // notthing to get
+	if (is_deleted) return; // notthing to get
 
 	left = x - PLANT_BBOX_WIDTH / 2;
 	top = y - PLANT_BBOX_HEIGHT / 2;
@@ -15,6 +15,8 @@ void CPlant::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (!IsInCamera())return;
+
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 	if (mario->IsDead()) return; // if mario dead, plant not need to update
@@ -60,7 +62,6 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					time_reload_bullet_start = 0;
 				}
 			}
-
 			DebugOut(L"render");
 		}
 	}
@@ -68,7 +69,6 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (GetTickCount64() - time_down_start > TIME_OUT_DOWN_STATE) {
 			SetState(PLANT_STATE_UP);
-			return;
 		}
 	}
 	CGameObject::Update(dt, coObjects);
@@ -77,7 +77,7 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CPlant::Render()
 {
-	if (isDeleted) return; // notthing to render
+	if (is_deleted) return; // notthing to render
 	if (!IsInCamera()) return; // lazy load
 
 	int aniId = -1;
@@ -131,7 +131,7 @@ void CPlant::SetState(int state)
 		vy = PLANT_SPEED_UP_DOWN;
 		break;
 	case MONSTER_STATE_DIE: // ovveride state die in monster class
-		isDeleted = true;
+		is_deleted = true;
 		break;
 	default:
 		DebugOut(L"[ERROR] Unhandled state at CPlant::SetState %d\n", state);

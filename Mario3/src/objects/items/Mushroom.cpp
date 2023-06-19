@@ -11,7 +11,7 @@ void CMushroom::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 	if (mario->IsSmall())
 	{
 		mario->Zoom();
-		isDeleted = true;
+		is_deleted = true;
 	}
 }
 
@@ -23,7 +23,7 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	// fall to to the hole >> delete
 	if (x + GetWidth() <= 0 || y > SCREEN_HEIGHT)
 	{
-		isDeleted = true;
+		is_deleted = true;
 		return;
 	}
 

@@ -2,11 +2,11 @@
 #include "Game.h"
 #include "debug.h"
 
-CSprites* CSprites::__instance = NULL;
+CSprites* CSprites::__instance = nullptr;
 
 CSprites* CSprites::GetInstance()
 {
-	if (__instance == NULL) __instance = new CSprites();
+	if (__instance == nullptr) __instance = new CSprites();
 	return __instance;
 }
 

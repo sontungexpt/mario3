@@ -7,7 +7,7 @@ void CAnimation::Add(int spriteId, DWORD time)
 	if (time == 0) t = this->defaultTime;
 
 	LPSPRITE sprite = CSprites::GetInstance()->Get(spriteId);
-	if (sprite == NULL)
+	if (sprite == nullptr)
 		DebugOut(L"[ERROR] Sprite ID %d not found!\n", spriteId);
 
 	LPANIMATION_FRAME frame = new CAnimationFrame(sprite, t);

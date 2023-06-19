@@ -3,7 +3,7 @@
 
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (isDeleted) return;
+	if (is_deleted) return;
 	if (dead)
 	{
 		left = x - GOOMBA_BBOX_WIDTH / 2;
@@ -27,7 +27,7 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CGoomba::Render()
 {
-	if (isDeleted) return;
+	if (is_deleted) return;
 	if (!IsInCamera()) return; // lazy load
 
 	int aniId = -1; // default animation
@@ -65,4 +65,10 @@ void CGoomba::SetState(int state)
 		DebugOut(L"[ERROR] Unhandled monster state %d\n in Function CGoomba Set State", state);
 		break;
 	}
+}
+
+void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
+{
+	if (!IsInCamera()) return;
+	CMonster::Update(dt, co_objects);
 }
