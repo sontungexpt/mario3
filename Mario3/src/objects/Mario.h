@@ -71,6 +71,7 @@ public:
 
 	int IsCollidable() { return state != MARIO_STATE_DIE; }
 	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable == 0); }
+	//int IsBlocking() { return 0; }
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);

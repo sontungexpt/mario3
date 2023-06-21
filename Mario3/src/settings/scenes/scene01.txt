@@ -145,7 +145,7 @@ src\settings\objects\monsters\goomba.txt
 2	1040	160	1
 
 # Koopas
-10	480	160
+10	520	130
 
 #Platform
 5	0	192	16	16	39	1000010	1000020	1000030	1	1

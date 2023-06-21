@@ -33,23 +33,31 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<CMario*>(e->obj))
-	{
-		DebugOut(L"[INFO] KOOPA::OnCollisionWithPlayer\n");
-		return;
-	}
-	else if (dynamic_cast<CGoomba*>(e->obj))
+	if (dynamic_cast<CGoomba*>(e->obj))
 	{
 		OnCollisionWithGoomba(e);
 		return;
 	}
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
 	{
-		// collide with question brick then it can create new item
 		OnCollisionWithQuestionBrick(e);
-	};
+	}
 
-	CMonster::OnCollisionWith(e); // this code will update vx = -vx when collide with something
+	if (e->IsCollidedFromTop() && e->obj->IsBlocking())
+	{
+		CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
+		if (platform)
+		{
+			float l, t, r, b;
+			platform->GetBoundingBox(l, t, r, b);
+			limit_x_negative = l;
+			limit_x_positive = r;
+			is_on_platform = TRUE;
+		}
+	}
+
+	// this code will update vx = -vx when collide with something
+	CMonster::OnCollisionWith(e);
 }
 
 void CKoopa::Reset() {
@@ -208,6 +216,17 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				Reset();
 		}
 	}
+
+	if (!is_defend && is_on_platform)
+	{
+		// this part is make sure koopa only move on platform until be kicked
+		if (x <= limit_x_negative)
+			SetState(MONSTER_STATE_WALKING_RIGHT);
+		if (x >= limit_x_positive)
+			SetState(MONSTER_STATE_WALKING_LEFT);
+	}
+	is_on_platform = FALSE;
+
 	if (is_mario_holding) {
 		AdjustPos();
 		return;

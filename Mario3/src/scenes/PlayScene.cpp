@@ -300,15 +300,7 @@ void CPlayScene::Update(DWORD dt)
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way
 
-	// temp fix for render // mario is object 2 from the end
-	//int index_mario = objects.size() - 4;
-
 	vector<LPGAMEOBJECT> coObjects;
-
-	//for (size_t i = 1; i < objects.size(); i++)
-	//{
-	//	coObjects.push_back(objects[i]);
-	//}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{

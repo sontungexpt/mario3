@@ -11,11 +11,16 @@ private:
 	BOOLEAN is_comback;
 	BOOLEAN is_mario_kicked;
 	BOOLEAN is_mario_holding;
+	BOOLEAN is_on_platform;
+
+	float limit_x_positive = 0;
+	float limit_x_negative = 0;
 
 	float mario_speed_when_kicked;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
+
 	void AdjustPos();
 
 public:
@@ -24,6 +29,7 @@ public:
 		is_comback = FALSE;
 		is_mario_kicked = FALSE;
 		is_mario_holding = FALSE;
+		is_on_platform = FALSE;
 
 		mario_speed_when_kicked = 0.0f;
 		max_vx = KOOPA_MAX_SPEED;
