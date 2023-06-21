@@ -48,6 +48,5 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-
 	virtual void SetState(int state);
 };

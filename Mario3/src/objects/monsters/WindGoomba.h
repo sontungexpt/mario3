@@ -8,17 +8,18 @@
 class CWindGoomba : public CGoomba
 {
 private:
+	ULONGLONG time_jump_start;
+
 	BOOLEAN has_wind;
-	ULONGLONG time_start;
 	BOOLEAN is_on_platform;
 
-	void AdjustPos() {};
+	void AdjustPos();
 public:
 
 	CWindGoomba(float x, float y) :CGoomba(x, y) {
 		has_wind = TRUE;
 		is_on_platform = FALSE;
-		time_start = 0;
+		time_jump_start = 0;
 		SetState(GOOMBA_STATE_FLY);
 	}
 
@@ -29,6 +30,7 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 
 	void OnCollisionWith(LPCOLLISIONEVENT e);
+
 	BOOLEAN HasWind() { return has_wind; }
 	void CutWind() { has_wind = FALSE; }
 	void ReverseWind() { has_wind = TRUE; }

@@ -23,10 +23,10 @@ public:
 			CPlant* plant = (CPlant*)scene->AddObject(new CPlant(x, y - (GetHeight() - PLANT_BBOX_HEIGHT) / 2 + 1, PLANT_STATE_DOWN));
 		}
 	};
-	int IsCollidable() { return is_collidable; };
+	int IsCollidable() { return 1; };
 	int IsBlocking() { return 1; }
 
 	void Render();
-	void Update(DWORD dt) {}
+	//void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 };

@@ -4,7 +4,7 @@ width	310
 height	240
 
 #id		type	file
-# type: 0: intro, 1: play scene 
+# type: 0: intro, 1: play scene
 [SCENES]
 0   src\settings\scenes\intro.txt
 10	src\settings\scenes\levelmap.txt
@@ -14,7 +14,7 @@ height	240
 2	src\settings\scenes\scene02.txt
 5	src\settings\scenes\scene05.txt
 
-# id	file 
+# id	file
 [TEXTURES]
 -100	src\assets\textures\bbox.png
 0	src\assets\textures\mario.png
@@ -26,4 +26,3 @@ height	240
 60	src\assets\textures\misc2-removebg.png
 70	src\assets\textures\misc3.png
 80	src\assets\textures\misc_right_rmbg.png
-

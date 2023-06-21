@@ -2,7 +2,7 @@
 
 #define GOOMBA_TIME_FOR_EACH_FLY 1000
 #define GOOMBA_WALKING_SPEED 0.094f
-#define GOOMBA_FLY_SPEED_Y 0.17f
+#define GOOMBA_FLY_SPEED_Y 0.155f
 #define GOOMBA_DIE_TIMEOUT 500
 
 // appearances

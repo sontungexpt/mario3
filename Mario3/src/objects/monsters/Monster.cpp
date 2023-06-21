@@ -12,44 +12,49 @@ void CMonster::OnNoCollision(DWORD dt)
 	y += vy * dt;
 };
 
-void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
+void CMonster::OnCollisionWithMonster(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<CMonster*>(e->obj)) {
-		// now the monster will be pushed away from the other monster
-		// with the velocity of itself
-		if (!dead)
+	CMonster* monster_dest = dynamic_cast<CMonster*>(e->obj);
+	if (!IsDead() && !monster_dest->IsDead())
+	{
+		if (e->IsCollidedInXDimension())
 		{
-			if (e->IsCollidedInXDimension())
-			{
-				// move same direction >> same state >> diff velocity
-				if (
-					(
-						state == MONSTER_STATE_WALKING_LEFT ||
-						state == MONSTER_STATE_WALKING_RIGHT
-						)
-					&&
-					(
-						e->obj->GetState() == MONSTER_STATE_WALKING_LEFT ||
-						e->obj->GetState() == MONSTER_STATE_WALKING_RIGHT
-						)
+			// move same direction >> same state >> diff velocity
+			if (
+				(
+					state == MONSTER_STATE_WALKING_LEFT ||
+					state == MONSTER_STATE_WALKING_RIGHT
 					)
+				&&
+				(
+					monster_dest->GetState() == MONSTER_STATE_WALKING_LEFT ||
+					monster_dest->GetState() == MONSTER_STATE_WALKING_RIGHT
+					)
+				)
+			{
+				if (monster_dest->GetState() == state)
 				{
-					if (e->obj->GetState() == state)
-					{
-						// objv > v change state of objv
-						// objv < v change state of v
-						if (e->obj->GetVx() > vx) e->obj->SetState(-e->obj->GetState());
-						else SetState(-state);
-					}
-					// move diff direction
-					else {
-						SetState(-state);
-						e->obj->SetState(-e->obj->GetState());
-					}
+					// objv > v change state of objv
+					// objv < v change state of v
+					if (monster_dest->GetVx() > vx)
+						monster_dest->SetState(-monster_dest->GetState());
+					else SetState(-state);
+				}
+				// move diff direction
+				else {
+					SetState(-state);
+					monster_dest->SetState(-monster_dest->GetState());
 				}
 			}
 		}
-	};
+	}
+}
+
+void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
+{
+	if (dynamic_cast<CMonster*>(e->obj)) {
+		OnCollisionWithMonster(e);
+	}
 
 	if (!e->obj->IsBlocking()) return;
 
@@ -62,7 +67,9 @@ void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->IsCollidedInXDimension())
 	{
 		// meet the blocking then change direction
-		if (state == MONSTER_STATE_WALKING_LEFT || state == MONSTER_STATE_WALKING_RIGHT)
+		if (state == MONSTER_STATE_WALKING_LEFT ||
+			state == MONSTER_STATE_WALKING_RIGHT
+			)
 		{
 			SetState(-state);
 		}
@@ -77,6 +84,7 @@ void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 void CMonster::SetState(int state)
 {
 	CGameObject::SetState(state);
+
 	switch (state)
 	{
 	case MONSTER_STATE_IDLE:
@@ -121,6 +129,7 @@ void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 		is_deleted = true;
 		return;
 	}
+
 	// fall to to the hole >> delete
 	if (y > SCREEN_HEIGHT)
 	{
@@ -172,6 +181,6 @@ int CMonster::CompareXWithMario()
 	if (mario == nullptr) return -2;
 
 	if (mario->GetX() < x) return 1; // plant right mario
-	else if (mario->GetX() > y)	return -1; // plant left mario
+	else if (mario->GetX() > x)	return -1; // plant left mario
 	else return 0; // plant and mario in same position
 }

@@ -53,7 +53,9 @@ struct CCollisionEvent
 class CCollision
 {
 	static CCollision* __instance;
+
 public:
+
 	static void SweptAABB(
 		float ml,			// move left
 		float mt,			// move top
@@ -67,17 +69,21 @@ public:
 		float sb,
 		float& t,
 		float& nx,
-		float& ny);
+		float& ny
+	);
 
 	LPCOLLISIONEVENT SweptAABB(
 		LPGAMEOBJECT objSrc,
 		DWORD dt,
-		LPGAMEOBJECT objDest);
+		LPGAMEOBJECT objDest
+	);
+
 	void Scan(
 		LPGAMEOBJECT objSrc,
 		DWORD dt,
 		vector<LPGAMEOBJECT>* objDests,
-		vector<LPCOLLISIONEVENT>& coEvents);
+		vector<LPCOLLISIONEVENT>& coEvents
+	);
 
 	void Filter(
 		LPGAMEOBJECT objSrc,
@@ -86,7 +92,8 @@ public:
 		LPCOLLISIONEVENT& colY,
 		int filterBlock,
 		int filterX,
-		int filterY);
+		int filterY
+	);
 
 	void Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 

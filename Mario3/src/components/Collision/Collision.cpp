@@ -176,7 +176,8 @@ void CCollision::Filter(LPGAMEOBJECT objSrc,
 	LPCOLLISIONEVENT& colY,
 	int filterBlock = 1,		// 1 = only filter block collisions, 0 = filter all collisions
 	int filterX = 1,			// 1 = process events on X-axis, 0 = skip events on X
-	int filterY = 1)			// 1 = process events on Y-axis, 0 = skip events on Y
+	int filterY = 1				// 1 = process events on Y-axis, 0 = skip events on Y
+)
 {
 	float min_tx, min_ty;
 
@@ -320,6 +321,7 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 				objSrc->OnCollisionWith(colX);
 			}
 			else
+			{
 				if (colY != nullptr)
 				{
 					x += dx;
@@ -331,6 +333,7 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 					x += dx;
 					y += dy;
 				}
+			}
 		}
 
 		objSrc->SetPosition(x, y);
@@ -348,10 +351,13 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 		objSrc->OnCollisionWith(e);
 	}
 
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	for (UINT i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
 }
 
 int CCollisionEvent::WasCollided() {
 	return
-		t >= 0.0f && t <= 1.0f && obj->IsDirectionColliable(nx, ny) == 1;
+		t >= 0.0f &&
+		t <= 1.0f &&
+		obj->IsDirectionColliable(nx, ny) == 1;
 }

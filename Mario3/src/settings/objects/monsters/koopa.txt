@@ -17,7 +17,6 @@
 
 # Dead
 
-
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 # WALK RIGHT

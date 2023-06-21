@@ -23,11 +23,11 @@ void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 {
-	if (!is_defend) return;
-	if (!is_mario_kicked) return;
-	CQuestionBrick* question_brick = dynamic_cast<CQuestionBrick*>(e->obj);
+	if (!is_defend || !is_mario_kicked) return;
+
 	// if the koopa is kicked by mario, then when it touch question brick
 	// question brick will create item
+	CQuestionBrick* question_brick = dynamic_cast<CQuestionBrick*>(e->obj);
 	question_brick->Bounce();
 }
 
@@ -88,10 +88,12 @@ void CKoopa::AdjustPos() {
 			else {
 				x = mario->GetX() - mario->GetWidth() / 2 - 1;
 			}
+			y = mario->GetY();
 		}
 	}
-
 	break;
+	default:
+		break;
 	}
 }
 
@@ -99,9 +101,12 @@ void CKoopa::Render()
 {
 	if (!IsInCamera()) return;
 
-	int aniId = ID_ANI_KOOPA_WALKING_LEFT; // default is walking left
+	int aniId = -1;
 
 	switch (state) {
+	case KOOPA_STATE_COMEBACK:
+		aniId = ID_ANI_KOOPA_COMEBACK;
+		break;
 	case KOOPA_STATE_DEFEND:
 		aniId = ID_ANI_KOOPA_DEFEND;
 		break;
@@ -117,19 +122,18 @@ void CKoopa::Render()
 	case KOOPA_STATE_IS_KICKED:
 		aniId = ID_ANI_KOOPA_IS_KICKED;
 		break;
-	case KOOPA_STATE_COMEBACK:
-		aniId = ID_ANI_KOOPA_COMEBACK;
-		break;
 	default:
-		DebugOut(L"[ERROR] Can not handle state %d, ", state);
+		DebugOut(L"[ERROR] Can not handle state %d CKoopa::Render\n", state);
 		break;
 	}
+
+	if (aniId == -1) return;
+
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 }
 
 void CKoopa::SetState(int state)
 {
-	// this line handle the same state for many monster
 	CMonster::SetState(state);
 
 	// this line handle the different state for each monster
@@ -145,7 +149,6 @@ void CKoopa::SetState(int state)
 		is_mario_holding = FALSE;
 		is_mario_kicked = TRUE;
 		// defend again
-		defend_time = GetTickCount64();
 		is_defend = TRUE;
 		is_comback = FALSE;
 
@@ -170,7 +173,7 @@ void CKoopa::SetState(int state)
 }
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
-	if ((state == MONSTER_STATE_DIE) || (state == KOOPA_STATE_DEAD_UPSIDE)) return;
+	if (is_deleted) return;
 
 	if (is_defend) {
 		left = x - KOOPA_BBOX_WIDTH / 2;
@@ -188,7 +191,9 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (is_defend && GetTickCount64() - defend_time > KOOPA_DEFEND_TIMEOUT)
+	if (!is_mario_kicked && is_defend &&
+		GetTickCount64() - defend_time > KOOPA_DEFEND_TIMEOUT
+		)
 	{
 		if (!is_comback)
 		{

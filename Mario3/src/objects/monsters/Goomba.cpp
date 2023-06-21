@@ -1,6 +1,19 @@
 #include "Goomba.h"
 #include "debug.h"
 
+void CGoomba::AdjustPos()
+{
+	switch (state)
+	{
+	case MONSTER_STATE_DIE:
+		y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2 - 1;
+		break;
+	default:
+		DebugOut(L"[ERROR] Unhandled monster state %d in CGoomba::AdjustPos\n", state);
+		break;
+	}
+}
+
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (is_deleted) return;
@@ -44,25 +57,28 @@ void CGoomba::Render()
 		aniId = ID_ANI_GOOMBA_DIE;
 		break;
 	default:
-		DebugOut(L"[ERROR] Unhandled monster state %d\n in Function CGoomba Render", state);
+		DebugOut(L"[ERROR] Unhandled monster state %d in CGoomba::Render\n", state);
 		break;
 	}
+
 	if (aniId == -1) return;
+
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 }
 
 void CGoomba::SetState(int state)
 {
-	CMonster::SetState(state); // use general state for monster
+	// use general state for monster
+	CMonster::SetState(state);
 
 	// specific state for goomba
 	switch (state)
 	{
 	case MONSTER_STATE_DIE:
-		y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2;
+		AdjustPos();
 		break;
 	default:
-		DebugOut(L"[ERROR] Unhandled monster state %d\n in Function CGoomba Set State", state);
+		DebugOut(L"[ERROR] Unhandled monster state %d in CGoomba::SetState\n", state);
 		break;
 	}
 }

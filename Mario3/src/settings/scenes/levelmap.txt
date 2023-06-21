@@ -69,7 +69,7 @@ src\settings\objects\grass.txt
 7	224	128
 7	224	144
 
-# DOOR 
+# DOOR
 #type   x   y screen_id  aleft atop aright abottom
 6	32	48	1	10	0	1	0
 6	64	16	2	3	0	1	1

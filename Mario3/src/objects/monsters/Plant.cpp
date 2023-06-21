@@ -62,7 +62,6 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					time_reload_bullet_start = 0;
 				}
 			}
-			DebugOut(L"render");
 		}
 	}
 	else // is downing

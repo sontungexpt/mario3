@@ -24,6 +24,8 @@ public:
 		is_comback = FALSE;
 		is_mario_kicked = FALSE;
 		is_mario_holding = FALSE;
+
+		mario_speed_when_kicked = 0.0f;
 		max_vx = KOOPA_MAX_SPEED;
 
 		defend_time = -1;
@@ -44,17 +46,20 @@ public:
 	// this part is a other name for the same state
 	BOOLEAN IsDefend() { return is_defend; }
 	void Defend() { SetState(KOOPA_STATE_DEFEND); };
+	void CombackAfterDefend() { SetState(KOOPA_STATE_COMEBACK); };
+
 	void BeKick(float v) {
 		mario_speed_when_kicked = v;
 		SetState(KOOPA_STATE_IS_KICKED);
 	};
+	BOOLEAN IsMarioKicked() { return is_mario_kicked; }
 
 	void BeHold() { SetState(KOOPA_STATE_IS_HOLDING); }
-	BOOLEAN IsMarioKicked() { return is_mario_kicked; }
-	void CombackAfterDefend() { SetState(KOOPA_STATE_COMEBACK); };
+
 	void MoveRight() { SetState(MONSTER_STATE_WALKING_RIGHT); };
 	void MoveLeft() { SetState(MONSTER_STATE_WALKING_LEFT); };
 
 	// reset to default state
 	void Reset();
+	void Die() { SetState(MONSTER_STATE_DIE); }
 };

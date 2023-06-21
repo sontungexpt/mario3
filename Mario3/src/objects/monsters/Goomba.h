@@ -7,7 +7,7 @@ class CGoomba : public CMonster
 {
 protected:
 
-	virtual void AdjustPos() {};
+	virtual void AdjustPos();
 public:
 
 	CGoomba(float x, float y) :CMonster(x, y) {}
@@ -18,7 +18,7 @@ public:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	virtual void SetState(int state);
 
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr);
 
 	virtual void Die() { SetState(MONSTER_STATE_DIE); };
 };

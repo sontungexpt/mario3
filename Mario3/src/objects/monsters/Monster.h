@@ -11,8 +11,9 @@ private:
 		ax = 0; // acceleration x
 		ay = GRAVITY; // acceleration y
 
-		max_vx = -1; // no limit speed
 		vx = MONSTER_WALKING_SPEED;
+		max_vx = -1; // no limit speed
+
 		// TODO: need to create new class for moving object
 		// This is a temporary solution
 
@@ -31,6 +32,8 @@ protected:
 
 	ULONGLONG dead_time; // time die
 	ULONGLONG disapear_time; // time to disappear after dead
+
+	void OnCollisionWithMonster(LPCOLLISIONEVENT e);
 
 public:
 
@@ -54,8 +57,9 @@ public:
 
 	// core
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects);
-	virtual int IsCollidable() { return 1; };
 	virtual void SetState(int state);
+
+	virtual int IsCollidable() { return 1; };
 	virtual int IsBlocking() { return 0; }
 
 	// collision
@@ -91,7 +95,7 @@ public:
 
 	// this part is a other name for the same state
 	BOOLEAN IsDead() { return dead == TRUE; }
-	void Die() { SetState(MONSTER_STATE_DIE); }
+	virtual void Die() { SetState(MONSTER_STATE_DIE); }
 };
 
 typedef  CMonster* LPMONSTER;

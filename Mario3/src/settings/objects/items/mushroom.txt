@@ -3,7 +3,6 @@
 # RED MUSHROOM
 301001	299	188	315	204	20
 
-
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 # RED MUSHROOM
