@@ -19,22 +19,17 @@ class CMario : public CGameObject
 
 	ULONGLONG time_untouchable_start;
 
+	BOOLEAN untouchable;
 	BOOLEAN is_sitting;
 	BOOLEAN is_on_platform;
-	BOOLEAN untouchable;
-	BOOLEAN is_running;
-	BOOLEAN is_walking;
 	BOOLEAN is_want_holding_koopa;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
-	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
-	void OnCollisionWithDoor(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
-	void OnCollisionWithMushroom(LPCOLLISIONEVENT e);
-	void OnCollisionWithBullet(LPCOLLISIONEVENT e);
+	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -51,8 +46,6 @@ public:
 		max_vx = MARIO_RUNNING_SPEED;
 
 		is_sitting = FALSE;
-		is_running = FALSE;
-		is_walking = FALSE;
 		untouchable = FALSE;
 		is_on_platform = FALSE;
 		is_want_holding_koopa = FALSE;
@@ -70,32 +63,29 @@ public:
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	int IsCollidable() { return state != MARIO_STATE_DIE; }
-	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable == 0); }
-	//int IsBlocking() { return 0; }
+	//int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable == 0); }
+
+	int IsBlocking() { return 0; }
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	int GetNx() { return nx; }
 	void  SetNx(int nx) { this->nx = nx; }
-	// states
-	void SetLevel(int l);
-	int GetLevel() { return level; }
-	void LevelUp() { level = MARIO_LEVEL_BIG; }
-	void LevelDown() { level = MARIO_LEVEL_SMALL; }
 
+	// states
 	BOOLEAN IsSmall() { return level == MARIO_LEVEL_SMALL; };
 	BOOLEAN IsBig() { return level == MARIO_LEVEL_BIG; };
 	void Shrink() { SetLevel(MARIO_LEVEL_SMALL); }
 	void Zoom() { SetLevel(MARIO_LEVEL_BIG); }
+	void SetLevel(int level);
+	int GetLevel() { return level; }
+	void LevelUp() { SetLevel(MARIO_LEVEL_BIG); }
+	void LevelDown() { SetLevel(MARIO_LEVEL_SMALL); }
 
 	void Die();
 	BOOLEAN IsDead() { return state == MARIO_STATE_DIE; }
 
-	void StartUntouchable()
-	{
-		untouchable = TRUE;
-		time_untouchable_start = GetTickCount64();
-	}
+	void StartUntouchable() { SetState(MARIO_STATE_UNTOUCHABLE); }
 	void JumpDeflect() { vy = -MARIO_JUMP_DEFLECT_SPEED; }
 
 	void Reset();

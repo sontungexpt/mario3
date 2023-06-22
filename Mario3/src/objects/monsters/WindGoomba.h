@@ -11,14 +11,12 @@ private:
 	ULONGLONG time_jump_start;
 
 	BOOLEAN has_wind;
-	BOOLEAN is_on_platform;
 
 	void AdjustPos();
 public:
 
 	CWindGoomba(float x, float y) :CGoomba(x, y) {
 		has_wind = TRUE;
-		is_on_platform = FALSE;
 		time_jump_start = 0;
 		SetState(GOOMBA_STATE_FLY);
 	}

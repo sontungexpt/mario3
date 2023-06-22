@@ -4,7 +4,7 @@
 20001	372	153	387	168	20
 
 # Zebra brick
-20002	258	189	268	203	40
+20002	164	6	180	22	60
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]

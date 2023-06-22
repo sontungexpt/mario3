@@ -1,5 +1,4 @@
 #pragma once
-
 #include "components/Scene/Scene.h"
 
 class CSampleKeyHandler : public CSceneKeyHandler

@@ -16,7 +16,7 @@ void CMushroom::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 }
 
 void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	//if (!IsInCamera()) return; // lazy update
+	if (!IsInCamera()) return; // lazy update
 
 	//	NOTE: need to create a general function for this code
 	// move out of screen >> delete
@@ -27,12 +27,7 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		return;
 	}
 
-	if (state == MUSHROOM_STATE_WALKING) {
-		CItem::Update(dt, coObjects);
-	}
-
-	CGameObject::Update(dt, coObjects);
-	CCollision::GetInstance()->Process(this, dt, coObjects);
+	CItem::Update(dt, coObjects);
 }
 
 void CMushroom::Render()
@@ -76,4 +71,15 @@ void CMushroom::SetState(int state)
 	break;
 	}
 	CGameObject::SetState(state);
+}
+
+void CMushroom::BeCollect()
+{
+	CItem::BeCollect();
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+
+	if (mario->IsSmall())
+		mario->Zoom();
+	is_deleted = true;
 }

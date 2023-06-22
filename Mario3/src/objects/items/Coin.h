@@ -38,4 +38,6 @@ public:
 
 	void JumpOutQuestionBrick() { SetState(COIN_STATE_JUMP_OUT_QUESTION_BRICK); };
 	void SetState(int state);
+
+	void BeCollect();
 };

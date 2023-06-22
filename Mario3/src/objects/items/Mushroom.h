@@ -11,9 +11,18 @@ class CMushroom : public CItem {
 
 public:
 
-	CMushroom() :CItem() {};
-	CMushroom(float x, float y) :CItem(x, y) {};
-	CMushroom(float x, float y, int state) :CItem(x, y, state) {};
+	CMushroom() :CItem()
+	{
+		ay = MUSHROOM_GRAVITY;
+	};
+	CMushroom(float x, float y) :CItem(x, y)
+	{
+		ay = MUSHROOM_GRAVITY;
+	};
+	CMushroom(float x, float y, int state) :CItem(x, y, state)
+	{
+		ay = MUSHROOM_GRAVITY;
+	};
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 
@@ -21,4 +30,5 @@ public:
 	void Render();
 	void SetState(int state);
 	void Walk() { SetState(MUSHROOM_STATE_WALKING); }
+	void BeCollect();
 };

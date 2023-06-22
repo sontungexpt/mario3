@@ -1,3 +1,5 @@
+#include "scenes/PlayScene.h"
+
 #include "Bullet.h"
 #include "configs/Mario.h"
 #include "objects/Platform.h"
@@ -56,4 +58,13 @@ void CBullet::GetBoundingBox(float& l, float& t, float& r, float& b)
 	t = y - BULLET_BBOX_HEIGHT / 2;
 	r = x + BULLET_BBOX_WIDTH;
 	b = y + BULLET_BBOX_HEIGHT;
+}
+
+void CBullet::BeCollect()
+{
+	CItem::BeCollect();
+
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	mario->Die();
 }

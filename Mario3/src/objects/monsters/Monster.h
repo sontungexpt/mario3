@@ -22,6 +22,7 @@ private:
 
 		dead = FALSE; // is dead or not
 		is_enemy = TRUE;
+		is_on_platform = FALSE;
 	};
 
 protected:
@@ -29,6 +30,7 @@ protected:
 
 	BOOLEAN dead; // is dead or not
 	BOOLEAN is_enemy; // is enemy with mario or not
+	BOOLEAN is_on_platform; // is on platform or not
 
 	ULONGLONG dead_time; // time die
 	ULONGLONG disapear_time; // time to disappear after dead

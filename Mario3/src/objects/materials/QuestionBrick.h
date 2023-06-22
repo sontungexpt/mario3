@@ -30,7 +30,7 @@ public:
 		ay = 0;
 	};
 
-	float GetItemReferenceY(CItem* item) { return this->GetOyAtTopRight() - item->GetHeight() / 2 - 1; };
+	float GetItemReferenceY(CItem* item) { return y - (GetHeight() + item->GetHeight()) / 2 - 1; };
 	float GetItemReferenceX(CItem* item) { return x; };
 
 	// core

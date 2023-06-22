@@ -6,7 +6,7 @@ void CGoomba::AdjustPos()
 	switch (state)
 	{
 	case MONSTER_STATE_DIE:
-		y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2 - 1;
+		y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2;
 		break;
 	default:
 		DebugOut(L"[ERROR] Unhandled monster state %d in CGoomba::AdjustPos\n", state);

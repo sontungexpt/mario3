@@ -68,25 +68,23 @@ void CKoopa::Reset() {
 	mario_speed_when_kicked = 0;
 	defend_time = -1;
 	comeback_time = -1;
-	ax = 0;
 	AdjustPos();
 	SetState(MONSTER_STATE_WALKING_LEFT);
 };
 
 void CKoopa::AdjustPos() {
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
 	switch (state)
 	{
 	case KOOPA_STATE_DEFEND:
-		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2 - 1;
+		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2;
 		break;
 	case KOOPA_STATE_COMEBACK:
-		y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2 + 1;
+		y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2;
 		break;
 	case KOOPA_STATE_IS_HOLDING:
 	{
-		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-		CMario* mario = (CMario*)scene->GetPlayer();
-
 		if (mario)
 		{
 			if (mario->GetNx() >= 0) // mario is turn right
@@ -197,7 +195,7 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	}
 }
 
-void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
 	if (!is_mario_kicked && is_defend &&
 		GetTickCount64() - defend_time > KOOPA_DEFEND_TIMEOUT
@@ -225,11 +223,13 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (x >= limit_x_positive)
 			SetState(MONSTER_STATE_WALKING_LEFT);
 	}
+
 	is_on_platform = FALSE;
 
 	if (is_mario_holding) {
 		AdjustPos();
 		return;
 	}
-	CMonster::Update(dt, coObjects);
+
+	CMonster::Update(dt, co_objects);
 }

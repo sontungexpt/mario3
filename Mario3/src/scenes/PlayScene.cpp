@@ -304,8 +304,8 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		if (dynamic_cast<CMario*>(objects[i]))
-			continue;
+		/*	if (dynamic_cast<CMario*>(objects[i]))
+				continue;*/
 		coObjects.push_back(objects[i]);
 	}
 

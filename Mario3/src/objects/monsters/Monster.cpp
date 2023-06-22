@@ -36,7 +36,7 @@ void CMonster::OnCollisionWithMonster(LPCOLLISIONEVENT e)
 				{
 					// objv > v change state of objv
 					// objv < v change state of v
-					if (monster_dest->GetVx() > vx)
+					if (fabs(monster_dest->GetVx()) > fabs(vx))
 						monster_dest->SetState(-monster_dest->GetState());
 					else SetState(-state);
 				}
@@ -61,6 +61,10 @@ void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 	// collide with blocking
 	if (e->IsCollidedInYDimension())
 	{
+		if (e->IsCollidedFromTop())
+		{
+			is_on_platform = TRUE;
+		}
 		vy = 0;
 	}
 
@@ -155,6 +159,8 @@ void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 		ax = 0;
 		vx = vx > 0 ? max_vx : -max_vx;
 	}
+
+	is_on_platform = FALSE;
 
 	CGameObject::Update(dt, co_objects);
 	CCollision::GetInstance()->Process(this, dt, co_objects);

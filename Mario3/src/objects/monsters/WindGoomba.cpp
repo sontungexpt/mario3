@@ -9,7 +9,7 @@ void CWindGoomba::AdjustPos()
 	{
 	case MONSTER_STATE_WALKING_RIGHT:
 	case MONSTER_STATE_WALKING_LEFT:
-		y -= (GOOMBA_BBOX_HEIGHT_FLY - GOOMBA_BBOX_HEIGHT) / 2 - 1;
+		y -= (GOOMBA_BBOX_HEIGHT_FLY - GOOMBA_BBOX_HEIGHT) / 2;
 		break;
 	default:
 		break;
@@ -63,33 +63,32 @@ void CWindGoomba::SetState(int state)
 	}
 }
 
-void CWindGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CWindGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
 	if (is_deleted) return;
 	if (!IsInCamera()) return;
 
-	CMonster::Update(dt, coObjects);
-
-	if (!has_wind) return; // no wind no fly
-
-	// if it fall down from platform, then it can fly again
-	if (is_on_platform && GetTickCount64() - time_jump_start > GOOMBA_TIME_FOR_EACH_FLY)
+	if (has_wind) // no wind no fly
 	{
-		SetState(GOOMBA_STATE_FLY);
+		// if it fall down from platform, then it can fly again
+		if (is_on_platform && GetTickCount64() - time_jump_start > GOOMBA_TIME_FOR_EACH_FLY)
+		{
+			SetState(GOOMBA_STATE_FLY);
+		}
 	}
-
 	is_on_platform = FALSE;
+
+	CMonster::Update(dt, co_objects);
 }
 
 void CWindGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	CMonster::OnCollisionWith(e);
 
-	if (!has_wind)return;
-	if (e->IsCollidedFromTop() && e->obj->IsBlocking())
+	/*if (e->IsCollidedFromTop() && e->obj->IsBlocking())
 	{
 		is_on_platform = TRUE;
-	}
+	}*/
 }
 
 void CWindGoomba::Die()

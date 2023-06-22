@@ -2,6 +2,7 @@
 #include "objects/materials/Brick.h"
 #include "debug.h"
 #include "objects/Mario.h"
+#include "scenes/PlayScene.h"
 
 void CCoin::OnCollisionWith(LPCOLLISIONEVENT e)
 {
@@ -43,14 +44,22 @@ void CCoin::SetState(int state)
 	}
 }
 
+void CCoin::BeCollect()
+{
+	CItem::BeCollect();
+	is_deleted = TRUE;
+
+	// add score
+}
+
 void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
 	// when coin is jump to max height, it's time to collect
-	if (!is_collected && y < collect_y) Collect();
+	if (!is_collected && y < collect_y) SetCollected(TRUE);
 
 	if (is_collected && y >= collect_y)
 	{
-		is_deleted = TRUE;
+		BeCollect();
 		return;
 	}
 

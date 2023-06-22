@@ -33,6 +33,11 @@ void CItem::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (!e->obj->IsBlocking()) return;
 
+	if (e->IsCollidedInYDimension())
+	{
+		vy = 0;
+	}
+
 	if (e->IsCollidedInXDimension())
 	{
 		vx = -vx;

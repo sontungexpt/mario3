@@ -39,35 +39,28 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithKoopa(e);
 
 	// items
-	else if (dynamic_cast<CCoin*>(e->obj))
-		OnCollisionWithCoin(e);
-	else if (dynamic_cast<CMushroom*>(e->obj))
-		OnCollisionWithMushroom(e);
-	else if (dynamic_cast<CBullet*>(e->obj))
-		OnCollisionWithBullet(e);
+	else if (dynamic_cast<CItem*>(e->obj))
+		OnCollisionWithItem(e);
+
+	// materials
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
-	else if (dynamic_cast<CDoor*>(e->obj))
-		OnCollisionWithDoor(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
 
 	// collide in y dimension and the object is a blocking object like platform
-	if (e->obj->IsBlocking())
+	if (e->IsCollidedInYDimension() && e->obj->IsBlocking())
 	{
-		if (e->IsCollidedInYDimension())
+		if (e->IsCollidedFromTop())
 		{
-			if (e->IsCollidedFromTop())
-			{
-				is_on_platform = true;
-			}
-			vy = 0;
+			is_on_platform = TRUE;
 		}
+		vy = 0;
+	}
 
-		else if (e->IsCollidedInXDimension())
-		{
-			vx = 0;
-		}
+	if (e->IsCollidedInXDimension() && e->obj->IsBlocking())
+	{
+		vx = 0;
 	}
 }
 
@@ -81,14 +74,11 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		{
 			koopa->Defend();
 			this->JumpDeflect();
-			return;
 		}
-
-		// hit by Goomba
-		if (untouchable) return;
-
-		// not untouchable -> can die
-		this->Die();
+		else
+		{
+			this->Die();
+		}
 		return;
 	}
 
@@ -96,7 +86,6 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	// koopa is kicked by mario then it can kill any thing
 	// on the road include mario and another monster
 	// exclude that mario is collide on top koopa
-
 	if (koopa->IsMarioKicked())
 	{
 		if (e->IsCollidedFromTop())
@@ -108,12 +97,10 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		return;
 	}
 	else {
-		if (is_want_holding_koopa && weapon_monster == nullptr)
+		if (is_want_holding_koopa)
 		{
-			weapon_monster = koopa;
+			//weapon_monster = koopa;
 			koopa->BeHold();
-			//koopa->BeHold();
-
 			return;
 		}
 	}
@@ -124,7 +111,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
-	this->Die();
+	Die();
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -142,54 +129,18 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	}
 	else // hit by Goomba
 	{
-		if (!untouchable && !goomba->IsDead())
+		if (!goomba->IsDead())
 		{
-			if (level > MARIO_LEVEL_SMALL)
-			{
-				level = MARIO_LEVEL_SMALL;
-				StartUntouchable();
-			}
-			else
-			{
-				DebugOut(L">>> Mario DIE >>> \n");
-				SetState(MARIO_STATE_DIE);
-			}
+			this->Die();
 		}
 	}
 }
 
 // collision with items
-void CMario::OnCollisionWithBullet(LPCOLLISIONEVENT e)
+void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 {
-	if (level > MARIO_LEVEL_SMALL)
-	{
-		level = MARIO_LEVEL_SMALL;
-		StartUntouchable();
-	}
-	else
-	{
-		DebugOut(L">>> Mario DIE >>> \n");
-		SetState(MARIO_STATE_DIE);
-	}
-}
-
-void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
-{
-	DebugOut(L"Collision with coin");
-	if (e->IsCollidedInXDimension() || e->IsCollidedInYDimension())
-	{
-		e->obj->Delete();
-		coin++;
-	}
-}
-
-void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
-{
-	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
-
-	if (this->IsSmall())
-		this->Zoom();
-	mushroom->Delete();
+	CItem* item = dynamic_cast<CItem*>(e->obj);
+	item->BeCollect();
 }
 
 // collision with materials
@@ -207,13 +158,8 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
-	CPortal* p = (CPortal*)e->obj;
-	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
-}
-
-void CMario::OnCollisionWithDoor(LPCOLLISIONEVENT e) {
-	CDoor* door = (CDoor*)e->obj;
-	CGame::GetInstance()->InitiateSwitchScene(door->GetSceneId());
+	CPortal* portal = (CPortal*)e->obj;
+	CGame::GetInstance()->InitiateSwitchScene(portal->GetSceneId());
 }
 
 int CMario::GetAniIdSmall()
@@ -356,8 +302,6 @@ void CMario::Render()
 	CAnimations* animations = CAnimations::GetInstance();
 	LPANIMATION ani = animations->Get(aniId);
 
-	ResetPositionIfOutOfWidthScreen(x, y);
-
 	if (ani != nullptr)
 		ani->Render(x, y);
 
@@ -373,13 +317,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		return;
 	}
 
-	if (weapon_monster != nullptr)
-	{
-		CKoopa* koopa = dynamic_cast<CKoopa*>(weapon_monster);
-		koopa->BeKick(vx);
-		weapon_monster = nullptr;
-	}
-
 	vy += ay * dt;
 	vx += ax * dt;
 
@@ -387,11 +324,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (fabs(vx) > fabs(max_vx))
 		vx = max_vx;
 
+	ResetPositionIfOutOfWidthScreen(x, y);
+
 	// reset untouchable timer if untouchable time has passed
-	if (GetTickCount64() - time_untouchable_start > MARIO_UNTOUCHABLE_TIME)
+	if (untouchable && GetTickCount64() - time_untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
 		time_untouchable_start = 0;
-		untouchable = 0;
+		untouchable = FALSE;
 	}
 
 	is_on_platform = FALSE;
@@ -402,10 +341,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed!
-	if (this->IsDead()) return;
+	if (IsDead()) return;
 
 	switch (state)
 	{
+	case MARIO_STATE_UNTOUCHABLE:
+		untouchable = TRUE;
+		time_untouchable_start = GetTickCount64();
+		SetState(MARIO_STATE_IDLE);
+		break;
 	case MARIO_STATE_HOLDING_KOOPA:
 		is_want_holding_koopa = TRUE;
 		break;
@@ -439,14 +383,20 @@ void CMario::SetState(int state)
 		break;
 	}
 	case MARIO_STATE_JUMP:
-		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
-		vy = -MARIO_JUMP_SPEED_Y;
+		if (is_sitting) break;
+		if (is_on_platform)
+		{
+			if (abs(vx) == MARIO_RUNNING_SPEED)
+				vy = -MARIO_JUMP_RUN_SPEED_Y;
+			else
+				vy = -MARIO_JUMP_SPEED_Y;
+		}
 		break;
 	case MARIO_STATE_SIT:
 		if (is_on_platform && level != MARIO_LEVEL_SMALL)
 		{
-			is_sitting = true;
-			vx = 0; vy = 0.0f;
+			is_sitting = TRUE;
+			vy = 0;
 			y += MARIO_SIT_HEIGHT_ADJUST;
 			SetState(MARIO_STATE_IDLE);
 		}
@@ -454,7 +404,8 @@ void CMario::SetState(int state)
 	case MARIO_STATE_SIT_RELEASE:
 		if (is_sitting)
 		{
-			is_sitting = false;
+			is_sitting = FALSE;
+			vy = 0;
 			y -= MARIO_SIT_HEIGHT_ADJUST;
 			SetState(MARIO_STATE_IDLE);
 		}
@@ -464,9 +415,9 @@ void CMario::SetState(int state)
 		vx = 0.0f;
 		break;
 	case MARIO_STATE_DIE:
-		vy = -MARIO_JUMP_DEFLECT_SPEED;
-		vx = 0;
 		ax = 0;
+		vx = 0;
+		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		break;
 	}
 
@@ -475,13 +426,17 @@ void CMario::SetState(int state)
 
 void CMario::Die()
 {
-	if (this->IsBig())
+	// not untouchable -> can die
+	if (!untouchable)
 	{
-		this->Shrink();
-		StartUntouchable();
-		return;
+		if (IsBig())
+		{
+			StartUntouchable();
+			Shrink();
+			return;
+		}
+		SetState(MARIO_STATE_DIE);
 	}
-	SetState(MARIO_STATE_DIE);
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -512,20 +467,20 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	}
 }
 
-void CMario::SetLevel(int l)
+void CMario::SetLevel(int level)
 {
 	// Adjust position to avoid falling off platform
-	if (level == MARIO_LEVEL_SMALL)
+	if (this->level == MARIO_LEVEL_SMALL)
 	{
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
-	level = l;
+	this->level = level;
 }
 
 void CMario::Reset()
 {
 	SetState(MARIO_STATE_IDLE);
-	SetLevel(MARIO_LEVEL_BIG);
+	SetLevel(MARIO_LEVEL_SMALL);
 	SetPosition(start_x, start_y);
 	SetSpeed(0, 0);
 }
