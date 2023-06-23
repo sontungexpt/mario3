@@ -7,15 +7,7 @@ class CQuestionBrick : public CBrick
 {
 private:
 	BOOLEAN is_unboxed;
-
 	int item_type;
-
-	// the value of y at the first time the brick bounce
-	// NOTE: it is the top-left corner of the brick
-	float start_y;
-
-	float ax;
-	float ay;
 
 	CItem* CreateItem(CItem* item);
 
@@ -24,10 +16,6 @@ public:
 	CQuestionBrick(float x, float y, int item_type = QUESTION_BRICK_COIN) : CBrick(x, y) {
 		is_unboxed = FALSE;
 		this->item_type = item_type;
-
-		start_y = y;
-		ax = 0;
-		ay = 0;
 	};
 
 	float GetItemReferenceY(CItem* item) { return y - (GetHeight() + item->GetHeight()) / 2 - 1; };

@@ -123,6 +123,9 @@
     <ClCompile Include="src\objects\monsters\WindKoopa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\materials\BreakBrick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\Animation\Animation.h">
@@ -326,6 +329,9 @@
     <ClInclude Include="src\objects\monsters\WindKoopa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\objects\materials\BreakBrick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -355,6 +361,12 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\assets\textures\misc_left.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src\assets\textures\full-screen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src\assets\textures\hud_source.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

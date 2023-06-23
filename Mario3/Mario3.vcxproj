@@ -134,6 +134,7 @@
     <ClCompile Include="src\objects\items\Bullet.cpp" />
     <ClCompile Include="src\objects\items\Item.cpp" />
     <ClCompile Include="src\objects\items\Leaf.cpp" />
+    <ClCompile Include="src\objects\materials\BreakBrick.cpp" />
     <ClCompile Include="src\objects\materials\Door.cpp" />
     <ClCompile Include="src\objects\materials\Grass.cpp" />
     <ClCompile Include="src\objects\items\Mushroom.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="src\GameData.h" />
     <ClInclude Include="src\objects\items\Bullet.h" />
     <ClInclude Include="src\objects\items\Item.h" />
+    <ClInclude Include="src\objects\materials\BreakBrick.h" />
     <ClInclude Include="src\objects\materials\Door.h" />
     <ClInclude Include="src\objects\materials\Grass.h" />
     <ClInclude Include="src\objects\items\Leaf.h" />
@@ -262,6 +264,8 @@
     <Text Include="src\settings\scenes\levelmap.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="src\assets\textures\full-screen.png" />
+    <Image Include="src\assets\textures\hud_source.png" />
     <Image Include="src\assets\textures\misc_left.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

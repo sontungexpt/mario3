@@ -39,7 +39,7 @@ protected:
 
 public:
 
-	CMonster(float x, float y, float disapear_time = MONSTER_DISAPPEAR_TIME) : CGameObject(x, y)
+	CMonster(float x, float y, ULONGLONG disapear_time = MONSTER_DISAPPEAR_TIME) : CGameObject(x, y)
 	{
 		Init();
 
@@ -61,7 +61,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects);
 	virtual void SetState(int state);
 
-	virtual int IsCollidable() { return 1; };
+	virtual int IsCollidable() { return !dead; }; // if dead, not collidable
 	virtual int IsBlocking() { return 0; }
 
 	// collision

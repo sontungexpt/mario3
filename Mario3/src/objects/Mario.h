@@ -70,7 +70,7 @@ public:
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	int IsCollidable() { return state != MARIO_STATE_DIE; }
-	//int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable == 0); }
+	//int IsBlocking() { return (state != MARIO_STATE_DIE && !untouchable); }
 
 	int IsBlocking() { return 0; }
 
