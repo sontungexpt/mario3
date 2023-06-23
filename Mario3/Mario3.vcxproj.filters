@@ -296,7 +296,7 @@
     <ClInclude Include="src\objects\items\Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\monsters\Plant602000.h">
+    <ClInclude Include="src\configs\monsters\PlantShooter602000.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\configs\items\Bullet302000.h">

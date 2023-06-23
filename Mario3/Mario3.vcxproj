@@ -190,7 +190,7 @@
     <ClInclude Include="src\configs\materials\Pipe10100.h" />
     <ClInclude Include="src\configs\materials\QuestionBrick100000.h" />
     <ClInclude Include="src\configs\monsters\Plant.h" />
-    <ClInclude Include="src\configs\monsters\Plant602000.h" />
+    <ClInclude Include="src\configs\monsters\PlantShooter602000.h" />
     <ClInclude Include="src\GameData.h" />
     <ClInclude Include="src\objects\items\Bullet.h" />
     <ClInclude Include="src\objects\items\Item.h" />

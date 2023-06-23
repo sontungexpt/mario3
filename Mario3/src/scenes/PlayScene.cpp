@@ -169,7 +169,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_PIPE:
 	{
 		int state = PIPE_STATE_LONG;
-		int plant_type = PLANT_NOTHING;
+		int plant_type = PIPE_PLANT_NOTHING;
 
 		if (tokens.size() >= 4)
 		{

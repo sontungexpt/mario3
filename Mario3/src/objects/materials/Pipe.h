@@ -22,13 +22,17 @@ protected:
 
 		switch (plant_type)
 		{
-		case PLANT_NOTHING:
+		case PIPE_PLANT_NOTHING:
 			return;
-		case PLANT_SHOOTER:
-			plant_y = y - (GetHeight() - PLANT_SHOOTER_BBOX_HEIGHT) / 2 + 1;
-			plant = (CPlantShooter*)scene->AddObject(new CPlantShooter(plant_x, plant_y, PLANT_STATE_DOWN));
+		case PIPE_PLANT_SHOOTER_RED:
+			plant_y = y - (GetHeight() - PLANT_SHOOTER_BBOX_HEIGHT_RED) / 2 + 1;
+			plant = (CPlantShooter*)scene->AddObject(new CPlantShooter(plant_x, plant_y, PLANT_STATE_DOWN, PLANT_SHOOTER_RED));
 			break;
-		case PLANT_CARNIVOROUS:
+		case PIPE_PLANT_SHOOTER_GREEN:
+			plant_y = y - (GetHeight() - PLANT_SHOOTER_BBOX_HEIGHT_GREEN) / 2 + 1;
+			plant = (CPlantShooter*)scene->AddObject(new CPlantShooter(plant_x, plant_y, PLANT_STATE_DOWN, PLANT_SHOOTER_GREEN));
+			break;
+		case PIPE_PLANT_CARNIVOROUS:
 			plant_y = y - (GetHeight() - CARNIVOROUS_PLANT_BBOX_HEIGHT) / 2 + 1;
 			plant = (CCarnivorousPlant*)scene->AddObject(new CCarnivorousPlant(plant_x, plant_y, PLANT_STATE_DOWN));
 			break;
@@ -38,7 +42,7 @@ protected:
 	}
 
 public:
-	CPipe(float x, float y, int state = PIPE_STATE_LONG, int plant_type = PLANT_NOTHING) : CGameObject(x, y) {
+	CPipe(float x, float y, int state = PIPE_STATE_LONG, int plant_type = PIPE_PLANT_NOTHING) : CGameObject(x, y) {
 		this->state = state;
 		plant = nullptr;
 		CreatePlant(plant_type);
