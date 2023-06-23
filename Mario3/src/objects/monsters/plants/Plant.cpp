@@ -15,14 +15,14 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			y = min_y;
 
 			// time out up state of plant move to down state
-			if (GetTickCount64() - time_up_start > TIME_OUT_UP_STATE) {
+			if (GetTickCount64() - time_up_start > time_out_up_state) {
 				SetState(PLANT_STATE_DOWN);
 			}
 		}
 	}
 	else // is downing
 	{
-		if (GetTickCount64() - time_down_start > TIME_OUT_DOWN_STATE) {
+		if (GetTickCount64() - time_down_start > time_out_down_state) {
 			SetState(PLANT_STATE_UP);
 		}
 	}

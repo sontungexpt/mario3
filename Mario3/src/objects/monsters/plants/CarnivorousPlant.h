@@ -7,6 +7,8 @@ class CCarnivorousPlant : public CPlant
 private:
 	void Init() {
 		min_y = start_y - CARNIVOROUS_PLANT_BBOX_HEIGHT;
+		time_out_up_state = CARNIVOROUS_PLANT_TIME_OUT_UP_STATE;
+		time_out_down_state = CARNIVOROUS_PLANT_TIME_OUT_DOWN_STATE;
 	};
 
 	void AdjustPos() {};

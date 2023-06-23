@@ -191,7 +191,14 @@ src\settings\objects\monsters\carnivorous_plant.txt
 # MARIO
 0	20	10
 
-# Question Brick
+# COIN
+4	1073	128
+4	1104	96
+4	1136	64
+4	1168	32
+4	1200	0
+
+# QUESTION BRICK
 # type	x	y	item_type
 8	170	130	1
 8	186	130	1
@@ -202,7 +209,7 @@ src\settings\objects\monsters\carnivorous_plant.txt
 8	650	162	2
 8	720	130	1
 
-8	1471	135	1
+8	1471	135	2
 
 # Pipe
 9	354	160	1	1
@@ -210,6 +217,12 @@ src\settings\objects\monsters\carnivorous_plant.txt
 9	1792	168	2	2
 
 9	1856	160	1	1
+
+9	2264	160	1	0
+
+9	2336	168	2	0
+
+5	2256	143	16	16	2	20002	20002	20002	1	1
 
 ### Monsters ###
 #Goombas
@@ -232,7 +245,9 @@ src\settings\objects\monsters\carnivorous_plant.txt
 
 5	1536	192	16	16	6	1000010	1000020	1000030	1	1
 
-5	1680	192	16	16	40	1000010	1000020	1000030	1	1
+5	1680	192	16	16	35	1000010	1000020	1000030	1	1
+
+5	2256	192	16	16	29	1000010	1000020	1000030	1	1
 
 #GROUND 2
 5	624	192	16	16	29	1000110	1000120	1000130	1	1

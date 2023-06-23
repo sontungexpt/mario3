@@ -145,8 +145,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBrick(x, y);
 		break;
 	case OBJECT_TYPE_COIN:
-		obj = new CCoin(x, y);
-		break;
+	{
+		int coin_state = COIN_STATE_IDLE;
+		if (tokens.size() >= 4)
+			coin_state = atoi(tokens[3].c_str());
+		obj = new CCoin(x, y, coin_state);
+	}
+	break;
 	case OBJECT_TYPE_QUESTION_BRICK:
 	{
 		if (tokens.size() == 4)

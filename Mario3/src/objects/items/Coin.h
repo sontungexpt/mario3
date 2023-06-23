@@ -12,19 +12,16 @@ class CCoin : public CItem {
 	float collect_y; // the axios of collect point
 
 	void OnCollisionWithPlayer(LPCOLLISIONEVENT e) {};
+
 public:
 	CCoin() : CItem() {
-		ax = 0;
-		ay = COIN_GRAVITY;
+		ay = 0;
 	}
 	CCoin(float x, float y) : CItem(x, y) {
-		ax = 0;
-		ay = COIN_GRAVITY;
+		ay = 0;
 	}
-
-	CCoin(float x, float y, int state) : CItem(x, y, state) {
-		ax = 0;
-		ay = COIN_GRAVITY;
+	CCoin(float x, float y, int state = COIN_STATE_IDLE) :CItem(x, y, state) {
+		ay = 0;
 	}
 
 	void OnCollisionWith(LPCOLLISIONEVENT e);

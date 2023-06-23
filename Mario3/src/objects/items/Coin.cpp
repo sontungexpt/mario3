@@ -33,6 +33,7 @@ void CCoin::SetState(int state)
 		break;
 	case COIN_STATE_JUMP_OUT_QUESTION_BRICK:
 		vx = 0;
+		ax = 0;
 		ay = COIN_GRAVITY;
 		vy = -COIN_JUMP_OUT_QUESTION_BRICK_SPEED_Y;
 
@@ -47,6 +48,7 @@ void CCoin::SetState(int state)
 void CCoin::BeCollect()
 {
 	CItem::BeCollect();
+
 	is_deleted = TRUE;
 
 	// add score
@@ -55,13 +57,17 @@ void CCoin::BeCollect()
 void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
 	if (!IsInCamera()) return;
-	// when coin is jump to max height, it's time to collect
-	if (!is_collected && y < collect_y) is_collected = TRUE;
 
-	if (is_collected && y >= collect_y)
+	if (state == COIN_STATE_JUMP_OUT_QUESTION_BRICK)
 	{
-		BeCollect();
-		return;
+		// when coin is jump to max height, it's time to collect
+		if (!is_collected && y < collect_y) is_collected = TRUE;
+
+		if (is_collected && y >= collect_y)
+		{
+			BeCollect();
+			return;
+		}
 	}
 
 	CItem::Update(dt, co_objects);

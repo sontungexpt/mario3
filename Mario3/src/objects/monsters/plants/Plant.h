@@ -14,6 +14,9 @@ protected:
 	ULONGLONG time_down_start;
 	ULONGLONG time_up_start;
 
+	ULONGLONG time_out_up_state;
+	ULONGLONG time_out_down_state;
+
 	virtual void Init(float y) {
 		ay = 0; // no gravity
 		ax = 0;
@@ -26,6 +29,9 @@ protected:
 
 		time_down_start = 0;
 		time_up_start = 0;
+
+		time_out_up_state = PLANT_TIME_OUT_UP_STATE;
+		time_out_down_state = PLANT_TIME_OUT_DOWN_STATE;
 	};
 
 	void AdjustPos() {};
