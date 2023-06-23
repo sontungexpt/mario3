@@ -138,10 +138,12 @@
     <ClCompile Include="src\objects\materials\Grass.cpp" />
     <ClCompile Include="src\objects\items\Mushroom.cpp" />
     <ClCompile Include="src\objects\materials\Pipe.cpp" />
+    <ClCompile Include="src\objects\monsters\plants\CarnivorousPlant.cpp" />
     <ClCompile Include="src\objects\monsters\Koopa.cpp" />
     <ClCompile Include="src\objects\monsters\Monster.cpp" />
-    <ClCompile Include="src\objects\monsters\Plant.cpp" />
+    <ClCompile Include="src\objects\monsters\plants\PlantShooter.cpp" />
     <ClCompile Include="src\objects\materials\QuestionBrick.cpp" />
+    <ClCompile Include="src\objects\monsters\plants\Plant.cpp" />
     <ClCompile Include="src\objects\monsters\WindGoomba.cpp" />
     <ClCompile Include="src\scenes\LevelMapScene.cpp" />
     <ClCompile Include="main.cpp" />
@@ -176,6 +178,7 @@
     <ClInclude Include="src\configs\GameObject.h" />
     <ClInclude Include="src\configs\items\Coin300000.h" />
     <ClInclude Include="src\configs\monsters\All.h" />
+    <ClInclude Include="src\configs\monsters\CarnivorousPlant603000.h" />
     <ClInclude Include="src\configs\monsters\Gommba600000.h" />
     <ClInclude Include="src\configs\materials\Grass.h" />
     <ClInclude Include="src\configs\core\SceneIds.h" />
@@ -186,6 +189,7 @@
     <ClInclude Include="src\configs\items\Mushroom301000.h" />
     <ClInclude Include="src\configs\materials\Pipe10100.h" />
     <ClInclude Include="src\configs\materials\QuestionBrick100000.h" />
+    <ClInclude Include="src\configs\monsters\Plant.h" />
     <ClInclude Include="src\configs\monsters\Plant602000.h" />
     <ClInclude Include="src\GameData.h" />
     <ClInclude Include="src\objects\items\Bullet.h" />
@@ -195,10 +199,12 @@
     <ClInclude Include="src\objects\items\Leaf.h" />
     <ClInclude Include="src\objects\items\Mushroom.h" />
     <ClInclude Include="src\objects\materials\Pipe.h" />
+    <ClInclude Include="src\objects\monsters\plants\CarnivorousPlant.h" />
     <ClInclude Include="src\objects\monsters\Koopa.h" />
     <ClInclude Include="src\objects\monsters\Monster.h" />
-    <ClInclude Include="src\objects\monsters\Plant.h" />
+    <ClInclude Include="src\objects\monsters\plants\PlantShooter.h" />
     <ClInclude Include="src\objects\materials\QuestionBrick.h" />
+    <ClInclude Include="src\objects\monsters\plants\Plant.h" />
     <ClInclude Include="src\objects\monsters\WindGoomba.h" />
     <ClInclude Include="src\scenes\LevelMapScene.h" />
     <ClInclude Include="src\components\Animation\Animation.h" />
@@ -237,6 +243,7 @@
     <Text Include="src\settings\objects\items\bullet.txt" />
     <Text Include="src\settings\objects\items\coin.txt" />
     <Text Include="src\settings\objects\materials\door.txt" />
+    <Text Include="src\settings\objects\monsters\carnivorous_plant.txt" />
     <Text Include="src\settings\objects\monsters\goomba.txt" />
     <Text Include="src\settings\game-mario.txt" />
     <Text Include="src\settings\objects\materials\grass.txt" />
@@ -244,7 +251,7 @@
     <Text Include="src\settings\objects\monsters\koopa.txt" />
     <Text Include="src\settings\objects\mario.txt" />
     <Text Include="src\settings\objects\materials\pipe.txt" />
-    <Text Include="src\settings\objects\monsters\plant.txt" />
+    <Text Include="src\settings\objects\monsters\plant_shooter.txt" />
     <Text Include="src\settings\objects\materials\question_brick.txt" />
     <Text Include="src\settings\objects\platform.txt" />
     <Text Include="src\settings\scenes\scene05.txt" />

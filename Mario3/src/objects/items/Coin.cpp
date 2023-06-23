@@ -54,8 +54,9 @@ void CCoin::BeCollect()
 
 void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
+	if (!IsInCamera()) return;
 	// when coin is jump to max height, it's time to collect
-	if (!is_collected && y < collect_y) SetCollected(TRUE);
+	if (!is_collected && y < collect_y) is_collected = TRUE;
 
 	if (is_collected && y >= collect_y)
 	{

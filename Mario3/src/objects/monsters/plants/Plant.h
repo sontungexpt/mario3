@@ -1,11 +1,10 @@
 #pragma once
-#include "Monster.h"
-#include "configs/monsters/Plant602000.h"
+#include "objects/monsters/Monster.h"
+#include "configs/monsters/Plant.h"
 
 class CPlant : public CMonster
 {
-private:
-	BOOLEAN is_shooted;
+protected:
 	BOOLEAN is_upping;
 	BOOLEAN is_downing;
 
@@ -14,24 +13,19 @@ private:
 
 	ULONGLONG time_down_start;
 	ULONGLONG time_up_start;
-	ULONGLONG time_reload_bullet_start;
 
-	void Init(float y) {
+	virtual void Init(float y) {
 		ay = 0; // no gravity
 		ax = 0;
 
 		vx = 0; // no walk
 		vy = PLANT_SPEED_UP_DOWN; // move up and down
 
-		is_shooted = FALSE;
 		is_upping = FALSE;
 		is_downing = FALSE;
 
 		time_down_start = 0;
 		time_up_start = 0;
-		time_reload_bullet_start = 0;
-
-		min_y = start_y - PLANT_BBOX_HEIGHT;
 	};
 
 	void AdjustPos() {};
@@ -45,8 +39,8 @@ public:
 	};
 
 	// core
-	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	void Render();
-	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void Render() = 0;
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 	virtual void SetState(int state);
 };

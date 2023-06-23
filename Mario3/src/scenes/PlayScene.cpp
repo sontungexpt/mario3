@@ -162,14 +162,22 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 	}
 	case OBJECT_TYPE_PIPE:
-		if (tokens.size() == 4)
+	{
+		int state = PIPE_STATE_LONG;
+		int plant_type = PLANT_NOTHING;
+
+		if (tokens.size() >= 4)
 		{
-			int plant_type = atoi(tokens[3].c_str());
-			obj = new CPipe(x, y, plant_type);
-			break;
+			state = atoi(tokens[3].c_str());
 		}
-		obj = new CPipe(x, y);
-		break;
+		if (tokens.size() >= 5)
+		{
+			plant_type = atoi(tokens[4].c_str());
+		}
+
+		obj = new CPipe(x, y, state, plant_type);
+	}
+	break;
 	case OBJECT_TYPE_KOOPA:
 	{
 		obj = new CKoopa(x, y);
@@ -236,7 +244,7 @@ void CPlayScene::LoadAssets(LPCWSTR assetFile)
 	{
 		string line(str);
 
-		if (line[0] == '#') continue;	// skip comment lines
+		if (line[0] == '#' || line[0] == '/') continue;	// skip comment lines
 
 		if (line == "[SPRITES]") { section = ASSETS_SECTION_SPRITES; continue; };
 		if (line == "[ANIMATIONS]") { section = ASSETS_SECTION_ANIMATIONS; continue; };
@@ -275,7 +283,7 @@ void CPlayScene::Load()
 	{
 		string line(str);
 
-		if (line[0] == '#') continue;	// skip comment lines
+		if (line[0] == '#' || line[0] == '/') continue;	// skip comment lines
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }

@@ -75,7 +75,7 @@
     <ClCompile Include="src\objects\materials\Pipe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\monsters\Plant.cpp">
+    <ClCompile Include="src\objects\monsters\plants\PlantShooter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\objects\materials\Door.cpp">
@@ -112,6 +112,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\objects\GameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\monsters\plants\CarnivorousPlant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\monsters\plants\Plant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -200,7 +206,7 @@
     <ClInclude Include="src\configs\materials\Pipe10100.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\monsters\Plant.h">
+    <ClInclude Include="src\objects\monsters\plants\PlantShooter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\materials\Door.h">
@@ -302,6 +308,18 @@
     <ClInclude Include="src\objects\monsters\WindGoomba.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\objects\monsters\plants\CarnivorousPlant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\monsters\CarnivorousPlant603000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\monsters\plants\Plant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\monsters\Plant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -323,10 +341,11 @@
     <Text Include="src\settings\objects\materials\pipe.txt" />
     <Text Include="src\settings\objects\monsters\koopa.txt" />
     <Text Include="src\settings\objects\items\mushroom.txt" />
-    <Text Include="src\settings\objects\monsters\plant.txt" />
+    <Text Include="src\settings\objects\monsters\plant_shooter.txt" />
     <Text Include="src\settings\objects\items\bullet.txt" />
     <Text Include="src\settings\objects\platform.txt" />
     <Text Include="src\settings\objects\items\leaf.txt" />
+    <Text Include="src\settings\objects\monsters\carnivorous_plant.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\assets\textures\misc_left.png">

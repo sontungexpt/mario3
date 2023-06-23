@@ -12,9 +12,6 @@ void CItem::OnNoCollision(DWORD dt)
 void CItem::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
 	if (is_deleted) return;
-
-	if (!IsInCamera()) return;
-
 	vx += ax * dt;
 	vy += ay * dt;
 
