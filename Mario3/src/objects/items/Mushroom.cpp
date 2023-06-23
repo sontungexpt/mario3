@@ -79,7 +79,9 @@ void CMushroom::BeCollect()
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 
-	if (mario->IsSmall())
-		mario->Zoom();
+	if (mario->IsBig()) return;
+
+	// if mario is small, then zoom and delete mushroom
+	mario->Zoom();
 	is_deleted = true;
 }

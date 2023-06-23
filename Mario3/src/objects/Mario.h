@@ -23,6 +23,7 @@ class CMario : public CGameObject
 	BOOLEAN is_sitting;
 	BOOLEAN is_on_platform;
 	BOOLEAN is_want_holding_koopa;
+	BOOLEAN is_appearance_changing;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -33,6 +34,11 @@ class CMario : public CGameObject
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
+
+	int GetAniIdWhenAppearanceChanging();
+
+	void GetBoundingBoxBig(float& left, float& top, float& right, float& bottom);
+	void GetBoundingBoxSmall(float& left, float& top, float& right, float& bottom);
 
 public:
 	CMario(float x, float y, int level = MARIO_LEVEL_SMALL) : CGameObject(x, y)
@@ -49,6 +55,7 @@ public:
 		untouchable = FALSE;
 		is_on_platform = FALSE;
 		is_want_holding_koopa = FALSE;
+		is_appearance_changing = FALSE;
 
 		weapon_monster = nullptr;
 

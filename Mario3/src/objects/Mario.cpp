@@ -224,6 +224,68 @@ int CMario::GetAniIdSmall()
 	return aniId;
 }
 
+int CMario::GetAniIdWhenAppearanceChanging()
+{
+	int aniId = -1;
+	if (!is_on_platform)
+	{
+		if (fabs(ax) == MARIO_ACCEL_RUN_X)
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_MARIO_JUMP_RUN_APPEARANCE_CHANGING_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_JUMP_RUN_APPEARANCE_CHANGING_LEFT;
+		}
+		else
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_MARIO_JUMP_WALK_APPEARANCE_CHANGING_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_JUMP_WALK_APPEARANCE_CHANGING_LEFT;
+		}
+	}
+	else
+	{
+		if (is_sitting)
+		{
+			if (nx > 0)
+				aniId = ID_ANI_MARIO_SIT_APPEARANCE_CHANGING_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_SIT_APPEARANCE_CHANGING_LEFT;
+		}
+		else
+		{
+			if (vx == 0)
+			{
+				if (nx > 0) aniId = ID_ANI_MARIO_IDLE_APPEARANCE_CHANGING_RIGHT;
+				else aniId = ID_ANI_MARIO_IDLE_APPEARANCE_CHANGING_LEFT;
+			}
+			else if (vx > 0)
+			{
+				if (ax < 0)
+					aniId = ID_ANI_MARIO_BRACE_APPEARANCE_CHANGING_RIGHT;
+				else if (ax == MARIO_ACCEL_RUN_X)
+					aniId = ID_ANI_MARIO_RUNNING_APPEARANCE_CHANGING_RIGHT;
+				else if (ax == MARIO_ACCEL_WALK_X)
+					aniId = ID_ANI_MARIO_WALKING_APPEARANCE_CHANGING_RIGHT;
+			}
+			else // vx < 0
+			{
+				if (ax > 0)
+					aniId = ID_ANI_MARIO_BRACE_APPEARANCE_CHANGING_LEFT;
+				else if (ax == -MARIO_ACCEL_RUN_X)
+					aniId = ID_ANI_MARIO_RUNNING_APPEARANCE_CHANGING_LEFT;
+				else if (ax == -MARIO_ACCEL_WALK_X)
+					aniId = ID_ANI_MARIO_WALKING_APPEARANCE_CHANGING_LEFT;
+			}
+		}
+	}
+
+	if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_APPEARANCE_CHANGING_RIGHT;
+
+	return aniId;
+}
+
 int CMario::GetAniIdBig()
 {
 	int aniId = -1;
@@ -294,6 +356,8 @@ void CMario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
+	else if (is_appearance_changing)
+		aniId = GetAniIdWhenAppearanceChanging();
 	else if (level == MARIO_LEVEL_BIG)
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
@@ -331,6 +395,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		time_untouchable_start = 0;
 		untouchable = FALSE;
+		is_appearance_changing = FALSE;
 	}
 
 	is_on_platform = FALSE;
@@ -418,6 +483,8 @@ void CMario::SetState(int state)
 		ax = 0;
 		vx = 0;
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
+		DebugOut(L"Mario die\n");
+
 		break;
 	}
 
@@ -431,7 +498,6 @@ void CMario::Die()
 	{
 		if (IsBig())
 		{
-			StartUntouchable();
 			Shrink();
 			return;
 		}
@@ -439,41 +505,58 @@ void CMario::Die()
 	}
 }
 
-void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void CMario::GetBoundingBoxBig(float& left, float& top, float& right, float& bottom)
 {
-	if (level == MARIO_LEVEL_BIG)
+	if (is_sitting)
 	{
-		if (is_sitting)
-		{
-			left = x - MARIO_BIG_SITTING_BBOX_WIDTH / 2;
-			top = y - MARIO_BIG_SITTING_BBOX_HEIGHT / 2;
-			right = left + MARIO_BIG_SITTING_BBOX_WIDTH;
-			bottom = top + MARIO_BIG_SITTING_BBOX_HEIGHT;
-		}
-		else
-		{
-			left = x - MARIO_BIG_BBOX_WIDTH / 2;
-			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
-			right = left + MARIO_BIG_BBOX_WIDTH;
-			bottom = top + MARIO_BIG_BBOX_HEIGHT;
-		}
+		left = x - MARIO_BIG_SITTING_BBOX_WIDTH / 2;
+		top = y - MARIO_BIG_SITTING_BBOX_HEIGHT / 2;
+		right = left + MARIO_BIG_SITTING_BBOX_WIDTH;
+		bottom = top + MARIO_BIG_SITTING_BBOX_HEIGHT;
 	}
 	else
 	{
-		left = x - MARIO_SMALL_BBOX_WIDTH / 2;
-		top = y - MARIO_SMALL_BBOX_HEIGHT / 2;
-		right = left + MARIO_SMALL_BBOX_WIDTH;
-		bottom = top + MARIO_SMALL_BBOX_HEIGHT;
+		left = x - MARIO_BIG_BBOX_WIDTH / 2;
+		top = y - MARIO_BIG_BBOX_HEIGHT / 2;
+		right = left + MARIO_BIG_BBOX_WIDTH;
+		bottom = top + MARIO_BIG_BBOX_HEIGHT;
 	}
+}
+
+void CMario::GetBoundingBoxSmall(float& left, float& top, float& right, float& bottom)
+{
+	left = x - MARIO_SMALL_BBOX_WIDTH / 2;
+	top = y - MARIO_SMALL_BBOX_HEIGHT / 2;
+	right = left + MARIO_SMALL_BBOX_WIDTH;
+	bottom = top + MARIO_SMALL_BBOX_HEIGHT;
+}
+
+void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+{
+	// if mario is changing appearance, use the big bbox
+	if (is_appearance_changing)
+	{
+		GetBoundingBoxBig(left, top, right, bottom);
+		return;
+	}
+
+	if (level == MARIO_LEVEL_BIG)
+		GetBoundingBoxBig(left, top, right, bottom);
+	else
+		GetBoundingBoxSmall(left, top, right, bottom);
 }
 
 void CMario::SetLevel(int level)
 {
+	if (this->level == level) return; // nothing to change
+
 	// Adjust position to avoid falling off platform
 	if (this->level == MARIO_LEVEL_SMALL)
 	{
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
+	is_appearance_changing = TRUE;
+	StartUntouchable();
 	this->level = level;
 }
 

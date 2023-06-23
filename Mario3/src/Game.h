@@ -111,7 +111,9 @@ public:
 	void InitiateSwitchScene(int scene_id);
 
 	BOOLEAN IsPaused() { return is_paused; }
-	void TogglePause() { is_paused = ~is_paused; }
+	void TogglePause() {
+		is_paused = ~is_paused;
+	}
 
 	~CGame();
 };
