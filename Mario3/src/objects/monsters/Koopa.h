@@ -3,7 +3,7 @@
 
 class CKoopa : public CMonster
 {
-private:
+protected:
 	ULONGLONG defend_time;
 	ULONGLONG comeback_time;
 

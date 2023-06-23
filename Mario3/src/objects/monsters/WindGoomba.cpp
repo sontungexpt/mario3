@@ -18,7 +18,7 @@ void CWindGoomba::AdjustPos()
 
 void CWindGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == GOOMBA_STATE_FLY)
+	if (state == MONSTER_STATE_FLY)
 	{
 		left = x - GOOMBA_BBOX_WIDTH_FLY / 2;
 		top = y - GOOMBA_BBOX_HEIGHT_FLY / 2;
@@ -35,7 +35,7 @@ void CWindGoomba::Render()
 	if (is_deleted) return;
 	if (!IsInCamera()) return;
 
-	if (state == GOOMBA_STATE_FLY)
+	if (state == MONSTER_STATE_FLY)
 	{
 		CAnimations::GetInstance()->Get(ID_ANI_GOOMBA_FLY)->Render(x, y);
 		return;
@@ -50,7 +50,7 @@ void CWindGoomba::SetState(int state)
 
 	switch (state)
 	{
-	case GOOMBA_STATE_FLY:
+	case MONSTER_STATE_FLY:
 		time_jump_start = GetTickCount64();
 		vx = CompareXWithMario() == 1 ? -fabs(vx) : fabs(vx);
 		vy = -GOOMBA_FLY_SPEED_Y;
@@ -73,7 +73,7 @@ void CWindGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 		// if it fall down from platform, then it can fly again
 		if (is_on_platform && GetTickCount64() - time_jump_start > GOOMBA_TIME_FOR_EACH_FLY)
 		{
-			SetState(GOOMBA_STATE_FLY);
+			SetState(MONSTER_STATE_FLY);
 		}
 	}
 	is_on_platform = FALSE;
@@ -84,11 +84,6 @@ void CWindGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 void CWindGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	CMonster::OnCollisionWith(e);
-
-	/*if (e->IsCollidedFromTop() && e->obj->IsBlocking())
-	{
-		is_on_platform = TRUE;
-	}*/
 }
 
 void CWindGoomba::Die()

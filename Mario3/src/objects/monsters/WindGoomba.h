@@ -9,7 +9,6 @@ class CWindGoomba : public CGoomba
 {
 private:
 	ULONGLONG time_jump_start;
-
 	BOOLEAN has_wind;
 
 	void AdjustPos();
@@ -18,7 +17,7 @@ public:
 	CWindGoomba(float x, float y) :CGoomba(x, y) {
 		has_wind = TRUE;
 		time_jump_start = 0;
-		SetState(GOOMBA_STATE_FLY);
+		SetState(MONSTER_STATE_FLY);
 	}
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);

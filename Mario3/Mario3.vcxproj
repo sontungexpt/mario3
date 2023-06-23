@@ -145,6 +145,7 @@
     <ClCompile Include="src\objects\materials\QuestionBrick.cpp" />
     <ClCompile Include="src\objects\monsters\plants\Plant.cpp" />
     <ClCompile Include="src\objects\monsters\WindGoomba.cpp" />
+    <ClCompile Include="src\objects\monsters\WindKoopa.cpp" />
     <ClCompile Include="src\scenes\LevelMapScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\components\Animation\Animation.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="src\objects\materials\QuestionBrick.h" />
     <ClInclude Include="src\objects\monsters\plants\Plant.h" />
     <ClInclude Include="src\objects\monsters\WindGoomba.h" />
+    <ClInclude Include="src\objects\monsters\WindKoopa.h" />
     <ClInclude Include="src\scenes\LevelMapScene.h" />
     <ClInclude Include="src\components\Animation\Animation.h" />
     <ClInclude Include="src\components\Animation\AnimationFrame.h" />
