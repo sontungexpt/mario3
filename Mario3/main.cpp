@@ -20,8 +20,8 @@
 
 #include "configs/All.h"
 
-#define WINDOW_CLASS_NAME L"Mario 3"
-#define MAIN_WINDOW_TITLE L"Mario 3"
+#define WINDOW_CLASS_NAME L"Super Mario Bros 3"
+#define MAIN_WINDOW_TITLE L"Super Mario Bros 3"
 #define WINDOW_ICON_PATH L"src/assets/logos/mario.ico"
 #define BACKGROUND_COLOR D3DXCOLOR(156.0f/255, 252.0f/255, 240.0f/255, 255.0f)
 

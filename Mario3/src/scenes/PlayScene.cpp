@@ -185,9 +185,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	break;
 	case OBJECT_TYPE_KOOPA:
 	{
-		obj = new CKoopa(x, y);
-		break;
+		int koopa_type = KOOPA_RED;
+		if (tokens.size() >= 4)
+			koopa_type = atoi(tokens[3].c_str());
+		obj = new CKoopa(x, y, koopa_type);
 	}
+	break;
+
 	case OBJECT_TYPE_PLATFORM:
 	{
 		float cell_width = (float)atof(tokens[3].c_str());

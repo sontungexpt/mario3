@@ -1,19 +1,6 @@
 #include "Goomba.h"
 #include "debug.h"
 
-void CGoomba::AdjustPos()
-{
-	switch (state)
-	{
-	case MONSTER_STATE_DIE:
-		y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2;
-		break;
-	default:
-		DebugOut(L"[ERROR] Unhandled monster state %d in CGoomba::AdjustPos\n", state);
-		break;
-	}
-}
-
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (is_deleted) return;
@@ -75,7 +62,7 @@ void CGoomba::SetState(int state)
 	switch (state)
 	{
 	case MONSTER_STATE_DIE:
-		AdjustPos();
+		y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2; // adjust position
 		break;
 	default:
 		DebugOut(L"[ERROR] Unhandled monster state %d in CGoomba::SetState\n", state);

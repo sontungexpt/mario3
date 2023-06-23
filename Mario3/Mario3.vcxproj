@@ -136,6 +136,7 @@
     <ClCompile Include="src\objects\items\Leaf.cpp" />
     <ClCompile Include="src\objects\materials\BreakBrick.cpp" />
     <ClCompile Include="src\objects\materials\Door.cpp" />
+    <ClCompile Include="src\objects\materials\Effect.cpp" />
     <ClCompile Include="src\objects\materials\Grass.cpp" />
     <ClCompile Include="src\objects\items\Mushroom.cpp" />
     <ClCompile Include="src\objects\materials\Pipe.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="src\objects\items\Item.h" />
     <ClInclude Include="src\objects\materials\BreakBrick.h" />
     <ClInclude Include="src\objects\materials\Door.h" />
+    <ClInclude Include="src\objects\materials\Effect.h" />
     <ClInclude Include="src\objects\materials\Grass.h" />
     <ClInclude Include="src\objects\items\Leaf.h" />
     <ClInclude Include="src\objects\items\Mushroom.h" />

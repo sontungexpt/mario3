@@ -237,6 +237,8 @@ src\settings\objects\monsters\carnivorous_plant.txt
 # Koopas
 10	520	130
 
+10	1437	160	1
+
 10	2113	128
 
 #Platform

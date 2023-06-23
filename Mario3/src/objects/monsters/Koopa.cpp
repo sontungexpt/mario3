@@ -109,33 +109,80 @@ void CKoopa::Render()
 
 	int aniId = -1;
 
+	switch (type) {
+	case KOOPA_GREEN:
+		aniId = GetAniIdGreen();
+		break;
+	case KOOPA_RED:
+		aniId = GetAniIdRed();
+		break;
+	default:
+		DebugOut(L"[ERROR] Can not handle state %d CKoopa::Render\n", state);
+		return;
+	}
+
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+}
+
+int CKoopa::GetAniIdRed()
+{
+	int aniId = -1;
+
 	switch (state) {
 	case KOOPA_STATE_COMEBACK:
-		aniId = ID_ANI_KOOPA_COMEBACK;
+		aniId = ID_ANI_KOOPA_RED_COMEBACK;
 		break;
 	case KOOPA_STATE_DEFEND:
-		aniId = ID_ANI_KOOPA_DEFEND;
+		aniId = ID_ANI_KOOPA_RED_DEFEND;
 		break;
 	case KOOPA_STATE_IS_HOLDING:
-		aniId = ID_ANI_KOOPA_DEFEND;
+		aniId = ID_ANI_KOOPA_RED_DEFEND;
 		break;
 	case MONSTER_STATE_WALKING_LEFT:
-		aniId = ID_ANI_KOOPA_WALKING_LEFT;
+		aniId = ID_ANI_KOOPA_RED_WALKING_LEFT;
 		break;
 	case MONSTER_STATE_WALKING_RIGHT:
-		aniId = ID_ANI_KOOPA_WALKING_RIGHT;
+		aniId = ID_ANI_KOOPA_RED_WALKING_RIGHT;
 		break;
 	case KOOPA_STATE_IS_KICKED:
-		aniId = ID_ANI_KOOPA_IS_KICKED;
+		aniId = ID_ANI_KOOPA_RED_IS_KICKED;
 		break;
 	default:
 		DebugOut(L"[ERROR] Can not handle state %d CKoopa::Render\n", state);
 		break;
 	}
 
-	if (aniId == -1) return;
+	return aniId;
+}
 
-	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+int CKoopa::GetAniIdGreen()
+{
+	int aniId = -1;
+
+	switch (state) {
+	case KOOPA_STATE_COMEBACK:
+		aniId = ID_ANI_KOOPA_GREEN_COMEBACK;
+		break;
+	case KOOPA_STATE_DEFEND:
+		aniId = ID_ANI_KOOPA_GREEN_DEFEND;
+		break;
+	case KOOPA_STATE_IS_HOLDING:
+		aniId = ID_ANI_KOOPA_GREEN_DEFEND;
+		break;
+	case MONSTER_STATE_WALKING_LEFT:
+		aniId = ID_ANI_KOOPA_GREEN_WALKING_LEFT;
+		break;
+	case MONSTER_STATE_WALKING_RIGHT:
+		aniId = ID_ANI_KOOPA_GREEN_WALKING_RIGHT;
+		break;
+	case KOOPA_STATE_IS_KICKED:
+		aniId = ID_ANI_KOOPA_GREEN_IS_KICKED;
+		break;
+	default:
+		break;
+	}
+
+	return aniId;
 }
 
 void CKoopa::SetState(int state)
@@ -152,6 +199,7 @@ void CKoopa::SetState(int state)
 		SetIdle();
 		break;
 	case KOOPA_STATE_IS_KICKED:
+	{
 		is_mario_holding = FALSE;
 		is_mario_kicked = TRUE;
 		// defend again
@@ -161,8 +209,13 @@ void CKoopa::SetState(int state)
 		// if vx > 0, then mario kick it to right
 		// if vx < 0, then mario kick it to left
 		vx = mario_speed_when_kicked;
-		ax = vx > 0 ? KOOPA_SLIDING_ACCELERATION : -KOOPA_SLIDING_ACCELERATION;
-		break;
+		// Get mario
+		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+		CMario* mario = (CMario*)scene->GetPlayer();
+
+		ax = mario->GetNx() >= 0 ? KOOPA_SLIDING_ACCELERATION : -KOOPA_SLIDING_ACCELERATION;
+	}
+	break;
 	case KOOPA_STATE_COMEBACK:
 		comeback_time = GetTickCount64();
 		is_comback = TRUE;

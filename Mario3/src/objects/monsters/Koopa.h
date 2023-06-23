@@ -4,6 +4,8 @@
 class CKoopa : public CMonster
 {
 protected:
+	int type;
+
 	ULONGLONG defend_time;
 	ULONGLONG comeback_time;
 
@@ -21,10 +23,15 @@ protected:
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 
+	int GetAniIdRed();
+	int GetAniIdGreen();
+
 	void AdjustPos();
 
 public:
-	CKoopa(float x, float y) : CMonster(x, y) {
+	CKoopa(float x, float y, int type = KOOPA_RED) : CMonster(x, y) {
+		this->type = type;
+
 		is_defend = FALSE;
 		is_comback = FALSE;
 		is_mario_kicked = FALSE;

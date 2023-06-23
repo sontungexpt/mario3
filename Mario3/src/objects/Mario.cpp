@@ -368,8 +368,6 @@ void CMario::Render()
 
 	if (ani != nullptr)
 		ani->Render(x, y);
-
-	DebugOutTitle(L"Coins: %d", coin);
 }
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -553,7 +551,7 @@ void CMario::SetLevel(int level)
 	// Adjust position to avoid falling off platform
 	if (this->level == MARIO_LEVEL_SMALL)
 	{
-		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2 + 1;
 	}
 	is_appearance_changing = TRUE;
 	StartUntouchable();

@@ -12,7 +12,7 @@ private:
 	void AdjustPos();
 
 public:
-	CWindKoopa(float x, float y) : CKoopa(x, y) {
+	CWindKoopa(float x, float y, int type = KOOPA_RED) : CKoopa(x, y, type) {
 		//mario_speed_when_kicked = 0.0f;
 		//max_vx = KOOPA_MAX_SPEED;
 
@@ -32,6 +32,5 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	// reset to default state
-	void Reset();
-	void Die();
+	void Defend();
 };
