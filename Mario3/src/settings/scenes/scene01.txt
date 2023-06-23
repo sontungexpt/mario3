@@ -167,7 +167,7 @@ src\settings\objects\monsters\carnivorous_plant.txt
 5	1680	160	16	16	2	20002	20002	20002	1	1
 5	1680	176	16	16	3	20002	20002	20002	1	1
 
-# WOOD BRICK
+# WOOD BOX
 5	1951	176	16	16	7	1000910	1000910	1000910	1	1
 5	1967	160	16	16	5	1000910	1000910	1000910	1	1
 5	1983	144	16	16	4	1000910	1000910	1000910	1	1
@@ -226,8 +226,8 @@ src\settings\objects\monsters\carnivorous_plant.txt
 
 ### Monsters ###
 #Goombas
-2	200	160
-2	450	160
+2	200	177
+2	450	177
 
 2	800	160
 2	850	160
@@ -236,6 +236,8 @@ src\settings\objects\monsters\carnivorous_plant.txt
 
 # Koopas
 10	520	130
+
+10	2113	128
 
 #Platform
 5	0	192	16	16	39	1000010	1000020	1000030	1	1

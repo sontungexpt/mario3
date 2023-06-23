@@ -8,6 +8,13 @@
 
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
+	if (KeyCode == DIK_ESCAPE)
+		CGame::GetInstance()->TogglePause();
+
+	// disable control key when pause game
+	if (CGame::GetInstance()->IsPaused())
+		return;
+
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (KeyCode)
 	{
@@ -36,6 +43,10 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 
 void CSampleKeyHandler::OnKeyUp(int KeyCode)
 {
+	// disable control key when pause game
+	if (CGame::GetInstance()->IsPaused())
+		return;
+
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (KeyCode)
 	{
@@ -50,6 +61,10 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 
 void CSampleKeyHandler::KeyState(BYTE* states)
 {
+	// disable control key when pause game
+	if (CGame::GetInstance()->IsPaused())
+		return;
+
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)game->GetCurrentScene())->GetPlayer();
 
@@ -62,7 +77,6 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 
 		if (game->IsKeyDown(DIK_B))
 		{
-			DebugOut(L"keyb");
 			mario->SetState(MARIO_STATE_HOLDING_KOOPA);
 		}
 	}

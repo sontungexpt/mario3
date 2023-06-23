@@ -8,7 +8,7 @@
 
 #include "objects/Platform.h"
 #include "monsters/Goomba.h"
-#include "monsters/Plant.h"
+#include "monsters/plants/Plant.h"
 #include "monsters/Koopa.h"
 
 #include "items/Bullet.h"

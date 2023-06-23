@@ -144,6 +144,11 @@ int Run()
 			frameStart = now;
 
 			CGame::GetInstance()->ProcessKeyboard();
+
+			// pause game then no need to update and render
+			if (CGame::GetInstance()->IsPaused())
+				continue;
+
 			Update(dt);
 			Render();
 
