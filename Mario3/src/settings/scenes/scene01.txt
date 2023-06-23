@@ -226,13 +226,13 @@ src\settings\objects\monsters\carnivorous_plant.txt
 
 ### Monsters ###
 #Goombas
-2	200	177
-2	450	177
+2	200	175
+2	450	175
 
-2	800	160
-2	850	160
+2	800	159
+2	850	159
 
-2	1040	160	1
+2	1040	159	1
 
 # Koopas
 10	520	130
