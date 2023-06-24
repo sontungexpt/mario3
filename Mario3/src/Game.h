@@ -3,14 +3,13 @@
 #include <Windows.h>
 #include <d3d10.h>
 #include <d3dx10.h>
-#include <unordered_map>
 
 #define DIRECTINPUT_VERSION 0x0800
 
 using namespace std;
 
+#include <unordered_map>
 #include <dinput.h>
-
 #include "components/Texture/Texture.h"
 #include "components/KeyboardHandler/KeyEventHandler.h"
 #include "components/Scene/Scene.h"
@@ -111,7 +110,8 @@ public:
 	void InitiateSwitchScene(int scene_id);
 
 	BOOLEAN IsPaused() { return is_paused; }
-	void TogglePause() {
+	void TogglePause()
+	{
 		is_paused = ~is_paused;
 	}
 

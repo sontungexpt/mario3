@@ -33,6 +33,9 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_0:
 		mario->SetState(MARIO_STATE_DIE);
 		break;
+	case DIK_A:
+		mario->WantHoldKoopa();
+		break;
 	case DIK_R: // reset
 		//Reload();
 		break;
@@ -56,6 +59,9 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT_RELEASE);
 		break;
+	case DIK_A:
+		mario->WantKickKoopa();
+		break;
 	}
 }
 
@@ -74,11 +80,6 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 			mario->SetState(MARIO_STATE_RUNNING_RIGHT);
 		else
 			mario->SetState(MARIO_STATE_WALKING_RIGHT);
-
-		if (game->IsKeyDown(DIK_B))
-		{
-			mario->SetState(MARIO_STATE_HOLDING_KOOPA);
-		}
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
@@ -86,12 +87,6 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 			mario->SetState(MARIO_STATE_RUNNING_LEFT);
 		else
 			mario->SetState(MARIO_STATE_WALKING_LEFT);
-
-		if (game->IsKeyDown(DIK_B))
-		{
-			DebugOut(L"keyb");
-			mario->SetState(MARIO_STATE_HOLDING_KOOPA);
-		}
 	}
 	else
 		mario->SetState(MARIO_STATE_IDLE);

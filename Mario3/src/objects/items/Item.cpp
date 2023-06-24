@@ -12,10 +12,10 @@ void CItem::OnNoCollision(DWORD dt)
 void CItem::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
 	if (is_deleted) return;
+
 	vx += ax * dt;
 	vy += ay * dt;
 
-	CGameObject::Update(dt, co_objects);
 	CCollision::GetInstance()->Process(this, dt, co_objects);
 }
 

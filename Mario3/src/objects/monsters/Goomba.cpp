@@ -49,7 +49,6 @@ void CGoomba::Render()
 	}
 
 	if (aniId == -1) return;
-
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 }
 

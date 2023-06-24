@@ -10,6 +10,7 @@ private:
 	int item_type;
 
 	CItem* CreateItem(CItem* item);
+	void CreateItem();
 
 public:
 
@@ -18,7 +19,13 @@ public:
 		this->item_type = item_type;
 	};
 
-	float GetItemReferenceY(CItem* item) { return y - (GetHeight() + item->GetHeight()) / 2 - 1; };
+	float GetItemReferenceY(CItem* item)
+	{
+		// plus 1 to make sure that it will always colide
+		float max_jump_height = QUESTION_BRICK_SPEED * QUESTION_BRICK_SPEED / 2 * QUESTION_BRICK_GRAVITY + 1;
+		return y - (QUESTION_BRICK_BBOX_HEIGHT + item->GetHeight()) / 2 - ceil(max_jump_height);
+	};
+
 	float GetItemReferenceX(CItem* item) { return x; };
 
 	// core

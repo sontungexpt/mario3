@@ -45,11 +45,10 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (e->IsCollidedFromTop() && e->obj->IsBlocking())
 	{
-		CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
-		if (platform)
+		if (dynamic_cast<CPlatform*>(e->obj) || dynamic_cast<CBrick*>(e->obj))
 		{
 			float l, t, r, b;
-			platform->GetBoundingBox(l, t, r, b);
+			e->obj->GetBoundingBox(l, t, r, b);
 			limit_x_negative = l;
 			limit_x_positive = r;
 			is_on_platform = TRUE;
@@ -61,14 +60,36 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 }
 
 void CKoopa::Reset() {
+	switch (state)
+	{
+	case KOOPA_STATE_DEFEND:
+	case KOOPA_STATE_COMEBACK:
+		if (is_mario_holding)
+		{
+			LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+			CMario* mario = (CMario*)scene->GetPlayer();
+			x = mario->GetNx() >= 0 ? x + 3 : x - 3;
+			y -= (mario->GetHeight() + KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2;
+		}
+		else
+		{
+			y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2;
+		}
+		break;
+	default:
+		break;
+	}
+
 	is_defend = FALSE;
-	is_comback = FALSE;
+	is_comeback = FALSE;
 	is_mario_kicked = FALSE;
 	is_mario_holding = FALSE;
 	mario_speed_when_kicked = 0;
-	defend_time = -1;
-	comeback_time = -1;
-	AdjustPos();
+	defend_time_start = -1;
+	comeback_time_start = -1;
+
+	// adjust position after change to new state
+
 	SetState(MONSTER_STATE_WALKING_LEFT);
 };
 
@@ -126,63 +147,42 @@ void CKoopa::Render()
 
 int CKoopa::GetAniIdRed()
 {
-	int aniId = -1;
-
 	switch (state) {
 	case KOOPA_STATE_COMEBACK:
-		aniId = ID_ANI_KOOPA_RED_COMEBACK;
-		break;
+		return ID_ANI_KOOPA_RED_COMEBACK;
 	case KOOPA_STATE_DEFEND:
-		aniId = ID_ANI_KOOPA_RED_DEFEND;
-		break;
+		return ID_ANI_KOOPA_RED_DEFEND;
 	case KOOPA_STATE_IS_HOLDING:
-		aniId = ID_ANI_KOOPA_RED_DEFEND;
-		break;
+		return ID_ANI_KOOPA_RED_DEFEND;
 	case MONSTER_STATE_WALKING_LEFT:
-		aniId = ID_ANI_KOOPA_RED_WALKING_LEFT;
-		break;
+		return ID_ANI_KOOPA_RED_WALKING_LEFT;
 	case MONSTER_STATE_WALKING_RIGHT:
-		aniId = ID_ANI_KOOPA_RED_WALKING_RIGHT;
-		break;
+		return ID_ANI_KOOPA_RED_WALKING_RIGHT;
 	case KOOPA_STATE_IS_KICKED:
-		aniId = ID_ANI_KOOPA_RED_IS_KICKED;
-		break;
+		return ID_ANI_KOOPA_RED_IS_KICKED;
 	default:
-		DebugOut(L"[ERROR] Can not handle state %d CKoopa::Render\n", state);
-		break;
+		return -1;
 	}
-
-	return aniId;
 }
 
 int CKoopa::GetAniIdGreen()
 {
-	int aniId = -1;
-
 	switch (state) {
 	case KOOPA_STATE_COMEBACK:
-		aniId = ID_ANI_KOOPA_GREEN_COMEBACK;
-		break;
+		return ID_ANI_KOOPA_GREEN_COMEBACK;
 	case KOOPA_STATE_DEFEND:
-		aniId = ID_ANI_KOOPA_GREEN_DEFEND;
-		break;
+		return ID_ANI_KOOPA_GREEN_DEFEND;
 	case KOOPA_STATE_IS_HOLDING:
-		aniId = ID_ANI_KOOPA_GREEN_DEFEND;
-		break;
+		return ID_ANI_KOOPA_GREEN_DEFEND;
 	case MONSTER_STATE_WALKING_LEFT:
-		aniId = ID_ANI_KOOPA_GREEN_WALKING_LEFT;
-		break;
+		return ID_ANI_KOOPA_GREEN_WALKING_LEFT;
 	case MONSTER_STATE_WALKING_RIGHT:
-		aniId = ID_ANI_KOOPA_GREEN_WALKING_RIGHT;
-		break;
+		return ID_ANI_KOOPA_GREEN_WALKING_RIGHT;
 	case KOOPA_STATE_IS_KICKED:
-		aniId = ID_ANI_KOOPA_GREEN_IS_KICKED;
-		break;
+		return ID_ANI_KOOPA_GREEN_IS_KICKED;
 	default:
-		break;
+		return -1;
 	}
-
-	return aniId;
 }
 
 void CKoopa::SetState(int state)
@@ -194,39 +194,40 @@ void CKoopa::SetState(int state)
 	{
 	case KOOPA_STATE_DEFEND:
 		is_defend = TRUE;
-		defend_time = GetTickCount64();
-		AdjustPos();
+		defend_time_start = GetTickCount64();
 		SetIdle();
 		break;
 	case KOOPA_STATE_IS_KICKED:
 	{
+		is_comeback = FALSE;
 		is_mario_holding = FALSE;
 		is_mario_kicked = TRUE;
-		// defend again
-		is_defend = TRUE;
-		is_comback = FALSE;
+		is_defend = TRUE; // defend again if not completely comeback
 
 		// if vx > 0, then mario kick it to right
 		// if vx < 0, then mario kick it to left
-		vx = mario_speed_when_kicked;
-		// Get mario
+		// if vx = 0, then mario kick it to the same direction
 		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 		CMario* mario = (CMario*)scene->GetPlayer();
-
-		ax = mario->GetNx() >= 0 ? KOOPA_SLIDING_ACCELERATION : -KOOPA_SLIDING_ACCELERATION;
+		vx = mario->GetVx();
+		ax = mario->GetNx() >= 0 ?
+			KOOPA_SLIDING_ACCELERATION :
+			-KOOPA_SLIDING_ACCELERATION;
 	}
 	break;
 	case KOOPA_STATE_COMEBACK:
-		comeback_time = GetTickCount64();
-		is_comback = TRUE;
+		is_comeback = TRUE;
+		comeback_time_start = GetTickCount64();
 		SetIdle();
 		break;
 	case KOOPA_STATE_IS_HOLDING:
 		if (is_defend && !is_mario_kicked)
 		{
-			SetIdle();
 			is_mario_holding = TRUE;
+			SetIdle();
 		}
+		break;
+	default:
 		break;
 	}
 }
@@ -250,21 +251,40 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
+	if (DieWhenMoveToDangerousSpace()) return;
+
+	// koopa only comeback if it is not kicked by mario
 	if (!is_mario_kicked && is_defend &&
-		GetTickCount64() - defend_time > KOOPA_DEFEND_TIMEOUT
-		)
+		GetTickCount64() - defend_time_start > KOOPA_DEFEND_TIMEOUT)
 	{
-		if (!is_comback)
+		if (!is_comeback)
 		{
-			// start comback
 			// still in defend and try to comeback
-			CombackAfterDefend();
+			ComebackAfterDefend();
 		}
 		else
 		{
-			// completely combeack
-			if (GetTickCount64() - comeback_time > KOOPA_COMBACK_TIMEOUT)
+			// completely comeback
+			if (GetTickCount64() - comeback_time_start > KOOPA_COMBACK_TIMEOUT)
 				Reset();
+		}
+	}
+
+	if (is_mario_holding) {
+		// adjust position of koopa when mario is holding it
+		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+		CMario* mario = (CMario*)scene->GetPlayer();
+
+		if (!mario->IsDead())
+		{
+			y = mario->GetY();
+			float distance = mario->GetWidth() / 2 + GetWidth() / 2;
+			x = mario->GetNx() >= 0 ?
+				mario->GetX() + distance :
+				mario->GetX() - distance;
+
+			CCollision::GetInstance()->Process(this, dt, co_objects);
+			return;
 		}
 	}
 
@@ -279,10 +299,33 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 
 	is_on_platform = FALSE;
 
-	if (is_mario_holding) {
-		AdjustPos();
-		return;
+	vy += ay * dt;
+	vx += ax * dt;
+
+	if (max_vx > 0 && abs(vx) > max_vx)
+	{
+		vx = vx > 0 ? max_vx : -max_vx;
 	}
 
-	CMonster::Update(dt, co_objects);
+	CCollision::GetInstance()->Process(this, dt, co_objects);
+}
+
+void CKoopa::BeHold()
+{
+	SetState(KOOPA_STATE_IS_HOLDING);
+}
+
+void CKoopa::Defend()
+{
+	// adjust position before change to new state
+	switch (state) // current state
+	{
+	case MONSTER_STATE_WALKING_LEFT:
+	case MONSTER_STATE_WALKING_RIGHT:
+		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2;
+		break;
+	}
+
+	// new state
+	SetState(KOOPA_STATE_DEFEND);
 }

@@ -92,6 +92,9 @@ public:
 	void Die();
 	BOOLEAN IsDead() { return state == MARIO_STATE_DIE; }
 
+	void WantHoldKoopa() { is_want_holding_koopa = TRUE; }
+	void WantKickKoopa() { is_want_holding_koopa = FALSE; }
+
 	void StartUntouchable() { SetState(MARIO_STATE_UNTOUCHABLE); }
 	void JumpDeflect() { vy = -MARIO_JUMP_DEFLECT_SPEED; }
 

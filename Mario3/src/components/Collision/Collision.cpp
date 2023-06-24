@@ -14,9 +14,6 @@ CCollision* CCollision::GetInstance()
 	return __instance;
 }
 
-/*
-	SweptAABB
-*/
 void CCollision::SweptAABB(
 	float ml, float mt, float mr, float mb,
 	float dx, float dy,

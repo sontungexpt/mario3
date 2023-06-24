@@ -96,17 +96,16 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		this->Die();
 		return;
 	}
-	else {
-		if (is_want_holding_koopa)
-		{
-			//weapon_monster = koopa;
-			koopa->BeHold();
-			return;
-		}
+
+	// is not kicked, check if mario is want to hold koopa
+	if (is_want_holding_koopa)
+	{
+		weapon_monster = koopa;
+		((CKoopa*)weapon_monster)->BeHold();
+		return;
 	}
 
-	// mario is not kick then kick koopa
-	koopa->BeKick(vx);
+	koopa->BeKick();
 }
 
 void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
@@ -373,10 +372,16 @@ void CMario::Render()
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	// jump to hole
-	if (y > SCREEN_HEIGHT)
+	//if (y > SCREEN_HEIGHT)
+	//{
+	//	DebugOut(L"Mario die\n");
+	//	return;
+	//}
+
+	if (weapon_monster && !is_want_holding_koopa)
 	{
-		DebugOut(L"Mario die\n");
-		return;
+		((CKoopa*)weapon_monster)->BeKick();
+		weapon_monster = nullptr;
 	}
 
 	vy += ay * dt;
@@ -412,12 +417,6 @@ void CMario::SetState(int state)
 		untouchable = TRUE;
 		time_untouchable_start = GetTickCount64();
 		SetState(MARIO_STATE_IDLE);
-		break;
-	case MARIO_STATE_HOLDING_KOOPA:
-		is_want_holding_koopa = TRUE;
-		break;
-	case MARIO_STATE_HOLDING_KOOPA_RELEASE:
-		is_want_holding_koopa = FALSE;
 		break;
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (is_sitting) break;
@@ -481,8 +480,7 @@ void CMario::SetState(int state)
 		ax = 0;
 		vx = 0;
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
-		DebugOut(L"Mario die\n");
-
+		DebugOut(L">>> Mario die\n");
 		break;
 	}
 

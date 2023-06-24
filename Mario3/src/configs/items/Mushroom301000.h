@@ -1,7 +1,7 @@
 #pragma once
 // configs
 #define MUSHROOM_SPEED 0.06f
-#define MUSHROOM_GRAVITY 0.0043f
+#define MUSHROOM_GRAVITY 0.0022f
 
 #define MUSHROOM_BBOX_WIDTH 16
 #define MUSHROOM_BBOX_HEIGHT 16

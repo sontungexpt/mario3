@@ -81,12 +81,12 @@ BOOLEAN CGameObject::IsInCamera() {
 
 	// out of width screen
 	if (right < cam_x || left > cam_x + SCREEN_WIDTH)
-		return false;
+		return FALSE;
 
 	// out of height screen
 	if (top < cam_y || bottom > cam_y + SCREEN_HEIGHT)
-		return false;
+		return FALSE;
 
 	// in camera
-	return true;
+	return TRUE;
 }

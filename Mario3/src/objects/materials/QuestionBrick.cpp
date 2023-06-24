@@ -22,7 +22,6 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	vx += ax * dt;
 	vy += ay * dt;
 
-	CGameObject::Update(dt, co_objects);
 	CCollision::GetInstance()->Process(this, dt, co_objects);
 }
 
@@ -36,9 +35,7 @@ void CQuestionBrick::OnNoCollision(DWORD dt)
 
 	// make sure that the question brick can't fall
 	if (y >= start_y)
-	{
 		Disable();
-	}
 }
 
 void CQuestionBrick::Render()
@@ -64,42 +61,12 @@ void CQuestionBrick::SetState(int state)
 	{
 	case QUESTION_BRICK_STATE_UNBOXING:
 	{
-		if (is_unboxed) return; // can not open anymore
+		if (is_unboxed) return;
 
 		is_unboxed = TRUE;
-		start_y = y;
-
-		// this is the first velocity of brick  when mario collides with the brick
 		vy = -QUESTION_BRICK_SPEED;
 		ay = QUESTION_BRICK_GRAVITY;
-
-		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-		// x and y of item
-		switch (item_type) {
-		case QUESTION_BRICK_COIN:
-		{
-			CCoin* coin = (CCoin*)CreateItem(new CCoin());
-			coin->JumpOutQuestionBrick();
-		}
-		break;
-		case QUESTION_BRICK_ITEM_SUPPORT:
-		{
-			CMario* mario = (CMario*)scene->GetPlayer();
-			if (mario->IsBig()) {
-				CLeaf* leaf = (CLeaf*)CreateItem(new CLeaf());
-				leaf->Fly();
-				break;
-			}
-			CMushroom* mushroom = (CMushroom*)CreateItem(new CMushroom());
-			mushroom->Walk();
-		}
-		break;
-		case QUESTION_BRICK_NONE:
-			break;
-		default:
-			DebugOut(L"[ERROR] Can not handle item_type of question brick in CQuestionBrick::SetState(int state): ", item_type);
-			break;
-		}
+		CreateItem();
 	}
 	break;
 	case QUESTION_BRICK_STATE_DISABLED:
@@ -114,7 +81,34 @@ void CQuestionBrick::SetState(int state)
 
 CItem* CQuestionBrick::CreateItem(CItem* item) {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-
 	item->SetPosition(GetItemReferenceX(item), GetItemReferenceY(item));
 	return (CItem*)scene->AddObject(item);
+}
+
+void CQuestionBrick::CreateItem()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+
+	// x and y of item
+	switch (item_type) {
+	case QUESTION_BRICK_COIN:
+	{
+		((CCoin*)CreateItem(new CCoin()))->JumpOutQuestionBrick();
+	}
+	break;
+	case QUESTION_BRICK_ITEM_SUPPORT:
+	{
+		CMario* mario = (CMario*)scene->GetPlayer();
+		if (mario->IsBig())
+			((CLeaf*)CreateItem(new CLeaf()))->Fly();
+		else
+			((CMushroom*)CreateItem(new CMushroom()))->Walk();
+	}
+	break;
+	case QUESTION_BRICK_NONE:
+		break;
+	default:
+		DebugOut(L"[ERROR] Can not handle item_type of question brick in CQuestionBrick::CreateItem(int state): ", item_type);
+		break;
+	}
 }

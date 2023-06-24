@@ -46,6 +46,6 @@ public:
 
 	BOOLEAN IsItem() { return TRUE; };
 	BOOLEAN IsCollected() { return is_collected; };
-	void SetCollected(BOOLEAN is_collected) { this->is_collected = is_collected; };
+	void SetIsCollected(BOOLEAN is_collected) { this->is_collected = is_collected; };
 	virtual void BeCollect() { is_collected = TRUE; };
 };

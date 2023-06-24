@@ -4,16 +4,15 @@
 class CKoopa : public CMonster
 {
 protected:
-	int type;
+	int type; // green or red
 
-	ULONGLONG defend_time;
-	ULONGLONG comeback_time;
+	ULONGLONG defend_time_start;
+	ULONGLONG comeback_time_start;
 
 	BOOLEAN is_defend;
-	BOOLEAN is_comback;
+	BOOLEAN is_comeback;
 	BOOLEAN is_mario_kicked;
 	BOOLEAN is_mario_holding;
-	BOOLEAN is_on_platform;
 
 	float limit_x_positive = 0;
 	float limit_x_negative = 0;
@@ -33,7 +32,7 @@ public:
 		this->type = type;
 
 		is_defend = FALSE;
-		is_comback = FALSE;
+		is_comeback = FALSE;
 		is_mario_kicked = FALSE;
 		is_mario_holding = FALSE;
 		is_on_platform = FALSE;
@@ -41,8 +40,8 @@ public:
 		mario_speed_when_kicked = 0.0f;
 		max_vx = KOOPA_MAX_SPEED;
 
-		defend_time = -1;
-		comeback_time = -1;
+		defend_time_start = -1;
+		comeback_time_start = -1;
 		// always move to mario in the first time
 		SetState(MONSTER_STATE_WALKING_LEFT);
 	};
@@ -58,16 +57,14 @@ public:
 
 	// this part is a other name for the same state
 	BOOLEAN IsDefend() { return is_defend; }
-	void Defend() { SetState(KOOPA_STATE_DEFEND); };
-	void CombackAfterDefend() { SetState(KOOPA_STATE_COMEBACK); };
+	void Defend();
+	void ComebackAfterDefend() { SetState(KOOPA_STATE_COMEBACK); };
 
-	void BeKick(float v) {
-		mario_speed_when_kicked = v;
+	void BeHold();
+	void BeKick() {
 		SetState(KOOPA_STATE_IS_KICKED);
 	};
 	BOOLEAN IsMarioKicked() { return is_mario_kicked; }
-
-	void BeHold() { SetState(KOOPA_STATE_IS_HOLDING); }
 
 	void MoveRight() { SetState(MONSTER_STATE_WALKING_RIGHT); };
 	void MoveLeft() { SetState(MONSTER_STATE_WALKING_LEFT); };
