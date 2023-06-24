@@ -66,7 +66,7 @@ void CKoopa::Reset() {
 			LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 			CMario* mario = (CMario*)scene->GetPlayer();
 			x = mario->GetNx() >= 0 ? x + 3 : x - 3;
-			y -= (mario->GetHeight() + KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2;
+			y = mario->GetOyAtTopRight() - KOOPA_BBOX_HEIGHT / 2 - 1;
 		}
 		else
 		{
