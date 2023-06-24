@@ -120,6 +120,7 @@ void CMonster::SetState(int state)
 		ax = fabs(ax);
 		break;
 	default:
+		DebugOut(L"[ERROR] Unhandled monster state %d in CMonster::SetState\n", state);
 		break;
 	}
 }
@@ -149,9 +150,7 @@ void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	{
 		// dead and timeout >> delete
 		if (GetTickCount64() - dead_time > disapear_time)
-		{
 			is_deleted = true;
-		}
 		return;
 	}
 
@@ -159,9 +158,7 @@ void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	vx += ax * dt;
 
 	if (max_vx > 0 && abs(vx) > max_vx)
-	{
 		vx = vx > 0 ? max_vx : -max_vx;
-	}
 
 	is_on_platform = FALSE;
 

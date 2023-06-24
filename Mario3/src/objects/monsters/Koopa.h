@@ -4,7 +4,7 @@
 class CKoopa : public CMonster
 {
 protected:
-	int type; // green or red
+	int color; // green or red
 
 	ULONGLONG defend_time_start;
 	ULONGLONG comeback_time_start;
@@ -19,18 +19,20 @@ protected:
 
 	float mario_speed_when_kicked;
 
-	void OnCollisionWithMonster(LPCOLLISIONEVENT e);
-	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithMonster(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 
-	int GetAniIdRed();
-	int GetAniIdGreen();
+	virtual int GetAniIdRed();
+	virtual int GetAniIdGreen();
 
-	void AdjustPos();
+	virtual void SetState(int state);
 
-	void SetState(int state);
+	// reset to default state
+	virtual void Reset();
+
 public:
-	CKoopa(float x, float y, int type = KOOPA_RED) : CMonster(x, y) {
-		this->type = type;
+	CKoopa(float x, float y, int color = KOOPA_RED) : CMonster(x, y) {
+		this->color = color;
 
 		is_defend = FALSE;
 		is_comeback = FALSE;
@@ -48,27 +50,24 @@ public:
 	};
 
 	//core
-	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	void Render();
-	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void Render();
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	//collision
-	void OnCollisionWith(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	BOOLEAN IsDefend() { return is_defend; }
-	void Defend();
-	void ComebackAfterDefend() { SetState(KOOPA_STATE_COMEBACK); }
+	virtual void Defend();
+	virtual void ComebackAfterDefend() { SetState(KOOPA_STATE_COMEBACK); }
 
-	void BeHold();
-	void BeKick() { SetState(KOOPA_STATE_IS_KICKED); }
+	virtual void BeHold();
+	virtual void BeKick() { SetState(KOOPA_STATE_IS_KICKED); }
 
 	BOOLEAN IsMarioKicked() { return is_mario_kicked; }
 
-	void MoveRight() { SetState(MONSTER_STATE_WALKING_RIGHT); }
-	void MoveLeft() { SetState(MONSTER_STATE_WALKING_LEFT); }
+	virtual void MoveRight() { SetState(MONSTER_STATE_WALKING_RIGHT); }
+	virtual void MoveLeft() { SetState(MONSTER_STATE_WALKING_LEFT); }
 
-	// reset to default state
-	void Reset();
-
-	void Die() { SetState(MONSTER_STATE_DIE); }
+	virtual void Die() { SetState(MONSTER_STATE_DIE); }
 };

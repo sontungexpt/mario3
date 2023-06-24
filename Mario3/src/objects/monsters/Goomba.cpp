@@ -71,6 +71,7 @@ void CGoomba::SetState(int state)
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
+	if (is_deleted) return;
 	if (!IsInCamera()) return;
 	CMonster::Update(dt, co_objects);
 }

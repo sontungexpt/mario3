@@ -1,39 +1,58 @@
 #include "debug.h"
 #include "WindKoopa.h"
 
-void CWindKoopa::AdjustPos()
-{
-}
-
 void CWindKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
-	if (is_deleted) return;
-	if (!IsInCamera()) return;
-
 	if (has_wind) // no wind no fly
 	{
 		// if it fall down from platform, then it can fly again
+		if (is_deleted) return;
+		if (!IsInCamera()) return;
+		if (DieWhenMoveToDangerousSpace()) return;
+
 		if (is_on_platform && GetTickCount64() - time_jump_start > KOOPA_TIME_FOR_EACH_FLY)
 		{
-			SetState(MONSTER_STATE_FLY);
+			if (vx > 0)
+				SetState(MONSTER_STATE_FLY_RIGHT);
+			else
+				SetState(MONSTER_STATE_FLY_LEFT);
 		}
-	}
-	is_on_platform = FALSE;
 
-	CMonster::Update(dt, co_objects);
+		vy += ay * dt;
+		vx += ax * dt;
+
+		is_on_platform = FALSE;
+		CCollision::GetInstance()->Process(this, dt, co_objects);
+		return;
+	}
+
+	CKoopa::Update(dt, co_objects);
+}
+
+int CWindKoopa::GetAniIdRed()
+{
+	switch (state) {
+	case MONSTER_STATE_FLY_RIGHT:
+		return ID_ANI_KOOPA_RED_FLY_RIGHT;
+	case MONSTER_STATE_FLY_LEFT:
+		return ID_ANI_KOOPA_RED_FLY_LEFT;
+	}
+	return CKoopa::GetAniIdRed();
+}
+
+int CWindKoopa::GetAniIdGreen()
+{
+	switch (state) {
+	case MONSTER_STATE_FLY_RIGHT:
+		return ID_ANI_KOOPA_GREEN_FLY_RIGHT;
+	case MONSTER_STATE_FLY_LEFT:
+		return ID_ANI_KOOPA_GREEN_FLY_LEFT;
+	}
+	return CKoopa::GetAniIdGreen();
 }
 
 void CWindKoopa::Render()
 {
-	/*if (is_deleted) return;
-	if (!IsInCamera()) return;
-
-	if (state == MONSTER_STATE_FLY)
-	{
-		CAnimations::GetInstance()->Get(ID_ANI_KOOPA_GREEN_FLY)->Render(x, y);
-		return;
-	}*/
-
 	CKoopa::Render();
 }
 
@@ -43,23 +62,30 @@ void CWindKoopa::SetState(int state)
 
 	switch (state)
 	{
-	case MONSTER_STATE_FLY:
+	case MONSTER_STATE_FLY_LEFT:
 		time_jump_start = GetTickCount64();
-		vx = CompareXWithMario() == 1 ? -fabs(vx) : fabs(vx);
+		vx = -MONSTER_WALKING_SPEED;
 		vy = -KOOPA_FLY_SPEED_Y;
 		ay = GRAVITY;
 		break;
-
+	case MONSTER_STATE_FLY_RIGHT:
+		time_jump_start = GetTickCount64();
+		vx = MONSTER_WALKING_SPEED;
+		vy = -KOOPA_FLY_SPEED_Y;
+		ay = GRAVITY;
+		break;
 	default:
-		DebugOut(L"[ERROR] Unhandled monster state %d\n in Function CGoomba Set State", state);
+		DebugOut(L"[ERROR] Unhandled monster state %d in CWindKoopa::SetState\n", state);
 		break;
 	}
 }
 
 void CWindKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == MONSTER_STATE_FLY)
+	switch (state)
 	{
+	case MONSTER_STATE_FLY_LEFT:
+	case MONSTER_STATE_FLY_RIGHT:
 		left = x - KOOPA_BBOX_WIDTH / 2;
 		top = y - KOOPA_BBOX_HEIGHT_FLY / 2;
 		right = left + KOOPA_BBOX_WIDTH;
@@ -79,14 +105,28 @@ void CWindKoopa::Defend()
 {
 	if (has_wind) {
 		has_wind = FALSE;
+
+		// adjust position before set state
+		switch (state)
+		{
+		case MONSTER_STATE_FLY_LEFT:
+		case MONSTER_STATE_FLY_RIGHT:
+			y += (KOOPA_BBOX_HEIGHT_FLY - KOOPA_BBOX_HEIGHT) / 2;
+			break;
+		default:
+			break;
+		}
+
+		// set state
 		if (vx > 0)
 			SetState(MONSTER_STATE_WALKING_RIGHT);
 		else
 			SetState(MONSTER_STATE_WALKING_LEFT);
-		ay = GRAVITY;
 
-		y -= (KOOPA_BBOX_HEIGHT_FLY - KOOPA_BBOX_HEIGHT) / 2;
+		ay = GRAVITY;
 		return;
 	}
+
+	// if it has no wind, then it will be a normal koopa
 	CKoopa::Defend();
 }

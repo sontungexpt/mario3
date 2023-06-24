@@ -18,8 +18,8 @@
 
 #include "objects/items/Coin.h"
 
-#include "objects/monsters/Koopa.h"
 #include "objects/monsters/WindGoomba.h"
+#include "objects/monsters/WindKoopa.h"
 
 using namespace std;
 
@@ -185,10 +185,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	break;
 	case OBJECT_TYPE_KOOPA:
 	{
-		int koopa_type = KOOPA_RED;
+		int koopa_color = KOOPA_RED;
 		if (tokens.size() >= 4)
-			koopa_type = atoi(tokens[3].c_str());
-		obj = new CKoopa(x, y, koopa_type);
+			koopa_color = atoi(tokens[3].c_str());
+
+		if (tokens.size() >= 5)
+		{
+			int koopa_type = atoi(tokens[4].c_str());
+			if (koopa_type == KOOPA_TYPE_FLY)
+			{
+				obj = new CWindKoopa(x, y, koopa_color);
+				break;
+			}
+		}
+		obj = new CKoopa(x, y, koopa_color);
 	}
 	break;
 

@@ -9,23 +9,20 @@ private:
 	BOOLEAN has_wind;
 	ULONGLONG time_jump_start;
 
-	void AdjustPos();
-
+	void SetState(int state);
+	int GetAniIdRed();
+	int GetAniIdGreen();
 public:
-	CWindKoopa(float x, float y, int type = KOOPA_RED) : CKoopa(x, y, type) {
-		//mario_speed_when_kicked = 0.0f;
-		//max_vx = KOOPA_MAX_SPEED;
-
+	CWindKoopa(float x, float y, int color = KOOPA_RED) : CKoopa(x, y, color) {
 		// always move to mario in the first time
 		has_wind = TRUE;
 		time_jump_start = 0;
-		SetState(MONSTER_STATE_FLY);
+		SetState(MONSTER_STATE_FLY_LEFT);
 	};
 
 	//core
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
-	void SetState(int state);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	//collision

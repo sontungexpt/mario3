@@ -18,7 +18,9 @@ void CKoopa::OnCollisionWithMonster(LPCOLLISIONEVENT e)
 	if (is_defend && is_mario_kicked)
 	{
 		e->obj->Delete();
+		return;
 	}
+	CMonster::OnCollisionWithMonster(e);
 }
 
 void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
@@ -33,11 +35,6 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<CMonster*>(e->obj))
-	{
-		OnCollisionWithMonster(e);
-	}
-
 	if (dynamic_cast<CQuestionBrick*>(e->obj))
 	{
 		OnCollisionWithQuestionBrick(e);
@@ -93,52 +90,24 @@ void CKoopa::Reset() {
 	SetState(MONSTER_STATE_WALKING_LEFT);
 };
 
-void CKoopa::AdjustPos() {
-	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CMario* mario = (CMario*)scene->GetPlayer();
-	switch (state)
-	{
-	case KOOPA_STATE_DEFEND:
-		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2;
-		break;
-	case KOOPA_STATE_COMEBACK:
-		y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2;
-		break;
-	case KOOPA_STATE_IS_HOLDING:
-	{
-		if (mario)
-		{
-			if (mario->GetNx() >= 0) // mario is turn right
-			{
-				x = mario->GetX() + mario->GetWidth() / 2 + 1;
-			}
-			else {
-				x = mario->GetX() - mario->GetWidth() / 2 - 1;
-			}
-			y = mario->GetY();
-		}
-	}
-	break;
-	default:
-		break;
-	}
-}
-
 void CKoopa::Render()
 {
 	if (!IsInCamera()) return;
 
 	int aniId = -1;
 
-	switch (type) {
+	switch (color) {
 	case KOOPA_GREEN:
 		aniId = GetAniIdGreen();
 		break;
 	case KOOPA_RED:
 		aniId = GetAniIdRed();
 		break;
-	default:
-		DebugOut(L"[ERROR] Can not handle state %d CKoopa::Render\n", state);
+	}
+
+	if (aniId == -1)
+	{
+		DebugOut(L"[ERROR] Can not handle state %d CKoopa::Render\n", aniId);
 		return;
 	}
 
@@ -187,9 +156,9 @@ int CKoopa::GetAniIdGreen()
 
 void CKoopa::SetState(int state)
 {
+	// this line handle the different state for each monster
 	CMonster::SetState(state);
 
-	// this line handle the different state for each monster
 	switch (state)
 	{
 	case KOOPA_STATE_DEFEND:
@@ -228,6 +197,7 @@ void CKoopa::SetState(int state)
 		}
 		break;
 	default:
+		DebugOut(L"[ERROR] Unhandled monster state %d in CKoopa::SetState\n", state);
 		break;
 	}
 }
@@ -251,6 +221,8 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
+	if (is_deleted) return;
+	if (!IsInCamera()) return;
 	if (DieWhenMoveToDangerousSpace()) return;
 
 	// koopa only comeback if it is not kicked by mario

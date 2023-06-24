@@ -3,23 +3,12 @@
 #include "objects/items/Item.h"
 #include "objects/Platform.h"
 
-void CWindGoomba::AdjustPos()
+void CWindGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	switch (state)
 	{
-	case MONSTER_STATE_WALKING_RIGHT:
-	case MONSTER_STATE_WALKING_LEFT:
-		y -= (GOOMBA_BBOX_HEIGHT_FLY - GOOMBA_BBOX_HEIGHT) / 2;
-		break;
-	default:
-		break;
-	}
-}
-
-void CWindGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
-{
-	if (state == MONSTER_STATE_FLY)
-	{
+	case MONSTER_STATE_FLY_LEFT:
+	case MONSTER_STATE_FLY_RIGHT:
 		left = x - GOOMBA_BBOX_WIDTH_FLY / 2;
 		top = y - GOOMBA_BBOX_HEIGHT_FLY / 2;
 		right = left + GOOMBA_BBOX_WIDTH_FLY;
@@ -35,8 +24,10 @@ void CWindGoomba::Render()
 	if (is_deleted) return;
 	if (!IsInCamera()) return;
 
-	if (state == MONSTER_STATE_FLY)
+	switch (state)
 	{
+	case MONSTER_STATE_FLY_LEFT:
+	case MONSTER_STATE_FLY_RIGHT:
 		CAnimations::GetInstance()->Get(ID_ANI_GOOMBA_FLY)->Render(x, y);
 		return;
 	}
@@ -50,35 +41,47 @@ void CWindGoomba::SetState(int state)
 
 	switch (state)
 	{
-	case MONSTER_STATE_FLY:
+	case MONSTER_STATE_FLY_LEFT:
 		time_jump_start = GetTickCount64();
-		vx = CompareXWithMario() == 1 ? -fabs(vx) : fabs(vx);
+		vx = -MONSTER_WALKING_SPEED;
 		vy = -GOOMBA_FLY_SPEED_Y;
 		ay = GRAVITY;
 		break;
-
+	case MONSTER_STATE_FLY_RIGHT:
+		time_jump_start = GetTickCount64();
+		vx = MONSTER_WALKING_SPEED;
+		vy = -GOOMBA_FLY_SPEED_Y;
+		ay = GRAVITY;
+		break;
 	default:
-		DebugOut(L"[ERROR] Unhandled monster state %d\n in Function CGoomba Set State", state);
+		DebugOut(L"[ERROR] Unhandled monster state %d in CWindGoomba::SetState\n", state);
 		break;
 	}
 }
 
 void CWindGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
-	if (is_deleted) return;
-	if (!IsInCamera()) return;
-
 	if (has_wind) // no wind no fly
 	{
+		if (!IsInCamera()) return;
+		if (DieWhenMoveToDangerousSpace()) return;
 		// if it fall down from platform, then it can fly again
 		if (is_on_platform && GetTickCount64() - time_jump_start > GOOMBA_TIME_FOR_EACH_FLY)
 		{
-			SetState(MONSTER_STATE_FLY);
+			if (CompareXWithMario() == 1)
+				SetState(MONSTER_STATE_FLY_LEFT);
+			else
+				SetState(MONSTER_STATE_FLY_RIGHT);
 		}
-	}
-	is_on_platform = FALSE;
+		vy += ay * dt;
+		vx += ax * dt;
 
-	CMonster::Update(dt, co_objects);
+		is_on_platform = FALSE;
+		CCollision::GetInstance()->Process(this, dt, co_objects);
+		return;
+	}
+
+	CGoomba::Update(dt, co_objects);
 }
 
 void CWindGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -90,13 +93,28 @@ void CWindGoomba::Die()
 {
 	if (has_wind) {
 		has_wind = FALSE;
+
+		// adjust position before set state
+		switch (state)
+		{
+		case MONSTER_STATE_FLY_LEFT:
+		case MONSTER_STATE_FLY_RIGHT:
+			y += (GOOMBA_BBOX_HEIGHT_FLY - GOOMBA_BBOX_HEIGHT) / 2;
+			break;
+		default:
+			break;
+		}
+
+		// set state
 		if (vx > 0)
 			SetState(MONSTER_STATE_WALKING_RIGHT);
 		else
 			SetState(MONSTER_STATE_WALKING_LEFT);
+
 		ay = GRAVITY;
-		AdjustPos();
 		return;
 	}
+
+	// if it has no wind, then it will die like a normal goomba
 	CGoomba::Die();
 }

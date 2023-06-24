@@ -73,11 +73,11 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		if (e->IsCollidedFromTop())
 		{
 			koopa->Defend();
-			this->JumpDeflect();
+			JumpDeflect();
 		}
 		else
 		{
-			this->Die();
+			Die();
 		}
 		return;
 	}
@@ -90,10 +90,10 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	{
 		if (e->IsCollidedFromTop())
 		{
-			this->JumpDeflect();
+			JumpDeflect();
 			return;
 		}
-		this->Die();
+		Die();
 		return;
 	}
 
