@@ -11,9 +11,10 @@
 #include "components/KeyboardHandler/SampleKeyEventHandler.h"
 
 #include "objects/Platform.h"
+#include "objects/Mario.h"
 
 #include "objects/materials/Portal.h"
-#include "objects/materials/QuestionBrick.h"
+#include "objects/materials/bricks/QuestionBrick.h"
 #include "objects/materials/Pipe.h"
 
 #include "objects/items/Coin.h"
@@ -141,9 +142,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CGoomba(x, y);
 	}
 	break;
-	case OBJECT_TYPE_BRICK:
-		obj = new CBrick(x, y);
-		break;
 	case OBJECT_TYPE_COIN:
 	{
 		int coin_state = COIN_STATE_IDLE;

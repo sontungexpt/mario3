@@ -2,17 +2,17 @@
 
 #pragma once
 #include "Brick.h"
-#include "configs/materials/QuestionBrick100000.h"
 #include "objects/items/Item.h"
+#include "configs/materials/BreakableBrick101000.h"
 
-class CBreakBrick : public CBrick
+class CBreakableBrick : public CBrick
 {
 private:
 	BOOLEAN is_breaked;
 
 public:
 
-	CBreakBrick(float x, float y) : CBrick(x, y)
+	CBreakableBrick(float x, float y) : CBrick(x, y)
 	{
 		is_breaked = FALSE;
 	};

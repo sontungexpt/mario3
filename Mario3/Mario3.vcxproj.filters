@@ -36,9 +36,6 @@
     <ClCompile Include="src\components\Texture\Textures.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\materials\Brick.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\objects\items\Coin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -87,7 +84,7 @@
     <ClCompile Include="src\objects\materials\Grass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\materials\QuestionBrick.cpp">
+    <ClCompile Include="src\objects\materials\bricks\QuestionBrick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\objects\items\Mushroom.cpp">
@@ -123,7 +120,7 @@
     <ClCompile Include="src\objects\monsters\WindKoopa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\materials\BreakBrick.cpp">
+    <ClCompile Include="src\objects\materials\bricks\BreakableBrick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\objects\materials\Effect.cpp">
@@ -167,7 +164,7 @@
     <ClInclude Include="src\configs\id.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\materials\Brick.h">
+    <ClInclude Include="src\objects\materials\bricks\Brick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\items\Coin.h">
@@ -248,10 +245,7 @@
     <ClInclude Include="src\configs\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\materials\Brick.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\objects\materials\QuestionBrick.h">
+    <ClInclude Include="src\objects\materials\bricks\QuestionBrick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\configs\materials\QuestionBrick100000.h">
@@ -332,10 +326,13 @@
     <ClInclude Include="src\objects\monsters\WindKoopa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\materials\BreakBrick.h">
+    <ClInclude Include="src\objects\materials\bricks\BreakableBrick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\materials\Effect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\materials\BreakableBrick101000.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -343,7 +340,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="src\settings\objects\materials\brick.txt" />
     <Text Include="src\settings\objects\materials\cloud.txt" />
     <Text Include="src\settings\objects\items\coin.txt" />
     <Text Include="src\settings\objects\monsters\goomba.txt" />
@@ -364,6 +360,7 @@
     <Text Include="src\settings\objects\platform.txt" />
     <Text Include="src\settings\objects\items\leaf.txt" />
     <Text Include="src\settings\objects\monsters\carnivorous_plant.txt" />
+    <Text Include="src\settings\objects\materials\breakable_brick.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\assets\textures\misc_left.png">

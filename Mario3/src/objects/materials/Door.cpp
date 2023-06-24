@@ -1,4 +1,5 @@
 #include "Door.h"
+#include "debug.h"
 #include "Game.h"
 #include "configs/GameData.h"
 

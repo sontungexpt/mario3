@@ -17,7 +17,7 @@
 
 #include "materials/Portal.h"
 #include "materials/Door.h"
-#include "materials/QuestionBrick.h"
+#include "materials/bricks/QuestionBrick.h"
 
 #include "configs/monsters/Gommba600000.h"
 #include "configs/materials/QuestionBrick100000.h"

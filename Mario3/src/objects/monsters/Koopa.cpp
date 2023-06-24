@@ -10,7 +10,7 @@
 
 #include "objects/Mario.h"
 #include "objects/Platform.h"
-#include "objects/materials/QuestionBrick.h"
+#include "objects/materials/bricks/QuestionBrick.h"
 
 void CKoopa::OnCollisionWithMonster(LPCOLLISIONEVENT e)
 {

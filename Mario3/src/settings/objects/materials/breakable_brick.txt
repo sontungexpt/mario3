@@ -1,12 +1,9 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
-# Short brick
-20001	372	153	387	168	20
-
-# Zebra brick
-20002	164	6	180	22	60
+# BREAKABLE BRICK
+101001	16	16	32	32	70
+101002	489	44	505	56	20
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
-# Short brick
-10000	20001	1000
+101001	101001	100	101002	100

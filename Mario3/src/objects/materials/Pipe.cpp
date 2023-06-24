@@ -1,4 +1,5 @@
 #include "Pipe.h"
+#include "debug.h"
 #include "scenes/PlayScene.h"
 
 void CPipe::Render()

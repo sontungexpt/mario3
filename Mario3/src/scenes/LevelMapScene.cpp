@@ -1,4 +1,6 @@
 #include "LevelMapScene.h"
+#include "objects/Mario.h"
+
 #include "configs/core/ObjectTypes.h"
 #include "objects/materials/Grass.h"
 #include "objects/Platform.h"

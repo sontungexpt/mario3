@@ -1,6 +1,7 @@
 #include "scenes/PlayScene.h"
 
 #include "PlantShooter.h"
+#include "objects/Mario.h"
 #include "objects/items/Bullet.h"
 #include "objects/materials/Pipe.h"
 

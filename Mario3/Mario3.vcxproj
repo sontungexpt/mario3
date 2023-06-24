@@ -134,7 +134,7 @@
     <ClCompile Include="src\objects\items\Bullet.cpp" />
     <ClCompile Include="src\objects\items\Item.cpp" />
     <ClCompile Include="src\objects\items\Leaf.cpp" />
-    <ClCompile Include="src\objects\materials\BreakBrick.cpp" />
+    <ClCompile Include="src\objects\materials\bricks\BreakableBrick.cpp" />
     <ClCompile Include="src\objects\materials\Door.cpp" />
     <ClCompile Include="src\objects\materials\Effect.cpp" />
     <ClCompile Include="src\objects\materials\Grass.cpp" />
@@ -144,7 +144,7 @@
     <ClCompile Include="src\objects\monsters\Koopa.cpp" />
     <ClCompile Include="src\objects\monsters\Monster.cpp" />
     <ClCompile Include="src\objects\monsters\plants\PlantShooter.cpp" />
-    <ClCompile Include="src\objects\materials\QuestionBrick.cpp" />
+    <ClCompile Include="src\objects\materials\bricks\QuestionBrick.cpp" />
     <ClCompile Include="src\objects\monsters\plants\Plant.cpp" />
     <ClCompile Include="src\objects\monsters\WindGoomba.cpp" />
     <ClCompile Include="src\objects\monsters\WindKoopa.cpp" />
@@ -159,7 +159,6 @@
     <ClCompile Include="src\components\Texture\Textures.cpp" />
     <ClCompile Include="src\debug.cpp" />
     <ClCompile Include="src\Game.cpp" />
-    <ClCompile Include="src\objects\materials\Brick.cpp" />
     <ClCompile Include="src\objects\items\Coin.cpp" />
     <ClCompile Include="src\objects\monsters\Goomba.cpp" />
     <ClCompile Include="src\objects\Mario.cpp" />
@@ -174,7 +173,7 @@
     <ClInclude Include="src\configs\items\Bullet302000.h" />
     <ClInclude Include="src\configs\items\Leaf303000.h" />
     <ClInclude Include="src\configs\materials\All.h" />
-    <ClInclude Include="src\configs\materials\Brick.h" />
+    <ClInclude Include="src\configs\materials\BreakableBrick101000.h" />
     <ClInclude Include="src\configs\materials\Door.h" />
     <ClInclude Include="src\configs\Game.h" />
     <ClInclude Include="src\configs\GameData.h" />
@@ -197,7 +196,7 @@
     <ClInclude Include="src\GameData.h" />
     <ClInclude Include="src\objects\items\Bullet.h" />
     <ClInclude Include="src\objects\items\Item.h" />
-    <ClInclude Include="src\objects\materials\BreakBrick.h" />
+    <ClInclude Include="src\objects\materials\bricks\BreakableBrick.h" />
     <ClInclude Include="src\objects\materials\Door.h" />
     <ClInclude Include="src\objects\materials\Effect.h" />
     <ClInclude Include="src\objects\materials\Grass.h" />
@@ -208,7 +207,7 @@
     <ClInclude Include="src\objects\monsters\Koopa.h" />
     <ClInclude Include="src\objects\monsters\Monster.h" />
     <ClInclude Include="src\objects\monsters\plants\PlantShooter.h" />
-    <ClInclude Include="src\objects\materials\QuestionBrick.h" />
+    <ClInclude Include="src\objects\materials\bricks\QuestionBrick.h" />
     <ClInclude Include="src\objects\monsters\plants\Plant.h" />
     <ClInclude Include="src\objects\monsters\WindGoomba.h" />
     <ClInclude Include="src\objects\monsters\WindKoopa.h" />
@@ -229,7 +228,7 @@
     <ClInclude Include="src\configs\Mario.h" />
     <ClInclude Include="src\debug.h" />
     <ClInclude Include="src\Game.h" />
-    <ClInclude Include="src\objects\materials\Brick.h" />
+    <ClInclude Include="src\objects\materials\bricks\Brick.h" />
     <ClInclude Include="src\objects\items\Coin.h" />
     <ClInclude Include="src\objects\GameObject.h" />
     <ClInclude Include="src\objects\monsters\Goomba.h" />
@@ -244,7 +243,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\settings\objects\items\leaf.txt" />
-    <Text Include="src\settings\objects\materials\brick.txt" />
+    <Text Include="src\settings\objects\materials\breakable_brick.txt" />
     <Text Include="src\settings\objects\materials\cloud.txt" />
     <Text Include="src\settings\objects\items\bullet.txt" />
     <Text Include="src\settings\objects\items\coin.txt" />
