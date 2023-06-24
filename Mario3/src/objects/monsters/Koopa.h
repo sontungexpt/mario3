@@ -19,7 +19,7 @@ protected:
 
 	float mario_speed_when_kicked;
 
-	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithMonster(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 
 	int GetAniIdRed();
@@ -27,6 +27,7 @@ protected:
 
 	void AdjustPos();
 
+	void SetState(int state);
 public:
 	CKoopa(float x, float y, int type = KOOPA_RED) : CMonster(x, y) {
 		this->type = type;
@@ -49,27 +50,25 @@ public:
 	//core
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
-	void SetState(int state);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	//collision
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 
-	// this part is a other name for the same state
 	BOOLEAN IsDefend() { return is_defend; }
 	void Defend();
-	void ComebackAfterDefend() { SetState(KOOPA_STATE_COMEBACK); };
+	void ComebackAfterDefend() { SetState(KOOPA_STATE_COMEBACK); }
 
 	void BeHold();
-	void BeKick() {
-		SetState(KOOPA_STATE_IS_KICKED);
-	};
+	void BeKick() { SetState(KOOPA_STATE_IS_KICKED); }
+
 	BOOLEAN IsMarioKicked() { return is_mario_kicked; }
 
-	void MoveRight() { SetState(MONSTER_STATE_WALKING_RIGHT); };
-	void MoveLeft() { SetState(MONSTER_STATE_WALKING_LEFT); };
+	void MoveRight() { SetState(MONSTER_STATE_WALKING_RIGHT); }
+	void MoveLeft() { SetState(MONSTER_STATE_WALKING_LEFT); }
 
 	// reset to default state
 	void Reset();
+
 	void Die() { SetState(MONSTER_STATE_DIE); }
 };

@@ -12,7 +12,7 @@
 #include "objects/Platform.h"
 #include "objects/materials/QuestionBrick.h"
 
-void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
+void CKoopa::OnCollisionWithMonster(LPCOLLISIONEVENT e)
 {
 	// if the koopa is kicked by mario, then it will kill every goomba it touch
 	if (is_defend && is_mario_kicked)
@@ -33,12 +33,12 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<CGoomba*>(e->obj))
+	if (dynamic_cast<CMonster*>(e->obj))
 	{
-		OnCollisionWithGoomba(e);
-		return;
+		OnCollisionWithMonster(e);
 	}
-	else if (dynamic_cast<CQuestionBrick*>(e->obj))
+
+	if (dynamic_cast<CQuestionBrick*>(e->obj))
 	{
 		OnCollisionWithQuestionBrick(e);
 	}

@@ -377,15 +377,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//	DebugOut(L"Mario die\n");
 	//	return;
 	//}
+	vy += ay * dt;
+	vx += ax * dt;
 
 	if (weapon_monster && !is_want_holding_koopa)
 	{
-		((CKoopa*)weapon_monster)->BeKick();
+		CKoopa* koopa = (CKoopa*)weapon_monster;
+		if (koopa->IsDefend() && !IsDead())
+			koopa->BeKick();
 		weapon_monster = nullptr;
 	}
-
-	vy += ay * dt;
-	vx += ax * dt;
 
 	// cannot exceed the allowed speed
 	if (fabs(vx) > fabs(max_vx))
