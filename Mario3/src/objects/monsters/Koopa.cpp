@@ -281,9 +281,9 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	if (!is_defend && is_on_platform)
 	{
 		// this part is make sure koopa only move on platform until be kicked
-		if (x <= limit_x_negative)
+		if (is_limit_moving_space && x <= limit_x_negative)
 			SetState(MONSTER_STATE_WALKING_RIGHT);
-		if (x >= limit_x_positive)
+		if (is_limit_moving_space && x >= limit_x_positive)
 			SetState(MONSTER_STATE_WALKING_LEFT);
 	}
 

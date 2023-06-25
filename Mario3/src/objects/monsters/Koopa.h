@@ -13,6 +13,7 @@ protected:
 	BOOLEAN is_comeback;
 	BOOLEAN is_mario_kicked;
 	BOOLEAN is_mario_holding;
+	BOOLEAN is_limit_moving_space;
 
 	float limit_x_positive = 0;
 	float limit_x_negative = 0;
@@ -35,7 +36,7 @@ protected:
 	virtual void Reset();
 
 public:
-	CKoopa(float x, float y, int color = KOOPA_RED) : CMonster(x, y) {
+	CKoopa(float x, float y, int color = KOOPA_RED, BOOLEAN is_limit_moving_space = TRUE) : CMonster(x, y) {
 		this->color = color;
 
 		is_defend = FALSE;
@@ -43,6 +44,7 @@ public:
 		is_mario_kicked = FALSE;
 		is_mario_holding = FALSE;
 		is_on_platform = FALSE;
+		this->is_limit_moving_space = is_limit_moving_space;
 
 		mario_speed_when_kicked = 0.0f;
 		max_vx = KOOPA_MAX_SPEED;

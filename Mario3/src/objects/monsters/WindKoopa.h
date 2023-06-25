@@ -13,7 +13,7 @@ private:
 	int GetAniIdRed();
 	int GetAniIdGreen();
 public:
-	CWindKoopa(float x, float y, int color = KOOPA_RED) : CKoopa(x, y, color) {
+	CWindKoopa(float x, float y, int color = KOOPA_RED, BOOLEAN is_limit_moving_space = TRUE) : CKoopa(x, y, color, is_limit_moving_space) {
 		// always move to mario in the first time
 		has_wind = TRUE;
 		time_jump_start = 0;

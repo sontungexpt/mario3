@@ -195,19 +195,22 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_KOOPA:
 	{
 		int koopa_color = KOOPA_RED;
+		BOOLEAN is_limit_moving_space = TRUE;
 		if (tokens.size() >= 4)
 			koopa_color = atoi(tokens[3].c_str());
-
+		if (tokens.size() >= 6)
+			is_limit_moving_space = atoi(tokens[5].c_str());
 		if (tokens.size() >= 5)
 		{
 			int koopa_type = atoi(tokens[4].c_str());
 			if (koopa_type == KOOPA_TYPE_FLY)
 			{
-				obj = new CWindKoopa(x, y, koopa_color);
+				obj = new CWindKoopa(x, y, koopa_color, is_limit_moving_space);
 				break;
 			}
 		}
-		obj = new CKoopa(x, y, koopa_color);
+
+		obj = new CKoopa(x, y, koopa_color, is_limit_moving_space);
 	}
 	break;
 
