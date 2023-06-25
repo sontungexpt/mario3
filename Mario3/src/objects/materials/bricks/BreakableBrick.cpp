@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <random>
+
 void CBreakableBrick::CreateItem()
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
@@ -33,6 +34,16 @@ void CBreakableBrick::GetBoundingBox(float& left, float& top, float& right, floa
 
 void CBreakableBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
+	CCollision::GetInstance()->Process(this, dt, co_objects);
+
+	// the brick is blocked by something
+	// so it can't bounce
+	if (is_blocked)
+	{
+		SetState(BREAKABLE_BRICK_STATE_NORMAL);
+		is_blocked = FALSE;
+		return;
+	}
 	vx += ax * dt;
 	vy += ay * dt;
 	x += vx * dt;
@@ -43,8 +54,6 @@ void CBreakableBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	{
 		SetState(BREAKABLE_BRICK_STATE_NORMAL);
 	}
-
-	CCollision::GetInstance()->Process(this, dt, co_objects);
 }
 
 void CBreakableBrick::Render()
@@ -95,8 +104,6 @@ void CBreakableBrick::SetState(int state)
 
 void CBreakableBrick::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->IsCollidedInYDimension() && e->obj->IsBlocking())
-	{
-		SetState(BREAKABLE_BRICK_STATE_NORMAL);
-	}
+	if (e->IsCollidedFromBottom() && e->obj->IsBlocking())
+		is_blocked = TRUE;
 }

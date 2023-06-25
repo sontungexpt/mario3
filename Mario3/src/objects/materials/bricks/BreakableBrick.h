@@ -8,6 +8,7 @@ class CBreakableBrick : public CCreatableBrick
 {
 private:
 	BOOLEAN is_breaked;
+	BOOLEAN is_blocked;
 
 	float GetItemReferenceY(CItem* item) { return y; };
 	float GetItemReferenceX(CItem* item) { return x; };
@@ -18,6 +19,7 @@ public:
 
 	CBreakableBrick(float x, float y, int item_type = BREAKABLE_BRICK_NONE) : CCreatableBrick(x, y, item_type) {
 		is_breaked = FALSE;
+		is_blocked = FALSE;
 		SetState(BREAKABLE_BRICK_STATE_NORMAL);
 	};
 
