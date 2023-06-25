@@ -48,8 +48,18 @@ void CMonster::OnCollisionWithMonster(LPCOLLISIONEVENT e)
 	}
 }
 
+void CMonster::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
+{
+	CMario* mario = dynamic_cast<CMario*>(e->obj);
+	if (!e->IsCollidedFromBottom())
+		mario->Die();
+}
+
 void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (dynamic_cast<CMario*>(e->obj))
+		OnCollisionWithPlayer(e);
+
 	if (dynamic_cast<CMonster*>(e->obj)) {
 		OnCollisionWithMonster(e);
 	}

@@ -1,6 +1,13 @@
 #include "Plant.h"
 #include "objects/items/Bullet.h"
 #include "objects/materials/Pipe.h"
+#include "objects/Mario.h"
+
+void CPlant::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
+{
+	CMario* mario = dynamic_cast<CMario*>(e->obj);
+	mario->Die();
+}
 
 void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {

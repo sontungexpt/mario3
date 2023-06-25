@@ -13,7 +13,8 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 
 void CBullet::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
-	//DebugOut(L"[INFO] Bullet::OnCollisionWithPlayer\n");
+	CMario* mario = dynamic_cast<CMario*>(e->obj);
+	mario->Die();
 }
 
 void CBullet::Render()

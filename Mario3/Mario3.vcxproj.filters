@@ -126,6 +126,12 @@
     <ClCompile Include="src\objects\materials\Effect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\materials\bricks\CreatableBrick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\items\DebrisBrick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\Animation\Animation.h">
@@ -209,7 +215,7 @@
     <ClInclude Include="src\objects\materials\Pipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\materials\Pipe10100.h">
+    <ClInclude Include="src\configs\materials\Pipe101000.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\monsters\plants\PlantShooter.h">
@@ -332,7 +338,13 @@
     <ClInclude Include="src\objects\materials\Effect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\materials\BreakableBrick101000.h">
+    <ClInclude Include="src\configs\materials\BreakableBrick102000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\materials\bricks\CreatableBrick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\items\DebrisBrick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

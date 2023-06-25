@@ -21,6 +21,7 @@
 
 #include "configs/monsters/Gommba600000.h"
 #include "configs/materials/QuestionBrick100000.h"
+#include "materials/bricks/BreakableBrick.h"
 
 void CMario::OnNoCollision(DWORD dt)
 {
@@ -47,6 +48,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
+	if (dynamic_cast<CBreakableBrick*>(e->obj))
+		OnCollisionWithBreakableBrick(e);
 
 	// collide in y dimension and the object is a blocking object like platform
 	if (e->IsCollidedInYDimension() && e->obj->IsBlocking())
@@ -152,6 +155,15 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	if (e->IsCollidedFromBottom())
 	{
 		questionBrick->Bounce();
+	}
+}
+
+void CMario::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
+{
+	if (e->IsCollidedFromBottom())
+	{
+		CBreakableBrick* breakable_brick = dynamic_cast<CBreakableBrick*>(e->obj);
+		breakable_brick->Bounce();
 	}
 }
 
@@ -362,7 +374,6 @@ void CMario::Render()
 	else if (level == MARIO_LEVEL_SMALL)
 		aniId = GetAniIdSmall();
 
-	RenderBoundingBox();
 	CAnimations* animations = CAnimations::GetInstance();
 	LPANIMATION ani = animations->Get(aniId);
 

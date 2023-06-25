@@ -17,6 +17,8 @@ protected:
 	ULONGLONG time_out_up_state;
 	ULONGLONG time_out_down_state;
 
+	virtual void OnCollisionWithPlayer(LPCOLLISIONEVENT e);
+
 	virtual void Init(float y) {
 		ay = 0; // no gravity
 		ax = 0;

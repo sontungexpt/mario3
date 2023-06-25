@@ -20,7 +20,10 @@ protected:
 	float mario_speed_when_kicked;
 
 	virtual void OnCollisionWithMonster(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
+
+	// two ways collision with player
 	virtual void OnCollisionWithPlayer(LPCOLLISIONEVENT e);
 
 	virtual int GetAniIdRed();

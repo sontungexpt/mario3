@@ -45,12 +45,18 @@ public:
 	float GetHeight();
 
 	// position
-	void SetPosition(float x, float y) { this->x = x, this->y = y; }
+	void SetPosition(float x, float y) {
+		this->x = x, this->y = y;
+	}
 	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
 	float GetX() { return x; }
 	float GetY() { return y; }
-	void SetX(float x) { this->x = x; }
-	void SetY(float y) { this->y = y; }
+	void SetX(float x) {
+		this->x = x;
+	}
+	void SetY(float y) {
+		this->y = y;
+	}
 	float GetLeft() {
 		float left, top, right, bottom;
 		GetBoundingBox(left, top, right, bottom);

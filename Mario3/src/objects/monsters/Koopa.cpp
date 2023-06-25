@@ -11,6 +11,7 @@
 #include "objects/Mario.h"
 #include "objects/Platform.h"
 #include "objects/materials/bricks/QuestionBrick.h"
+#include "objects/materials/bricks/BreakableBrick.h"
 
 void CKoopa::OnCollisionWithMonster(LPCOLLISIONEVENT e)
 {
@@ -21,6 +22,16 @@ void CKoopa::OnCollisionWithMonster(LPCOLLISIONEVENT e)
 		return;
 	}
 	CMonster::OnCollisionWithMonster(e);
+}
+
+void CKoopa::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
+{
+	if (!is_defend || !is_mario_kicked) return;
+
+	// if the koopa is kicked by mario, then when it touch question brick
+	// question brick will create item
+	CBreakableBrick* breakable_brick = dynamic_cast<CBreakableBrick*>(e->obj);
+	breakable_brick->Break();
 }
 
 void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
@@ -36,11 +47,8 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 void CKoopa::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
 	CMario* mario = dynamic_cast<CMario*>(e->obj);
-	if (!is_defend && !e->IsCollidedFromBottom())
-	{
+	if (!is_defend && !is_mario_holding && !e->IsCollidedFromBottom())
 		mario->Die();
-		return;
-	}
 }
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -50,9 +58,9 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithQuestionBrick(e);
 	}
 
-	if (dynamic_cast<CMario*>(e->obj))
+	if (dynamic_cast<CBreakableBrick*>(e->obj))
 	{
-		OnCollisionWithPlayer(e);
+		OnCollisionWithBreakableBrick(e);
 	}
 
 	if (e->IsCollidedFromTop() && e->obj->IsBlocking())
@@ -233,8 +241,8 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
-	if (!IsInCamera()) return;
 	if (RemoveWhenMoveToDangerousSpace()) return;
+	if (!IsInCamera()) return;
 
 	// koopa only comeback if it is not kicked by mario
 	if (!is_mario_kicked && is_defend &&

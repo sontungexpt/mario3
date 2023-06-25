@@ -44,9 +44,8 @@ int CGameObject::RemoveWhenMoveToDangerousSpace()
 	float left, top, right, bottom;
 	GetBoundingBox(left, top, right, bottom);
 
-
-	// move out of screen >> delete
-	// fall to to the hole >> delete
+	//move out of screen >> delete
+	//fall to to the hole >> delete
 	if (right <= 0 ||
 		left >= ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetMaxObjectX()->GetRight() ||
 		bottom <= 0 ||
@@ -100,12 +99,12 @@ BOOLEAN CGameObject::IsInCamera() {
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 	GetBoundingBox(left, top, right, bottom);
 
-	// out of width screen
+	//// out of width screen
 	if (right < cam_x || left > cam_x + CGame::GetInstance()->GetBackBufferWidth())
 		return FALSE;
 
-	// out of height screen
-	if (top < cam_y || bottom > cam_y + CGame::GetInstance()->GetBackBufferHeight())
+	//// out of height screen
+	if (bottom < cam_y || top > cam_y + CGame::GetInstance()->GetBackBufferHeight())
 		return FALSE;
 
 	// in camera

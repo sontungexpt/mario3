@@ -37,6 +37,9 @@ protected:
 
 	virtual void OnCollisionWithMonster(LPCOLLISIONEVENT e);
 
+	// two ways collision
+	virtual void OnCollisionWithPlayer(LPCOLLISIONEVENT e);
+
 	/// <summary>
 	/// The monster will be died and deleted if move out of width screen or the monster jump to hole
 	/// </summary>

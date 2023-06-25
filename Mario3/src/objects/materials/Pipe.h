@@ -5,7 +5,7 @@
 #include "objects/monsters/plants/PlantShooter.h"
 #include "objects/monsters/plants/CarnivorousPlant.h"
 
-#include "configs/materials/Pipe10100.h"
+#include "configs/materials/Pipe101000.h"
 
 class CPipe : public CGameObject
 {

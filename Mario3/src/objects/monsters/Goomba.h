@@ -7,7 +7,6 @@ class CGoomba : public CMonster
 {
 protected:
 
-	virtual void AdjustPos() {};
 public:
 
 	CGoomba(float x, float y) :CMonster(x, y) {}

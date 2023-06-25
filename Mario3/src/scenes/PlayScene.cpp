@@ -15,6 +15,7 @@
 
 #include "objects/materials/Portal.h"
 #include "objects/materials/bricks/QuestionBrick.h"
+#include "objects/materials/bricks/BreakableBrick.h"
 #include "objects/materials/Pipe.h"
 
 #include "objects/items/Coin.h"
@@ -165,6 +166,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			obj = new CQuestionBrick(x, y);
 			break;
 		}
+	}
+	case OBJECT_TYPE_BREAKABLE_BRICK:
+	{
+		int item_type = BREAKABLE_BRICK_NONE;
+		if (tokens.size() >= 4)
+			item_type = atoi(tokens[3].c_str());
+		obj = new CBreakableBrick(x, y, item_type);
+		break;
 	}
 	case OBJECT_TYPE_PIPE:
 	{
