@@ -36,6 +36,11 @@ protected:
 	ULONGLONG disapear_time; // time to disappear after dead
 
 	virtual void OnCollisionWithMonster(LPCOLLISIONEVENT e);
+
+	/// <summary>
+	/// The monster will be died and deleted if move out of width screen or the monster jump to hole
+	/// </summary>
+	virtual int RemoveWhenMoveToDangerousSpace();
 	virtual void SetIdle() { vx = 0; vy = 0; ax = 0; };
 
 public:
@@ -98,11 +103,6 @@ public:
 	// this part is a other name for the same state
 	BOOLEAN IsDead() { return dead == TRUE; }
 	virtual void Die() { SetState(MONSTER_STATE_DIE); }
-
-	/// <summary>
-	/// The monster will be died and deleted if move out of width screen or the monster jump to hole
-	/// </summary>
-	virtual int DieWhenMoveToDangerousSpace();
 };
 
 typedef  CMonster* LPMONSTER;

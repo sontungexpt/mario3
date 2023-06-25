@@ -21,7 +21,6 @@ void CWindGoomba::GetBoundingBox(float& left, float& top, float& right, float& b
 
 void CWindGoomba::Render()
 {
-	if (is_deleted) return;
 	if (!IsInCamera()) return;
 
 	switch (state)
@@ -64,7 +63,7 @@ void CWindGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	if (has_wind) // no wind no fly
 	{
 		if (!IsInCamera()) return;
-		if (DieWhenMoveToDangerousSpace()) return;
+		if (RemoveWhenMoveToDangerousSpace()) return;
 		// if it fall down from platform, then it can fly again
 		if (is_on_platform && GetTickCount64() - time_jump_start > GOOMBA_TIME_FOR_EACH_FLY)
 		{

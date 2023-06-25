@@ -1,5 +1,5 @@
 #include "Coin.h"
-#include "objects/materials/Brick.h"
+#include "objects/materials/bricks/Brick.h"
 #include "debug.h"
 #include "objects/Mario.h"
 #include "scenes/PlayScene.h"

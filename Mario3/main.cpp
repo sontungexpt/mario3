@@ -5,20 +5,19 @@
 
 #include "debug.h"
 #include "Game.h"
-#include "objects/GameObject.h"
-#include "components/Texture/Textures.h"
-#include "components/Animation/Animation.h"
-#include "components/Animation/Animations.h"
-
-#include "objects/Mario.h"
-#include "objects/materials/Brick.h"
-#include "objects/monsters/Goomba.h"
-#include "objects/items/Coin.h"
-#include "objects/Platform.h"
-
 #include "components/KeyboardHandler/SampleKeyEventHandler.h"
-
 #include "configs/All.h"
+
+//#include "objects/GameObject.h"
+//#include "components/Texture/Textures.h"
+//#include "components/Animation/Animation.h"
+//#include "components/Animation/Animations.h"
+
+//#include "objects/Mario.h"
+//#include "objects/materials/bricks/Brick.h"
+//#include "objects/monsters/Goomba.h"
+//#include "objects/items/Coin.h"
+//#include "objects/Platform.h"
 
 #define WINDOW_CLASS_NAME L"Super Mario Bros 3"
 #define MAIN_WINDOW_TITLE L"Super Mario Bros 3"

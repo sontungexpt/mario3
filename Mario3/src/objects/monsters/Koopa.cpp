@@ -66,7 +66,7 @@ void CKoopa::Reset() {
 			LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 			CMario* mario = (CMario*)scene->GetPlayer();
 			x = mario->GetNx() >= 0 ? x + 3 : x - 3;
-			y = mario->GetOyAtTopRight() - KOOPA_BBOX_HEIGHT / 2 - 1;
+			y = mario->GetTop() - KOOPA_BBOX_HEIGHT / 2 - 3;
 		}
 		else
 		{
@@ -203,8 +203,6 @@ void CKoopa::SetState(int state)
 }
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
-	if (is_deleted) return;
-
 	if (is_defend) {
 		left = x - KOOPA_BBOX_WIDTH / 2;
 		top = y - KOOPA_BBOX_HEIGHT_DEFEND / 2;
@@ -221,9 +219,8 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
-	if (is_deleted) return;
 	if (!IsInCamera()) return;
-	if (DieWhenMoveToDangerousSpace()) return;
+	if (RemoveWhenMoveToDangerousSpace()) return;
 
 	// koopa only comeback if it is not kicked by mario
 	if (!is_mario_kicked && is_defend &&

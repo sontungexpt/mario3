@@ -14,6 +14,12 @@ protected:
 
 	vector<LPGAMEOBJECT> objects;
 
+	// this is the floor of screen
+	// this mean it is the y of bottom of all objects
+	// no object has y > this max_object_y
+	LPGAMEOBJECT max_object_y;
+	LPGAMEOBJECT max_object_x;
+
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
 
@@ -22,6 +28,21 @@ protected:
 
 	void LoadAssets(LPCWSTR assetFile);
 
+	void SetMaxCoordinate(LPGAMEOBJECT object)
+	{
+		if (max_object_x == nullptr && max_object_y == nullptr)
+		{
+			max_object_x = object;
+			max_object_y = object;
+			return;
+		}
+
+		if (object->GetRight() > max_object_x->GetRight())
+			max_object_x = object;
+		if (object->GetY() > max_object_y->GetY())
+			max_object_y = object;
+	}
+
 public:
 	CPlayScene(int id, LPCWSTR filePath);
 
@@ -29,6 +50,8 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
+	LPGAMEOBJECT GetMaxObjectY() { return max_object_y; }
+	LPGAMEOBJECT GetMaxObjectX() { return max_object_x; }
 
 	LPGAMEOBJECT GetPlayer() { return player; }
 

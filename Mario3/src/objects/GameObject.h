@@ -38,6 +38,7 @@ protected:
 	float ay;
 
 	virtual void ResetPositionIfOutOfWidthScreen(float& curr_x, float& curr_y);
+	virtual int RemoveWhenMoveToDangerousSpace();
 
 public:
 	float GetWidth();
@@ -50,21 +51,25 @@ public:
 	float GetY() { return y; }
 	void SetX(float x) { this->x = x; }
 	void SetY(float y) { this->y = y; }
-
-	// this function is return the coordinateX of Ox of the sprite
-	// Ox have dimension from left to right and same  with top edge
-	float GetOxAtTopLeft() {
+	float GetLeft() {
 		float left, top, right, bottom;
 		GetBoundingBox(left, top, right, bottom);
 		return left;
 	}
-
-	// this function is return the coordinateY Oy of the sprite
-	// Oy have dimension from top to bottom and same with left edge
-	float GetOyAtTopRight() {
+	float GetRight() {
+		float left, top, right, bottom;
+		GetBoundingBox(left, top, right, bottom);
+		return right;
+	}
+	float GetTop() {
 		float left, top, right, bottom;
 		GetBoundingBox(left, top, right, bottom);
 		return top;
+	}
+	float GetBottom() {
+		float left, top, right, bottom;
+		GetBoundingBox(left, top, right, bottom);
+		return bottom;
 	}
 
 	// velocity

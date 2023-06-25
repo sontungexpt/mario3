@@ -6,8 +6,6 @@
 
 void CMonster::OnNoCollision(DWORD dt)
 {
-	if (is_deleted) return;
-
 	x += vx * dt;
 	y += vy * dt;
 };
@@ -125,27 +123,18 @@ void CMonster::SetState(int state)
 	}
 }
 
-int CMonster::DieWhenMoveToDangerousSpace()
+int CMonster::RemoveWhenMoveToDangerousSpace()
 {
-	float left, top, right, bottom;
-	GetBoundingBox(left, top, right, bottom);
-
-	// move out of screen >> delete
-	// fall to to the hole >> delete
-	if (right <= 0 || top > CGame::GetInstance()->GetCamYPos() + SCREEN_HEIGHT)
+	if (CGameObject::RemoveWhenMoveToDangerousSpace() == 1)
 	{
 		dead = TRUE;
-		is_deleted = TRUE;
 		return 1;
 	}
-
 	return 0;
 }
 
 void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
-	if (DieWhenMoveToDangerousSpace()) return;
-
 	if (dead)
 	{
 		// dead and timeout >> delete

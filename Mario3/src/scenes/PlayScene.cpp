@@ -27,6 +27,8 @@ using namespace std;
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
+	max_object_x = nullptr;
+	max_object_y = nullptr;
 	player = nullptr;
 	key_handler = new CSampleKeyHandler(this);
 }
@@ -244,6 +246,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	// General object setup
 	obj->SetPosition(x, y);
 
+	SetMaxCoordinate(obj);
+
 	objects.push_back(obj);
 }
 
@@ -349,11 +353,17 @@ void CPlayScene::Update(DWORD dt)
 
 	CGame* game = CGame::GetInstance();
 	cx -= game->GetBackBufferWidth() / 2;
-	cy -= game->GetBackBufferHeight() / 2;
+
+	// having floor then mario can jump to hole and die
+	// if mario jump to hole (new_cam_y >= max_object_y) then not update camera
+	float new_cam_y = floor(cy / game->GetBackBufferHeight()) * game->GetBackBufferHeight();
+	cy = max_object_y != nullptr && new_cam_y >= max_object_y->GetY() ?
+		CGame::GetInstance()->GetCamYPos() : new_cam_y;
 
 	if (cx < 0) cx = 0;
+	if (cy < 0) cy = 0;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	CGame::GetInstance()->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();
 }
@@ -382,6 +392,9 @@ void CPlayScene::Unload()
 	objects.clear();
 	player = nullptr;
 
+	delete max_object_x;
+	delete max_object_y;
+
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
 
@@ -409,6 +422,7 @@ void CPlayScene::PurgeDeletedObjects()
 
 LPGAMEOBJECT CPlayScene::AddObject(LPGAMEOBJECT obj)
 {
+	SetMaxCoordinate(obj);
 	objects.push_back(obj);
 	return objects.back();
 }

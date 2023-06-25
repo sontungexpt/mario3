@@ -49,7 +49,7 @@ void CPlantShooter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				// after finished reloading bullet, then shoot bullet
 				if (GetTickCount64() - time_reload_bullet_start > TIME_RELOAD_BULLET) {
-					float bullet_y = CompareYWithMario() == 1 ? GetOyAtTopRight() + 10 : GetOyAtTopRight() + 4;
+					float bullet_y = CompareYWithMario() == 1 ? GetTop() + 10 : GetTop() + 4;
 					float bullet_x = CompareXWithMario() == 1 ? x - GetWidth() / 2 - 2 : x + GetWidth() / 2 + 2;
 
 					CBullet* bullet = (CBullet*)scene->AddObject(new CBullet(bullet_x, bullet_y));

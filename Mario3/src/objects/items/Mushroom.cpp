@@ -16,16 +16,8 @@ void CMushroom::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 }
 
 void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
+	RemoveWhenMoveToDangerousSpace();
 	if (!IsInCamera()) return; // lazy update
-
-	//	NOTE: need to create a general function for this code
-	// move out of screen >> delete
-	// fall to to the hole >> delete
-	if (x + GetWidth() <= 0 || y > SCREEN_HEIGHT)
-	{
-		is_deleted = true;
-		return;
-	}
 
 	CItem::Update(dt, coObjects);
 }

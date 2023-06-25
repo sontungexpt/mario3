@@ -6,9 +6,8 @@ void CWindKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	if (has_wind) // no wind no fly
 	{
 		// if it fall down from platform, then it can fly again
-		if (is_deleted) return;
+		if (RemoveWhenMoveToDangerousSpace()) return;
 		if (!IsInCamera()) return;
-		if (DieWhenMoveToDangerousSpace()) return;
 
 		if (is_on_platform && GetTickCount64() - time_jump_start > KOOPA_TIME_FOR_EACH_FLY)
 		{

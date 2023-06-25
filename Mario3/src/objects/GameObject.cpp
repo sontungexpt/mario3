@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "components/Sprite/Sprites.h"
 #include "configs/GameObject.h"
+#include "scenes/PlayScene.h"
 
 CGameObject::CGameObject()
 {
@@ -36,6 +37,26 @@ void CGameObject::ResetPositionIfOutOfWidthScreen(float& curr_x, float& curr_y) 
 	{
 		curr_x = cam_x + SCREEN_WIDTH;
 	}
+}
+
+int CGameObject::RemoveWhenMoveToDangerousSpace()
+{
+	float left, top, right, bottom;
+	GetBoundingBox(left, top, right, bottom);
+
+
+	// move out of screen >> delete
+	// fall to to the hole >> delete
+	if (right <= 0 ||
+		left >= ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetMaxObjectX()->GetRight() ||
+		bottom <= 0 ||
+		top >= ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetMaxObjectY()->GetBottom())
+	{
+		is_deleted = TRUE;
+		return 1;
+	}
+
+	return 0;
 }
 
 void CGameObject::RenderBoundingBox()
@@ -80,11 +101,11 @@ BOOLEAN CGameObject::IsInCamera() {
 	GetBoundingBox(left, top, right, bottom);
 
 	// out of width screen
-	if (right < cam_x || left > cam_x + SCREEN_WIDTH)
+	if (right < cam_x || left > cam_x + CGame::GetInstance()->GetBackBufferWidth())
 		return FALSE;
 
 	// out of height screen
-	if (top < cam_y || bottom > cam_y + SCREEN_HEIGHT)
+	if (top < cam_y || bottom > cam_y + CGame::GetInstance()->GetBackBufferHeight())
 		return FALSE;
 
 	// in camera

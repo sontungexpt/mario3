@@ -371,12 +371,11 @@ void CMario::Render()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	// jump to hole
-	//if (y > SCREEN_HEIGHT)
-	//{
-	//	DebugOut(L"Mario die\n");
-	//	return;
-	//}
+	if (y >= ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetMaxObjectY()->GetY())
+	{
+		SetState(MARIO_STATE_DIE);
+	}
+
 	vy += ay * dt;
 	vx += ax * dt;
 

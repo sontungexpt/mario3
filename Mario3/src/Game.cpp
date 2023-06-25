@@ -25,7 +25,6 @@ void CGame::Init(HWND hWnd, HINSTANCE hInstance)
 	// retrieve client area width & height so that we can create backbuffer height & width accordingly
 	RECT r;
 	GetClientRect(hWnd, &r);
-
 	backBufferWidth = r.right + 1;
 	backBufferHeight = r.bottom + 1;
 
@@ -66,6 +65,7 @@ void CGame::Init(HWND hWnd, HINSTANCE hInstance)
 
 	// Get the back buffer from the swapchain
 	ID3D10Texture2D* pBackBuffer;
+
 	hr = pSwapChain->GetBuffer(0, __uuidof(ID3D10Texture2D), (LPVOID*)&pBackBuffer);
 	if (hr != S_OK)
 	{

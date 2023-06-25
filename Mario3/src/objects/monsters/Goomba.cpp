@@ -3,7 +3,6 @@
 
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (is_deleted) return;
 	if (dead)
 	{
 		left = x - GOOMBA_BBOX_WIDTH / 2;
@@ -27,7 +26,6 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CGoomba::Render()
 {
-	if (is_deleted) return;
 	if (!IsInCamera()) return; // lazy load
 
 	int aniId = -1; // default animation
@@ -71,7 +69,7 @@ void CGoomba::SetState(int state)
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
-	if (is_deleted) return;
 	if (!IsInCamera()) return;
+	if (RemoveWhenMoveToDangerousSpace()) return;
 	CMonster::Update(dt, co_objects);
 }
