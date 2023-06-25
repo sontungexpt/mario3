@@ -22,7 +22,7 @@ public:
 	float GetItemReferenceY(CItem* item)
 	{
 		// plus 1 to make sure that it will always colide
-		float max_jump_height = QUESTION_BRICK_SPEED * QUESTION_BRICK_SPEED / 2 * QUESTION_BRICK_GRAVITY + 1;
+		float max_jump_height = QUESTION_BRICK_SPEED * QUESTION_BRICK_SPEED / 2 * QUESTION_BRICK_GRAVITY + 2;
 		return y - (QUESTION_BRICK_BBOX_HEIGHT + item->GetHeight()) / 2 - ceil(max_jump_height);
 	};
 
