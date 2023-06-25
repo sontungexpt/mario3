@@ -77,7 +77,7 @@ public:
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	int GetNx() { return nx; }
-	void  SetNx(int nx) { this->nx = nx; }
+	//void  SetNx(int nx) { this->nx = nx; }
 
 	// states
 	BOOLEAN IsSmall() { return level == MARIO_LEVEL_SMALL; };

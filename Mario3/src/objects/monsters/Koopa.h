@@ -21,6 +21,7 @@ protected:
 
 	virtual void OnCollisionWithMonster(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithPlayer(LPCOLLISIONEVENT e);
 
 	virtual int GetAniIdRed();
 	virtual int GetAniIdGreen();

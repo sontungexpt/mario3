@@ -33,19 +33,19 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	// monster
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
-	else if (dynamic_cast<CPlant*>(e->obj))
+	if (dynamic_cast<CPlant*>(e->obj))
 		OnCollisionWithPlant(e);
-	else if (dynamic_cast<CKoopa*>(e->obj))
+	if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
 
 	// items
-	else if (dynamic_cast<CItem*>(e->obj))
+	if (dynamic_cast<CItem*>(e->obj))
 		OnCollisionWithItem(e);
 
 	// materials
-	else if (dynamic_cast<CPortal*>(e->obj))
+	if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
-	else if (dynamic_cast<CQuestionBrick*>(e->obj))
+	if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
 
 	// collide in y dimension and the object is a blocking object like platform
@@ -98,7 +98,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	}
 
 	// is not kicked, check if mario is want to hold koopa
-	if (is_want_holding_koopa)
+	if (!is_sitting && is_want_holding_koopa)
 	{
 		weapon_monster = koopa;
 		((CKoopa*)weapon_monster)->BeHold();
@@ -362,6 +362,7 @@ void CMario::Render()
 	else if (level == MARIO_LEVEL_SMALL)
 		aniId = GetAniIdSmall();
 
+	RenderBoundingBox();
 	CAnimations* animations = CAnimations::GetInstance();
 	LPANIMATION ani = animations->Get(aniId);
 
