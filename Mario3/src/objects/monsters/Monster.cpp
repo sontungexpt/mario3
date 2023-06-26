@@ -59,23 +59,19 @@ void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<CMario*>(e->obj))
 		OnCollisionWithPlayer(e);
-
-	if (dynamic_cast<CMonster*>(e->obj)) {
+	if (dynamic_cast<CMonster*>(e->obj))
 		OnCollisionWithMonster(e);
-	}
 
 	if (!e->obj->IsBlocking()) return;
 
-	// collide with blocking
 	if (e->IsCollidedInYDimension())
 	{
-		if (e->IsCollidedFromTop())
-		{
-			is_on_platform = TRUE;
-		}
 		vy = 0;
+		if (e->IsCollidedFromTop())
+			is_on_platform = TRUE;
 	}
 
+	// collide with blocking
 	if (e->IsCollidedInXDimension())
 	{
 		// meet the blocking then change direction
@@ -160,7 +156,6 @@ void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 		vx = vx > 0 ? max_vx : -max_vx;
 
 	is_on_platform = FALSE;
-
 	CCollision::GetInstance()->Process(this, dt, co_objects);
 }
 

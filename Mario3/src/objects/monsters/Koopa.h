@@ -71,6 +71,7 @@ public:
 	virtual void BeKick() { SetState(KOOPA_STATE_IS_KICKED); }
 
 	BOOLEAN IsMarioKicked() { return is_mario_kicked; }
+	BOOLEAN IsMarioHolding() { return is_mario_holding; }
 
 	virtual void MoveRight() { SetState(MONSTER_STATE_WALKING_RIGHT); }
 	virtual void MoveLeft() { SetState(MONSTER_STATE_WALKING_LEFT); }

@@ -214,7 +214,12 @@ int CMario::GetAniIdSmall()
 				if (ax < 0)
 					aniId = ID_ANI_MARIO_SMALL_BRACE_RIGHT;
 				else if (ax == MARIO_ACCEL_RUN_X)
-					aniId = ID_ANI_MARIO_SMALL_RUNNING_RIGHT;
+				{
+					if (weapon_monster && ((CKoopa*)weapon_monster)->IsMarioHolding())
+						aniId = ID_ANI_MARIO_SMALL_HOLDING_RUNNING_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_SMALL_RUNNING_RIGHT;
+				}
 				else if (ax == MARIO_ACCEL_WALK_X)
 					aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
 			}
@@ -223,8 +228,14 @@ int CMario::GetAniIdSmall()
 				if (ax > 0)
 					aniId = ID_ANI_MARIO_SMALL_BRACE_LEFT;
 				else if (ax == -MARIO_ACCEL_RUN_X)
-					aniId = ID_ANI_MARIO_SMALL_RUNNING_LEFT;
+				{
+					if (weapon_monster && ((CKoopa*)weapon_monster)->IsMarioHolding())
+						aniId = ID_ANI_MARIO_SMALL_HOLDING_RUNNING_LEFT;
+					else
+						aniId = ID_ANI_MARIO_SMALL_RUNNING_LEFT;
+				}
 				else if (ax == -MARIO_ACCEL_WALK_X)
+
 					aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
 			}
 		}
@@ -338,8 +349,14 @@ int CMario::GetAniIdBig()
 				if (ax < 0)
 					aniId = ID_ANI_MARIO_BRACE_RIGHT;
 				else if (ax == MARIO_ACCEL_RUN_X)
-					aniId = ID_ANI_MARIO_RUNNING_RIGHT;
+				{
+					if (weapon_monster && ((CKoopa*)weapon_monster)->IsMarioHolding())
+						aniId = ID_ANI_MARIO_HOLDING_RUNNING_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_RUNNING_RIGHT;
+				}
 				else if (ax == MARIO_ACCEL_WALK_X)
+
 					aniId = ID_ANI_MARIO_WALKING_RIGHT;
 			}
 			else // vx < 0
@@ -347,7 +364,12 @@ int CMario::GetAniIdBig()
 				if (ax > 0)
 					aniId = ID_ANI_MARIO_BRACE_LEFT;
 				else if (ax == -MARIO_ACCEL_RUN_X)
-					aniId = ID_ANI_MARIO_RUNNING_LEFT;
+				{
+					if (weapon_monster && ((CKoopa*)weapon_monster)->IsMarioHolding())
+						aniId = ID_ANI_MARIO_HOLDING_RUNNING_LEFT;
+					else
+						aniId = ID_ANI_MARIO_RUNNING_LEFT;
+				}
 				else if (ax == -MARIO_ACCEL_WALK_X)
 					aniId = ID_ANI_MARIO_WALKING_LEFT;
 			}
@@ -356,6 +378,17 @@ int CMario::GetAniIdBig()
 
 	if (aniId == -1) {
 		aniId = ID_ANI_MARIO_IDLE_RIGHT;
+	}
+
+	return aniId;
+}
+
+int CMario::GetAniIdTail()
+{
+	int aniId = -1;
+
+	if (aniId == -1) {
+		aniId = ID_ANI_TAIL_MARIO_IDLE_RIGHT;
 	}
 
 	return aniId;
@@ -466,6 +499,9 @@ void CMario::SetState(int state)
 				vy = -MARIO_JUMP_SPEED_Y;
 		}
 		break;
+	case MARIO_STATE_RELEASE_JUMP:
+		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
+		break;
 	case MARIO_STATE_SIT:
 		if (is_on_platform && level != MARIO_LEVEL_SMALL)
 		{
@@ -504,6 +540,12 @@ void CMario::Die()
 	// not untouchable -> can die
 	if (!untouchable)
 	{
+		if (HasTail())
+		{
+			CutTail();
+			return;
+		}
+
 		if (IsBig())
 		{
 			Shrink();
@@ -563,6 +605,7 @@ void CMario::SetLevel(int level)
 	{
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2 + 1;
 	}
+
 	is_appearance_changing = TRUE;
 	StartUntouchable();
 	this->level = level;

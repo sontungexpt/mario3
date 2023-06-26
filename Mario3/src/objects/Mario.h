@@ -34,6 +34,7 @@ class CMario : public CGameObject
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
+	int GetAniIdTail();
 	int GetAniIdSmall();
 
 	int GetAniIdWhenAppearanceChanging();
@@ -83,8 +84,13 @@ public:
 	// states
 	BOOLEAN IsSmall() { return level == MARIO_LEVEL_SMALL; };
 	BOOLEAN IsBig() { return level == MARIO_LEVEL_BIG; };
+	BOOLEAN HasTail() { return level == MARIO_LEVEL_TAIL_SUIT; }
+
 	void Shrink() { SetLevel(MARIO_LEVEL_SMALL); }
 	void Zoom() { SetLevel(MARIO_LEVEL_BIG); }
+	void CutTail() { SetLevel(MARIO_LEVEL_BIG); }
+	void GrowTail() { SetLevel(MARIO_LEVEL_TAIL_SUIT); }
+
 	void SetLevel(int level);
 	int GetLevel() { return level; }
 	void LevelUp() { SetLevel(MARIO_LEVEL_BIG); }
