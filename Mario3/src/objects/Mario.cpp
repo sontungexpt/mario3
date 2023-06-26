@@ -1,4 +1,4 @@
-#include <algorithm>
+﻿#include <algorithm>
 #include "debug.h"
 
 #include "components/Collision/Collision.h"
@@ -436,6 +436,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (fabs(vx) > fabs(max_vx))
 		vx = max_vx;
 
+	UpdatePower();
+
 	ResetPositionIfOutOfWidthScreen(x, y);
 
 	// reset untouchable timer if untouchable time has passed
@@ -465,12 +467,14 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (is_sitting) break;
+		is_power_upping = TRUE;
 		max_vx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
 		if (is_sitting) break;
+		is_power_upping = TRUE;
 		max_vx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
@@ -579,6 +583,52 @@ void CMario::GetBoundingBoxSmall(float& left, float& top, float& right, float& b
 	top = y - MARIO_SMALL_BBOX_HEIGHT / 2;
 	right = left + MARIO_SMALL_BBOX_WIDTH;
 	bottom = top + MARIO_SMALL_BBOX_HEIGHT;
+}
+
+void CMario::UpdatePower()
+{
+	if (is_flying && GetTickCount64() - time_fly_start > MARIO_POWER_DURATION_FLY)
+	{
+		power = 0;
+		time_fly_start = 0;
+		is_flying = FALSE;
+		return;
+	}
+
+	if (is_power_upping)
+	{
+		// shorter version
+
+		power = static_cast<int>(min((float)MARIO_MAX_POWER, fabs(vx) / MARIO_RUNNING_SPEED * (float)MARIO_MAX_POWER));
+
+		// longer version
+		//float ratio = vx / MARIO_RUNNING_SPEED;
+		//if (ratio >= 1.0f)
+		//{
+		//	power = MARIO_MAX_POWER;
+		//}
+		//else if (ratio > 0.0f)
+		//{
+		//	// if the ratio is less than 1 but greater than 0,
+		//	// calculate power based on the ratio and set it to a value between 0 and 5
+		//	power = static_cast<int>(ratio * (float)MARIO_MAX_POWER);
+		//}
+		//else
+		//{
+		//	power = 0; // if the ratio is 0, set power to 0
+		//}
+	}
+	else
+	{
+		if (GetTickCount64() - time_power_up_start > MARIO_TIME_OUT_POWER_UP)
+		{
+			power = power > 0 ? power - 1 : 0;
+			time_power_up_start = 0;
+		}
+	}
+	is_power_upping = FALSE;
+
+	DebugOut(L"power: %d\n", power);
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)

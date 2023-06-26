@@ -8,19 +8,26 @@
 #include "configs/Mario.h"
 #include "objects/monsters/Monster.h"
 
+using namespace std;
+
 class CMario : public CGameObject
 {
 	int nx;
 
 	int level;
+	int power;
 	int coin;
 
 	LPMONSTER weapon_monster;
 
 	ULONGLONG time_untouchable_start;
+	ULONGLONG time_power_up_start;
+	ULONGLONG time_fly_start;
 
 	BOOLEAN untouchable;
 	BOOLEAN is_sitting;
+	BOOLEAN is_flying;
+	BOOLEAN is_power_upping;
 	BOOLEAN is_on_platform;
 	BOOLEAN is_want_holding_koopa;
 	BOOLEAN is_appearance_changing;
@@ -42,10 +49,14 @@ class CMario : public CGameObject
 	void GetBoundingBoxBig(float& left, float& top, float& right, float& bottom);
 	void GetBoundingBoxSmall(float& left, float& top, float& right, float& bottom);
 
+	void UpdatePower();
+	void StartPowerUp() { time_power_up_start = GetTickCount64(); }
+
 public:
 	CMario(float x, float y, int level = MARIO_LEVEL_SMALL) : CGameObject(x, y)
 	{
 		coin = 0;
+		power = 0;
 		nx = 1;
 
 		ax = 0.0f;
@@ -54,15 +65,20 @@ public:
 		max_vx = MARIO_RUNNING_SPEED;
 
 		is_sitting = FALSE;
+		is_flying = FALSE;
 		untouchable = FALSE;
 		is_on_platform = FALSE;
 		is_want_holding_koopa = FALSE;
 		is_appearance_changing = FALSE;
+		is_power_upping = FALSE;
 
 		weapon_monster = nullptr;
 
 		this->level = level;
-		time_untouchable_start = -1;
+
+		time_untouchable_start = 0;
+		time_power_up_start = 0;
+		time_fly_start = 0;
 	}
 
 	// core
@@ -95,6 +111,8 @@ public:
 	int GetLevel() { return level; }
 	void LevelUp() { SetLevel(MARIO_LEVEL_BIG); }
 	void LevelDown() { SetLevel(MARIO_LEVEL_SMALL); }
+
+	int GetPower() { return power; }
 
 	void Die();
 	BOOLEAN IsDead() { return state == MARIO_STATE_DIE; }

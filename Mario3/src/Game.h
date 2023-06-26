@@ -115,6 +115,8 @@ public:
 		is_paused = ~is_paused;
 	}
 
+	void CountDownTime(int& time);
+
 	~CGame();
 };
 typedef CGame* LPGAME;

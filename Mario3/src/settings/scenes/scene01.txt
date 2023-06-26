@@ -240,8 +240,8 @@ src\settings\objects\monsters\carnivorous_plant.txt
 
 ### Monsters ###
 #Goombas
-1	200	630
-1	450	630
+1	200	635
+1	450	635
 
 1	800	619
 1	850	619
