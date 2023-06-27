@@ -1,25 +1,62 @@
 #include "Leaf.h"
+#include <scenes/PlayScene.h>
+#include <objects/Mario.h>
+#include <random>
 
 void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
-	// if have time we should use phýycal for this it will make the game more real
-	if (!IsInCamera())return;
+	if (IsOutBottomCamera()) return;
 
-	if (!is_falling && fabs(start_y - y) >= LEAF_MAX_FLY_HEIGHT)
+	// how to know vx and ax just use physical
+	// v^2 -v0^2 = 2as
+	// v = v0 + at
+
+	// can not fly higher
+	if (!is_falling && start_y - y >= LEAF_MAX_FLY_HEIGHT)
 	{
-		vy = 0;
-		ax = LEAF_ADJUST_AX_WHEN_FALL;
 		is_falling = TRUE;
+		is_moved_right = TRUE;
+
+		vy = 0;
+		vx = LEAF_SPEED_X;
+		ax = -LEAF_ADJUST_AX_WHEN_FALL;
 	}
 
-	if (fabs(x - start_x) >= LEAF_MAX_FALING_WIDTH)
+	// sometimes the wind blows upwards
+	// so leaves fly higher than usual
+	random_device int_gen;
+	uniform_int_distribution<int> int_distribution(0, 8);
+	if (int_distribution(int_gen) == 3)
 	{
-		vx = -vx;
-		ax = -ax;
+		vy -= LEAF_WIND_POWER_SPPED_Y;
 	}
 
-	if (fabs(vx) > LEAF_ADJUST_MAX_VX)
-		vx = vx > 0 ? LEAF_ADJUST_MAX_VX : -LEAF_ADJUST_MAX_VX;
+	if (is_moved_right && vx <= 0)
+	{
+		is_moved_right = FALSE;
+		is_moved_left = TRUE;
+
+		// Wind speed is also never fixed
+		// so leaves fly at an unknown initial speed
+		default_random_engine wind_power;
+		uniform_real_distribution<float> distribution(4.2, 5.5);
+
+		vx = -distribution(wind_power) * LEAF_SPEED_X;
+		ax = LEAF_ADJUST_AX_WHEN_FALL;
+	}
+	else if (is_moved_left && vx >= 0)
+	{
+		is_moved_right = TRUE;
+		is_moved_left = FALSE;
+
+		// Wind speed is also never fixed
+		// so leaves fly at an unknown initial speed
+		default_random_engine wind_power;
+		uniform_real_distribution<float> distribution(4.2, 5.5);
+
+		vx = distribution(wind_power) * LEAF_SPEED_X;
+		ax = -LEAF_ADJUST_AX_WHEN_FALL;
+	}
 
 	CItem::Update(dt, co_objects);
 }
@@ -32,15 +69,25 @@ void CLeaf::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = t + LEAF_BBOX_HEIGHT;
 }
 
-void CLeaf::OnCollisionWithPlayer(LPCOLLISIONEVENT e) {}
+void CLeaf::OnCollisionWithPlayer(LPCOLLISIONEVENT e) {
+	CItem::BeCollected();
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+
+	if (mario->IsBig())
+	{
+		mario->GrowTail();
+		is_deleted = true;
+	}
+}
 
 void CLeaf::Render()
 {
 	if (!IsInCamera()) return;
 
 	CAnimations* animations = CAnimations::GetInstance();
-	if (vx <= 0) animations->Get(ID_ANI_LEAF_LEFT)->Render(x, y);
-	else if (vx > 0) animations->Get(ID_ANI_LEAF_RIGHT)->Render(x, y);
+	if (vx < 0) animations->Get(ID_ANI_LEAF_LEFT)->Render(x, y);
+	else if (vx >= 0) animations->Get(ID_ANI_LEAF_RIGHT)->Render(x, y);
 }
 
 void CLeaf::SetState(int state)
@@ -52,9 +99,22 @@ void CLeaf::SetState(int state)
 		start_x = x;
 		is_falling = FALSE;
 		vy = -LEAF_SPEED_Y;
-		ay = LEAF_SPEED_FALLING;
+		ay = LEAF_GRAVITY;
 		break;
 	}
 
 	CGameObject::SetState(state);
+}
+
+void CLeaf::BeCollected()
+{
+	CItem::BeCollected();
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+
+	if (mario->IsBig())
+	{
+		mario->GrowTail();
+		is_deleted = true;
+	}
 }

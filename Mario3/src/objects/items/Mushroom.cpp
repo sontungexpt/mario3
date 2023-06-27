@@ -3,7 +3,6 @@
 #include "scenes/PlayScene.h"
 #include "objects/Mario.h"
 
-// not work now because the code dirty in the update function in playscene file
 void CMushroom::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
 	CMario* mario = (CMario*)e->obj;
@@ -65,15 +64,15 @@ void CMushroom::SetState(int state)
 	CGameObject::SetState(state);
 }
 
-void CMushroom::BeCollect()
+void CMushroom::BeCollected()
 {
-	CItem::BeCollect();
+	CItem::BeCollected();
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 
-	if (mario->IsBig()) return;
-
-	// if mario is small, then zoom and delete mushroom
-	mario->Zoom();
-	is_deleted = true;
+	if (mario->IsSmall()) {
+		// if mario is small, then zoom and delete mushroom
+		mario->Zoom();
+		is_deleted = true;
+	}
 }

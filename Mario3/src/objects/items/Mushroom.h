@@ -30,5 +30,5 @@ public:
 	void Render();
 	void SetState(int state);
 	void Walk() { SetState(MUSHROOM_STATE_WALKING); }
-	void BeCollect();
+	void BeCollected();
 };

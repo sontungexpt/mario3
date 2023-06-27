@@ -142,7 +142,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 {
 	CItem* item = dynamic_cast<CItem*>(e->obj);
-	item->BeCollect();
+	item->BeCollected();
 }
 
 // collision with materials
@@ -391,6 +391,64 @@ int CMario::GetAniIdTail()
 		aniId = ID_ANI_TAIL_MARIO_IDLE_RIGHT;
 	}
 
+	if (!is_on_platform)
+	{
+		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_TAIL_MARIO_FLY_RIGHT;
+			else
+				aniId = ID_ANI_TAIL_MARIO_FLY_LEFT;
+		}
+		else
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_TAIL_MARIO_JUMP_WALK_RIGHT;
+			else
+				aniId = ID_ANI_TAIL_MARIO_JUMP_WALK_LEFT;
+		}
+	}
+	else
+	{
+		if (is_sitting)
+		{
+			if (nx > 0)
+				aniId = ID_ANI_TAIL_MARIO_SIT_RIGHT;
+			else
+				aniId = ID_ANI_TAIL_MARIO_SIT_LEFT;
+		}
+		else
+		{
+			if (vx == 0)
+			{
+				if (nx > 0) aniId = ID_ANI_TAIL_MARIO_IDLE_RIGHT;
+				else aniId = ID_ANI_TAIL_MARIO_IDLE_LEFT;
+			}
+			else if (vx > 0)
+			{
+				if (ax < 0)
+					aniId = ID_ANI_TAIL_MARIO_BRACE_RIGHT;
+				else if (ax == MARIO_ACCEL_RUN_X)
+					aniId = ID_ANI_TAIL_MARIO_RUNNING_RIGHT;
+				else if (ax == MARIO_ACCEL_WALK_X)
+					aniId = ID_ANI_TAIL_MARIO_WALKING_RIGHT;
+			}
+			else // vx < 0
+			{
+				if (ax > 0)
+					aniId = ID_ANI_TAIL_MARIO_BRACE_LEFT;
+				else if (ax == -MARIO_ACCEL_RUN_X)
+					aniId = ID_ANI_TAIL_MARIO_RUNNING_LEFT;
+				else if (ax == -MARIO_ACCEL_WALK_X)
+					aniId = ID_ANI_TAIL_MARIO_WALKING_LEFT;
+			}
+		}
+	}
+
+	if (aniId == -1) {
+		aniId = ID_ANI_MARIO_IDLE_RIGHT;
+	}
+
 	return aniId;
 }
 
@@ -406,6 +464,8 @@ void CMario::Render()
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
 		aniId = GetAniIdSmall();
+	else if (level == MARIO_LEVEL_TAIL_SUIT)
+		aniId = GetAniIdTail();
 
 	CAnimations* animations = CAnimations::GetInstance();
 	LPANIMATION ani = animations->Get(aniId);
@@ -640,7 +700,7 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 		return;
 	}
 
-	if (level == MARIO_LEVEL_BIG)
+	if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_TAIL_SUIT)
 		GetBoundingBoxBig(left, top, right, bottom);
 	else
 		GetBoundingBoxSmall(left, top, right, bottom);

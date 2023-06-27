@@ -61,9 +61,9 @@ void CBullet::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = y + BULLET_BBOX_HEIGHT;
 }
 
-void CBullet::BeCollect()
+void CBullet::BeCollected()
 {
-	CItem::BeCollect();
+	CItem::BeCollected();
 
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();

@@ -120,6 +120,14 @@ public:
 
 	BOOLEAN IsInCamera(); // use for lazy load
 
+	BOOLEAN IsOutBottomCamera();
+
+	BOOLEAN IsOutLeftCamera();
+
+	BOOLEAN IsOutRightCamera();
+
+	BOOLEAN IsOutTopCamera();
+
 	// call this function when you want to change object's state
 	virtual void SetState(int state) { this->state = state; };
 	int GetState() { return state; }

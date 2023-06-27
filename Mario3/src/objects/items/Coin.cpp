@@ -45,9 +45,9 @@ void CCoin::SetState(int state)
 	}
 }
 
-void CCoin::BeCollect()
+void CCoin::BeCollected()
 {
-	CItem::BeCollect();
+	CItem::BeCollected();
 
 	is_deleted = TRUE;
 
@@ -65,7 +65,7 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 
 		if (is_collected && y >= collect_y)
 		{
-			BeCollect();
+			BeCollected();
 			return;
 		}
 	}

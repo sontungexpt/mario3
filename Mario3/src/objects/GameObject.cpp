@@ -110,3 +110,47 @@ BOOLEAN CGameObject::IsInCamera() {
 	// in camera
 	return TRUE;
 }
+
+BOOLEAN CGameObject::IsOutBottomCamera() {
+	float cam_x, cam_y;
+	float left, top, right, bottom;
+	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
+	GetBoundingBox(left, top, right, bottom);
+
+	if (top > cam_y + CGame::GetInstance()->GetBackBufferHeight())
+		return TRUE;
+	return FALSE;
+}
+
+BOOLEAN CGameObject::IsOutLeftCamera() {
+	float cam_x, cam_y;
+	float left, top, right, bottom;
+	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
+	GetBoundingBox(left, top, right, bottom);
+
+	if (right < cam_x)
+		return TRUE;
+	return FALSE;
+}
+
+BOOLEAN CGameObject::IsOutRightCamera() {
+	float cam_x, cam_y;
+	float left, top, right, bottom;
+	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
+	GetBoundingBox(left, top, right, bottom);
+
+	if (left > cam_x + CGame::GetInstance()->GetBackBufferWidth())
+		return TRUE;
+	return FALSE;
+}
+
+BOOLEAN CGameObject::IsOutTopCamera() {
+	float cam_x, cam_y;
+	float left, top, right, bottom;
+	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
+	GetBoundingBox(left, top, right, bottom);
+
+	if (bottom < cam_y)
+		return TRUE;
+	return FALSE;
+}
