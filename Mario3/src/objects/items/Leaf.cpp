@@ -16,6 +16,7 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	{
 		is_falling = TRUE;
 		is_moved_right = TRUE;
+		is_moved_left = FALSE;
 
 		vy = 0;
 		vx = LEAF_SPEED_X;
@@ -25,8 +26,8 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	// sometimes the wind blows upwards
 	// so leaves fly higher than usual
 	random_device int_gen;
-	uniform_int_distribution<int> int_distribution(0, 8);
-	if (int_distribution(int_gen) == 3)
+	uniform_int_distribution<int> int_distribution(0, 7);
+	if (is_falling && int_distribution(int_gen) == 3)
 	{
 		vy -= LEAF_WIND_POWER_SPPED_Y;
 	}
@@ -39,7 +40,7 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 		// Wind speed is also never fixed
 		// so leaves fly at an unknown initial speed
 		default_random_engine wind_power;
-		uniform_real_distribution<float> distribution(4.2, 5.5);
+		uniform_real_distribution<float> distribution(1.1, 1.5);
 
 		vx = -distribution(wind_power) * LEAF_SPEED_X;
 		ax = LEAF_ADJUST_AX_WHEN_FALL;
@@ -52,7 +53,7 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 		// Wind speed is also never fixed
 		// so leaves fly at an unknown initial speed
 		default_random_engine wind_power;
-		uniform_real_distribution<float> distribution(4.2, 5.5);
+		uniform_real_distribution<float> distribution(1.1, 1.5);
 
 		vx = distribution(wind_power) * LEAF_SPEED_X;
 		ax = -LEAF_ADJUST_AX_WHEN_FALL;
@@ -96,10 +97,13 @@ void CLeaf::SetState(int state)
 	{
 	case LEAF_STATE_FLY:
 		start_y = y;
-		start_x = x;
 		is_falling = FALSE;
+		is_moved_right = FALSE;
+		is_moved_left = FALSE;
+
 		vy = -LEAF_SPEED_Y;
 		ay = LEAF_GRAVITY;
+		ax = 0;
 		break;
 	}
 

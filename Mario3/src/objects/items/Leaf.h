@@ -12,23 +12,18 @@ class CLeaf : public CItem
 	BOOLEAN is_falling;
 	BOOLEAN is_moved_right;
 	BOOLEAN is_moved_left;
-	int nx;
 
 public:
 	CLeaf() : CItem() {
-		nx = 0;
 		is_falling = FALSE;
 	}
 	CLeaf(float x, float y) : CItem(x, y) {
-		nx = 0;
 		is_falling = FALSE;
+
 		SetState(LEAF_STATE_FLY);
 	};
 	CLeaf(float x, float y, int state) : CItem(x, y, state) {
-		nx = 0;
 		is_falling = FALSE;
-		is_moved_right = FALSE;
-		is_moved_left = FALSE;
 	};
 
 	void Render();
