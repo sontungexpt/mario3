@@ -143,6 +143,7 @@
     <ClCompile Include="src\objects\materials\EffectManager.cpp" />
     <ClCompile Include="src\objects\materials\Grass.cpp" />
     <ClCompile Include="src\objects\items\Mushroom.cpp" />
+    <ClCompile Include="src\objects\materials\Hud.cpp" />
     <ClCompile Include="src\objects\materials\Pipe.cpp" />
     <ClCompile Include="src\objects\monsters\plants\CarnivorousPlant.cpp" />
     <ClCompile Include="src\objects\monsters\Koopa.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="src\objects\materials\Grass.h" />
     <ClInclude Include="src\objects\items\Leaf.h" />
     <ClInclude Include="src\objects\items\Mushroom.h" />
+    <ClInclude Include="src\objects\materials\Hud.h" />
     <ClInclude Include="src\objects\materials\Pipe.h" />
     <ClInclude Include="src\objects\monsters\plants\CarnivorousPlant.h" />
     <ClInclude Include="src\objects\monsters\Koopa.h" />
@@ -252,6 +254,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\settings\objects\effect.txt" />
+    <Text Include="src\settings\objects\hud.txt" />
     <Text Include="src\settings\objects\items\leaf.txt" />
     <Text Include="src\settings\objects\materials\breakable_brick.txt" />
     <Text Include="src\settings\objects\materials\cloud.txt" />

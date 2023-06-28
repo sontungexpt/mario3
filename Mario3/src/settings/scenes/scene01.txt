@@ -313,3 +313,6 @@ src\settings\objects\monsters\carnivorous_plant.txt
 
 #GROUND 2
 5	624	636	16	16	29	1000010	1000020	1000030	1	1
+
+# HUD
+//5	135	678	31	271	1	1001200	1001200	1001200	1	1

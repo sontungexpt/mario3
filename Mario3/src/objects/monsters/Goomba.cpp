@@ -1,6 +1,7 @@
 #include "Goomba.h"
 #include "debug.h"
 #include "scenes/PlayScene.h"
+#include <GameData.h>
 
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -79,5 +80,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 void CGoomba::BeKickedByKoopa()
 {
 	CEffectManager::Gennerate(this, POINT_100, 0.0f);
+	CGameData::GetInstance()->IncreasePointBy(100);
+
 	is_deleted = true;
 }

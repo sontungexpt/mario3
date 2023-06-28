@@ -3,18 +3,20 @@
 #include "scenes/PlayScene.h"
 #include "objects/Mario.h"
 #include "objects/materials/EffectManager.h"
+#include <GameData.h>
 
 void CMushroom::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
-	/*CMario* mario = (CMario*)e->obj;
+	CMario* mario = (CMario*)e->obj;
 
 	if (mario->IsSmall())
 	{
 		CEffectManager::GetInstance()->Gennerate(this, POINT_1000);
+		CGameData::GetInstance()->IncreasePointBy(1000);
 
 		mario->Zoom();
 		is_deleted = true;
-	}*/
+	}
 }
 
 void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
@@ -75,6 +77,7 @@ void CMushroom::BeCollected()
 
 	if (mario->IsSmall()) {
 		CEffectManager::GetInstance()->Gennerate(this, POINT_1000);
+		CGameData::GetInstance()->IncreasePointBy(1000);
 
 		// if mario is small, then zoom and delete mushroom
 		mario->Zoom();

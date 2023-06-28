@@ -138,6 +138,9 @@
     <ClCompile Include="src\objects\materials\EffectManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\materials\Hud.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\Animation\Animation.h">
@@ -362,6 +365,9 @@
     <ClInclude Include="src\objects\materials\EffectManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\objects\materials\Hud.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -389,6 +395,7 @@
     <Text Include="src\settings\objects\monsters\carnivorous_plant.txt" />
     <Text Include="src\settings\objects\materials\breakable_brick.txt" />
     <Text Include="src\settings\objects\effect.txt" />
+    <Text Include="src\settings\objects\hud.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\assets\textures\misc_left.png">

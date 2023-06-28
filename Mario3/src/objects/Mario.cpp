@@ -78,6 +78,8 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		if (e->IsCollidedFromTop())
 		{
 			CEffectManager::Gennerate(koopa, POINT_100);
+			CGameData::GetInstance()->IncreasePointBy(100);
+
 			koopa->Defend();
 			JumpDeflect();
 		}
@@ -97,6 +99,8 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		if (e->IsCollidedFromTop())
 		{
 			CEffectManager::Gennerate(koopa, POINT_100);
+			CGameData::GetInstance()->IncreasePointBy(100);
+
 			JumpDeflect();
 			return;
 		}
@@ -130,6 +134,8 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		if (!goomba->IsDead())
 		{
 			CEffectManager::Gennerate(goomba, POINT_100);
+			CGameData::GetInstance()->IncreasePointBy(100);
+
 			goomba->Die();
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
@@ -147,6 +153,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 {
 	CItem* item = dynamic_cast<CItem*>(e->obj);
+
 	item->BeCollected();
 }
 
@@ -476,6 +483,8 @@ void CMario::Render()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	DebugOut(L"point: %d\n", CGameData::GetInstance()->GetPoint());
+	DebugOut(L"coin: %d\n", CGameData::GetInstance()->GetCoin());
 	if (y >= ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetMaxObjectY()->GetY())
 	{
 		SetState(MARIO_STATE_DIE);

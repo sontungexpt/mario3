@@ -4,6 +4,7 @@
 #include "objects/Mario.h"
 #include "scenes/PlayScene.h"
 #include "objects/materials/EffectManager.h"
+#include "GameData.h"
 
 void CCoin::OnCollisionWith(LPCOLLISIONEVENT e)
 {
@@ -49,7 +50,11 @@ void CCoin::SetState(int state)
 void CCoin::BeCollected()
 {
 	if (state == COIN_STATE_JUMP_OUT_QUESTION_BRICK)
-		CEffectManager::Gennerate(this, POINT_100, 0.0f);
+		CEffectManager::Gennerate(this, POINT_100, -8.0f);
+	if (state == COIN_STATE_IDLE)
+		CGameData::GetInstance()->UnitIncreaseCoin();
+	else if (state == COIN_STATE_JUMP_OUT_QUESTION_BRICK)
+		CGameData::GetInstance()->IncreasePointBy(100);
 	CItem::BeCollected();
 	is_deleted = TRUE;
 

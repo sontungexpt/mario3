@@ -3,6 +3,7 @@
 #include <objects/Mario.h>
 #include <random>
 #include "objects/materials/EffectManager.h"
+#include <GameData.h>
 
 void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
@@ -78,6 +79,9 @@ void CLeaf::OnCollisionWithPlayer(LPCOLLISIONEVENT e) {
 
 	if (mario->IsBig())
 	{
+		CEffectManager::Gennerate(this, POINT_1000);
+		CGameData::GetInstance()->IncreasePointBy(1000);
+
 		mario->GrowTail();
 		is_deleted = true;
 	}
@@ -119,7 +123,8 @@ void CLeaf::BeCollected()
 
 	if (mario->IsBig())
 	{
-		CEffectManager::Gennerate(this, POINT_100, 0.0f);
+		CEffectManager::Gennerate(this, POINT_1000);
+		CGameData::GetInstance()->IncreasePointBy(1000);
 
 		mario->GrowTail();
 		is_deleted = true;

@@ -5,6 +5,7 @@
 #include "scenes/PlayScene.h"
 #include "objects/Platform.h"
 #include <objects/materials/EffectManager.h>
+#include <GameData.h>
 
 void CMonster::OnNoCollision(DWORD dt)
 {
@@ -204,6 +205,7 @@ int CMonster::CompareXWithMario()
 void CMonster::BeKickedByKoopa()
 {
 	CEffectManager::Gennerate(this, POINT_100, 0.0f);
+	CGameData::GetInstance()->IncreasePointBy(100);
 
 	is_deleted = true;
 }
