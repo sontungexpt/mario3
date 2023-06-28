@@ -6,13 +6,15 @@
 
 void CMushroom::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
-	CMario* mario = (CMario*)e->obj;
+	/*CMario* mario = (CMario*)e->obj;
 
 	if (mario->IsSmall())
 	{
+		CEffectManager::GetInstance()->Gennerate(this, POINT_1000);
+
 		mario->Zoom();
 		is_deleted = true;
-	}
+	}*/
 }
 
 void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {

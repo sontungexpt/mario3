@@ -48,11 +48,9 @@ void CCoin::SetState(int state)
 
 void CCoin::BeCollected()
 {
-	CItem::BeCollected();
-
 	if (state == COIN_STATE_JUMP_OUT_QUESTION_BRICK)
 		CEffectManager::Gennerate(this, POINT_100, 0.0f);
-
+	CItem::BeCollected();
 	is_deleted = TRUE;
 
 	// add score
