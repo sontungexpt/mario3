@@ -438,3 +438,10 @@ LPGAMEOBJECT CPlayScene::AddObject(LPGAMEOBJECT obj)
 	objects.push_back(obj);
 	return objects.back();
 }
+
+LPGAMEOBJECT CPlayScene::AddObjectToFirst(LPGAMEOBJECT obj)
+{
+	SetMaxCoordinate(obj);
+	objects.insert(objects.begin() + 1, obj);
+	return objects.front();
+}

@@ -40,6 +40,8 @@ protected:
 	// two ways collision
 	virtual void OnCollisionWithPlayer(LPCOLLISIONEVENT e);
 
+	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
+
 	/// <summary>
 	/// The monster will be died and deleted if move out of width screen or the monster jump to hole
 	/// </summary>
@@ -106,6 +108,8 @@ public:
 	// this part is a other name for the same state
 	BOOLEAN IsDead() { return dead == TRUE; }
 	virtual void Die() { SetState(MONSTER_STATE_DIE); }
+
+	virtual void BeKickedByKoopa();
 };
 
 typedef  CMonster* LPMONSTER;

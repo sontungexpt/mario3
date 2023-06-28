@@ -3,6 +3,7 @@
 #include "debug.h"
 #include "objects/Mario.h"
 #include "scenes/PlayScene.h"
+#include "objects/materials/EffectManager.h"
 
 void CCoin::OnCollisionWith(LPCOLLISIONEVENT e)
 {
@@ -48,6 +49,9 @@ void CCoin::SetState(int state)
 void CCoin::BeCollected()
 {
 	CItem::BeCollected();
+
+	if (state == COIN_STATE_JUMP_OUT_QUESTION_BRICK)
+		CEffectManager::Gennerate(this, POINT_100, 0.0f);
 
 	is_deleted = TRUE;
 

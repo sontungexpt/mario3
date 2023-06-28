@@ -75,3 +75,9 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	if (RemoveWhenMoveToDangerousSpace()) return;
 	CMonster::Update(dt, co_objects);
 }
+
+void CGoomba::BeKickedByKoopa()
+{
+	CEffectManager::Gennerate(this, POINT_100, 0.0f);
+	is_deleted = true;
+}

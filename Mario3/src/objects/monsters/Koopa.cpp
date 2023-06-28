@@ -18,7 +18,8 @@ void CKoopa::OnCollisionWithMonster(LPCOLLISIONEVENT e)
 	// if the koopa is kicked by mario, then it will kill every goomba it touch
 	if (is_defend && is_mario_kicked)
 	{
-		e->obj->Delete();
+		CMonster* monster = dynamic_cast<CMonster*>(e->obj);
+		monster->BeKickedByKoopa();
 		return;
 	}
 	CMonster::OnCollisionWithMonster(e);
@@ -303,6 +304,12 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 void CKoopa::BeHold()
 {
 	SetState(KOOPA_STATE_IS_HOLDING);
+}
+
+void CKoopa::BeKickedByKoopa()
+{
+	CEffectManager::Gennerate(this, POINT_100, 0.0f);
+	is_deleted = true;
 }
 
 void CKoopa::Defend()

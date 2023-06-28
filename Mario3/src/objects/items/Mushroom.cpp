@@ -2,6 +2,7 @@
 #include "objects/Platform.h"
 #include "scenes/PlayScene.h"
 #include "objects/Mario.h"
+#include "objects/materials/EffectManager.h"
 
 void CMushroom::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
@@ -71,8 +72,11 @@ void CMushroom::BeCollected()
 	CMario* mario = (CMario*)scene->GetPlayer();
 
 	if (mario->IsSmall()) {
+		CEffectManager::GetInstance()->Gennerate(this, POINT_1000);
+
 		// if mario is small, then zoom and delete mushroom
 		mario->Zoom();
+
 		is_deleted = true;
 	}
 }

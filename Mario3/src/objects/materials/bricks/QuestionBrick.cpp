@@ -102,7 +102,9 @@ void CQuestionBrick::CreateItem()
 		if (mario->IsBig())
 			((CLeaf*)CreateItem(new CLeaf()))->Fly();
 		else
+		{
 			((CMushroom*)CreateItem(new CMushroom()))->Walk();
+		}
 	}
 	break;
 	case QUESTION_BRICK_NONE:

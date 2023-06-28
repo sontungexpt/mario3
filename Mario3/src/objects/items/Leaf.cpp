@@ -2,6 +2,7 @@
 #include <scenes/PlayScene.h>
 #include <objects/Mario.h>
 #include <random>
+#include "objects/materials/EffectManager.h"
 
 void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
@@ -40,7 +41,7 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 		// Wind speed is also never fixed
 		// so leaves fly at an unknown initial speed
 		default_random_engine wind_power;
-		uniform_real_distribution<float> distribution(1.1, 1.5);
+		uniform_real_distribution<float> distribution(1.1f, 1.5f);
 
 		vx = -distribution(wind_power) * LEAF_SPEED_X;
 		ax = LEAF_ADJUST_AX_WHEN_FALL;
@@ -53,7 +54,7 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 		// Wind speed is also never fixed
 		// so leaves fly at an unknown initial speed
 		default_random_engine wind_power;
-		uniform_real_distribution<float> distribution(1.1, 1.5);
+		uniform_real_distribution<float> distribution(1.1f, 1.5f);
 
 		vx = distribution(wind_power) * LEAF_SPEED_X;
 		ax = -LEAF_ADJUST_AX_WHEN_FALL;
@@ -118,6 +119,8 @@ void CLeaf::BeCollected()
 
 	if (mario->IsBig())
 	{
+		CEffectManager::Gennerate(this, POINT_100, 0.0f);
+
 		mario->GrowTail();
 		is_deleted = true;
 	}

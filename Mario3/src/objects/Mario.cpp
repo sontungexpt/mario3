@@ -22,6 +22,8 @@
 #include "configs/monsters/Gommba600000.h"
 #include "configs/materials/QuestionBrick100000.h"
 #include "materials/bricks/BreakableBrick.h"
+#include "objects/MarioAttackingZone.h"
+#include "objects/materials/EffectManager.h"
 
 void CMario::OnNoCollision(DWORD dt)
 {
@@ -75,6 +77,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	{
 		if (e->IsCollidedFromTop())
 		{
+			CEffectManager::Gennerate(koopa, POINT_100);
 			koopa->Defend();
 			JumpDeflect();
 		}
@@ -93,6 +96,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	{
 		if (e->IsCollidedFromTop())
 		{
+			CEffectManager::Gennerate(koopa, POINT_100);
 			JumpDeflect();
 			return;
 		}
@@ -125,6 +129,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	{
 		if (!goomba->IsDead())
 		{
+			CEffectManager::Gennerate(goomba, POINT_100);
 			goomba->Die();
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
@@ -387,15 +392,12 @@ int CMario::GetAniIdTail()
 {
 	int aniId = -1;
 
-	if (aniId == -1) {
-		aniId = ID_ANI_TAIL_MARIO_IDLE_RIGHT;
-	}
-
 	if (!is_on_platform)
 	{
 		if (abs(ax) == MARIO_ACCEL_RUN_X)
 		{
 			if (nx >= 0)
+
 				aniId = ID_ANI_TAIL_MARIO_FLY_RIGHT;
 			else
 				aniId = ID_ANI_TAIL_MARIO_FLY_LEFT;
@@ -446,9 +448,8 @@ int CMario::GetAniIdTail()
 	}
 
 	if (aniId == -1) {
-		aniId = ID_ANI_MARIO_IDLE_RIGHT;
+		aniId = ID_ANI_TAIL_MARIO_IDLE_RIGHT;
 	}
-
 	return aniId;
 }
 
@@ -469,7 +470,6 @@ void CMario::Render()
 
 	CAnimations* animations = CAnimations::GetInstance();
 	LPANIMATION ani = animations->Get(aniId);
-
 	if (ani != nullptr)
 		ani->Render(x, y);
 }
@@ -484,6 +484,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
+	/*if (attacking_zone)
+	{
+		float width_zone = MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH;
+		if (nx >= 0)
+		{
+			attacking_zone->SetX(GetRight() + width_zone / 2 + vx * dt);
+			attacking_zone->SetY(y + vy * dt);
+			attacking_zone->SetHeight(GetHeight());
+		}
+		else
+		{
+			attacking_zone->SetX(GetLeft() - width_zone / 2 + vx * dt);
+			attacking_zone->SetY(y + vy * dt);
+			attacking_zone->SetHeight(GetHeight());
+		}
+	}*/
 	if (weapon_monster && !is_want_holding_koopa)
 	{
 		CKoopa* koopa = (CKoopa*)weapon_monster;
@@ -495,6 +511,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// cannot exceed the allowed speed
 	if (fabs(vx) > fabs(max_vx))
 		vx = max_vx;
+	if (is_flying && fabs(vy) > fabs(max_vy))
+		vy = max_vy;
 
 	UpdatePower();
 
@@ -507,6 +525,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = FALSE;
 		is_appearance_changing = FALSE;
 	}
+	//if (untouchable)
+	//{
+	//	vx = 0;
+	//}
 
 	is_on_platform = FALSE;
 
@@ -525,6 +547,21 @@ void CMario::SetState(int state)
 		time_untouchable_start = GetTickCount64();
 		SetState(MARIO_STATE_IDLE);
 		break;
+	case MARIO_STATE_FLY:
+		if (is_sitting) break;
+		if (IsFullPower() && HasTail())
+		{
+			is_flying = TRUE;
+			max_vx = MARIO_RUNNING_SPEED;
+			max_vy = MARIO_FLYING_SPEED;
+			vy -= MARIO_JUMP_SPEED_Y / 3 * 2.3;
+			is_power_upping = TRUE;
+		}
+	case MARIO_STATE_FLY_RELEASE:
+		if (is_sitting) break;
+		if (IsFullPower() && HasTail())
+		{
+		}
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (is_sitting) break;
 		is_power_upping = TRUE;
@@ -551,6 +588,7 @@ void CMario::SetState(int state)
 		max_vx = -MARIO_WALKING_SPEED;
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
+
 		break;
 	}
 	case MARIO_STATE_JUMP:
@@ -623,9 +661,9 @@ void CMario::GetBoundingBoxBig(float& left, float& top, float& right, float& bot
 {
 	if (is_sitting)
 	{
-		left = x - MARIO_BIG_SITTING_BBOX_WIDTH / 2;
+		left = x - MARIO_BIG_BBOX_WIDTH / 2;
 		top = y - MARIO_BIG_SITTING_BBOX_HEIGHT / 2;
-		right = left + MARIO_BIG_SITTING_BBOX_WIDTH;
+		right = left + MARIO_BIG_BBOX_WIDTH;
 		bottom = top + MARIO_BIG_SITTING_BBOX_HEIGHT;
 	}
 	else
@@ -634,6 +672,44 @@ void CMario::GetBoundingBoxBig(float& left, float& top, float& right, float& bot
 		top = y - MARIO_BIG_BBOX_HEIGHT / 2;
 		right = left + MARIO_BIG_BBOX_WIDTH;
 		bottom = top + MARIO_BIG_BBOX_HEIGHT;
+	}
+}
+
+void CMario::GetBoundingBoxTail(float& left, float& top, float& right, float& bottom)
+{
+	if (nx >= 0)
+	{
+		if (is_sitting)
+		{
+			left = x + MARIO_BIG_TAIL_SUIT_BBOX_WIDTH / 2 - MARIO_BIG_BBOX_WIDTH;
+			top = y - MARIO_BIG_SITTING_BBOX_HEIGHT / 2;
+			right = left + MARIO_BIG_BBOX_WIDTH;
+			bottom = top + MARIO_BIG_SITTING_BBOX_HEIGHT;
+		}
+		else
+		{
+			left = x + MARIO_BIG_TAIL_SUIT_BBOX_WIDTH / 2 - MARIO_BIG_BBOX_WIDTH;
+			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
+			right = left + MARIO_BIG_BBOX_WIDTH;
+			bottom = top + MARIO_BIG_BBOX_HEIGHT;
+		}
+	}
+	else
+	{
+		if (is_sitting)
+		{
+			left = x - MARIO_BIG_TAIL_SUIT_BBOX_WIDTH / 2;
+			top = y - MARIO_BIG_SITTING_BBOX_HEIGHT / 2;
+			right = left + MARIO_BIG_BBOX_WIDTH;
+			bottom = top + MARIO_BIG_SITTING_BBOX_HEIGHT;
+		}
+		else
+		{
+			left = x - MARIO_BIG_TAIL_SUIT_BBOX_WIDTH / 2;
+			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
+			right = left + MARIO_BIG_BBOX_WIDTH;
+			bottom = top + MARIO_BIG_BBOX_HEIGHT;
+		}
 	}
 }
 
@@ -696,11 +772,18 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	// if mario is changing appearance, use the big bbox
 	if (is_appearance_changing)
 	{
+		if (level == MARIO_LEVEL_TAIL_SUIT)
+		{
+			GetBoundingBoxTail(left, top, right, bottom);
+			return;
+		}
 		GetBoundingBoxBig(left, top, right, bottom);
 		return;
 	}
 
-	if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_TAIL_SUIT)
+	if (level == MARIO_LEVEL_TAIL_SUIT)
+		GetBoundingBoxTail(left, top, right, bottom);
+	else if (level == MARIO_LEVEL_BIG)
 		GetBoundingBoxBig(left, top, right, bottom);
 	else
 		GetBoundingBoxSmall(left, top, right, bottom);
@@ -715,6 +798,26 @@ void CMario::SetLevel(int level)
 	{
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2 + 1;
 	}
+
+	/*if (level == MARIO_LEVEL_TAIL_SUIT)
+	{
+		if (!attacking_zone)
+		{
+			LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
+			float width_zone = MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH;
+
+			attacking_zone = (CMarioAttackingZone*)scene->AddObject(
+				new CMarioAttackingZone(GetRight() + width_zone / 2, y, width_zone, MARIO_BIG_BBOX_HEIGHT));
+		}
+	}*/
+	/*else
+	{
+		if (attacking_zone)
+		{
+			attacking_zone->Delete();
+			attacking_zone = nullptr;
+		}
+	}*/
 
 	is_appearance_changing = TRUE;
 	StartUntouchable();

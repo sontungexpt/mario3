@@ -59,6 +59,8 @@ public:
 	void PurgeDeletedObjects();
 	LPGAMEOBJECT AddObject(LPGAMEOBJECT obj);
 
+	LPGAMEOBJECT AddObjectToFirst(LPGAMEOBJECT obj);
+
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 };
 

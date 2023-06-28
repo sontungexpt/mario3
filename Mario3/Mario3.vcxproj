@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\GameData.cpp" />
+    <ClCompile Include="src\objects\MarioAttackingZone.cpp" />
     <ClCompile Include="src\objects\GameObject.cpp" />
     <ClCompile Include="src\objects\items\Bullet.cpp" />
     <ClCompile Include="src\objects\items\DebrisBrick.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="src\objects\materials\bricks\CreatableBrick.cpp" />
     <ClCompile Include="src\objects\materials\Door.cpp" />
     <ClCompile Include="src\objects\materials\Effect.cpp" />
+    <ClCompile Include="src\objects\materials\EffectManager.cpp" />
     <ClCompile Include="src\objects\materials\Grass.cpp" />
     <ClCompile Include="src\objects\items\Mushroom.cpp" />
     <ClCompile Include="src\objects\materials\Pipe.cpp" />
@@ -171,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\configs\All.h" />
+    <ClInclude Include="src\configs\Effect.h" />
     <ClInclude Include="src\configs\items\All.h" />
     <ClInclude Include="src\configs\items\Bullet302000.h" />
     <ClInclude Include="src\configs\items\Leaf303000.h" />
@@ -196,6 +199,7 @@
     <ClInclude Include="src\configs\monsters\Plant.h" />
     <ClInclude Include="src\configs\monsters\PlantShooter602000.h" />
     <ClInclude Include="src\GameData.h" />
+    <ClInclude Include="src\objects\MarioAttackingZone.h" />
     <ClInclude Include="src\objects\items\Bullet.h" />
     <ClInclude Include="src\objects\items\DebrisBrick.h" />
     <ClInclude Include="src\objects\items\Item.h" />
@@ -203,6 +207,7 @@
     <ClInclude Include="src\objects\materials\bricks\CreatableBrick.h" />
     <ClInclude Include="src\objects\materials\Door.h" />
     <ClInclude Include="src\objects\materials\Effect.h" />
+    <ClInclude Include="src\objects\materials\EffectManager.h" />
     <ClInclude Include="src\objects\materials\Grass.h" />
     <ClInclude Include="src\objects\items\Leaf.h" />
     <ClInclude Include="src\objects\items\Mushroom.h" />
@@ -246,6 +251,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="src\settings\objects\effect.txt" />
     <Text Include="src\settings\objects\items\leaf.txt" />
     <Text Include="src\settings\objects\materials\breakable_brick.txt" />
     <Text Include="src\settings\objects\materials\cloud.txt" />

@@ -3,6 +3,8 @@
 #include "Goomba.h"
 #include "objects/Mario.h"
 #include "scenes/PlayScene.h"
+#include "objects/Platform.h"
+#include <objects/materials/EffectManager.h>
 
 void CMonster::OnNoCollision(DWORD dt)
 {
@@ -55,6 +57,18 @@ void CMonster::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 		mario->Die();
 }
 
+void CMonster::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
+{
+	// this is dirty way to prevent the goomba is falling out of platform
+
+	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
+	if (platform)
+	{
+		is_on_platform = true;
+		y = platform->GetY() - GetHeight() - 3.0f;
+	}
+}
+
 void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<CMario*>(e->obj))
@@ -68,7 +82,10 @@ void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vy = 0;
 		if (e->IsCollidedFromTop())
+		{
+			//OnCollisionWithPlatForm(e);
 			is_on_platform = TRUE;
+		}
 	}
 
 	// collide with blocking
@@ -182,4 +199,11 @@ int CMonster::CompareXWithMario()
 	if (mario->GetX() < x) return 1; // plant right mario
 	else if (mario->GetX() > x)	return -1; // plant left mario
 	else return 0; // plant and mario in same position
+}
+
+void CMonster::BeKickedByKoopa()
+{
+	CEffectManager::Gennerate(this, POINT_100, 0.0f);
+
+	is_deleted = true;
 }

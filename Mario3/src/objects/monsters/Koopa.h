@@ -77,4 +77,5 @@ public:
 	virtual void MoveLeft() { SetState(MONSTER_STATE_WALKING_LEFT); }
 
 	virtual void Die() { SetState(MONSTER_STATE_DIE); }
+	void BeKickedByKoopa();
 };

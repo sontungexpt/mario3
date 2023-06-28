@@ -2,6 +2,7 @@
 #include "objects/GameObject.h"
 #include "objects/monsters/Monster.h"
 #include "configs/monsters/Gommba600000.h"
+#include <objects/materials/EffectManager.h>
 
 class CGoomba : public CMonster
 {
@@ -20,4 +21,6 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr);
 
 	virtual void Die() { SetState(MONSTER_STATE_DIE); };
+
+	void BeKickedByKoopa();
 };

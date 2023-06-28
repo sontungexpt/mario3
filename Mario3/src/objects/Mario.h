@@ -7,7 +7,7 @@
 
 #include "configs/Mario.h"
 #include "objects/monsters/Monster.h"
-
+#include "objects/MarioAttackingZone.h"
 using namespace std;
 
 class CMario : public CGameObject
@@ -19,6 +19,7 @@ class CMario : public CGameObject
 	int coin;
 
 	LPMONSTER weapon_monster;
+	//CMarioAttackingZone* attacking_zone;
 
 	ULONGLONG time_untouchable_start;
 	ULONGLONG time_power_up_start;
@@ -47,6 +48,7 @@ class CMario : public CGameObject
 	int GetAniIdWhenAppearanceChanging();
 
 	void GetBoundingBoxBig(float& left, float& top, float& right, float& bottom);
+	void GetBoundingBoxTail(float& left, float& top, float& right, float& bottom);
 	void GetBoundingBoxSmall(float& left, float& top, float& right, float& bottom);
 
 	void UpdatePower();
@@ -73,6 +75,7 @@ public:
 		is_power_upping = FALSE;
 
 		weapon_monster = nullptr;
+		//attacking_zone = nullptr;
 
 		this->level = level;
 
@@ -101,6 +104,7 @@ public:
 	BOOLEAN IsSmall() { return level == MARIO_LEVEL_SMALL; };
 	BOOLEAN IsBig() { return level == MARIO_LEVEL_BIG; };
 	BOOLEAN HasTail() { return level == MARIO_LEVEL_TAIL_SUIT; }
+	BOOLEAN IsFullPower() { return power == MARIO_MAX_POWER; }
 
 	void Shrink() { SetLevel(MARIO_LEVEL_SMALL); }
 	void Zoom() { SetLevel(MARIO_LEVEL_BIG); }
@@ -119,6 +123,8 @@ public:
 
 	void WantHoldKoopa() { is_want_holding_koopa = TRUE; }
 	void WantKickKoopa() { is_want_holding_koopa = FALSE; }
+
+	void SmashTail() {}
 
 	void StartUntouchable() { SetState(MARIO_STATE_UNTOUCHABLE); }
 	void JumpDeflect() { vy = -MARIO_JUMP_DEFLECT_SPEED; }
