@@ -22,6 +22,7 @@
 
 #include "objects/monsters/WindGoomba.h"
 #include "objects/monsters/WindKoopa.h"
+#include "GameData.h"
 
 using namespace std;
 
@@ -33,6 +34,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	player = nullptr;
 	hud = nullptr;
 	key_handler = new CSampleKeyHandler(this);
+	CGameData::GetInstance()->SetLife(4);
+	CGameData::GetInstance()->SetWorld(1);
 }
 
 #define SCENE_SECTION_UNKNOWN -1

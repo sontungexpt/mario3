@@ -6,6 +6,16 @@ class CHud : public CGameObject
 {
 	void RenderArrowPower();
 	void RenderMarioRemainingLife();
+	void RenderPlayerPoint();
+	void RenderHudBackground();
+	void RenderWorldNumber();
+	void RenderPlayerCoin();
+
+	int GetAniIdNumber(char number);
+
+	int GetAniIdNumber(int number);
+
+	void RenderNumber(int number, float left, float top, int min_char = 0);
 
 	BOOLEAN is_full_power_dark;
 

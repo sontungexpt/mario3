@@ -636,6 +636,7 @@ void CMario::SetState(int state)
 		ax = 0;
 		vx = 0;
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
+		CGameData::GetInstance()->DecreaseLifeBy1();
 		DebugOut(L">>> Mario die\n");
 		break;
 	}

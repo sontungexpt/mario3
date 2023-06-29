@@ -5,21 +5,33 @@
 class CGameData {
 	static CGameData* instance;
 
+	int player_life;
 	int player_coin;
 	int player_point;
 	int door_level;
+	int world;
+
 	BOOLEAN is_game_over;
 
 public:
 	CGameData() {
+		player_life = 0;
 		player_coin = 0;
 		door_level = 0;
 		player_point = 0;
+		world = 0;
 		is_game_over = FALSE;
 	};
 	~CGameData() {};
 
 	static CGameData* GetInstance();
+
+	void SetWorld(int world) { this->world = world; };
+	int GetWorld() { return world; };
+
+	void SetLife(int player_life) { this->player_life = player_life; };
+	void DecreaseLifeBy1() { player_life = player_life > 0 ? player_life - 1 : 0; };
+	int GetLife() { return player_life; };
 
 	void UnitIncreaseCoin() { this->player_coin++; };
 	void SetCoin(unsigned int player_coin) { this->player_coin = player_coin; };
