@@ -28,3 +28,6 @@ height	240
 80	src\assets\textures\misc_right_rmbg.png
 90	src\assets\textures\debris_brick.png
 100	src\assets\textures\HUD.png
+110	src\assets\textures\hud_source.png
+120	src\assets\textures\hud_source_dark.png
+130	src\assets\textures\hud_source_blue.png

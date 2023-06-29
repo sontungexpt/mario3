@@ -12,10 +12,12 @@ class CEffect : public CGameObject
 
 public:
 	CEffect(float x, float y) : CGameObject(x, y) {
+		vy = EFFECT_SPEED_Y;
 		appear_time_start = 0;
 	}
 
 	CEffect(float x, float y, int type) : CGameObject(x, y) {
+		vy = EFFECT_SPEED_Y;
 		this->type = type;
 		SetState(EFFECT_STATE_APPEAR);
 	}

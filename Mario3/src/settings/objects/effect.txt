@@ -9,6 +9,9 @@
 7	469	240	485	248	20
 8	469	250	485	258	20
 
+# 1 UP
+10	595	174	616	187	20
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 1	1	100

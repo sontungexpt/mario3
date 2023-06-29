@@ -8,6 +8,7 @@ void CEffect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		is_deleted = TRUE;
 		return;
 	}
+	y -= vy * dt;
 }
 
 void CEffect::Render()
@@ -39,6 +40,8 @@ void CEffect::Render()
 	case POINT_8000:
 		aniId = EFFECT_ANI_ID_8000_POINT;
 		break;
+	case LIFE_UP:
+		aniId = EFFECT_ANI_ID_1UP;
 	default:
 		DebugOut(L"can not handle type %d\n", type);
 		return;
@@ -84,5 +87,10 @@ void CEffect::GetBoundingBox(float& left, float& top, float& right, float& botto
 		right = left + POINT_4_CHAR_BBOX_WIDTH;
 		bottom = top + POINT_BBOX_HEIGHT;
 		break;
+	case LIFE_UP:
+		left = x - LIFE_UP_BBOX_WIDTH / 2;
+		top = y - LIFE_UP_BBOX_HEIGHT / 2;
+		right = left + LIFE_UP_BBOX_WIDTH;
+		bottom = top + LIFE_UP_BBOX_HEIGHT;
 	}
 }

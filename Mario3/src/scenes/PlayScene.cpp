@@ -31,6 +31,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	max_object_x = nullptr;
 	max_object_y = nullptr;
 	player = nullptr;
+	hud = nullptr;
 	key_handler = new CSampleKeyHandler(this);
 }
 
@@ -375,6 +376,16 @@ void CPlayScene::Update(DWORD dt)
 	if (cx < 0) cx = 0;
 	if (cy < 0) cy = 0;
 
+	if (hud == nullptr)
+		hud = new CHud(cx + game->GetBackBufferWidth() / 2, cy + game->GetBackBufferHeight() - HUD_BACKGROUND_BBOX_HEIGHT / 2);
+	else
+	{
+		hud->SetX(cx + game->GetBackBufferWidth() / 2);
+		hud->SetY(cy + game->GetBackBufferHeight() - HUD_BACKGROUND_BBOX_HEIGHT / 2);
+	}
+
+	hud->Update(dt);
+
 	CGame::GetInstance()->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();
@@ -384,6 +395,8 @@ void CPlayScene::Render()
 {
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+	if (hud)
+		hud->Render();
 }
 
 void CPlayScene::Clear()
@@ -403,7 +416,7 @@ void CPlayScene::Unload()
 
 	objects.clear();
 	player = nullptr;
-
+	delete hud;
 	delete max_object_x;
 	delete max_object_y;
 

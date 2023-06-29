@@ -52,7 +52,6 @@ class CMario : public CGameObject
 	void GetBoundingBoxSmall(float& left, float& top, float& right, float& bottom);
 
 	void UpdatePower();
-	void StartPowerUp() { time_power_up_start = GetTickCount64(); }
 
 public:
 	CMario(float x, float y, int level = MARIO_LEVEL_SMALL) : CGameObject(x, y)
@@ -117,6 +116,10 @@ public:
 	void LevelDown() { SetLevel(MARIO_LEVEL_SMALL); }
 
 	int GetPower() { return power; }
+	void StartPowerUp() {
+		is_power_upping = TRUE;
+		time_power_up_start = GetTickCount64();
+	}
 
 	void Die();
 	BOOLEAN IsDead() { return state == MARIO_STATE_DIE; }

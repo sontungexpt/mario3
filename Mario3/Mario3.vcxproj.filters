@@ -368,6 +368,9 @@
     <ClInclude Include="src\objects\materials\Hud.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\configs\materials\Hud103000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

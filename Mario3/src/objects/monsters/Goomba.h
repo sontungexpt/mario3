@@ -15,7 +15,7 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Render();
 
-	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	//virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	virtual void SetState(int state);
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr);

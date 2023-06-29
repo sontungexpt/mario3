@@ -175,6 +175,7 @@
   <ItemGroup>
     <ClInclude Include="src\configs\All.h" />
     <ClInclude Include="src\configs\Effect.h" />
+    <ClInclude Include="src\configs\materials\Hud103000.h" />
     <ClInclude Include="src\configs\items\All.h" />
     <ClInclude Include="src\configs\items\Bullet302000.h" />
     <ClInclude Include="src\configs\items\Leaf303000.h" />

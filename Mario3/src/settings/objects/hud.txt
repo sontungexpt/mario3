@@ -1,0 +1,21 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+# HUD BACKGROUND
+103001	0	2	252	32	120
+
+# ARROW
+103002	3	32	11	40	110
+
+# FULL POWER
+103050	12	32	26	40	110
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+# HUD BACKGROUND
+103001	103001	100
+
+# ARROW
+103002	103002	100
+
+# FULL POWER
+103050	103050	100

@@ -5,12 +5,14 @@
 #include "components/Collision/Collision.h"
 #include "components/Scene/Scene.h"
 #include "objects/GameObject.h"
+#include "objects/materials/Hud.h"
 
 class CPlayScene : public CScene
 {
 protected:
 	// A play scene has to have player, right?
 	LPGAMEOBJECT player;
+	LPHUD hud;
 
 	vector<LPGAMEOBJECT> objects;
 

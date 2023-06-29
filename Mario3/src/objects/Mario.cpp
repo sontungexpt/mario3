@@ -564,7 +564,6 @@ void CMario::SetState(int state)
 			max_vx = MARIO_RUNNING_SPEED;
 			max_vy = MARIO_FLYING_SPEED;
 			vy -= MARIO_JUMP_SPEED_Y / 3 * 2.3;
-			is_power_upping = TRUE;
 		}
 	case MARIO_STATE_FLY_RELEASE:
 		if (is_sitting) break;
@@ -573,14 +572,12 @@ void CMario::SetState(int state)
 		}
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (is_sitting) break;
-		is_power_upping = TRUE;
 		max_vx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
 		if (is_sitting) break;
-		is_power_upping = TRUE;
 		max_vx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
@@ -768,7 +765,7 @@ void CMario::UpdatePower()
 		if (GetTickCount64() - time_power_up_start > MARIO_TIME_OUT_POWER_UP)
 		{
 			power = power > 0 ? power - 1 : 0;
-			time_power_up_start = 0;
+			time_power_up_start = power > 0 ? GetTickCount64() : 0;
 		}
 	}
 	is_power_upping = FALSE;
