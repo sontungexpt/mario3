@@ -1,84 +1,66 @@
 # list of object assets to load in this scene
 [ASSETS]
 src\settings\objects\mario.txt
-src\settings\objects\door.txt
-src\settings\objects\grass.txt
+src\settings\objects\platform.txt
+src\settings\objects\effect.txt
+src\settings\objects\hud.txt
+
+src\settings\objects\materials\door.txt
+src\settings\objects\materials\grass.txt
 
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
-# See OBJECT_TYPE constants in AssetIDs.h
+# See OBJECT_TYPE constants in configs\core\ObjectTypes.h
 
 # MARIO
-0	40	35
+0	32	30
 
 #GRASS
-7	16	16
-7	16	32
-7	32	16
-7	32	32
-7	48	16
-7	48	32
-
-7	16	64
-7	32	64
-7	48	64
-7	16	80
-7	32	80
-7	48	80
-7	16	96
-
-7	80	32
-7	96	32
-7	112	32
-7	80	48
-7	96	48
-7	112	48
-7	80	64
-7	96	64
-7	112	64
-
-7	144	32
-7	160	32
-7	176	32
-
-7	208	16
-7	224	16
-7	208	32
-7	224	32
-7	208	48
-7	224	48
-
-7	144	64
-7	160	64
-7	176	64
-7	192	64
-7	208	64
-7	224	64
-
-7	144	80
-7	160	80
-
-7	96	96
-7	112	96
-7	128	96
-
-7	224	80
-7	224	96
-7	224	112
-7	224	128
-7	224	144
-
-# DOOR
-#type   x   y screen_id  aleft atop aright abottom
-6	32	48	1	10	0	1	0
-6	64	16	2	3	0	1	1
-6	128	16	3	4	0	1	1
-6	160	16	4	5	0	1	0
-6	160	48	5	6	0	1	0
-6	64	144	6	7	1	1	0
-6	128	144	7	8	1	0	0
-
-#Platform
-5	90	136	16	15	16	51000	52000	53000
-5	120	90	16	16	8	20001	20001	20001
+62	16	16
+62	16	32
+62	32	16
+62	32	32
+62	48	16
+62	48	32
+62	16	64
+62	32	64
+62	48	64
+62	16	80
+62	32	80
+62	48	80
+62	16	96
+62	80	32
+62	96	32
+62	112	32
+62	80	48
+62	96	48
+62	112	48
+62	80	64
+62	96	64
+62	112	64
+62	144	32
+62	160	32
+62	176	32
+62	208	16
+62	224	16
+62	208	32
+62	224	32
+62	208	48
+62	224	48
+62	144	64
+62	160	64
+62	176	64
+62	192	64
+62	208	64
+62	224	64
+62	144	80
+62	160	80
+62	96	96
+62	112	96
+62	128	96
+62	224	80
+62	224	96
+62	224	112
+62	224	128
+62	224	144

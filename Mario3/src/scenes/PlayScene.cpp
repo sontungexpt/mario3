@@ -24,8 +24,6 @@
 #include "objects/monsters/WindKoopa.h"
 #include "GameData.h"
 
-using namespace std;
-
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
@@ -36,6 +34,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	key_handler = new CSampleKeyHandler(this);
 	CGameData::GetInstance()->SetLife(4);
 	CGameData::GetInstance()->SetWorld(1);
+	CGameData::GetInstance()->InitRemainTime(300);
 }
 
 #define SCENE_SECTION_UNKNOWN -1
@@ -253,7 +252,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CPortal(x, y, r, b, scene_id);
 	}
 	break;
-
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
@@ -342,9 +340,13 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
+	CGameData::GetInstance()->CountDownRemainTime();
+
+	if (CGameData::GetInstance()->IsGameOver())
+		return;
+
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way
-
 	vector<LPGAMEOBJECT> coObjects;
 
 	for (size_t i = 0; i < objects.size(); i++)
@@ -373,6 +375,7 @@ void CPlayScene::Update(DWORD dt)
 	// having floor then mario can jump to hole and die
 	// if mario jump to hole (new_cam_y >= max_object_y) then not update camera
 	float new_cam_y = floor(cy / game->GetBackBufferHeight()) * game->GetBackBufferHeight();
+
 	cy = max_object_y != nullptr && new_cam_y >= max_object_y->GetY() ?
 		CGame::GetInstance()->GetCamYPos() : new_cam_y;
 

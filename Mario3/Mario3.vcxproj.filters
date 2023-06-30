@@ -251,7 +251,7 @@
     <ClInclude Include="src\objects\materials\Grass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\materials\Grass.h">
+    <ClInclude Include="src\configs\materials\Grass104000.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\configs\GameObject.h">

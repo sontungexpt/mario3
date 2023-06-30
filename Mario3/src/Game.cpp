@@ -550,10 +550,6 @@ void CGame::InitiateSwitchScene(int scene_id)
 	next_scene = scene_id;
 }
 
-void CGame::CountDownTime(int& time)
-{
-}
-
 /// <summary>
 /// Destructor of CGame
 /// </summary>

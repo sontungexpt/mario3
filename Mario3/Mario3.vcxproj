@@ -189,7 +189,7 @@
     <ClInclude Include="src\configs\monsters\All.h" />
     <ClInclude Include="src\configs\monsters\CarnivorousPlant603000.h" />
     <ClInclude Include="src\configs\monsters\Gommba600000.h" />
-    <ClInclude Include="src\configs\materials\Grass.h" />
+    <ClInclude Include="src\configs\materials\Grass104000.h" />
     <ClInclude Include="src\configs\core\SceneIds.h" />
     <ClInclude Include="src\configs\core\ObjectTypes.h" />
     <ClInclude Include="src\configs\core\Texture.h" />

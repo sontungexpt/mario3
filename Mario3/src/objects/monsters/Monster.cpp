@@ -67,8 +67,8 @@ void CMonster::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 	{
 		is_on_platform = true;
 		y = platform->GetTop() - GetHeight() - 2.0f;
-		DebugOut(L"top: %f\n", platform->GetTop());
-		DebugOut(L"y: %f\n", y);
+		//DebugOut(L"top: %f\n", platform->GetTop());
+		//DebugOut(L"y: %f\n", y);
 	}
 }
 

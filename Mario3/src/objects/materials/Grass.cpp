@@ -1,5 +1,5 @@
 #include "Grass.h"
-#include "configs/materials/Grass.h"
+#include "configs/materials/Grass104000.h"
 #include "components/Animation/Animation.h"
 #include "components/Animation/Animations.h"
 
@@ -15,4 +15,9 @@ void CGrass::GetBoundingBox(float& l, float& t, float& r, float& b)
 	t = y - GRASS_BBOX_HEIGHT / 2;
 	r = l + GRASS_BBOX_WIDTH;
 	b = t + GRASS_BBOX_HEIGHT;
+}
+
+void CGrass::Update(DWORD dt)
+{
+	CGameObject::Update(dt);
 }

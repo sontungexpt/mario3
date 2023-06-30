@@ -483,8 +483,6 @@ void CMario::Render()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOut(L"point: %d\n", CGameData::GetInstance()->GetPoint());
-	DebugOut(L"coin: %d\n", CGameData::GetInstance()->GetCoin());
 	if (y >= ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetMaxObjectY()->GetY())
 	{
 		SetState(MARIO_STATE_DIE);
@@ -563,7 +561,7 @@ void CMario::SetState(int state)
 			is_flying = TRUE;
 			max_vx = MARIO_RUNNING_SPEED;
 			max_vy = MARIO_FLYING_SPEED;
-			vy -= MARIO_JUMP_SPEED_Y / 3 * 2.3;
+			vy -= MARIO_JUMP_SPEED_Y / 3 * 2.3f;
 		}
 	case MARIO_STATE_FLY_RELEASE:
 		if (is_sitting) break;
@@ -637,6 +635,7 @@ void CMario::SetState(int state)
 		vx = 0;
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		CGameData::GetInstance()->DecreaseLifeBy1();
+		//CGameData::GetInstance()->SetGameOver(TRUE);
 		DebugOut(L">>> Mario die\n");
 		break;
 	}
@@ -770,8 +769,6 @@ void CMario::UpdatePower()
 		}
 	}
 	is_power_upping = FALSE;
-
-	DebugOut(L"power: %d\n", power);
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)

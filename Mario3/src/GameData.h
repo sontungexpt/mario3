@@ -13,12 +13,17 @@ class CGameData {
 
 	BOOLEAN is_game_over;
 
+	ULONGLONG count_down_time_start;
+	ULONGLONG remain_time;
+
 public:
 	CGameData() {
 		player_life = 0;
 		player_coin = 0;
 		door_level = 0;
 		player_point = 0;
+		remain_time = 0;
+		count_down_time_start = 0;
 		world = 0;
 		is_game_over = FALSE;
 	};
@@ -45,11 +50,24 @@ public:
 	void IncreasePointBy(int player_point) { this->player_point += player_point; };
 	int GetPoint() { return player_point; };
 
-	void SetGameOver(BOOLEAN is_game_over) { this->is_game_over = TRUE; };
+	void SetGameOver(BOOLEAN is_game_over) {
+		this->is_game_over = is_game_over;
+	};
 	BOOLEAN IsGameOver() { return is_game_over == TRUE; };
 
+	void CountDownRemainTime();
+	void InitRemainTime(ULONGLONG remain_time) { this->remain_time = remain_time; };
+	ULONGLONG GetRemainTime() { return remain_time; };
+
 	void CreateNewGame() {
+		player_life = 4;
 		player_coin = 0;
+		door_level = 0;
+		player_point = 0;
+		remain_time = 0;
+		count_down_time_start = 0;
+
+		world = 0;
 		is_game_over = FALSE;
 	};
 

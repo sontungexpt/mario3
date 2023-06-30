@@ -50,9 +50,8 @@ void CLevelMapScene::_ParseSection_OBJECTS(string line)
 		return;
 	}
 
-	DebugOut(L"ERROR", obj);
 	// General object setup
 	obj->SetPosition(x, y);
-
+	SetMaxCoordinate(obj);
 	objects.push_back(obj);
 }

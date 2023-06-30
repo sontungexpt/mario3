@@ -1,4 +1,6 @@
 #pragma once
+#include <chrono>
+#include <thread>
 
 #include "Game.h"
 #include "components/Texture/Textures.h"
@@ -6,6 +8,8 @@
 #include "components/Scene/Scene.h"
 #include "objects/GameObject.h"
 #include "objects/materials/Hud.h"
+
+using namespace std;
 
 class CPlayScene : public CScene
 {

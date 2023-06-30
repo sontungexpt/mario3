@@ -1,9 +1,0 @@
-#pragma once
-
-#define ID_ANI_GRASS 25001
-#define ID_ANI_GRASS_RIGHT 25002
-#define ID_ANI_GRASS_DOWN 25003
-#define ID_ANI_GRASS_LEFT 25004
-
-#define GRASS_BBOX_WIDTH 16
-#define GRASS_BBOX_HEIGHT 16
