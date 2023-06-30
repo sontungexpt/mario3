@@ -105,6 +105,8 @@ int CHud::GetAniIdIcon(string icon)
 		return ID_ANI_DOLAR_ICON;
 	else if (icon == "LIFE")
 		return ID_ANI_LIFE_ICON;
+	else if (icon == "X")
+		return ID_ANI_X_ICON;
 	return -1;
 }
 
@@ -214,18 +216,19 @@ void CHud::RenderHudBackground()
 void CHud::RenderMarioRemainingLife()
 {
 	float start_x = GetLeft() + 36;
-	float start_y = GetTop() + 16;
+	float start_y = GetTop() + 15;
 
-	float life_icon_x = GetLeft() + HUD_LIFE_BBOX_WIDTH / 2 + 5;
-	float life_icon_y = GetTop() + HUD_LIFE_BBOX_HEIGHT / 2 + 14;
+	float life_icon_x = GetLeft() + HUD_LIFE_BBOX_WIDTH / 2 + 6;
+	float life_icon_y = GetTop() + HUD_LIFE_BBOX_HEIGHT / 2 + 13;
 
 	RenderIcon("life", life_icon_x, life_icon_y);
+	RenderIcon("X", life_icon_x + HUD_LIFE_BBOX_WIDTH / 2 + HUD_X_ICON_BBOX_WIDTH / 2 + 3, life_icon_y + 1.0f);
 	RenderNumber(CGameData::GetInstance()->GetLife(), start_x, start_y);
 }
 
 void CHud::RenderArrowPower()
 {
-	float y_arrow = GetTop() + 6 + HUD_ARROW_BBOX_HEIGHT / 2;
+	float y_arrow = GetTop() + 4 + HUD_ARROW_BBOX_HEIGHT / 2;
 	float x_start_arrow = GetLeft() + 56 + HUD_ARROW_BBOX_HEIGHT / 2;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
@@ -241,8 +244,8 @@ void CHud::RenderArrowPower()
 		time_change_full_power_status_start = GetTickCount64();
 	}
 
-	float y_full_power = GetTop() + 6.2f + HUD_FULL_POWER_HEIGHT / 2;
-	float x_full_power = GetLeft() + 107 + HUD_FULL_POWER_WIDTH / 2;
+	float y_full_power = GetTop() + 4 + HUD_FULL_POWER_HEIGHT / 2;
+	float x_full_power = GetLeft() + 105 + HUD_FULL_POWER_WIDTH / 2;
 	CAnimations::GetInstance()->Get(ID_ANI_FULL_POWER_ICON_BLACK)->Render(x_full_power, y_full_power);
 
 	if (is_full_power_dark)
@@ -264,8 +267,8 @@ void CHud::RenderArrowPower()
 
 void CHud::RenderPlayerPoint()
 {
-	float start_x = GetLeft() + 58;
-	float start_y = GetTop() + 16;
+	float start_x = GetLeft() + 59;
+	float start_y = GetTop() + 15;
 
 	RenderNumber(CGameData::GetInstance()->GetPoint(), start_x, start_y, 6);
 }
@@ -273,18 +276,18 @@ void CHud::RenderPlayerPoint()
 void CHud::RenderWorldNumber()
 {
 	float start_x = GetLeft() + 48;
-	float start_y = GetTop() + 7;
+	float start_y = GetTop() + 5;
 
-	RenderString("WORLD", start_x - HUD_CHAR_BBOX_WIDTH * 5 - 4, start_y - 1.05f);
+	RenderString("WORLD", start_x - HUD_CHAR_BBOX_WIDTH * 5 - 4, start_y - 2);
 	RenderNumber(CGameData::GetInstance()->GetWorld(), start_x, start_y);
 }
 
 void CHud::RenderPlayerCoin()
 {
-	float coin_x = GetLeft() + 139;
-	float coin_y = GetTop() + 7;
+	float coin_x = GetLeft() + 138;
+	float coin_y = GetTop() + 5;
 
-	float dolar_icon_y = GetTop() + 9;
+	float dolar_icon_y = GetTop() + 7;
 
 	RenderIcon("dolar", coin_x - HUD_CHAR_BBOX_WIDTH - 3, dolar_icon_y);
 	RenderNumber(CGameData::GetInstance()->GetCoin(), coin_x, coin_y);
@@ -292,10 +295,10 @@ void CHud::RenderPlayerCoin()
 
 void CHud::RenderMarioRemainingTime()
 {
-	float start_x = GetLeft() + 128;
-	float start_y = GetTop() + 16;
+	float start_x = GetLeft() + 131;
+	float start_y = GetTop() + 15;
 
-	float clock_icon_y = GetTop() + 20.5f;
+	float clock_icon_y = GetTop() + 19.5f;
 	RenderIcon("clock", start_x - HUD_CHAR_BBOX_WIDTH - 3, clock_icon_y);
 	RenderNumber((int)CGameData::GetInstance()->GetRemainTime(), start_x, start_y);
 }
