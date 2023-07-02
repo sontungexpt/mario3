@@ -10,7 +10,7 @@ CEffectManager* CEffectManager::GetInstance()
 	return instance;
 }
 
-void CEffectManager::Gennerate(LPGAMEOBJECT ref_object, int type, float distance_from_top)
+LPGAMEOBJECT CEffectManager::Gennerate(LPGAMEOBJECT ref_object, int type, float distance_from_top)
 {
 	float ref_x = ref_object->GetX();
 	float ref_y = 0.0f;
@@ -30,14 +30,20 @@ void CEffectManager::Gennerate(LPGAMEOBJECT ref_object, int type, float distance
 	}
 
 	LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
-	scene->AddObject(new CEffect(ref_x, ref_y, type));
+	return scene->AddObject(new CEffect(ref_x, ref_y, type));
 }
 
-void CEffectManager::GennerateChangeScene()
+LPGAMEOBJECT CEffectManager::Gennerate(float ref_x, float ref_y, int type, int effect)
+{
+	LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
+	return scene->AddObject(new CEffect(ref_x, ref_y, type, effect));
+}
+
+LPGAMEOBJECT CEffectManager::GennerateChangeScene()
 {
 	LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
 	float x = CGame::GetInstance()->GetCamXPos() + CGame::GetInstance()->GetBackBufferWidth() / 2;
 	float y = CGame::GetInstance()->GetCamYPos() + CGame::GetInstance()->GetBackBufferHeight() / 2;
 
-	scene->AddObject(new CEffect(x, y, CHANGE_SCENE, EFFECT_CHANGE_SCREEN));
+	return scene->AddObject(new CEffect(x, y, CHANGE_SCENE, EFFECT_CHANGE_SCREEN));
 }

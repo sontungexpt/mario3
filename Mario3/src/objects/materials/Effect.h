@@ -24,11 +24,11 @@ public:
 	}
 
 	CEffect(float x, float y, int type, int effect = EFFECT_FADE_OUT) : CGameObject(x, y) {
-		vy = EFFECT_SPEED_Y;
 		this->type = type;
 		this->effect = effect;
 		alpha = 0.0f;
 		increase_alpha_time_start = 0;
+		vy = EFFECT_SPEED_Y;
 		SetState(EFFECT_STATE_APPEAR);
 	}
 

@@ -2,7 +2,6 @@
 #include "debug.h"
 #include "Game.h"
 #include "configs/GameData.h"
-#include "objects/materials/EffectManager.h"
 
 void CDoor::EnterDoor()
 {
@@ -17,6 +16,7 @@ void CDoor::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	{
 		CGameData::GetInstance()->SetEntryDoorLevel(door_level);
 		CGame::GetInstance()->InitiateSwitchScene(scene_id);
+		return;
 	}
 }
 
@@ -47,6 +47,9 @@ void CDoor::Render() {
 			break;
 		case DOOR_LEVEL_6:
 			aniId = ID_ANI_DOOR_6;
+			break;
+		case DOOR_LEVEL_CASTLE:
+			aniId = ID_ANI_DOOR_CASTLE;
 			break;
 		default:
 			break;

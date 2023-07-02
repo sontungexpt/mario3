@@ -23,7 +23,6 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_S:
 		mario->SetState(MARIO_STATE_JUMP);
-		DebugOut(L"keydown");
 		break;
 	case DIK_1:
 		mario->SetLevel(MARIO_LEVEL_SMALL);

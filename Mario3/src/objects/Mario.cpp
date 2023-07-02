@@ -592,7 +592,6 @@ void CMario::SetState(int state)
 		max_vx = -MARIO_WALKING_SPEED;
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
-
 		break;
 	}
 	case MARIO_STATE_JUMP:

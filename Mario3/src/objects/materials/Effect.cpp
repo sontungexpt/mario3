@@ -13,13 +13,21 @@ void CEffect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		y -= vy * dt;
 	}
-	else if (effect == EFFECT_HELP_LEVEL_MAP)
+	else if (effect == EFFECT_DISAPPEAR)
 	{
+		if (state == EFFECT_STATE_APPEAR && GetTickCount64() - appear_time_start > EFFECT_TIMEOUT)
+		{
+			is_deleted = TRUE;
+			return;
+		}
 	}
 	else if (effect == EFFECT_CHANGE_SCREEN)
 	{
 		if (GetTickCount64() - increase_alpha_time_start > EFFECT_INCREASING_ALPHA_DURATION)
+		{
+			increase_alpha_time_start = GetTickCount64();
 			alpha += 0.009f;
+		}
 	}
 }
 
@@ -59,7 +67,6 @@ void CEffect::Render()
 		aniId = EFFECT_ANI_ID_HELP_LEVEL_MAP;
 		break;
 	case CHANGE_SCENE:
-		increase_alpha_time_start = GetTickCount64();
 		RenderChangeScreenEffect();
 		return;
 	default:
@@ -139,6 +146,12 @@ void CEffect::GetBoundingBox(float& left, float& top, float& right, float& botto
 		top = y - CGame::GetInstance()->GetCamYPos();
 		right = left + CGame::GetInstance()->GetBackBufferWidth();
 		bottom = top + CGame::GetInstance()->GetBackBufferHeight();
+		break;
+	case HELP_LEVEL_MAP:
+		left = x - HELP_LEVEL_MAP_BBOX_WIDTH / 2;
+		top = y - HELP_LEVEL_MAP_BBOX_HEIGHT / 2;
+		right = left + HELP_LEVEL_MAP_BBOX_WIDTH;
+		bottom = top + HELP_LEVEL_MAP_BBOX_HEIGHT;
 		break;
 	}
 }

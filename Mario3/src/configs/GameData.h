@@ -7,3 +7,4 @@
 #define DOOR_LEVEL_4 4
 #define DOOR_LEVEL_5 5
 #define DOOR_LEVEL_6 6
+#define DOOR_LEVEL_CASTLE 7

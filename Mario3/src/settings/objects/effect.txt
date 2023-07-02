@@ -14,9 +14,12 @@
 10	596	174	615	187	20
 
 # HELP LEVEL MAP
+20	0	0	15	15	30
+21	0	0	0	0	30
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
+# POINT
 1	1	1000
 2	2	1000
 3	3	1000
@@ -26,4 +29,8 @@
 7	7	1000
 8	8	1000
 
+# 1 UP
 10	10	1000
+
+# HELP LEVEL MAP
+20	20	300	21	300
