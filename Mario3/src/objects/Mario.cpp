@@ -606,6 +606,7 @@ void CMario::SetState(int state)
 		}
 		break;
 	case MARIO_STATE_RELEASE_JUMP:
+		if (is_on_platform) return;
 		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
 		break;
 	case MARIO_STATE_SIT:
@@ -739,11 +740,9 @@ void CMario::UpdatePower()
 
 	if (is_power_upping)
 	{
-		// shorter version
-
 		power = static_cast<int>(min((float)MARIO_MAX_POWER, fabs(vx) / MARIO_RUNNING_SPEED * (float)MARIO_MAX_POWER));
+		// this line same with bottom
 
-		// longer version
 		//float ratio = vx / MARIO_RUNNING_SPEED;
 		//if (ratio >= 1.0f)
 		//{

@@ -20,6 +20,7 @@ height	240
 # id	file
 [TEXTURES]
 -100	src\assets\textures\bbox.png
+-99	src\assets\textures\bbox_black.jpg
 0	src\assets\textures\mario.png
 10	src\assets\textures\enemies.png
 20	src\assets\textures\misc.png

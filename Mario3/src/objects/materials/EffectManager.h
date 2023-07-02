@@ -16,4 +16,5 @@ public:
 	static CEffectManager* GetInstance();
 
 	static void Gennerate(LPGAMEOBJECT ref_object, int type, float distance_from_top = 6);
+	static void GennerateChangeScene();
 };

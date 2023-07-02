@@ -116,7 +116,7 @@ public:
 	virtual void Render() = 0;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr) {};
-	void RenderBoundingBox();
+	virtual void RenderBoundingBox();
 
 	BOOLEAN IsInCamera(); // use for lazy load
 

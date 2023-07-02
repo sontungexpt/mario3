@@ -132,7 +132,9 @@ public:
 	void SmashTail() {}
 
 	void StartUntouchable() { SetState(MARIO_STATE_UNTOUCHABLE); }
-	void JumpDeflect() { vy = -MARIO_JUMP_DEFLECT_SPEED; }
+	void JumpDeflect() {
+		vy = -MARIO_JUMP_DEFLECT_SPEED;
+	}
 
 	void Reset();
 };

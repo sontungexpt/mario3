@@ -31,3 +31,12 @@ void CEffectManager::Gennerate(LPGAMEOBJECT ref_object, int type, float distance
 	LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
 	scene->AddObject(new CEffect(ref_x, ref_y, type));
 }
+
+void CEffectManager::GennerateChangeScene()
+{
+	LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
+	float x = CGame::GetInstance()->GetCamXPos() + CGame::GetInstance()->GetBackBufferWidth() / 2;
+	float y = CGame::GetInstance()->GetCamYPos() + CGame::GetInstance()->GetBackBufferHeight() / 2;
+
+	scene->AddObject(new CEffect(x, y, CHANGE_SCENE, EFFECT_CHANGE_SCREEN));
+}

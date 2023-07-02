@@ -7,6 +7,8 @@
 #include "objects/Platform.h"
 #include "objects/materials/Grass.h"
 #include "objects/materials/Door.h"
+#include "objects/materials/Effect.h"
+
 #include "objects/monsters/Hammer.h"
 
 void CLevelMapScene::_ParseSection_OBJECTS(string line)
@@ -108,16 +110,27 @@ void CLevelMapScene::_ParseSection_SETTINGS(string line)
 
 void CLevelMapScene::Render()
 {
+	CEffect* effect_change_scene = nullptr;
 	for (int i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CMarioLevelMap*>(objects[i]))
 			continue;
+		if (dynamic_cast<CEffect*>(objects[i]))
+		{
+			effect_change_scene = dynamic_cast<CEffect*>(objects[i]);
+			if (effect_change_scene->GetType() == CHANGE_SCENE)
+				continue;
+			else
+				effect_change_scene = nullptr;
+		}
 		objects[i]->Render();
 	}
 	if (hud)
 		hud->Render();
 	RenderStartPoint();
 	player->Render();
+	if (effect_change_scene)
+		effect_change_scene->Render();
 }
 
 void CLevelMapScene::Update(DWORD dt)

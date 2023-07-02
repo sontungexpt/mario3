@@ -13,7 +13,7 @@ public:
 	CPortal(float l, float t, float r, float b, int scene_id);
 	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
-
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr) {};
 	virtual void RenderBoundingBox(void);
 
 	int GetSceneId() { return scene_id; }

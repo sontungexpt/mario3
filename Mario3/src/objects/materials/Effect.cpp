@@ -1,5 +1,6 @@
 #include "Effect.h"
 #include "scenes/PlayScene.h"
+#include "configs/GameObject.h"
 
 void CEffect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -14,6 +15,11 @@ void CEffect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else if (effect == EFFECT_HELP_LEVEL_MAP)
 	{
+	}
+	else if (effect == EFFECT_CHANGE_SCREEN)
+	{
+		if (GetTickCount64() - increase_alpha_time_start > EFFECT_INCREASING_ALPHA_DURATION)
+			alpha += 0.009f;
 	}
 }
 
@@ -50,6 +56,10 @@ void CEffect::Render()
 		aniId = EFFECT_ANI_ID_1UP;
 	case HELP_LEVEL_MAP:
 		aniId = EFFECT_ANI_ID_HELP_LEVEL_MAP;
+	case CHANGE_SCENE:
+		increase_alpha_time_start = GetTickCount64();
+		RenderChangeScreenEffect();
+		return;
 	default:
 		DebugOut(L"can not handle type %d\n", type);
 		return;
@@ -58,6 +68,27 @@ void CEffect::Render()
 	LPANIMATION ani = animations->Get(aniId);
 	if (ani != nullptr)
 		ani->Render(x, y);
+}
+
+void CEffect::RenderChangeScreenEffect()
+{
+	D3DXVECTOR3 p(x, y, 0);
+	RECT rect;
+
+	LPTEXTURE bbox = CTextures::GetInstance()->Get(ID_TEX_BBOX_BLACK);
+
+	float l, t, r, b;
+
+	GetBoundingBox(l, t, r, b);
+	rect.left = 0;
+	rect.top = 0;
+	rect.right = (int)r - (int)l;
+	rect.bottom = (int)b - (int)t;
+
+	float cx, cy;
+	CGame::GetInstance()->GetCamPos(cx, cy);
+
+	CGame::GetInstance()->Draw(x - cx, y - cy, bbox, &rect, alpha);
 }
 
 void CEffect::SetState(int state)
@@ -100,5 +131,12 @@ void CEffect::GetBoundingBox(float& left, float& top, float& right, float& botto
 		top = y - LIFE_UP_BBOX_HEIGHT / 2;
 		right = left + LIFE_UP_BBOX_WIDTH;
 		bottom = top + LIFE_UP_BBOX_HEIGHT;
+		break;
+	case CHANGE_SCENE:
+		left = x - CGame::GetInstance()->GetCamXPos();
+		top = y - CGame::GetInstance()->GetCamYPos();
+		right = left + CGame::GetInstance()->GetBackBufferWidth();
+		bottom = top + CGame::GetInstance()->GetBackBufferHeight();
+		break;
 	}
 }
