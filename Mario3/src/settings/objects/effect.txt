@@ -1,5 +1,6 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
+# POINT
 1	457	222	468	230	20
 2	468	231	468	238	20
 3	468	240	468	248	20
@@ -11,6 +12,8 @@
 
 # 1 UP
 10	595	174	616	187	20
+
+# HELP LEVEL MAP
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]

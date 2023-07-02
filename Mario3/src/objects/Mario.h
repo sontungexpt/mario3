@@ -1,5 +1,6 @@
 #pragma once
 #include "debug.h"
+#include "GameData.h"
 #include "GameObject.h"
 
 #include "components/Animation/Animation.h"
@@ -12,6 +13,7 @@ using namespace std;
 
 class CMario : public CGameObject
 {
+protected:
 	int nx;
 
 	int level;
@@ -54,7 +56,7 @@ class CMario : public CGameObject
 	void UpdatePower();
 
 public:
-	CMario(float x, float y, int level = MARIO_LEVEL_SMALL) : CGameObject(x, y)
+	CMario(float x, float y) : CGameObject(x, y)
 	{
 		coin = 0;
 		power = 0;
@@ -76,7 +78,7 @@ public:
 		weapon_monster = nullptr;
 		//attacking_zone = nullptr;
 
-		this->level = level;
+		level = CGameData::GetInstance()->GetMarioLevel();
 
 		time_untouchable_start = 0;
 		time_power_up_start = 0;

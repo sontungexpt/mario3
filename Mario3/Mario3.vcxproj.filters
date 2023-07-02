@@ -141,6 +141,12 @@
     <ClCompile Include="src\objects\materials\Hud.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\MarioLevelMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\KeyboardHandler\LevelMapKeyEventHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\Animation\Animation.h">
@@ -233,7 +239,7 @@
     <ClInclude Include="src\objects\materials\Door.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\configs\materials\Door.h">
+    <ClInclude Include="src\configs\materials\Door105000.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\GameData.h">
@@ -369,6 +375,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\configs\materials\Hud103000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\materials\Pipe10100.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\materials\Brick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\MarioLevelMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\KeyboardHandler\LevelMapKeyEventHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

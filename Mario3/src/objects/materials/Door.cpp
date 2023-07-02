@@ -4,11 +4,15 @@
 #include "configs/GameData.h"
 
 void CDoor::Render() {
-	int aniId = ID_ANI_DOOR_0;
-	CAnimations* animations = CAnimations::GetInstance();
+	int aniId = -1;
 
-	if (scene_id > 0) {
-		switch (state) {
+	if (IsPassed())
+	{
+		aniId = ID_ANI_DOOR_PASSED;
+	}
+	else
+	{
+		switch (door_level) {
 		case DOOR_LEVEL_1:
 			aniId = ID_ANI_DOOR_1;
 			break;
@@ -27,19 +31,19 @@ void CDoor::Render() {
 		case DOOR_LEVEL_6:
 			aniId = ID_ANI_DOOR_6;
 			break;
-		case DOOR_LEVEl_0:
-			aniId = ID_ANI_DOOR_0;
-			break;
 		default:
 			break;
 		}
 	}
-	else aniId = ID_ANI_DOOR_PASS;
 
+	if (aniId == -1) {
+		DebugOut(L"[ERROR] Door::Render has no animation id\n");
+		return;
+	}
+
+	CAnimations* animations = CAnimations::GetInstance();
 	LPANIMATION ani = animations->Get(aniId);
 
 	if (ani != nullptr)
 		ani->Render(x, y);
-	else
-		DebugOut(L"can not render animation", aniId);
 };

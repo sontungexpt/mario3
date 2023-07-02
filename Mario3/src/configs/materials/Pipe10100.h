@@ -1,0 +1,19 @@
+#pragma once
+
+#define PIPE_BBOX_WIDTH 32
+
+#define PIPE_BBOX_HEIGHT_SHORT 32
+#define PIPE_BBOX_HEIGHT_LONG 48
+
+// state
+#define PIPE_STATE_LONG	1
+#define PIPE_STATE_SHORT 2
+
+#define PIPE_PLANT_NOTHING 0
+#define PIPE_PLANT_SHOOTER_RED 1
+#define PIPE_PLANT_SHOOTER_GREEN 2
+#define PIPE_PLANT_CARNIVOROUS 3
+
+// animations
+#define ID_ANI_PIPE_LONG 101001
+#define ID_ANI_PIPE_SHORT 101002

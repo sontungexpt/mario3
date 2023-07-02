@@ -233,6 +233,13 @@ void CHud::RenderArrowPower()
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 
+	if (!mario)
+	{
+		for (int i = 1; i <= MARIO_MAX_POWER - mario->GetPower(); i++)
+			CAnimations::GetInstance()->Get(ID_ANI_ARROW_ICON_BLACK)->Render(x_start_arrow + (i - 1) * HUD_ARROW_BBOX_WIDTH, y_arrow);
+		return;
+	}
+
 	for (int i = 1; i <= mario->GetPower(); i++)
 		CAnimations::GetInstance()->Get(ID_ANI_ARROW_ICON_WHITE)->Render(x_start_arrow + (i - 1) * HUD_ARROW_BBOX_WIDTH, y_arrow);
 	for (int i = 1; i <= MARIO_MAX_POWER - mario->GetPower(); i++)
@@ -279,7 +286,7 @@ void CHud::RenderWorldNumber()
 	float start_y = GetTop() + 5;
 
 	RenderString("WORLD", start_x - HUD_CHAR_BBOX_WIDTH * 5 - 4, start_y - 2);
-	RenderNumber(CGameData::GetInstance()->GetWorld(), start_x, start_y);
+	RenderNumber(CGameData::GetInstance()->GetEntryDoorLevel(), start_x, start_y);
 }
 
 void CHud::RenderPlayerCoin()
@@ -300,7 +307,7 @@ void CHud::RenderMarioRemainingTime()
 
 	float clock_icon_y = GetTop() + 19.5f;
 	RenderIcon("clock", start_x - HUD_CHAR_BBOX_WIDTH - 3, clock_icon_y);
-	RenderNumber((int)CGameData::GetInstance()->GetRemainTime(), start_x, start_y);
+	RenderNumber((int)CGameData::GetInstance()->GetRemainTime(), start_x, start_y, 3);
 }
 
 void CHud::RenderFrame(float left, float top, int width, int height)

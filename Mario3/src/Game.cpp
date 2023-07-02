@@ -456,7 +456,7 @@ void CGame::_ParseSection_SCENES(string line)
 	LPSCENE scene = nullptr;
 	switch (id)
 	{
-	case LEVEL_MAP_SCENE:
+	case ID_LEVEL_MAP_SCENE:
 		scene = new CLevelMapScene(id, path);
 		break;
 	default:
@@ -523,6 +523,7 @@ void CGame::Load(LPCWSTR gameFile)
 
 	DebugOut(L"[INFO] Loading game file : %s has been loaded successfully\n", gameFile);
 
+	CGameData::GetInstance()->CreateNewGame();
 	SwitchScene();
 }
 

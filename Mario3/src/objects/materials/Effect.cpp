@@ -3,12 +3,18 @@
 
 void CEffect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (state == EFFECT_STATE_APPEAR && GetTickCount64() - appear_time_start > EFFECT_TIMEOUT)
+	if (effect == EFFECT_FADE_OUT)
 	{
-		is_deleted = TRUE;
-		return;
+		if (state == EFFECT_STATE_APPEAR && GetTickCount64() - appear_time_start > EFFECT_TIMEOUT)
+		{
+			is_deleted = TRUE;
+			return;
+		}
+		y -= vy * dt;
 	}
-	y -= vy * dt;
+	else if (effect == EFFECT_HELP_LEVEL_MAP)
+	{
+	}
 }
 
 void CEffect::Render()
@@ -42,6 +48,8 @@ void CEffect::Render()
 		break;
 	case LIFE_UP:
 		aniId = EFFECT_ANI_ID_1UP;
+	case HELP_LEVEL_MAP:
+		aniId = EFFECT_ANI_ID_HELP_LEVEL_MAP;
 	default:
 		DebugOut(L"can not handle type %d\n", type);
 		return;

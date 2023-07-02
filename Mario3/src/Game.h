@@ -56,6 +56,7 @@ class CGame
 	void _ParseSection_SCENES(string line);
 	void _ParseSection_TEXTURES(string line);
 
+	D3DXCOLOR background_color = D3DXCOLOR(156.0f / 255, 252.0f / 255, 240.0f / 255, 255.0f);
 public:
 	// Init DirectX, Sprite Handler
 	void Init(HWND hWnd, HINSTANCE hInstance);
@@ -113,6 +114,11 @@ public:
 	void TogglePause()
 	{
 		is_paused = ~is_paused;
+	}
+
+	D3DXCOLOR GetBackgroundColor() { return background_color; }
+	void SetBackgroundColor(float R, float G, float B, float A) {
+		background_color = D3DXCOLOR(R / 255.0f, G / 255.0f, B / 255, A);
 	}
 
 	~CGame();

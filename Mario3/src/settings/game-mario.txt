@@ -1,5 +1,5 @@
 [SETTINGS]
-start	1
+start	10
 width	310
 height	240
 
@@ -12,7 +12,10 @@ height	240
 # Play scenes
 1	src\settings\scenes\scene01.txt
 2	src\settings\scenes\scene02.txt
+3	src\settings\scenes\scene03.txt
+4	src\settings\scenes\scene04.txt
 5	src\settings\scenes\scene05.txt
+6	src\settings\scenes\scene06.txt
 
 # id	file
 [TEXTURES]
@@ -31,3 +34,5 @@ height	240
 110	src\assets\textures\hud_source.png
 120	src\assets\textures\hud_source_dark.png
 130	src\assets\textures\hud_source_blue.png
+140	src\assets\textures\mario_world_map.png
+150	src\assets\textures\world_map_source.png

@@ -26,15 +26,16 @@ protected:
 	LPGAMEOBJECT max_object_y;
 	LPGAMEOBJECT max_object_x;
 
-	void _ParseSection_SPRITES(string line);
-	void _ParseSection_ANIMATIONS(string line);
+	virtual void _ParseSection_SPRITES(string line);
+	virtual void _ParseSection_ANIMATIONS(string line);
 
-	void _ParseSection_ASSETS(string line);
+	virtual void _ParseSection_ASSETS(string line);
 	virtual void _ParseSection_OBJECTS(string line);
+	virtual void _ParseSection_SETTINGS(string line);
 
-	void LoadAssets(LPCWSTR assetFile);
+	virtual void LoadAssets(LPCWSTR assetFile);
 
-	void SetMaxCoordinate(LPGAMEOBJECT object)
+	virtual void SetMaxCoordinate(LPGAMEOBJECT object)
 	{
 		if (max_object_x == nullptr && max_object_y == nullptr)
 		{
@@ -59,10 +60,10 @@ public:
 	LPGAMEOBJECT GetMaxObjectY() { return max_object_y; }
 	LPGAMEOBJECT GetMaxObjectX() { return max_object_x; }
 
-	LPGAMEOBJECT GetPlayer() { return player; }
+	virtual LPGAMEOBJECT GetPlayer() { return player; }
 
-	void Clear();
-	void PurgeDeletedObjects();
+	virtual void Clear();
+	virtual void PurgeDeletedObjects();
 	LPGAMEOBJECT AddObject(LPGAMEOBJECT obj);
 
 	LPGAMEOBJECT AddObjectToFirst(LPGAMEOBJECT obj);

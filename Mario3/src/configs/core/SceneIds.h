@@ -1,3 +1,3 @@
 #pragma once
 
-#define LEVEL_MAP_SCENE 10
+#define ID_LEVEL_MAP_SCENE 10

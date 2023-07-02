@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\components\KeyboardHandler\LevelMapKeyEventHandler.cpp" />
     <ClCompile Include="src\GameData.cpp" />
     <ClCompile Include="src\objects\MarioAttackingZone.cpp" />
     <ClCompile Include="src\objects\GameObject.cpp" />
@@ -136,6 +137,7 @@
     <ClCompile Include="src\objects\items\DebrisBrick.cpp" />
     <ClCompile Include="src\objects\items\Item.cpp" />
     <ClCompile Include="src\objects\items\Leaf.cpp" />
+    <ClCompile Include="src\objects\MarioLevelMap.cpp" />
     <ClCompile Include="src\objects\materials\bricks\BreakableBrick.cpp" />
     <ClCompile Include="src\objects\materials\bricks\CreatableBrick.cpp" />
     <ClCompile Include="src\objects\materials\Door.cpp" />
@@ -173,19 +175,22 @@
     <ClCompile Include="src\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\components\KeyboardHandler\LevelMapKeyEventHandler.h" />
     <ClInclude Include="src\configs\All.h" />
     <ClInclude Include="src\configs\Effect.h" />
+    <ClInclude Include="src\configs\materials\Brick.h" />
     <ClInclude Include="src\configs\materials\Hud103000.h" />
     <ClInclude Include="src\configs\items\All.h" />
     <ClInclude Include="src\configs\items\Bullet302000.h" />
     <ClInclude Include="src\configs\items\Leaf303000.h" />
     <ClInclude Include="src\configs\materials\All.h" />
     <ClInclude Include="src\configs\materials\BreakableBrick102000.h" />
-    <ClInclude Include="src\configs\materials\Door.h" />
+    <ClInclude Include="src\configs\materials\Door105000.h" />
     <ClInclude Include="src\configs\Game.h" />
     <ClInclude Include="src\configs\GameData.h" />
     <ClInclude Include="src\configs\GameObject.h" />
     <ClInclude Include="src\configs\items\Coin300000.h" />
+    <ClInclude Include="src\configs\materials\Pipe10100.h" />
     <ClInclude Include="src\configs\monsters\All.h" />
     <ClInclude Include="src\configs\monsters\CarnivorousPlant603000.h" />
     <ClInclude Include="src\configs\monsters\Gommba600000.h" />
@@ -248,6 +253,7 @@
     <ClInclude Include="src\objects\Platform.h" />
     <ClInclude Include="src\objects\materials\Portal.h" />
     <ClInclude Include="src\scenes\PlayScene.h" />
+    <ClInclude Include="src\objects\MarioLevelMap.h" />
     <ClInclude Include="src\utils\utils.h" />
   </ItemGroup>
   <ItemGroup>

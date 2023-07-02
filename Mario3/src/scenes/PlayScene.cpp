@@ -32,14 +32,12 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	player = nullptr;
 	hud = nullptr;
 	key_handler = new CSampleKeyHandler(this);
-	CGameData::GetInstance()->SetLife(4);
-	CGameData::GetInstance()->SetWorld(1);
-	CGameData::GetInstance()->InitRemainTime(300);
 }
 
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_ASSETS	1
 #define SCENE_SECTION_OBJECTS	2
+#define SCENE_SECTION_SETTINGS	3
 
 #define ASSETS_SECTION_UNKNOWN -1
 #define ASSETS_SECTION_SPRITES 1
@@ -265,6 +263,29 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
+void CPlayScene::_ParseSection_SETTINGS(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 2) return;
+	if (tokens[0] == "limit_time")
+	{
+		CGameData::GetInstance()->InitRemainTime(atoi(tokens[1].c_str()));
+	}
+	else if (tokens[0] == "background_color")
+	{
+		float r = (float)atof(tokens[1].c_str());
+		float g = (float)atof(tokens[2].c_str());
+		float b = (float)atof(tokens[3].c_str());
+		float a = (float)atof(tokens[4].c_str());
+		CGame::GetInstance()->SetBackgroundColor(r, g, b, a);
+	}
+	else
+	{
+		DebugOut(L"[ERROR] Unknown game setting: %s\n", ToWSTR(tokens[0]).c_str());
+	}
+}
+
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
@@ -321,15 +342,14 @@ void CPlayScene::Load()
 		if (line[0] == '#' || line[0] == '/') continue;	// skip comment lines
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
+		if (line == "[SETTINGS]") { section = SCENE_SECTION_SETTINGS; continue; };
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
-		//
-		// data section
-		//
 		switch (section)
 		{
 		case SCENE_SECTION_ASSETS: this->_ParseSection_ASSETS(line); break;
 		case SCENE_SECTION_OBJECTS: this->_ParseSection_OBJECTS(line); break;
+		case SCENE_SECTION_SETTINGS: this->_ParseSection_SETTINGS(line); break;
 		}
 	}
 
@@ -377,7 +397,7 @@ void CPlayScene::Update(DWORD dt)
 	float new_cam_y = floor(cy / game->GetBackBufferHeight()) * game->GetBackBufferHeight();
 
 	cy = max_object_y != nullptr && new_cam_y >= max_object_y->GetY() ?
-		CGame::GetInstance()->GetCamYPos() : new_cam_y;
+		game->GetCamYPos() : new_cam_y;
 
 	if (cx < 0) cx = 0;
 	if (cy < 0) cy = 0;
@@ -392,7 +412,7 @@ void CPlayScene::Update(DWORD dt)
 
 	hud->Update(dt);
 
-	CGame::GetInstance()->SetCamPos(cx, cy);
+	game->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();
 }
@@ -422,9 +442,14 @@ void CPlayScene::Unload()
 
 	objects.clear();
 	player = nullptr;
-	delete hud;
-	delete max_object_x;
-	delete max_object_y;
+	max_object_x = nullptr;
+	max_object_y = nullptr;
+
+	if (hud != nullptr)
+	{
+		delete hud;
+		hud = nullptr;
+	}
 
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }

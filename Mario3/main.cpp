@@ -5,24 +5,13 @@
 
 #include "debug.h"
 #include "Game.h"
-#include "components/KeyboardHandler/SampleKeyEventHandler.h"
+#include "GameData.h"
 #include "configs/All.h"
-
-//#include "objects/GameObject.h"
-//#include "components/Texture/Textures.h"
-//#include "components/Animation/Animation.h"
-//#include "components/Animation/Animations.h"
-
-//#include "objects/Mario.h"
-//#include "objects/materials/bricks/Brick.h"
-//#include "objects/monsters/Goomba.h"
-//#include "objects/items/Coin.h"
-//#include "objects/Platform.h"
 
 #define WINDOW_CLASS_NAME L"Super Mario Bros 3"
 #define MAIN_WINDOW_TITLE L"Super Mario Bros 3"
 #define WINDOW_ICON_PATH L"src/assets/logos/mario.ico"
-#define BACKGROUND_COLOR D3DXCOLOR(156.0f/255, 252.0f/255, 240.0f/255, 255.0f)
+//#define BACKGROUND_COLOR D3DXCOLOR(156.0f/255, 252.0f/255, 240.0f/255, 255.0f)
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -55,7 +44,7 @@ void Render()
 	ID3D10RenderTargetView* pRenderTargetView = g->GetRenderTargetView();
 	ID3DX10Sprite* spriteHandler = g->GetSpriteHandler();
 
-	pD3DDevice->ClearRenderTargetView(pRenderTargetView, BACKGROUND_COLOR);
+	pD3DDevice->ClearRenderTargetView(pRenderTargetView, g->GetBackgroundColor());
 
 	spriteHandler->Begin(D3DX10_SPRITE_SORT_TEXTURE);
 
@@ -150,7 +139,6 @@ int Run()
 
 			Update(dt);
 			Render();
-
 			CGame::GetInstance()->SwitchScene();
 		}
 		else

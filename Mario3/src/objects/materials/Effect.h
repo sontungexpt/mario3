@@ -8,17 +8,21 @@ using namespace std;
 class CEffect : public CGameObject
 {
 	ULONGLONG appear_time_start;
+
 	int type;
+	int effect;
 
 public:
 	CEffect(float x, float y) : CGameObject(x, y) {
 		vy = EFFECT_SPEED_Y;
 		appear_time_start = 0;
+		effect = EFFECT_FADE_OUT;
 	}
 
-	CEffect(float x, float y, int type) : CGameObject(x, y) {
+	CEffect(float x, float y, int type, int effect = EFFECT_FADE_OUT) : CGameObject(x, y) {
 		vy = EFFECT_SPEED_Y;
 		this->type = type;
+		this->effect = effect;
 		SetState(EFFECT_STATE_APPEAR);
 	}
 
