@@ -110,7 +110,7 @@ src\settings\objects\monsters\hammer.txt
 5	150	164	16	16	5	1002031	1002000	1002030	1	1
 
 # MARIO
-0	38	68
+//0	38	68
 
 #GRASS
 62	22	36

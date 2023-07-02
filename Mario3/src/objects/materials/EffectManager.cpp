@@ -24,6 +24,7 @@ void CEffectManager::Gennerate(LPGAMEOBJECT ref_object, int type, float distance
 	case POINT_2000:
 	case POINT_4000:
 	case POINT_8000:
+	case LIFE_UP:
 		ref_y = ref_object->GetTop() - POINT_BBOX_HEIGHT / 2 - distance_from_top;
 		break;
 	}

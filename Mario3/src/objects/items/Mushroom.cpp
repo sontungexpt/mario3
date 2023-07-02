@@ -11,6 +11,7 @@ void CMushroom::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 
 	if (mario->IsSmall())
 	{
+		if (is_collected) return;
 		CEffectManager::GetInstance()->Gennerate(this, POINT_1000);
 		CGameData::GetInstance()->IncreasePointBy(1000);
 
@@ -38,7 +39,7 @@ void CMushroom::Render()
 		break;
 	default:
 		DebugOut(L"[ERROR] In CMushRoom::Render animation id = %d", ani_id);
-		break;
+		return;
 	}
 
 	CAnimations* animations = CAnimations::GetInstance();
@@ -71,6 +72,7 @@ void CMushroom::SetState(int state)
 
 void CMushroom::BeCollected()
 {
+	if (is_collected) return;
 	CItem::BeCollected();
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();

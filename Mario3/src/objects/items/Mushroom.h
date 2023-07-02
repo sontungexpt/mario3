@@ -7,6 +7,7 @@
 #include "Item.h"
 
 class CMushroom : public CItem {
+protected:
 	void OnCollisionWithPlayer(LPCOLLISIONEVENT e);
 
 public:
@@ -24,11 +25,11 @@ public:
 		ay = MUSHROOM_GRAVITY;
 	};
 
-	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 
-	void GetBoundingBox(float& l, float& t, float& r, float& b);
-	void Render();
-	void SetState(int state);
-	void Walk() { SetState(MUSHROOM_STATE_WALKING); }
-	void BeCollected();
+	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
+	virtual void Render();
+	virtual void SetState(int state);
+	virtual void Walk() { SetState(MUSHROOM_STATE_WALKING); }
+	virtual void BeCollected();
 };

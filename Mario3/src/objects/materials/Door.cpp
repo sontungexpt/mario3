@@ -9,8 +9,6 @@ void CDoor::EnterDoor()
 	is_want_entry = TRUE;
 	entry_door_time_start = GetTickCount64();
 	CEffectManager::GennerateChangeScene();
-	/*CGameData::GetInstance()->SetEntryDoorLevel(door_level);
-	CGame::GetInstance()->InitiateSwitchScene(scene_id);*/
 }
 
 void CDoor::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)

@@ -16,5 +16,4 @@
 
 #define ID_ANI_MUSHROOM_RED 301001
 #define ID_ANI_MUSHROOM_GREEN 301002
-
 #pragma endregion

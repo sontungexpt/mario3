@@ -42,6 +42,7 @@ public:
 
 	void SetLife(int player_life) { this->player_life = player_life; };
 	void DecreaseLifeBy1() { player_life = player_life > 0 ? player_life - 1 : 0; };
+	void IncreaseLifeBy1() { player_life++; }
 	int GetLife() { return player_life; };
 
 	int GetMaxDoorLevelPassed() { return max_door_level_passed; }

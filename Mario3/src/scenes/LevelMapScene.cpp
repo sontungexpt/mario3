@@ -26,16 +26,16 @@ void CLevelMapScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_MARIO:
-		if (player != nullptr)
-		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
-			return;
-		}
-		obj = new CMarioLevelMap(x, y);
-		player = (CMarioLevelMap*)obj;
-		DebugOut(L"[INFO] Player object has been created!\n");
-		break;
+		//case OBJECT_TYPE_MARIO:
+			//if (player != nullptr)
+			//{
+			//	DebugOut(L"[ERROR] MARIO object was created before!\n");
+			//	return;
+			//}
+			//obj = new CMarioLevelMap(x, y);
+			//player = (CMarioLevelMap*)obj;
+			//DebugOut(L"[INFO] Player object has been created!\n");
+		//break;
 	case OBJECT_TYPE_GRASS:
 		obj = new CGrass(x, y);
 		break;
@@ -101,6 +101,20 @@ void CLevelMapScene::_ParseSection_SETTINGS(string line)
 	{
 		start_x = (float)atof(tokens[1].c_str());
 		start_y = (float)atof(tokens[2].c_str());
+
+		if (player != nullptr)
+		{
+			DebugOut(L"[ERROR] MARIO object was created before!\n");
+		}
+		else
+		{
+			CGameObject* obj = nullptr;
+			obj = new CMarioLevelMap(start_x, start_y);
+			player = (CMarioLevelMap*)obj;
+			obj->SetPosition(start_x, start_y);
+			objects.push_back(obj);
+			DebugOut(L"[INFO] Player object has been created!\n");
+		}
 	}
 	else
 	{

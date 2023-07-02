@@ -229,7 +229,7 @@ src\settings\objects\monsters\carnivorous_plant.txt
 61	650	622	2
 61	720	570	1
 
-61	1455	396	2
+61	1455	396	3
 
 61	1471	595	2
 

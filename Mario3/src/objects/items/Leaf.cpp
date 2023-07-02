@@ -28,7 +28,7 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	// sometimes the wind blows upwards
 	// so leaves fly higher than usual
 	random_device int_gen;
-	uniform_int_distribution<int> int_distribution(0, 7);
+	uniform_int_distribution<int> int_distribution(0, 9);
 	if (is_falling && int_distribution(int_gen) == 3)
 	{
 		vy -= LEAF_WIND_POWER_SPPED_Y;

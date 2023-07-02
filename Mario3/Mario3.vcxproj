@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="src\components\KeyboardHandler\LevelMapKeyEventHandler.cpp" />
     <ClCompile Include="src\GameData.cpp" />
+    <ClCompile Include="src\objects\items\LifeUpMushroom.cpp" />
     <ClCompile Include="src\objects\MarioAttackingZone.cpp" />
     <ClCompile Include="src\objects\GameObject.cpp" />
     <ClCompile Include="src\objects\items\Bullet.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="src\configs\monsters\Plant.h" />
     <ClInclude Include="src\configs\monsters\PlantShooter602000.h" />
     <ClInclude Include="src\GameData.h" />
+    <ClInclude Include="src\objects\items\LifeUpMushroom.h" />
     <ClInclude Include="src\objects\MarioAttackingZone.h" />
     <ClInclude Include="src\objects\items\Bullet.h" />
     <ClInclude Include="src\objects\items\DebrisBrick.h" />

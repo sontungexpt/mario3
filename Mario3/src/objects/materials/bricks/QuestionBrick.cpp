@@ -6,6 +6,7 @@
 #include "objects/items/Coin.h"
 #include "objects/items/Mushroom.h"
 #include "objects/items/Leaf.h"
+#include "objects/items/LifeUpMushroom.h"
 
 void CQuestionBrick::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -107,6 +108,9 @@ void CQuestionBrick::CreateItem()
 		}
 	}
 	break;
+	case QUESTION_BRICK_MUSHROOM_LIFE_UP:
+		((CLifeUpMushroom*)CreateItem(new CLifeUpMushroom()))->Walk();
+		break;
 	case QUESTION_BRICK_NONE:
 		break;
 	default:

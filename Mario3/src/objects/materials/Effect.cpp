@@ -54,8 +54,10 @@ void CEffect::Render()
 		break;
 	case LIFE_UP:
 		aniId = EFFECT_ANI_ID_1UP;
+		break;
 	case HELP_LEVEL_MAP:
 		aniId = EFFECT_ANI_ID_HELP_LEVEL_MAP;
+		break;
 	case CHANGE_SCENE:
 		increase_alpha_time_start = GetTickCount64();
 		RenderChangeScreenEffect();
