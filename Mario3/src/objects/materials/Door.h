@@ -20,15 +20,14 @@ private:
 	BOOLEAN is_want_entry;
 
 	ULONGLONG entry_door_time_start;
-	ULONGLONG castle_help_time_start;
 
 public:
-	CDoor(float x, float y, int scene_id, int door_level) : CPortal(x, y, x + DOOR_BBOX_WIDTH, y + DOOR_BBOX_HEIGHT, scene_id)
+	CDoor(float x, float y, int scene_id, int door_level) :
+		CPortal(x, y, x + DOOR_BBOX_WIDTH, y + DOOR_BBOX_HEIGHT, scene_id)
 	{
 		this->door_level = door_level;
 		is_want_entry = FALSE;
 		entry_door_time_start = 0;
-		castle_help_time_start = 0;
 		if (door_level == DOOR_LEVEL_CASTLE)
 			CEffectManager::Gennerate(
 				GetRight() + HELP_LEVEL_MAP_BBOX_WIDTH / 2,
@@ -38,7 +37,10 @@ public:
 			);
 	}
 
-	BOOLEAN  IsPassed() { return CGameData::GetInstance()->GetMaxDoorLevelPassed() >= door_level; }
+	BOOLEAN  IsPassed()
+	{
+		return CGameData::GetInstance()->GetMaxDoorLevelPassed() >= door_level;
+	}
 
 	void EnterDoor();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr);

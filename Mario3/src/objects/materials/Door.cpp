@@ -16,7 +16,6 @@ void CDoor::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	{
 		CGameData::GetInstance()->SetEntryDoorLevel(door_level);
 		CGame::GetInstance()->InitiateSwitchScene(scene_id);
-		return;
 	}
 }
 
