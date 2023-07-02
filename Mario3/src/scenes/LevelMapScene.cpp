@@ -7,6 +7,7 @@
 #include "objects/Platform.h"
 #include "objects/materials/Grass.h"
 #include "objects/materials/Door.h"
+#include "objects/monsters/Hammer.h"
 
 void CLevelMapScene::_ParseSection_OBJECTS(string line)
 {
@@ -44,6 +45,9 @@ void CLevelMapScene::_ParseSection_OBJECTS(string line)
 		obj = new CDoor(x, y, screen_id, door_level);
 	}
 	break;
+	case OBJECT_TYPE_HAMMER:
+		obj = new CHammer(x, y);
+		break;
 	case OBJECT_TYPE_PLATFORM:
 	{
 		float cell_width = (float)atof(tokens[3].c_str());

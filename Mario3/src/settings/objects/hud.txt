@@ -1,7 +1,8 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 # HUD BACKGROUND
-103100	0	2	252	35	120
+//103100	0	2	252	35	120
+103100	8	2	260	35	120
 
 # NUMBER
 # 0

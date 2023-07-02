@@ -23,7 +23,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_S:
 	{
-		if (mario->IsFullPower())
+		if (mario->HasTail() && mario->IsFullPower())
 			mario->SetState(MARIO_STATE_FLY);
 		else
 			mario->SetState(MARIO_STATE_JUMP);
@@ -62,7 +62,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_S:
-		if (mario->IsFullPower())
+		if (mario->HasTail() && mario->IsFullPower())
 			mario->SetState(MARIO_STATE_FLY_RELEASE);
 		else
 			mario->SetState(MARIO_STATE_RELEASE_JUMP);

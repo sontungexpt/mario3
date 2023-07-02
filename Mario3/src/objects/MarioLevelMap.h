@@ -21,6 +21,7 @@ private:
 	float distance_specical_x;
 	float distance_specical_y;
 
+	int direction_hit_door;
 	BOOLEAN is_stop_moving;
 
 	void OnCollisionWithDoor(LPCOLLISIONEVENT e);
@@ -35,6 +36,7 @@ public:
 		moving_start_y = -1;
 		specical_target_x = -1;
 		specical_target_y = -1;
+		direction_hit_door = -1;
 		is_stop_moving = TRUE;
 	}
 

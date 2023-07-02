@@ -10,6 +10,11 @@
 
 #include "materials/EffectManager.h"
 
+#define DIRECTION_HIT_DOOR_FROM_TOP 1
+#define DIRECTION_HIT_DOOR_FROM_BOTTOM 2
+#define DIRECTION_HIT_DOOR_FROM_LEFT	3
+#define DIRECTION_HIT_DOOR_FROM_RIGHT 4
+
 void CMarioLevelMap::OnNoCollision(DWORD dt)
 {
 	if (state == MARIO_LEVEL_MAP_STATE_MOVING_SPECIAL_POS)
@@ -74,6 +79,14 @@ void CMarioLevelMap::OnCollisionWith(LPCOLLISIONEVENT e)
 void CMarioLevelMap::OnCollisionWithDoor(LPCOLLISIONEVENT e)
 {
 	door = dynamic_cast<CDoor*>(e->obj);
+	if (e->IsCollidedFromBottom())
+		direction_hit_door = DIRECTION_HIT_DOOR_FROM_BOTTOM;
+	else if (e->IsCollidedFromTop())
+		direction_hit_door = DIRECTION_HIT_DOOR_FROM_TOP;
+	else if (e->IsCollidedFromRight())
+		direction_hit_door = DIRECTION_HIT_DOOR_FROM_RIGHT;
+	else
+		direction_hit_door = DIRECTION_HIT_DOOR_FROM_LEFT;
 }
 
 void CMarioLevelMap::Render()
@@ -170,24 +183,44 @@ void CMarioLevelMap::SetState(int state)
 	{
 	case MARIO_LEVEL_MAP_STATE_MOVING_RIGHT:
 		if (!is_stop_moving) return;
+		if (door)
+		{
+			if (!door->IsPassed() && direction_hit_door != DIRECTION_HIT_DOOR_FROM_RIGHT)
+				return;
+		}
 		moving_start_x = x;
 		vx = MARIO_LEVEL_MAP_SPEED;
 		is_stop_moving = FALSE;
 		break;
 	case MARIO_LEVEL_MAP_STATE_MOVING_LEFT:
 		if (!is_stop_moving) return;
+		if (door)
+		{
+			if (!door->IsPassed() && direction_hit_door != DIRECTION_HIT_DOOR_FROM_LEFT)
+				return;
+		}
 		moving_start_x = x;
 		is_stop_moving = FALSE;
 		vx = -MARIO_LEVEL_MAP_SPEED;
 		break;
 	case MARIO_LEVEL_MAP_STATE_MOVING_UP:
 		if (!is_stop_moving) return;
+		if (door)
+		{
+			if (!door->IsPassed() && direction_hit_door != DIRECTION_HIT_DOOR_FROM_TOP)
+				return;
+		}
 		moving_start_y = y;
 		vy = -MARIO_LEVEL_MAP_SPEED;
 		is_stop_moving = FALSE;
 		break;
 	case MARIO_LEVEL_MAP_STATE_MOVING_DOWN:
 		if (!is_stop_moving) return;
+		if (door)
+		{
+			if (!door->IsPassed() && direction_hit_door != DIRECTION_HIT_DOOR_FROM_BOTTOM)
+				return;
+		}
 		moving_start_y = y;
 		is_stop_moving = FALSE;
 		vy = MARIO_LEVEL_MAP_SPEED;

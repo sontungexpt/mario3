@@ -20,7 +20,6 @@ void CMonster::OnCollisionWithMonster(LPCOLLISIONEVENT e)
 	{
 		if (e->IsCollidedInXDimension())
 		{
-			// move same direction >> same state >> diff velocity
 			if (
 				(
 					state == MONSTER_STATE_WALKING_LEFT ||
@@ -33,6 +32,7 @@ void CMonster::OnCollisionWithMonster(LPCOLLISIONEVENT e)
 					)
 				)
 			{
+				// move same direction >> same state >> diff velocity
 				if (monster_dest->GetState() == state)
 				{
 					// objv > v change state of objv
@@ -65,10 +65,10 @@ void CMonster::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 	if (platform)
 	{
-		is_on_platform = true;
-		y = platform->GetTop() - GetHeight() - 2.0f;
-		//DebugOut(L"top: %f\n", platform->GetTop());
-		//DebugOut(L"y: %f\n", y);
+		is_on_platform = TRUE;
+		DebugOut(L"y: %f\n", y);
+		//y = y - 2.0f;
+		//y = platform->GetTop() - GetHeight() - 2.0f;
 	}
 }
 
@@ -208,6 +208,5 @@ void CMonster::BeKickedByKoopa()
 {
 	CEffectManager::Gennerate(this, POINT_100, 0.0f);
 	CGameData::GetInstance()->IncreasePointBy(100);
-
 	is_deleted = true;
 }

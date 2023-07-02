@@ -6,6 +6,7 @@
 #define OBJECT_TYPE_GOOMBA	1
 #define OBJECT_TYPE_KOOPA 2
 #define OBJECT_TYPE_PLANT 3
+#define OBJECT_TYPE_HAMMER 4
 
 // platforms
 #define OBJECT_TYPE_PLATFORM 5

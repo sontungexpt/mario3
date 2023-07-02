@@ -215,10 +215,10 @@ void CHud::RenderHudBackground()
 
 void CHud::RenderMarioRemainingLife()
 {
-	float start_x = GetLeft() + 36;
+	float start_x = GetLeft() + 44;
 	float start_y = GetTop() + 15;
 
-	float life_icon_x = GetLeft() + HUD_LIFE_BBOX_WIDTH / 2 + 6;
+	float life_icon_x = GetLeft() + HUD_LIFE_BBOX_WIDTH / 2 + 14;
 	float life_icon_y = GetTop() + HUD_LIFE_BBOX_HEIGHT / 2 + 13;
 
 	RenderIcon("life", life_icon_x, life_icon_y);
@@ -229,7 +229,7 @@ void CHud::RenderMarioRemainingLife()
 void CHud::RenderArrowPower()
 {
 	float y_arrow = GetTop() + 4 + HUD_ARROW_BBOX_HEIGHT / 2;
-	float x_start_arrow = GetLeft() + 56 + HUD_ARROW_BBOX_HEIGHT / 2;
+	float x_start_arrow = GetLeft() + 64 + HUD_ARROW_BBOX_HEIGHT / 2;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 
@@ -252,7 +252,7 @@ void CHud::RenderArrowPower()
 	}
 
 	float y_full_power = GetTop() + 4 + HUD_FULL_POWER_HEIGHT / 2;
-	float x_full_power = GetLeft() + 105 + HUD_FULL_POWER_WIDTH / 2;
+	float x_full_power = GetLeft() + 113 + HUD_FULL_POWER_WIDTH / 2;
 	CAnimations::GetInstance()->Get(ID_ANI_FULL_POWER_ICON_BLACK)->Render(x_full_power, y_full_power);
 
 	if (is_full_power_dark)
@@ -274,7 +274,7 @@ void CHud::RenderArrowPower()
 
 void CHud::RenderPlayerPoint()
 {
-	float start_x = GetLeft() + 59;
+	float start_x = GetLeft() + 69;
 	float start_y = GetTop() + 15;
 
 	RenderNumber(CGameData::GetInstance()->GetPoint(), start_x, start_y, 6);
@@ -282,7 +282,7 @@ void CHud::RenderPlayerPoint()
 
 void CHud::RenderWorldNumber()
 {
-	float start_x = GetLeft() + 48;
+	float start_x = GetLeft() + 56;
 	float start_y = GetTop() + 5;
 
 	RenderString("WORLD", start_x - HUD_CHAR_BBOX_WIDTH * 5 - 4, start_y - 2);
@@ -291,7 +291,7 @@ void CHud::RenderWorldNumber()
 
 void CHud::RenderPlayerCoin()
 {
-	float coin_x = GetLeft() + 138;
+	float coin_x = GetLeft() + 143;
 	float coin_y = GetTop() + 5;
 
 	float dolar_icon_y = GetTop() + 7;
@@ -302,7 +302,7 @@ void CHud::RenderPlayerCoin()
 
 void CHud::RenderMarioRemainingTime()
 {
-	float start_x = GetLeft() + 131;
+	float start_x = GetLeft() + 137;
 	float start_y = GetTop() + 15;
 
 	float clock_icon_y = GetTop() + 19.5f;

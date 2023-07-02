@@ -147,6 +147,9 @@
     <ClCompile Include="src\components\KeyboardHandler\LevelMapKeyEventHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\monsters\Hammer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\Animation\Animation.h">
@@ -389,6 +392,12 @@
     <ClInclude Include="src\components\KeyboardHandler\LevelMapKeyEventHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\configs\monsters\Hammer604000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\monsters\Hammer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -417,6 +426,7 @@
     <Text Include="src\settings\objects\materials\breakable_brick.txt" />
     <Text Include="src\settings\objects\effect.txt" />
     <Text Include="src\settings\objects\hud.txt" />
+    <Text Include="src\settings\objects\monsters\hammer.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\assets\textures\misc_left.png">

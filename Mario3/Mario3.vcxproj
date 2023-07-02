@@ -147,6 +147,7 @@
     <ClCompile Include="src\objects\items\Mushroom.cpp" />
     <ClCompile Include="src\objects\materials\Hud.cpp" />
     <ClCompile Include="src\objects\materials\Pipe.cpp" />
+    <ClCompile Include="src\objects\monsters\Hammer.cpp" />
     <ClCompile Include="src\objects\monsters\plants\CarnivorousPlant.cpp" />
     <ClCompile Include="src\objects\monsters\Koopa.cpp" />
     <ClCompile Include="src\objects\monsters\Monster.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="src\configs\core\SceneIds.h" />
     <ClInclude Include="src\configs\core\ObjectTypes.h" />
     <ClInclude Include="src\configs\core\Texture.h" />
+    <ClInclude Include="src\configs\monsters\Hammer604000.h" />
     <ClInclude Include="src\configs\monsters\Koopa601000.h" />
     <ClInclude Include="src\configs\monsters\Monster.h" />
     <ClInclude Include="src\configs\items\Mushroom301000.h" />
@@ -220,6 +222,7 @@
     <ClInclude Include="src\objects\items\Mushroom.h" />
     <ClInclude Include="src\objects\materials\Hud.h" />
     <ClInclude Include="src\objects\materials\Pipe.h" />
+    <ClInclude Include="src\objects\monsters\Hammer.h" />
     <ClInclude Include="src\objects\monsters\plants\CarnivorousPlant.h" />
     <ClInclude Include="src\objects\monsters\Koopa.h" />
     <ClInclude Include="src\objects\monsters\Monster.h" />
@@ -273,6 +276,7 @@
     <Text Include="src\settings\game-mario.txt" />
     <Text Include="src\settings\objects\materials\grass.txt" />
     <Text Include="src\settings\objects\items\mushroom.txt" />
+    <Text Include="src\settings\objects\monsters\hammer.txt" />
     <Text Include="src\settings\objects\monsters\koopa.txt" />
     <Text Include="src\settings\objects\mario.txt" />
     <Text Include="src\settings\objects\materials\pipe.txt" />
