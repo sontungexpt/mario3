@@ -3,16 +3,19 @@
 #include "GameData.h"
 #include "components/KeyboardHandler/LevelMapKeyEventHandler.h"
 
-#define START_SPRITE_ID	1001500
-
 class CLevelMapScene : public CPlayScene
 {
 private:
 	float start_x;
 	float start_y;
 
+	// to make the player move from the losed door to the previous door
+	float prev_door_x;
+	float prev_door_y;
+
 	void RenderStartPoint();
 	void _ParseSection_SETTINGS(string line);
+	int CreatePlayer(float x, float y);
 	void _ParseSection_OBJECTS(string line) override;
 
 public:
@@ -21,12 +24,19 @@ public:
 	{
 		start_x = 0;
 		start_y = 0;
+		prev_door_x = 0;
+		prev_door_y = 0;
+
 		key_handler = new CLevelMapKeyHandler(this);
 	};
 	void Render();
 
 	void Update(DWORD dt);
-	void SetPlayerStart(float x, float y) { start_x = x; start_y = y; }
+	void SetPlayerStartPos(float x, float y)
+	{
+		start_x = x;
+		start_y = y;
+	}
 };
 
 typedef CLevelMapScene* LPLEVELMAPSCENE;

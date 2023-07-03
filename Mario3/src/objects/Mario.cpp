@@ -64,7 +64,6 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		}
 		vy = 0;
 	}
-
 	if (e->IsCollidedInXDimension() && e->obj->IsBlocking())
 	{
 		vx = 0;
@@ -527,8 +526,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// cannot exceed the allowed speed
 	if (fabs(vx) > fabs(max_vx))
 		vx = max_vx;
-	if (is_flying && fabs(vy) > fabs(max_vy))
-		vy = max_vy;
+	//if (is_flying && fabs(vy) > fabs(max_vy))
+	//	vy = max_vy;
 
 	UpdatePower();
 

@@ -13,9 +13,6 @@ class CMarioLevelMap : public CMario
 private:
 	CDoor* door;
 
-	float moving_start_x;
-	float moving_start_y;
-
 	float specical_target_x;
 	float specical_target_y;
 	float distance_specical_x;
@@ -32,8 +29,6 @@ public:
 		door = nullptr;
 		ax = 0;
 		ay = 0;
-		moving_start_x = -1;
-		moving_start_y = -1;
 		specical_target_x = -1;
 		specical_target_y = -1;
 		direction_hit_door = -1;
@@ -54,7 +49,7 @@ public:
 
 	void SetLevel(int level) { CGameData::GetInstance()->SetMarioLevel(level); }
 	void EnterDoor() { if (door) door->EnterDoor(); }
-	void MoveToSpecialPos(float x, float y);
+	void MoveToSpecialPos(float target_x, float target_y);
 	void MoveToSpecialPosFrom(float x, float y, float special_posx, float special_posy);
 
 	float CalulateVx(float target_x, float target_y);

@@ -4,6 +4,8 @@
 
 void CDoor::EnterDoor()
 {
+	if (door_level - 1 != CGameData::GetInstance()->GetMaxDoorLevelPassed())
+		return;
 	CGameData::GetInstance()->SetGameOver(FALSE);
 	CGameData::GetInstance()->SetEntryDoorLevel(door_level);
 	CGame::GetInstance()->InitiateSwitchScene(scene_id);

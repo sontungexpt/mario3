@@ -25,36 +25,35 @@ void CMarioLevelMap::OnNoCollision(DWORD dt)
 		}
 		else
 		{
-			x += vx * dt;
-			y += vy * dt;
-			if (vx != 0 && fabs(x - specical_target_x) > distance_specical_x)
+			if (vx != 0 && fabs(x - start_x) > distance_specical_x)
 			{
 				x = specical_target_x;
 				vx = 0;
 			}
-
-			if (vy != 0 && fabs(y - specical_target_y) > distance_specical_y)
+			if (vy != 0 && fabs(y - start_y) > distance_specical_y)
 			{
 				y = specical_target_y;
 				vy = 0;
 			}
+			x += vx * dt;
+			y += vy * dt;
 		}
 	}
 	else
 	{
 		x += vx * dt;
 		y += vy * dt;
-		if (vx != 0 && fabs(x - moving_start_x) > MARIO_LEVEL_MAP_MAX_MOVING_DISTANCE)
+		if (vx != 0 && fabs(x - start_x) > MARIO_LEVEL_MAP_MAX_MOVING_DISTANCE)
 		{
-			x = vx > 0 ? moving_start_x + MARIO_LEVEL_MAP_MAX_MOVING_DISTANCE :
-				moving_start_x - MARIO_LEVEL_MAP_MAX_MOVING_DISTANCE;
+			x = vx > 0 ? start_x + MARIO_LEVEL_MAP_MAX_MOVING_DISTANCE :
+				start_x - MARIO_LEVEL_MAP_MAX_MOVING_DISTANCE;
 			SetState(MARIO_STATE_IDLE);
 		}
 
-		if (vy != 0 && fabs(y - moving_start_y) > MARIO_LEVEL_MAP_MAX_MOVING_DISTANCE)
+		if (vy != 0 && fabs(y - start_y) > MARIO_LEVEL_MAP_MAX_MOVING_DISTANCE)
 		{
-			y = vy > 0 ? moving_start_y + MARIO_LEVEL_MAP_MAX_MOVING_DISTANCE :
-				moving_start_y - MARIO_LEVEL_MAP_MAX_MOVING_DISTANCE;
+			y = vy > 0 ? start_y + MARIO_LEVEL_MAP_MAX_MOVING_DISTANCE :
+				start_y - MARIO_LEVEL_MAP_MAX_MOVING_DISTANCE;
 			SetState(MARIO_STATE_IDLE);
 		}
 	}
@@ -125,18 +124,22 @@ void CMarioLevelMap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
-void CMarioLevelMap::MoveToSpecialPos(float x, float y)
+void CMarioLevelMap::MoveToSpecialPos(float target_x, float target_y)
 {
 	if (!is_stop_moving) return;
+	if (x == target_x && y == target_y) return;
 
-	specical_target_x = x;
-	specical_target_y = y;
+	start_x = x;
+	start_y = y;
 
-	distance_specical_x = fabs(x - specical_target_x);
-	distance_specical_y = fabs(y - specical_target_y);
+	specical_target_x = target_x;
+	specical_target_y = target_y;
 
-	vx = CalulateVx(specical_target_x, specical_target_y);
-	vy = CalulateVy(specical_target_y, specical_target_y);
+	distance_specical_x = fabs(x - target_x);
+	distance_specical_y = fabs(y - target_y);
+
+	vx = CalulateVx(target_x, target_y);
+	vy = CalulateVy(target_x, target_y);
 
 	SetState(MARIO_LEVEL_MAP_STATE_MOVING_SPECIAL_POS);
 }
@@ -148,15 +151,9 @@ void CMarioLevelMap::MoveToSpecialPosFrom(float x, float y, float special_posx, 
 	this->x = x;
 	this->y = y;
 
-	specical_target_x = special_posx;
-	specical_target_y = special_posy;
-	distance_specical_x = fabs(x - specical_target_x);
-	distance_specical_y = fabs(y - specical_target_y);
+	if (x == special_posx && y == special_posy) return;
 
-	vx = CalulateVx(specical_target_x, specical_target_y);
-	vy = CalulateVy(specical_target_y, specical_target_y);
-
-	SetState(MARIO_LEVEL_MAP_STATE_MOVING_SPECIAL_POS);
+	MoveToSpecialPos(special_posx, special_posy);
 }
 
 float CMarioLevelMap::CalulateVx(float target_x, float target_y)
@@ -188,7 +185,7 @@ void CMarioLevelMap::SetState(int state)
 			if (!door->IsPassed() && direction_hit_door != DIRECTION_HIT_DOOR_FROM_RIGHT)
 				return;
 		}
-		moving_start_x = x;
+		start_x = x;
 		vx = MARIO_LEVEL_MAP_SPEED;
 		is_stop_moving = FALSE;
 		break;
@@ -199,7 +196,7 @@ void CMarioLevelMap::SetState(int state)
 			if (!door->IsPassed() && direction_hit_door != DIRECTION_HIT_DOOR_FROM_LEFT)
 				return;
 		}
-		moving_start_x = x;
+		start_x = x;
 		is_stop_moving = FALSE;
 		vx = -MARIO_LEVEL_MAP_SPEED;
 		break;
@@ -210,7 +207,7 @@ void CMarioLevelMap::SetState(int state)
 			if (!door->IsPassed() && direction_hit_door != DIRECTION_HIT_DOOR_FROM_TOP)
 				return;
 		}
-		moving_start_y = y;
+		start_y = y;
 		vy = -MARIO_LEVEL_MAP_SPEED;
 		is_stop_moving = FALSE;
 		break;
@@ -221,7 +218,7 @@ void CMarioLevelMap::SetState(int state)
 			if (!door->IsPassed() && direction_hit_door != DIRECTION_HIT_DOOR_FROM_BOTTOM)
 				return;
 		}
-		moving_start_y = y;
+		start_y = y;
 		is_stop_moving = FALSE;
 		vy = MARIO_LEVEL_MAP_SPEED;
 		break;

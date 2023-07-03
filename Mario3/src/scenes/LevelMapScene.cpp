@@ -26,16 +26,6 @@ void CLevelMapScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-		//case OBJECT_TYPE_MARIO:
-			//if (player != nullptr)
-			//{
-			//	DebugOut(L"[ERROR] MARIO object was created before!\n");
-			//	return;
-			//}
-			//obj = new CMarioLevelMap(x, y);
-			//player = (CMarioLevelMap*)obj;
-			//DebugOut(L"[INFO] Player object has been created!\n");
-		//break;
 	case OBJECT_TYPE_GRASS:
 		obj = new CGrass(x, y);
 		break;
@@ -43,6 +33,27 @@ void CLevelMapScene::_ParseSection_OBJECTS(string line)
 	{
 		int screen_id = atoi(tokens[3].c_str());
 		int door_level = atoi(tokens[4].c_str());
+
+		CGameData* data = CGameData::GetInstance();
+
+		if (data->GetEntryDoorLevel() == 0)
+		{
+			prev_door_x = start_x;
+			prev_door_y = start_y;
+		}
+		else if (door_level == data->GetEntryDoorLevel() - 1)
+		{
+			prev_door_x = x;
+			prev_door_y = y;
+		}
+
+		else if (door_level == data->GetEntryDoorLevel())
+		{
+			if (player)
+				player->SetPosition(x, y);
+			else
+				CreatePlayer(x, y);
+		}
 
 		obj = new CDoor(x, y, screen_id, door_level);
 	}
@@ -88,10 +99,6 @@ void CLevelMapScene::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
-void CLevelMapScene::RenderStartPoint()
-{
-	CAnimations::GetInstance()->Get(105050)->Render(start_x, start_y);
-}
 void CLevelMapScene::_ParseSection_SETTINGS(string line)
 {
 	vector<string> tokens = split(line);
@@ -99,27 +106,37 @@ void CLevelMapScene::_ParseSection_SETTINGS(string line)
 	if (tokens.size() < 2) return;
 	if (tokens[0] == "start_position")
 	{
-		start_x = (float)atof(tokens[1].c_str());
-		start_y = (float)atof(tokens[2].c_str());
+		SetPlayerStartPos((float)atof(tokens[1].c_str()), (float)atof(tokens[2].c_str()));
 
-		if (player != nullptr)
-		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
-		}
-		else
-		{
-			CGameObject* obj = nullptr;
-			obj = new CMarioLevelMap(start_x, start_y);
-			player = (CMarioLevelMap*)obj;
-			obj->SetPosition(start_x, start_y);
-			objects.push_back(obj);
-			DebugOut(L"[INFO] Player object has been created!\n");
-		}
+		CreatePlayer(start_x, start_y);
 	}
 	else
 	{
 		CPlayScene::_ParseSection_SETTINGS(line);
 	}
+}
+
+int CLevelMapScene::CreatePlayer(float x, float y)
+{
+	if (player != nullptr)
+	{
+		DebugOut(L"[ERROR] MARIO object was created before!\n");
+		return 0;
+	}
+	else
+	{
+		CGameObject* obj = new CMarioLevelMap(x, y);
+		player = (CMarioLevelMap*)obj;
+		obj->SetPosition(x, y);
+		objects.push_back(obj);
+		DebugOut(L"[INFO] Player object has been created!\n");
+		return 1;
+	}
+}
+
+void CLevelMapScene::RenderStartPoint()
+{
+	CAnimations::GetInstance()->Get(ID_ANI_START_POINT)->Render(start_x, start_y);
 }
 
 void CLevelMapScene::Render()
@@ -151,6 +168,13 @@ void CLevelMapScene::Update(DWORD dt)
 {
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way
+	CGameData* data = CGameData::GetInstance();
+	if (data->IsGameOver() && data->GetLife() >= 0)
+	{
+		((CMarioLevelMap*)player)->MoveToSpecialPos(prev_door_x, prev_door_y);
+		data->SetGameOver(FALSE);
+	}
+
 	vector<LPGAMEOBJECT> coObjects;
 
 	for (size_t i = 0; i < objects.size(); i++)
