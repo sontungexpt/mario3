@@ -2,11 +2,13 @@
 #include "debug.h"
 
 #include "components/Collision/Collision.h"
+#include "scenes/PlayScene.h"
 
 #include "Mario.h"
+#include "MarioAttackingZone.h"
 #include "Game.h"
+#include "Platform.h"
 
-#include "objects/Platform.h"
 #include "monsters/Goomba.h"
 #include "monsters/plants/Plant.h"
 #include "monsters/Koopa.h"
@@ -17,13 +19,13 @@
 
 #include "materials/Portal.h"
 #include "materials/Door.h"
+#include "materials/EffectManager.h"
+#include "materials/bricks/BreakableBrick.h"
 #include "materials/bricks/QuestionBrick.h"
 
 #include "configs/monsters/Gommba600000.h"
 #include "configs/materials/QuestionBrick100000.h"
-#include "materials/bricks/BreakableBrick.h"
-#include "objects/MarioAttackingZone.h"
-#include "objects/materials/EffectManager.h"
+#include "configs/core/SceneIds.h"
 
 void CMario::OnNoCollision(DWORD dt)
 {
@@ -491,6 +493,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
+	if (IsDead())
+	{
+		x += vx * dt;
+		y += vy * dt;
+		return;
+	}
+
 	/*if (attacking_zone)
 	{
 		float width_zone = MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH;
@@ -635,8 +644,8 @@ void CMario::SetState(int state)
 		vx = 0;
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		CGameData::GetInstance()->DecreaseLifeBy1();
-		//CGameData::GetInstance()->SetGameOver(TRUE);
-		DebugOut(L">>> Mario die\n");
+		CGameData::GetInstance()->SetGameOver(TRUE);
+		CGame::GetInstance()->InitiateSwitchScene(ID_LEVEL_MAP_SCENE);
 		break;
 	}
 

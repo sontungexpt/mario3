@@ -20,6 +20,7 @@ class CGame
 {
 	static CGame* __instance;
 	BOOLEAN is_paused = FALSE;
+	ULONGLONG switch_scene_time_start = 0;
 
 	HWND hWnd;									// Window handle
 

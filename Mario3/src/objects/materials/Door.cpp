@@ -1,22 +1,12 @@
 #include "Door.h"
 #include "debug.h"
-#include "Game.h"
 #include "configs/GameData.h"
 
 void CDoor::EnterDoor()
 {
-	is_want_entry = TRUE;
-	entry_door_time_start = GetTickCount64();
-	CEffectManager::GennerateChangeScene();
-}
-
-void CDoor::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
-{
-	if (is_want_entry && GetTickCount64() - entry_door_time_start > DOOR_ENTRY_WAITING_TIME)
-	{
-		CGameData::GetInstance()->SetEntryDoorLevel(door_level);
-		CGame::GetInstance()->InitiateSwitchScene(scene_id);
-	}
+	CGameData::GetInstance()->SetGameOver(FALSE);
+	CGameData::GetInstance()->SetEntryDoorLevel(door_level);
+	CGame::GetInstance()->InitiateSwitchScene(scene_id);
 }
 
 void CDoor::Render() {

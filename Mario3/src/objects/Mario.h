@@ -18,7 +18,6 @@ protected:
 
 	int level;
 	int power;
-	int coin;
 
 	LPMONSTER weapon_monster;
 	//CMarioAttackingZone* attacking_zone;
@@ -58,7 +57,6 @@ protected:
 public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
-		coin = 0;
 		power = 0;
 		nx = 1;
 
@@ -99,7 +97,6 @@ public:
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	int GetNx() { return nx; }
-	//void  SetNx(int nx) { this->nx = nx; }
 
 	// states
 	BOOLEAN IsSmall() { return level == MARIO_LEVEL_SMALL; };
@@ -118,7 +115,8 @@ public:
 	void LevelDown() { SetLevel(MARIO_LEVEL_SMALL); }
 
 	int GetPower() { return power; }
-	void StartPowerUp() {
+	void StartPowerUp()
+	{
 		is_power_upping = TRUE;
 		time_power_up_start = GetTickCount64();
 	}
@@ -132,9 +130,7 @@ public:
 	void SmashTail() {}
 
 	void StartUntouchable() { SetState(MARIO_STATE_UNTOUCHABLE); }
-	void JumpDeflect() {
-		vy = -MARIO_JUMP_DEFLECT_SPEED;
-	}
+	void JumpDeflect() { vy = -MARIO_JUMP_DEFLECT_SPEED; }
 
 	void Reset();
 };

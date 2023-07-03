@@ -5,6 +5,7 @@
 
 #include "PlayScene.h"
 #include "utils/Utils.h"
+#include "GameData.h"
 
 #include "components/Texture/Textures.h"
 #include "components/Sprite/Sprites.h"
@@ -22,7 +23,6 @@
 
 #include "objects/monsters/WindGoomba.h"
 #include "objects/monsters/WindKoopa.h"
-#include "GameData.h"
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
@@ -360,10 +360,17 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
-	CGameData::GetInstance()->CountDownRemainTime();
+	// player is dead not need to update other objects
+	if (player)
+	{
+		if (((CMario*)player)->IsDead())
+		{
+			player->Update(dt);
+			return;
+		}
+	}
 
-	if (CGameData::GetInstance()->IsGameOver())
-		return;
+	CGameData::GetInstance()->CountDownRemainTime();
 
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way
@@ -402,6 +409,9 @@ void CPlayScene::Update(DWORD dt)
 	if (cx < 0) cx = 0;
 	if (cy < 0) cy = 0;
 
+	game->SetCamPos(cx, cy);
+
+	// update hud
 	if (hud == nullptr)
 		hud = new CHud(cx + game->GetBackBufferWidth() / 2, cy + game->GetBackBufferHeight() - HUD_BACKGROUND_BBOX_HEIGHT / 2);
 	else
@@ -411,8 +421,6 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	hud->Update(dt);
-
-	game->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();
 }

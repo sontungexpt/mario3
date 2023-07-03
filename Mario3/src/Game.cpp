@@ -3,11 +3,16 @@
 #include "Game.h"
 #include "debug.h"
 #include "utils/Utils.h"
-#include "configs/core/SceneIds.h"
+
 #include "components/Texture/Textures.h"
 #include "components/Animation/Animations.h"
+
+// scenes
 #include "scenes/PlayScene.h"
 #include "scenes/LevelMapScene.h"
+#include "configs/core/SceneIds.h"
+
+#include "objects/materials/EffectManager.h"
 
 CGame* CGame::__instance = nullptr;
 
@@ -533,24 +538,32 @@ void CGame::SwitchScene()
 {
 	if (next_scene < 0 || next_scene == current_scene) return;
 
-	// when you create something new, you don't have anything to clear
-	if (current_scene != -1)
+	if (GetTickCount64() - switch_scene_time_start > SCENE_SWITCH_WAITING_TIME)
 	{
-		scenes[current_scene]->Unload();
+		// when you create something new, you don't have anything to clear
+		if (current_scene != -1)
+		{
+			scenes[current_scene]->Unload();
 
-		CSprites::GetInstance()->Clear();
-		CAnimations::GetInstance()->Clear();
+			CSprites::GetInstance()->Clear();
+			CAnimations::GetInstance()->Clear();
+		}
+
+		switch_scene_time_start = 0;
+		current_scene = next_scene;
+		LPSCENE s = scenes[next_scene];
+		this->SetKeyHandler(s->GetKeyEventHandler());
+		s->Load();
 	}
-
-	current_scene = next_scene;
-	LPSCENE s = scenes[next_scene];
-	this->SetKeyHandler(s->GetKeyEventHandler());
-	s->Load();
 }
 
 void CGame::InitiateSwitchScene(int scene_id)
 {
 	next_scene = scene_id;
+
+	// scene will not switch immediately, but wait until the current scene is done
+	switch_scene_time_start = GetTickCount64();
+	CEffectManager::GennerateChangeScene();
 }
 
 /// <summary>

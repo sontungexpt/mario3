@@ -14,12 +14,6 @@ class CHud : public CGameObject
 
 	// width and height automatic multiply by 6
 	void RenderFrame(float left, float top, int width, int height);
-	int GetAniIdChar(char number);
-	int GetAniIdIcon(string icon);
-	int GetAniIdNumber(int number);
-	void RenderIcon(string icon, float left, float top);
-	void RenderNumber(int number, float left, float top, int min_char = 0);
-	void RenderString(string str, float left, float top);
 
 	BOOLEAN is_full_power_dark;
 

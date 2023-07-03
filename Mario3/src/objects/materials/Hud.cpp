@@ -63,13 +63,18 @@ void CHud::RenderArrowPower()
 {
 	float y_arrow = GetTop() + 4 + HUD_ARROW_BBOX_HEIGHT / 2;
 	float x_start_arrow = GetLeft() + 64 + HUD_ARROW_BBOX_HEIGHT / 2;
+
+	float y_full_power = GetTop() + 4 + HUD_FULL_POWER_HEIGHT / 2;
+	float x_full_power = GetLeft() + 113 + HUD_FULL_POWER_WIDTH / 2;
+
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 
-	if (!mario)
+	if (!mario || mario->IsDead())
 	{
-		for (int i = 1; i <= MARIO_MAX_POWER - mario->GetPower(); i++)
+		for (int i = 1; i <= MARIO_MAX_POWER; i++)
 			CAnimations::GetInstance()->Get(ID_ANI_ARROW_ICON_BLACK)->Render(x_start_arrow + (i - 1) * HUD_ARROW_BBOX_WIDTH, y_arrow);
+		CAnimations::GetInstance()->Get(ID_ANI_FULL_POWER_ICON_BLACK)->Render(x_full_power, y_full_power);
 		return;
 	}
 
@@ -84,14 +89,10 @@ void CHud::RenderArrowPower()
 		time_change_full_power_status_start = GetTickCount64();
 	}
 
-	float y_full_power = GetTop() + 4 + HUD_FULL_POWER_HEIGHT / 2;
-	float x_full_power = GetLeft() + 113 + HUD_FULL_POWER_WIDTH / 2;
 	CAnimations::GetInstance()->Get(ID_ANI_FULL_POWER_ICON_BLACK)->Render(x_full_power, y_full_power);
 
-	if (is_full_power_dark)
-	{
-		return;
-	}
+	// if full power is dark, don't render white full power icon
+	if (is_full_power_dark) return;
 
 	if (mario->IsFullPower() && GetTickCount64() - time_change_full_power_status_start > HUD_FULL_POWER_FLASHING_DURATION)
 	{
