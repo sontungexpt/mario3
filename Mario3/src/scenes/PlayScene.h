@@ -8,6 +8,7 @@
 #include "components/Scene/Scene.h"
 #include "objects/GameObject.h"
 #include "objects/materials/Hud.h"
+#include "objects/materials/Effect.h"
 
 using namespace std;
 
@@ -19,6 +20,9 @@ protected:
 	LPHUD hud;
 
 	vector<LPGAMEOBJECT> objects;
+	CEffect* change_scene_effect;
+	// save the id of hidden map to remove it when switch scene
+	vector<int> hidden_map_ids;
 
 	// this is the floor of screen
 	// this mean it is the y of bottom of all objects
@@ -26,6 +30,8 @@ protected:
 	LPGAMEOBJECT max_object_y;
 	LPGAMEOBJECT max_object_x;
 
+	virtual void _ParseSection_HIDDEN_MAPS(string line);
+	virtual void ClearHiddenMaps();
 	virtual void _ParseSection_SPRITES(string line);
 	virtual void _ParseSection_ANIMATIONS(string line);
 

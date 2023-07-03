@@ -536,12 +536,14 @@ void CGame::Load(LPCWSTR gameFile)
 
 void CGame::SwitchScene()
 {
-	if (next_scene < 0 || next_scene == current_scene) return;
+	if (next_scene == current_scene) return;
+	//if (next_scene < 0 || next_scene == current_scene) return;
+	is_in_transition_scene = TRUE;
 
 	if (GetTickCount64() - switch_scene_time_start > SCENE_SWITCH_WAITING_TIME)
 	{
 		// when you create something new, you don't have anything to clear
-		if (current_scene != -1)
+		if (current_scene != INT_MIN)
 		{
 			scenes[current_scene]->Unload();
 
@@ -549,10 +551,11 @@ void CGame::SwitchScene()
 			CAnimations::GetInstance()->Clear();
 		}
 
-		switch_scene_time_start = 0;
 		current_scene = next_scene;
 		LPSCENE s = scenes[next_scene];
 		this->SetKeyHandler(s->GetKeyEventHandler());
+		switch_scene_time_start = 0;
+		is_in_transition_scene = FALSE;
 		s->Load();
 	}
 }

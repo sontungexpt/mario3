@@ -17,6 +17,7 @@ public:
 		this->key_handler = nullptr;
 	}
 
+	int GetId() { return id; }
 	LPKEYEVENTHANDLER GetKeyEventHandler() { return key_handler; }
 	virtual void Load() = 0; // each scene has its own load function
 	virtual void Unload() = 0; // each scene has its own unload function

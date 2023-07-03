@@ -19,7 +19,7 @@ void CGameData::CountDownRemainTime()
 		remain_time--;
 		if (remain_time == 0)
 		{
-			is_game_over = TRUE;
+			is_lost_life = TRUE;
 			count_down_time_start = 0;
 			return;
 		}

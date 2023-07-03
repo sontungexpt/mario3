@@ -235,6 +235,7 @@
     <ClInclude Include="src\objects\monsters\plants\Plant.h" />
     <ClInclude Include="src\objects\monsters\WindGoomba.h" />
     <ClInclude Include="src\objects\monsters\WindKoopa.h" />
+    <ClInclude Include="src\scenes\HiddenMap1Scene.h" />
     <ClInclude Include="src\scenes\LevelMapScene.h" />
     <ClInclude Include="src\components\Animation\Animation.h" />
     <ClInclude Include="src\components\Animation\AnimationFrame.h" />
@@ -287,9 +288,9 @@
     <Text Include="src\settings\objects\monsters\plant_shooter.txt" />
     <Text Include="src\settings\objects\materials\question_brick.txt" />
     <Text Include="src\settings\objects\platform.txt" />
-    <Text Include="src\settings\scenes\scene05.txt" />
-    <Text Include="src\settings\scenes\scene01.txt" />
-    <Text Include="src\settings\scenes\scene02.txt" />
+    <Text Include="src\settings\scenes\scene5\scene05.txt" />
+    <Text Include="src\settings\scenes\scene1\scene01.txt" />
+    <Text Include="src\settings\scenes\scene2\scene02.txt" />
     <Text Include="src\settings\scenes\levelmap.txt" />
   </ItemGroup>
   <ItemGroup>

@@ -33,7 +33,7 @@ public:
 	}
 
 	// core
-	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr);
 	void Render();
 	void RenderChangeScreenEffect();
 	void SetState(int state);

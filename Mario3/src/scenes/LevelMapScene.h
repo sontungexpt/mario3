@@ -26,7 +26,6 @@ public:
 		start_y = 0;
 		prev_door_x = 0;
 		prev_door_y = 0;
-
 		key_handler = new CLevelMapKeyHandler(this);
 	};
 	void Render();

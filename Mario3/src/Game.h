@@ -6,15 +6,15 @@
 
 #define DIRECTINPUT_VERSION 0x0800
 
-using namespace std;
-
-#include <unordered_map>
+#include <string>
 #include <dinput.h>
+#include <unordered_map>
 #include "components/Texture/Texture.h"
 #include "components/KeyboardHandler/KeyEventHandler.h"
 #include "components/Scene/Scene.h"
-#include <string>
 #include "configs/Game.h"
+
+using namespace std;
 
 class CGame
 {
@@ -50,8 +50,9 @@ class CGame
 	ID3D10SamplerState* pPointSamplerState;
 
 	unordered_map<int, LPSCENE> scenes;
-	int current_scene = -1;
-	int next_scene = -1;
+	int current_scene = INT_MIN;
+	int next_scene = INT_MIN;
+	BOOLEAN is_in_transition_scene = FALSE;
 
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
@@ -86,16 +87,18 @@ public:
 	void ProcessKeyboard();
 	void SetKeyHandler(LPKEYEVENTHANDLER handler) { keyHandler = handler; }
 
-	ID3D10Device* GetDirect3DDevice() { return this->pD3DDevice; }
-	IDXGISwapChain* GetSwapChain() { return this->pSwapChain; }
-	ID3D10RenderTargetView* GetRenderTargetView() { return this->pRenderTargetView; }
+	ID3D10Device* GetDirect3DDevice() { return pD3DDevice; }
+	IDXGISwapChain* GetSwapChain() { return pSwapChain; }
+	ID3D10RenderTargetView* GetRenderTargetView() { return pRenderTargetView; }
 
-	ID3DX10Sprite* GetSpriteHandler() { return this->spriteObject; }
+	ID3DX10Sprite* GetSpriteHandler() { return spriteObject; }
 
 	ID3D10BlendState* GetAlphaBlending() { return pBlendStateAlpha; };
 
 	int GetBackBufferWidth() { return backBufferWidth; }
 	int GetBackBufferHeight() { return backBufferHeight; }
+	int GetNextScene() { return next_scene; }
+	BOOLEAN IsInTransitionScene() { return is_in_transition_scene; }
 
 	static CGame* GetInstance();
 
@@ -107,6 +110,9 @@ public:
 	float GetCamYPos() { return cam_y; }
 
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
+	void AddScene(int id, LPSCENE scene) { scenes[id] = scene; };
+	void RemoveScene(int id) { scenes.erase(id); }
+
 	void Load(LPCWSTR gameFile);
 	void SwitchScene();
 	void InitiateSwitchScene(int scene_id);
@@ -118,7 +124,8 @@ public:
 	}
 
 	D3DXCOLOR GetBackgroundColor() { return background_color; }
-	void SetBackgroundColor(float R, float G, float B, float A) {
+	void SetBackgroundColor(float R, float G, float B, float A)
+	{
 		background_color = D3DXCOLOR(R / 255.0f, G / 255.0f, B / 255, A);
 	}
 

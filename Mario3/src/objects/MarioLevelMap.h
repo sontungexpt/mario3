@@ -21,18 +21,24 @@ private:
 	int direction_hit_door;
 	BOOLEAN is_stop_moving;
 
+	float CalulateVx(float target_x, float target_y);
+	float CalulateVy(float target_x, float target_y);
 	void OnCollisionWithDoor(LPCOLLISIONEVENT e);
 
 public:
 	CMarioLevelMap(float x, float y) : CMario(x, y)
 	{
-		door = nullptr;
 		ax = 0;
 		ay = 0;
 		specical_target_x = -1;
 		specical_target_y = -1;
 		direction_hit_door = -1;
 		is_stop_moving = TRUE;
+		door = nullptr;
+	}
+	~CMarioLevelMap()
+	{
+		door = nullptr;
 	}
 
 	// core
@@ -51,8 +57,4 @@ public:
 	void EnterDoor() { if (door) door->EnterDoor(); }
 	void MoveToSpecialPos(float target_x, float target_y);
 	void MoveToSpecialPosFrom(float x, float y, float special_posx, float special_posy);
-
-	float CalulateVx(float target_x, float target_y);
-
-	float CalulateVy(float target_x, float target_y);
 };

@@ -832,6 +832,7 @@ void CMario::SetLevel(int level)
 	is_appearance_changing = TRUE;
 	StartUntouchable();
 	this->level = level;
+	CGameData::GetInstance()->SetMarioLevel(level);
 }
 
 void CMario::Reset()

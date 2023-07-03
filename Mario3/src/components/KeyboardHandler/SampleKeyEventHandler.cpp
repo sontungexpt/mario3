@@ -17,6 +17,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)game->GetCurrentScene())->GetPlayer();
+	if (!mario) return;
 
 	switch (KeyCode)
 	{
@@ -41,6 +42,9 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_A:
 		mario->WantHoldKoopa();
 		break;
+	case DIK_8:
+		game->InitiateSwitchScene(-1);
+		break;
 	case DIK_R: // reset
 		//Reload();
 		break;
@@ -57,6 +61,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)game->GetCurrentScene())->GetPlayer();
+	if (!mario) return;
 
 	switch (KeyCode)
 	{
@@ -80,6 +85,7 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)game->GetCurrentScene())->GetPlayer();
+	if (!mario) return;
 
 	if (game->IsKeyDown(DIK_RIGHT))
 	{

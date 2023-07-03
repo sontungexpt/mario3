@@ -14,8 +14,9 @@ class CGameData {
 	int mario_level;
 	int max_door_level_passed;
 	int entry_door_level;
+	int hidden_map_id;
 
-	BOOLEAN is_game_over;
+	BOOLEAN is_lost_life;
 
 	ULONGLONG count_down_time_start;
 	ULONGLONG remain_time;
@@ -29,9 +30,10 @@ public:
 		entry_door_level = 0;
 		count_down_time_start = 0;
 		max_door_level_passed = 0;
+		hidden_map_id = -1;
 
+		is_lost_life = FALSE;
 		mario_level = MARIO_LEVEL_SMALL;
-		is_game_over = FALSE;
 	};
 	~CGameData() {};
 
@@ -56,8 +58,9 @@ public:
 	void IncreasePointBy(int player_point) { this->player_point += player_point; };
 	int GetPoint() { return player_point; };
 
-	void SetGameOver(BOOLEAN is_game_over) { this->is_game_over = is_game_over; };
-	BOOLEAN IsGameOver() { return is_game_over == TRUE; };
+	void SetGameOver(BOOLEAN is_lost_life) { this->is_lost_life = is_lost_life; };
+	BOOLEAN IsLostALife() { return is_lost_life == TRUE; };
+	BOOLEAN IsGameOver() { return is_lost_life == TRUE && player_life == 0; }
 
 	void CountDownRemainTime();
 	void InitRemainTime(ULONGLONG remain_time) { this->remain_time = remain_time; };
@@ -72,6 +75,6 @@ public:
 		player_point = 0;
 		remain_time = 0;
 		count_down_time_start = 0;
-		is_game_over = FALSE;
+		is_lost_life = FALSE;
 	};
 };

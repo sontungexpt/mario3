@@ -31,6 +31,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	max_object_y = nullptr;
 	player = nullptr;
 	hud = nullptr;
+	change_scene_effect = nullptr;
 	key_handler = new CSampleKeyHandler(this);
 }
 
@@ -38,12 +39,40 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define SCENE_SECTION_ASSETS	1
 #define SCENE_SECTION_OBJECTS	2
 #define SCENE_SECTION_SETTINGS	3
+#define SCENE_SECTION_HIDDEN_MAPS 4
 
 #define ASSETS_SECTION_UNKNOWN -1
 #define ASSETS_SECTION_SPRITES 1
 #define ASSETS_SECTION_ANIMATIONS 2
 
 #define MAX_SCENE_LINE 1024
+
+void CPlayScene::_ParseSection_HIDDEN_MAPS(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 2) return;
+	int id = atoi(tokens[0].c_str());
+	LPCWSTR path = ToLPCWSTR(tokens[1]);   // file: ASCII format (single-byte char) => Wide Char
+	LPSCENE scene = nullptr;
+	switch (id)
+	{
+	default:
+		scene = new CPlayScene(id, path);
+		break;
+	}
+	hidden_map_ids.push_back(id);
+	CGame::GetInstance()->AddScene(id, scene);
+}
+
+void CPlayScene::ClearHiddenMaps()
+{
+	for (int i = 0; i < hidden_map_ids.size(); i++)
+	{
+		CGame::GetInstance()->RemoveScene(hidden_map_ids[i]);
+	}
+	hidden_map_ids.clear();
+}
 
 void CPlayScene::_ParseSection_SPRITES(string line)
 {
@@ -343,6 +372,7 @@ void CPlayScene::Load()
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
 		if (line == "[SETTINGS]") { section = SCENE_SECTION_SETTINGS; continue; };
+		if (line == "[HIDDEN_MAPS]") { section = SCENE_SECTION_HIDDEN_MAPS; continue; }
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		switch (section)
@@ -350,6 +380,7 @@ void CPlayScene::Load()
 		case SCENE_SECTION_ASSETS: this->_ParseSection_ASSETS(line); break;
 		case SCENE_SECTION_OBJECTS: this->_ParseSection_OBJECTS(line); break;
 		case SCENE_SECTION_SETTINGS: this->_ParseSection_SETTINGS(line); break;
+		case SCENE_SECTION_HIDDEN_MAPS: this->_ParseSection_HIDDEN_MAPS(line); break;
 		}
 	}
 
@@ -360,14 +391,18 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
-	// player is dead not need to update other objects
-	if (player)
+	//player is dead not need to update other objects
+	CGame* game = CGame::GetInstance();
+
+	if (game->IsInTransitionScene())
 	{
-		if (((CMario*)player)->IsDead())
+		if (player && ((CMario*)player)->IsDead())
 		{
 			player->Update(dt);
-			return;
 		}
+		if (change_scene_effect)
+			change_scene_effect->Update(dt);
+		return;
 	}
 
 	CGameData::GetInstance()->CountDownRemainTime();
@@ -390,13 +425,16 @@ void CPlayScene::Update(DWORD dt)
 
 	// skip the rest if scene was already unloaded
 	// (Mario::Update might trigger PlayScene::Unload)
-	if (player == nullptr) return;
+
+	if (player == nullptr) {
+		game->SetCamPos(0, 0);
+		return;
+	};
 
 	// Update camera to follow mario
 	float cx, cy;
 	player->GetPosition(cx, cy);
 
-	CGame* game = CGame::GetInstance();
 	cx -= game->GetBackBufferWidth() / 2;
 
 	// having floor then mario can jump to hole and die
@@ -421,16 +459,25 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	hud->Update(dt);
-
 	PurgeDeletedObjects();
 }
 
 void CPlayScene::Render()
 {
 	for (int i = 0; i < objects.size(); i++)
+	{
+		if (dynamic_cast<CMario*>(objects[i]))
+			continue;
+		if (dynamic_cast<CEffect*>(objects[i]))
+		{
+			if (((CEffect*)objects[i])->GetType() == CHANGE_SCENE)
+				continue;
+		}
 		objects[i]->Render();
-	if (hud)
-		hud->Render();
+	}
+	if (hud) hud->Render();
+	if (player) player->Render();
+	if (change_scene_effect) change_scene_effect->Render();
 }
 
 void CPlayScene::Clear()
@@ -441,6 +488,7 @@ void CPlayScene::Clear()
 		delete (*it);
 	}
 	objects.clear();
+	ClearHiddenMaps();
 }
 
 void CPlayScene::Unload()
@@ -449,10 +497,20 @@ void CPlayScene::Unload()
 		delete objects[i];
 
 	objects.clear();
+
+	//clear hidden maps if next scene is not a hidden map
+
+	vector<int>::iterator it =
+		find(hidden_map_ids.begin(),
+			hidden_map_ids.end(),
+			CGame::GetInstance()->GetNextScene());
+	if (it == hidden_map_ids.end())
+		ClearHiddenMaps();
+
 	player = nullptr;
 	max_object_x = nullptr;
 	max_object_y = nullptr;
-
+	change_scene_effect = nullptr;
 	if (hud != nullptr)
 	{
 		delete hud;
@@ -488,6 +546,9 @@ LPGAMEOBJECT CPlayScene::AddObject(LPGAMEOBJECT obj)
 {
 	SetMaxCoordinate(obj);
 	objects.push_back(obj);
+	CEffect* effect = dynamic_cast<CEffect*>(objects.back());
+	if (effect && effect->GetType() == CHANGE_SCENE)
+		change_scene_effect = effect;
 	return objects.back();
 }
 
@@ -495,5 +556,9 @@ LPGAMEOBJECT CPlayScene::AddObjectToFirst(LPGAMEOBJECT obj)
 {
 	SetMaxCoordinate(obj);
 	objects.insert(objects.begin() + 1, obj);
+
+	CEffect* effect = dynamic_cast<CEffect*>(objects.front());
+	if (effect && effect->GetType() == CHANGE_SCENE)
+		change_scene_effect = effect;
 	return objects.front();
 }

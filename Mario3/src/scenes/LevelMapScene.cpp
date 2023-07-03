@@ -141,35 +141,36 @@ void CLevelMapScene::RenderStartPoint()
 
 void CLevelMapScene::Render()
 {
-	CEffect* effect_change_scene = nullptr;
 	for (int i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CMarioLevelMap*>(objects[i]))
 			continue;
 		if (dynamic_cast<CEffect*>(objects[i]))
 		{
-			effect_change_scene = dynamic_cast<CEffect*>(objects[i]);
-			if (effect_change_scene->GetType() == CHANGE_SCENE)
+			if (((CEffect*)objects[i])->GetType() == CHANGE_SCENE)
 				continue;
-			else
-				effect_change_scene = nullptr;
 		}
 		objects[i]->Render();
 	}
-	if (hud)
-		hud->Render();
+	if (hud) hud->Render();
 	RenderStartPoint();
-	player->Render();
-	if (effect_change_scene)
-		effect_change_scene->Render();
+	if (player) player->Render();
+	if (change_scene_effect) change_scene_effect->Render();
 }
 
 void CLevelMapScene::Update(DWORD dt)
 {
-	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
-	// TO-DO: This is a "dirty" way, need a more organized way
+	CGame* game = CGame::GetInstance();
+
+	if (game->IsInTransitionScene())
+	{
+		if (change_scene_effect)
+			change_scene_effect->Update(dt);
+		return;
+	}
+
 	CGameData* data = CGameData::GetInstance();
-	if (data->IsGameOver() && data->GetLife() >= 0)
+	if (data->IsLostALife() && data->GetLife() > 0)
 	{
 		((CMarioLevelMap*)player)->MoveToSpecialPos(prev_door_x, prev_door_y);
 		data->SetGameOver(FALSE);
@@ -192,7 +193,6 @@ void CLevelMapScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded
 	// (Mario::Update might trigger PlayScene::Unload)
 	if (player == nullptr) return;
-	CGame* game = CGame::GetInstance();
 
 	game->SetCamPos(0, 0);
 	if (hud == nullptr)

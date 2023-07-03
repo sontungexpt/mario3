@@ -142,10 +142,11 @@ void CEffect::GetBoundingBox(float& left, float& top, float& right, float& botto
 		bottom = top + LIFE_UP_BBOX_HEIGHT;
 		break;
 	case CHANGE_SCENE:
-		left = x - CGame::GetInstance()->GetCamXPos();
-		top = y - CGame::GetInstance()->GetCamYPos();
-		right = left + CGame::GetInstance()->GetBackBufferWidth();
-		bottom = top + CGame::GetInstance()->GetBackBufferHeight();
+		// plus 10 or 20 to make sure the effect is cover full screen
+		left = CGame::GetInstance()->GetCamXPos() - 10;
+		top = CGame::GetInstance()->GetCamYPos() - 10;
+		right = left + CGame::GetInstance()->GetBackBufferWidth() + 20;
+		bottom = top + CGame::GetInstance()->GetBackBufferHeight() + 20;
 		break;
 	case HELP_LEVEL_MAP:
 		left = x - HELP_LEVEL_MAP_BBOX_WIDTH / 2;

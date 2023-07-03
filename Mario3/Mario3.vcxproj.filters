@@ -410,6 +410,9 @@
     <ClInclude Include="src\FontManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\scenes\HiddenMap1Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -420,9 +423,9 @@
     <Text Include="src\settings\objects\monsters\goomba.txt" />
     <Text Include="src\settings\game-mario.txt" />
     <Text Include="src\settings\objects\mario.txt" />
-    <Text Include="src\settings\scenes\scene01.txt" />
-    <Text Include="src\settings\scenes\scene02.txt" />
-    <Text Include="src\settings\scenes\scene05.txt" />
+    <Text Include="src\settings\scenes\scene1\scene01.txt" />
+    <Text Include="src\settings\scenes\scene2\scene02.txt" />
+    <Text Include="src\settings\scenes\scene5\scene05.txt" />
     <Text Include="src\settings\objects\materials\door.txt" />
     <Text Include="src\settings\scenes\levelmap.txt" />
     <Text Include="src\settings\objects\materials\grass.txt" />
