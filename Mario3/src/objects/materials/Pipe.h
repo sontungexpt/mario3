@@ -10,7 +10,6 @@
 class CPipe : public CGameObject
 {
 protected:
-	//int plant_type;
 	CPlant* plant;
 	int hidden_map_id;
 
@@ -23,6 +22,14 @@ public:
 		plant = nullptr;
 		CreatePlant(plant_type);
 	};
+
+	~CPipe()
+	{
+		if (plant)
+			delete plant;
+		plant = nullptr;
+	}
+
 	int IsCollidable() { return 1; };
 	int IsBlocking() { return 1; }
 
@@ -30,5 +37,9 @@ public:
 	//void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 
+	CPlant* GetPlant() { return plant; }
+	BOOLEAN CanEnterHiddenMap() { return hidden_map_id != INT_MAX; }
 	void EnterHiddenMap();
 };
+
+typedef CPipe* LPPipe;

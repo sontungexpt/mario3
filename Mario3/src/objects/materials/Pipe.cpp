@@ -75,8 +75,9 @@ void CPipe::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CPipe::EnterHiddenMap()
 {
-	CGame* game = CGame::GetInstance();
+	if (!CanEnterHiddenMap()) return;
 
+	CGame* game = CGame::GetInstance();
 	game->SetSwitchSceneWaitingTime(500);
 	game->InitiateSwitchScene(hidden_map_id);
 }

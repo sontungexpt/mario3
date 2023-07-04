@@ -46,7 +46,6 @@ void CLevelMapScene::_ParseSection_OBJECTS(string line)
 			prev_door_x = x;
 			prev_door_y = y;
 		}
-
 		else if (door_level == data->GetEntryDoorLevel())
 		{
 			if (player)
@@ -169,6 +168,8 @@ void CLevelMapScene::Update(DWORD dt)
 		return;
 	}
 
+	// if player is dead, and still have life,
+	// then the player will be moved to the previous door
 	CGameData* data = CGameData::GetInstance();
 	if (data->IsLostALife() && data->GetLife() > 0)
 	{

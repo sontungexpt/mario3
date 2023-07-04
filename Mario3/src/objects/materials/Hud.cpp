@@ -7,6 +7,7 @@
 
 void CHud::Update(DWORD dt)
 {
+	CGameData::GetInstance()->CountDownRemainTime();
 }
 
 void CHud::RenderHudBackground()

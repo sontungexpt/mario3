@@ -11,6 +11,8 @@ void CPlant::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 
 void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (is_disabled_up_down) return;
+
 	if (is_upping) {
 		// make sure that the plant will moving after create
 		if (y > min_y) {
@@ -29,6 +31,11 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else // is downing
 	{
+		if (y > max_y)
+		{
+			vy = 0;
+			y = max_y;
+		}
 		if (GetTickCount64() - time_down_start > time_out_down_state) {
 			SetState(PLANT_STATE_UP);
 		}

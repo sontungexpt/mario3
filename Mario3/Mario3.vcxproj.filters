@@ -156,6 +156,9 @@
     <ClCompile Include="src\FontManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\scenes\HiddenMapScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\Animation\Animation.h">
@@ -410,7 +413,7 @@
     <ClInclude Include="src\FontManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\scenes\HiddenMap1Scene.h">
+    <ClInclude Include="src\scenes\HiddenMapScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

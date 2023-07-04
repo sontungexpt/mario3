@@ -54,6 +54,11 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithQuestionBrick(e);
 	if (dynamic_cast<CBreakableBrick*>(e->obj))
 		OnCollisionWithBreakableBrick(e);
+	if (dynamic_cast<CPipe*>(e->obj))
+	{
+		OnCollisionWithPipe(e);
+		return;
+	}
 
 	// collide in y dimension and the object is a blocking object like platform
 	if (e->IsCollidedInYDimension() && e->obj->IsBlocking())
@@ -122,6 +127,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
+	CPlant* plant = dynamic_cast<CPlant*>(e->obj);
 	Die();
 }
 
@@ -184,6 +190,15 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* portal = (CPortal*)e->obj;
 	CGame::GetInstance()->InitiateSwitchScene(portal->GetSceneId());
+}
+
+void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
+{
+	if (e->IsCollidedFromTop())
+	{
+		pipe = dynamic_cast<CPipe*>(e->obj);
+		is_on_platform = TRUE;
+	}
 }
 
 int CMario::GetAniIdSmall()
@@ -461,12 +476,25 @@ int CMario::GetAniIdTail()
 	return aniId;
 }
 
+int CMario::GetAniIdEnterPipe()
+{
+	if (level == MARIO_LEVEL_TAIL_SUIT)
+		return ID_ANI_MARIO_TAIL_FORWARD;
+	else if (level == MARIO_LEVEL_SMALL)
+		return ID_ANI_MARIO_SMALL_FORWARD;
+	else if (level == MARIO_LEVEL_BIG)
+		return ID_ANI_MARIO_BIG_FORWARD;
+	return -1;
+}
+
 void CMario::Render()
 {
 	int aniId = -1;
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
+	else if (state == MARIO_STATE_ENTER_PIPE)
+		aniId = GetAniIdEnterPipe();
 	else if (is_appearance_changing)
 		aniId = GetAniIdWhenAppearanceChanging();
 	else if (level == MARIO_LEVEL_BIG)
@@ -492,10 +520,21 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if (IsDead())
+	if (IsDead() || IsEnteringPipe())
 	{
 		x += vx * dt;
 		y += vy * dt;
+
+		if (pipe)
+		{
+			if (GetTop() > pipe->GetTop())
+			{
+				y = pipe->GetTop() + GetHeight() / 2 + 1;
+				vy = 0;
+				pipe->EnterHiddenMap();
+				pipe = nullptr;
+			}
+		}
 		return;
 	}
 
@@ -522,6 +561,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			koopa->BeKick();
 		weapon_monster = nullptr;
 	}
+
+	//if (pipe)
+	//{
+	//	if (GetLeft() > pipe->GetRight() || GetRight() < pipe->GetLeft())
+	//	{
+	//		pipe = nullptr;
+	//	}
+	//	if(GetBottom() < pipe->GetTop() - )
+
+	//}
 
 	// cannot exceed the allowed speed
 	if (fabs(vx) > fabs(max_vx))
@@ -555,8 +604,21 @@ void CMario::SetState(int state)
 	// DIE is the end state, cannot be changed!
 	if (IsDead()) return;
 
+	// cannot change state when entering pipe
+	if (IsEnteringPipe()) return;
+
 	switch (state)
 	{
+	case MARIO_STATE_ENTER_PIPE:
+		// can not enter pipe if not touching pipe
+		if (!is_on_platform && !pipe && !pipe->CanEnterHiddenMap()) return;
+		pipe->GetPlant()->SetDisabledUpDown(TRUE);
+		x = pipe->GetX();
+		vy = MARIO_ENTER_PIPE_SPEED;
+		vx = 0;
+		ay = 0;
+		ax = 0;
+		break;
 	case MARIO_STATE_UNTOUCHABLE:
 		untouchable = TRUE;
 		time_untouchable_start = GetTickCount64();
@@ -595,13 +657,11 @@ void CMario::SetState(int state)
 		nx = 1;
 		break;
 	case MARIO_STATE_WALKING_LEFT:
-	{
 		if (is_sitting) break;
 		max_vx = -MARIO_WALKING_SPEED;
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
 		break;
-	}
 	case MARIO_STATE_JUMP:
 		if (is_sitting) break;
 		if (is_on_platform)
@@ -645,16 +705,17 @@ void CMario::SetState(int state)
 		CGameData::GetInstance()->DecreaseLifeBy1();
 		CGameData::GetInstance()->SetGameOver(TRUE);
 		CGameData::GetInstance()->SetMarioLevel(MARIO_LEVEL_SMALL);
-
 		CGame::GetInstance()->InitiateSwitchScene(ID_LEVEL_MAP_SCENE);
 		break;
 	}
-
 	CGameObject::SetState(state);
 }
 
 void CMario::Die()
 {
+	// cannot die when entering pipe
+	if (IsEnteringPipe()) return;
+
 	// not untouchable -> can die
 	if (!untouchable)
 	{

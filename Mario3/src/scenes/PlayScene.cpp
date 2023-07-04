@@ -405,8 +405,6 @@ void CPlayScene::Update(DWORD dt)
 		return;
 	}
 
-	CGameData::GetInstance()->CountDownRemainTime();
-
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way
 	vector<LPGAMEOBJECT> coObjects;
@@ -464,6 +462,15 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
+	// if player is entering pipe then render player first
+	// because player is behind pipe
+	if (player)
+	{
+		CMario* mario = (CMario*)player;
+		if (mario->IsEnteringPipe())
+			player->Render();
+	}
+
 	for (int i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CMario*>(objects[i]))
@@ -476,7 +483,17 @@ void CPlayScene::Render()
 		objects[i]->Render();
 	}
 	if (hud) hud->Render();
-	if (player) player->Render();
+
+	// if player is not entering pipe then render player
+	// after other objects
+	if (player)
+	{
+		CMario* mario = (CMario*)player;
+		if (!mario->IsEnteringPipe())
+			player->Render();
+	}
+
+	// change scene effect is have to render last
 	if (change_scene_effect) change_scene_effect->Render();
 }
 

@@ -42,6 +42,8 @@ public:
 	}
 	~CMarioLevelMap()
 	{
+		if (door)
+			delete door;
 		door = nullptr;
 	}
 
@@ -68,10 +70,13 @@ public:
 			// for example: mario is at door 1, he can enter door 2, but he can't enter door 3
 			if (!is_bypass_door_block_rule &&
 				door->GetDoorLevel() - 1 != CGameData::GetInstance()->GetMaxDoorLevelPassed())
+			{
 				return;
+			}
 			door->EnterDoor();
 		}
 	}
+
 	void MoveToSpecialPos(float target_x, float target_y);
 	void MoveToSpecialPosFrom(float x, float y, float special_posx, float special_posy);
 

@@ -18,9 +18,15 @@ protected:
 
 		time_reload_bullet_start = 0;
 		if (type == PLANT_SHOOTER_GREEN)
+		{
 			min_y = start_y - PLANT_SHOOTER_BBOX_HEIGHT_GREEN;
+			max_y = start_y + PLANT_SHOOTER_BBOX_HEIGHT_GREEN;
+		}
 		else if (type == PLANT_SHOOTER_RED)
+		{
 			min_y = start_y - PLANT_SHOOTER_BBOX_HEIGHT_RED;
+			max_y = start_y + PLANT_SHOOTER_BBOX_HEIGHT_RED;
+		}
 	};
 
 	void AdjustPos() {};

@@ -2,13 +2,16 @@
 #include "debug.h"
 #include "GameData.h"
 #include "GameObject.h"
+#include "MarioAttackingZone.h"
+
+#include "materials/Pipe.h"
+#include "monsters/Monster.h"
 
 #include "components/Animation/Animation.h"
 #include "components/Animation/Animations.h"
 
 #include "configs/Mario.h"
-#include "objects/monsters/Monster.h"
-#include "objects/MarioAttackingZone.h"
+
 using namespace std;
 
 class CMario : public CGameObject
@@ -20,6 +23,7 @@ protected:
 	int power;
 
 	LPMONSTER weapon_monster;
+	LPPipe pipe;
 	//CMarioAttackingZone* attacking_zone;
 
 	ULONGLONG time_untouchable_start;
@@ -36,6 +40,7 @@ protected:
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
+	void OnCollisionWithPipe(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
@@ -44,6 +49,7 @@ protected:
 
 	int GetAniIdBig();
 	int GetAniIdTail();
+	int GetAniIdEnterPipe();
 	int GetAniIdSmall();
 
 	int GetAniIdWhenAppearanceChanging();
@@ -74,6 +80,7 @@ public:
 		is_power_upping = FALSE;
 
 		weapon_monster = nullptr;
+		pipe = nullptr;
 		//attacking_zone = nullptr;
 
 		level = CGameData::GetInstance()->GetMarioLevel();
@@ -83,13 +90,24 @@ public:
 		time_fly_start = 0;
 	}
 
+	~CMario()
+	{
+		if (weapon_monster)
+			delete weapon_monster;
+		if (pipe)
+			delete pipe;
+
+		weapon_monster = nullptr;
+		pipe = nullptr;
+	}
+
 	// core
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
-	int IsCollidable() { return state != MARIO_STATE_DIE; }
+	int IsCollidable() { return state != MARIO_STATE_DIE && state != MARIO_STATE_ENTER_PIPE; }
 	//int IsBlocking() { return (state != MARIO_STATE_DIE && !untouchable); }
 
 	int IsBlocking() { return 0; }
@@ -103,6 +121,9 @@ public:
 	BOOLEAN IsBig() { return level == MARIO_LEVEL_BIG; };
 	BOOLEAN HasTail() { return level == MARIO_LEVEL_TAIL_SUIT; }
 	BOOLEAN IsFullPower() { return power == MARIO_MAX_POWER; }
+	BOOLEAN IsEnteringPipe() { return state == MARIO_STATE_ENTER_PIPE; }
+
+	LPPipe GetPipe() { return pipe; }
 
 	void Shrink() { SetLevel(MARIO_LEVEL_SMALL); }
 	void Zoom() { SetLevel(MARIO_LEVEL_BIG); }
