@@ -21,6 +21,9 @@ private:
 	int direction_hit_door;
 	BOOLEAN is_stop_moving;
 
+	// by pass block door rule when press 4
+	BOOLEAN is_bypass_door_block_rule;
+
 	float CalulateVx(float target_x, float target_y);
 	float CalulateVy(float target_x, float target_y);
 	void OnCollisionWithDoor(LPCOLLISIONEVENT e);
@@ -34,6 +37,7 @@ public:
 		specical_target_y = -1;
 		direction_hit_door = -1;
 		is_stop_moving = TRUE;
+		is_bypass_door_block_rule = FALSE;
 		door = nullptr;
 	}
 	~CMarioLevelMap()
@@ -53,8 +57,26 @@ public:
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 
-	void SetLevel(int level) { CGameData::GetInstance()->SetMarioLevel(level); }
-	void EnterDoor() { if (door) door->EnterDoor(); }
+	void SetLevel(int level)
+	{
+		this->level = level;
+		CGameData::GetInstance()->SetMarioLevel(level);
+	}
+	void EnterDoor() {
+		if (is_stop_moving && door) {
+			// mario just enter the door which is the next door
+			// for example: mario is at door 1, he can enter door 2, but he can't enter door 3
+			if (!is_bypass_door_block_rule &&
+				door->GetDoorLevel() - 1 != CGameData::GetInstance()->GetMaxDoorLevelPassed())
+				return;
+			door->EnterDoor();
+		}
+	}
 	void MoveToSpecialPos(float target_x, float target_y);
 	void MoveToSpecialPosFrom(float x, float y, float special_posx, float special_posy);
+
+	void ToggleByPassBlock() { is_bypass_door_block_rule = ~is_bypass_door_block_rule; }
+	BOOLEAN IsBypassDoorBlockRule() { return is_bypass_door_block_rule; }
+
+	BOOLEAN IsStopMoving() { return is_stop_moving; }
 };

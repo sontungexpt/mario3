@@ -1,11 +1,21 @@
 #include "Door.h"
 #include "debug.h"
 #include "configs/GameData.h"
+#include "objects/MarioLevelMap.h"
+#include "scenes/PlayScene.h"
 
 void CDoor::EnterDoor()
 {
-	if (door_level - 1 != CGameData::GetInstance()->GetMaxDoorLevelPassed())
-		return;
+	//CMarioLevelMap* mario = (CMarioLevelMap*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	//if (mario)
+	//{
+	//	if (
+	//		!mario->IsBypassDoorBlockRule() &&
+	//		door_level - 1 != CGameData::GetInstance()->GetMaxDoorLevelPassed()
+	//		)
+	//		return;
+	//}
+
 	CGameData::GetInstance()->SetGameOver(FALSE);
 	CGameData::GetInstance()->SetEntryDoorLevel(door_level);
 	CGame::GetInstance()->InitiateSwitchScene(scene_id);

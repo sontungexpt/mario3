@@ -21,6 +21,7 @@ class CGame
 	static CGame* __instance;
 	BOOLEAN is_paused = FALSE;
 	ULONGLONG switch_scene_time_start = 0;
+	int switch_scene_waiting_time = SCENE_SWITCH_WAITING_TIME;
 
 	HWND hWnd;									// Window handle
 
@@ -116,6 +117,7 @@ public:
 	void Load(LPCWSTR gameFile);
 	void SwitchScene();
 	void InitiateSwitchScene(int scene_id);
+	void SetSwitchSceneWaitingTime(int time) { switch_scene_waiting_time = time; }
 
 	BOOLEAN IsPaused() { return is_paused; }
 	void TogglePause()

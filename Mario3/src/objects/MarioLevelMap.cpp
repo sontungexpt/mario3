@@ -180,7 +180,7 @@ void CMarioLevelMap::SetState(int state)
 	{
 	case MARIO_LEVEL_MAP_STATE_MOVING_RIGHT:
 		if (!is_stop_moving) return;
-		if (door)
+		if (!is_bypass_door_block_rule && door)
 		{
 			if (!door->IsPassed() && direction_hit_door != DIRECTION_HIT_DOOR_FROM_RIGHT)
 				return;
@@ -191,7 +191,7 @@ void CMarioLevelMap::SetState(int state)
 		break;
 	case MARIO_LEVEL_MAP_STATE_MOVING_LEFT:
 		if (!is_stop_moving) return;
-		if (door)
+		if (!is_bypass_door_block_rule && door)
 		{
 			if (!door->IsPassed() && direction_hit_door != DIRECTION_HIT_DOOR_FROM_LEFT)
 				return;
@@ -202,7 +202,7 @@ void CMarioLevelMap::SetState(int state)
 		break;
 	case MARIO_LEVEL_MAP_STATE_MOVING_UP:
 		if (!is_stop_moving) return;
-		if (door)
+		if (!is_bypass_door_block_rule && door)
 		{
 			if (!door->IsPassed() && direction_hit_door != DIRECTION_HIT_DOOR_FROM_TOP)
 				return;
@@ -213,7 +213,7 @@ void CMarioLevelMap::SetState(int state)
 		break;
 	case MARIO_LEVEL_MAP_STATE_MOVING_DOWN:
 		if (!is_stop_moving) return;
-		if (door)
+		if (!is_bypass_door_block_rule && door)
 		{
 			if (!door->IsPassed() && direction_hit_door != DIRECTION_HIT_DOOR_FROM_BOTTOM)
 				return;

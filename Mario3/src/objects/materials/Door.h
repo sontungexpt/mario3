@@ -35,7 +35,7 @@ public:
 	{
 		return CGameData::GetInstance()->GetMaxDoorLevelPassed() >= door_level;
 	}
-
+	int GetDoorLevel() { return door_level; }
 	void EnterDoor();
 	void Render();
 };

@@ -644,6 +644,8 @@ void CMario::SetState(int state)
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		CGameData::GetInstance()->DecreaseLifeBy1();
 		CGameData::GetInstance()->SetGameOver(TRUE);
+		CGameData::GetInstance()->SetMarioLevel(MARIO_LEVEL_SMALL);
+
 		CGame::GetInstance()->InitiateSwitchScene(ID_LEVEL_MAP_SCENE);
 		break;
 	}

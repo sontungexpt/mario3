@@ -10,8 +10,8 @@
 // scenes
 #include "scenes/PlayScene.h"
 #include "scenes/LevelMapScene.h"
-#include "configs/core/SceneIds.h"
 
+#include "configs/core/SceneIds.h"
 #include "objects/materials/EffectManager.h"
 
 CGame* CGame::__instance = nullptr;
@@ -412,9 +412,10 @@ void CGame::ProcessKeyboard()
 	}
 
 	keyHandler->KeyState((BYTE*)&keyStates);
-
 	// Collect all buffered events
+
 	DWORD dwElements = KEYBOARD_BUFFER_SIZE;
+
 	hr = didv->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), keyEvents, &dwElements, 0);
 	if (FAILED(hr))
 	{
@@ -540,7 +541,7 @@ void CGame::SwitchScene()
 	//if (next_scene < 0 || next_scene == current_scene) return;
 	is_in_transition_scene = TRUE;
 
-	if (GetTickCount64() - switch_scene_time_start > SCENE_SWITCH_WAITING_TIME)
+	if (GetTickCount64() - switch_scene_time_start > switch_scene_waiting_time)
 	{
 		// when you create something new, you don't have anything to clear
 		if (current_scene != INT_MIN)
@@ -554,9 +555,13 @@ void CGame::SwitchScene()
 		current_scene = next_scene;
 		LPSCENE s = scenes[next_scene];
 		this->SetKeyHandler(s->GetKeyEventHandler());
+
+		s->Load();
 		switch_scene_time_start = 0;
 		is_in_transition_scene = FALSE;
-		s->Load();
+
+		// auto reset to default waiting time
+		switch_scene_waiting_time = SCENE_SWITCH_WAITING_TIME;
 	}
 }
 

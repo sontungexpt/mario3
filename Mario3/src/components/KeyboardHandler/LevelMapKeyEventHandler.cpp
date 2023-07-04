@@ -24,6 +24,9 @@ void CLevelMapKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_3:
 		mario->SetLevel(MARIO_LEVEL_TAIL_SUIT);
 		break;
+	case DIK_4:
+		mario->ToggleByPassBlock();
+		break;
 	case DIK_S:
 		mario->EnterDoor();
 		break;
