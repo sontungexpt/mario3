@@ -29,6 +29,8 @@ void CPlantShooter::GetBoundingBox(float& left, float& top, float& right, float&
 
 void CPlantShooter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (is_disabled_up_down) return;
+
 	if (!IsInCamera()) return;
 
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
@@ -65,6 +67,8 @@ void CPlantShooter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CPlantShooter::Render()
 {
+	if (is_disabled_up_down) return;
+
 	if (is_deleted) return; // notthing to render
 	if (!IsInCamera()) return; // lazy load
 

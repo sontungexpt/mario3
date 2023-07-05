@@ -28,6 +28,8 @@ void CPipe::CreatePlant(int plant_type)
 	default:
 		return;
 	}
+	if (plant)
+		plant->SetMaxY(GetBottom() - plant->GetHeight() / 2);
 }
 
 void CPipe::Render()

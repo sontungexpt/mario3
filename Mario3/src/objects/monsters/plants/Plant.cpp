@@ -31,11 +31,11 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else // is downing
 	{
-		if (y > max_y)
-		{
-			vy = 0;
-			y = max_y;
-		}
+		//if (y > max_y)
+		//{
+		//	vy = 0;
+		//	y = max_y;
+		//}
 		if (GetTickCount64() - time_down_start > time_out_down_state) {
 			SetState(PLANT_STATE_UP);
 		}

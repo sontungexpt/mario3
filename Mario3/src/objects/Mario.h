@@ -23,7 +23,7 @@ protected:
 	int power;
 
 	LPMONSTER weapon_monster;
-	LPPipe pipe;
+	LPPIPE pipe;
 	//CMarioAttackingZone* attacking_zone;
 
 	ULONGLONG time_untouchable_start;
@@ -123,7 +123,7 @@ public:
 	BOOLEAN IsFullPower() { return power == MARIO_MAX_POWER; }
 	BOOLEAN IsEnteringPipe() { return state == MARIO_STATE_ENTER_PIPE; }
 
-	LPPipe GetPipe() { return pipe; }
+	LPPIPE GetPipe() { return pipe; }
 
 	void Shrink() { SetLevel(MARIO_LEVEL_SMALL); }
 	void Zoom() { SetLevel(MARIO_LEVEL_BIG); }

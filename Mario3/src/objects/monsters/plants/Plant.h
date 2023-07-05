@@ -63,4 +63,7 @@ public:
 	virtual void Render() = 0;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 	virtual void SetState(int state);
+
+	void SetMinY(float min_y) { this->min_y = min_y; };
+	void SetMaxY(float max_y) { this->max_y = max_y; };
 };

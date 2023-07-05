@@ -237,7 +237,7 @@ src\settings\objects\monsters\carnivorous_plant.txt
 61	1471	595	2
 
 # Pipe
-11	354	621	1	1
+11	354	621	1	1	-1
 
 11	1792	628	2	3
 

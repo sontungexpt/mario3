@@ -209,7 +209,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		int state = PIPE_STATE_LONG;
 		int plant_type = PIPE_PLANT_NOTHING;
-
+		int hidden_map_id = INT_MAX;
 		if (tokens.size() >= 4)
 		{
 			state = atoi(tokens[3].c_str());
@@ -218,8 +218,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		{
 			plant_type = atoi(tokens[4].c_str());
 		}
+		if (tokens.size() >= 6)
+		{
+			hidden_map_id = atoi(tokens[5].c_str());
+		}
 
-		obj = new CPipe(x, y, state, plant_type);
+		obj = new CPipe(x, y, state, plant_type, hidden_map_id);
 	}
 	break;
 	case OBJECT_TYPE_KOOPA:

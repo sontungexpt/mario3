@@ -55,10 +55,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CBreakableBrick*>(e->obj))
 		OnCollisionWithBreakableBrick(e);
 	if (dynamic_cast<CPipe*>(e->obj))
-	{
 		OnCollisionWithPipe(e);
-		return;
-	}
 
 	// collide in y dimension and the object is a blocking object like platform
 	if (e->IsCollidedInYDimension() && e->obj->IsBlocking())
@@ -127,7 +124,6 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
-	CPlant* plant = dynamic_cast<CPlant*>(e->obj);
 	Die();
 }
 
@@ -194,10 +190,13 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
 {
-	if (e->IsCollidedFromTop())
+	if (e->IsCollidedInYDimension())
 	{
-		pipe = dynamic_cast<CPipe*>(e->obj);
+		start_y = y;
 		is_on_platform = TRUE;
+		pipe = dynamic_cast<CPipe*>(e->obj);
+		if (!pipe->CanEnterHiddenMap())
+			pipe = nullptr;
 	}
 }
 
@@ -525,6 +524,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += vx * dt;
 		y += vy * dt;
 
+		if (IsDead())
+		{
+			pipe = nullptr;
+			return;
+		}
 		if (pipe)
 		{
 			if (GetTop() > pipe->GetTop())
@@ -538,22 +542,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		return;
 	}
 
-	/*if (attacking_zone)
+	// move out of zone which is allowed to enter pipe
+	if (pipe)
 	{
-		float width_zone = MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH;
-		if (nx >= 0)
-		{
-			attacking_zone->SetX(GetRight() + width_zone / 2 + vx * dt);
-			attacking_zone->SetY(y + vy * dt);
-			attacking_zone->SetHeight(GetHeight());
-		}
-		else
-		{
-			attacking_zone->SetX(GetLeft() - width_zone / 2 + vx * dt);
-			attacking_zone->SetY(y + vy * dt);
-			attacking_zone->SetHeight(GetHeight());
-		}
-	}*/
+		if (GetLeft() < pipe->GetLeft() || GetRight() > pipe->GetRight())
+			pipe = nullptr;
+		if (fabs(y - start_y) > ERROR_DISTANCE_ENTER_PIPE)
+			pipe = nullptr;
+	}
+
 	if (weapon_monster && !is_want_holding_koopa)
 	{
 		CKoopa* koopa = (CKoopa*)weapon_monster;
@@ -561,16 +558,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			koopa->BeKick();
 		weapon_monster = nullptr;
 	}
-
-	//if (pipe)
-	//{
-	//	if (GetLeft() > pipe->GetRight() || GetRight() < pipe->GetLeft())
-	//	{
-	//		pipe = nullptr;
-	//	}
-	//	if(GetBottom() < pipe->GetTop() - )
-
-	//}
 
 	// cannot exceed the allowed speed
 	if (fabs(vx) > fabs(max_vx))
@@ -589,10 +576,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = FALSE;
 		is_appearance_changing = FALSE;
 	}
-	//if (untouchable)
-	//{
-	//	vx = 0;
-	//}
 
 	is_on_platform = FALSE;
 
@@ -611,7 +594,7 @@ void CMario::SetState(int state)
 	{
 	case MARIO_STATE_ENTER_PIPE:
 		// can not enter pipe if not touching pipe
-		if (!is_on_platform && !pipe && !pipe->CanEnterHiddenMap()) return;
+		if (!pipe) return;
 		pipe->GetPlant()->SetDisabledUpDown(TRUE);
 		x = pipe->GetX();
 		vy = MARIO_ENTER_PIPE_SPEED;

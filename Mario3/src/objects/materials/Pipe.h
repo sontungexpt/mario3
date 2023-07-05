@@ -42,4 +42,4 @@ public:
 	void EnterHiddenMap();
 };
 
-typedef CPipe* LPPipe;
+typedef CPipe* LPPIPE;
