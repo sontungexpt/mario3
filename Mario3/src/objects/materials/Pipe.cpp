@@ -1,6 +1,7 @@
 #include "Pipe.h"
 #include "debug.h"
 #include "scenes/PlayScene.h"
+#include <GameData.h>
 
 void CPipe::CreatePlant(int plant_type)
 {
@@ -32,22 +33,84 @@ void CPipe::CreatePlant(int plant_type)
 		plant->SetMaxY(GetBottom() - plant->GetHeight() / 2);
 }
 
+int CPipe::GetAniIdGreenPipe()
+{
+	if (state == PIPE_STATE_SHORT)
+	{
+		if (direction == PIPE_DIRECTION_UP)
+		{
+			return ID_ANI_PIPE_SHORT_GREEN_UP;
+		}
+		else if (direction == PIPE_DIRECTION_DOWN)
+		{
+			return -1; // not implement yet
+		}
+	}
+	else if (state = PIPE_STATE_LONG)
+	{
+		if (direction == PIPE_DIRECTION_UP)
+		{
+			return ID_ANI_PIPE_LONG_GREEN_UP;
+		}
+		else if (direction == PIPE_DIRECTION_DOWN)
+		{
+			return -1; // not implement yet
+		}
+	}
+
+	return -1;
+}
+
+int CPipe::GetAniIdBlackPipe()
+{
+	if (state == PIPE_STATE_SHORT)
+	{
+		if (direction == PIPE_DIRECTION_UP)
+		{
+			return -1; // not implement yet
+		}
+		else if (direction == PIPE_DIRECTION_DOWN)
+		{
+			return ID_ANI_PIPE_SHORT_BLACK_DOWN;
+		}
+	}
+	else if (state = PIPE_STATE_LONG)
+	{
+		if (direction == PIPE_DIRECTION_UP)
+		{
+			return -1; // not implement yet
+		}
+		else if (direction == PIPE_DIRECTION_DOWN)
+		{
+			return -1; // not implement yet
+		}
+	}
+
+	return -1;
+}
+
 void CPipe::Render()
 {
 	if (!IsInCamera()) return;
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = -1;
-	switch (state)
+	switch (color)
 	{
-	case PIPE_STATE_SHORT:
-		aniId = ID_ANI_PIPE_SHORT;
+	case PIPE_COLOR_GREEN:
+		aniId = GetAniIdGreenPipe();
 		break;
-	case PIPE_STATE_LONG:
-		aniId = ID_ANI_PIPE_LONG;
+	case PIPE_COLOR_BLACK:
+		aniId = GetAniIdBlackPipe();
 		break;
 	default:
-		DebugOut(L"[ERROR] No animation found CPipe::Render");
-		return; // not in any animation
+		DebugOut(L"[ERROR FROM PIPE CLASS] No color found");
+		return;
+	}
+
+	if (aniId == -1)
+	{
+		DebugOut(L"[ERROR FROM PIPE CLASS] No animation id found");
+		return;
 	}
 
 	animations->Get(aniId)->Render(x, y);
@@ -73,13 +136,4 @@ void CPipe::GetBoundingBox(float& l, float& t, float& r, float& b)
 		DebugOut(L"[ERROR FROM PIPE CLASS] No bounding box found");
 		break;
 	}
-}
-
-void CPipe::EnterHiddenMap()
-{
-	if (!CanEnterHiddenMap()) return;
-
-	CGame* game = CGame::GetInstance();
-	game->SetSwitchSceneWaitingTime(500);
-	game->InitiateSwitchScene(hidden_map_id);
 }

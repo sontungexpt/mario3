@@ -30,7 +30,7 @@ public:
 		entry_door_level = 0;
 		count_down_time_start = 0;
 		max_door_level_passed = 0;
-		hidden_map_id = -1;
+		hidden_map_id = INT_MAX;
 
 		is_lost_life = FALSE;
 		mario_level = MARIO_LEVEL_SMALL;
@@ -38,6 +38,13 @@ public:
 	~CGameData() {};
 
 	static CGameData* GetInstance();
+
+	void SetCurrentSceneId(int id) { hidden_map_id = id; };
+	int GetHiddenMapId() { return hidden_map_id; };
+	BOOLEAN IsMoveOutHiddenMap() { return hidden_map_id != INT_MAX; };
+	BOOLEAN IsMoveInHiddenMap() { return hidden_map_id == INT_MAX; };
+	void MoveOutHiddenMap() { hidden_map_id = INT_MAX; };
+	void MoveInHiddenMap(int id) { hidden_map_id = id; };
 
 	void SetEntryDoorLevel(int level) { entry_door_level = level; };
 	int GetEntryDoorLevel() { return entry_door_level; };

@@ -4,6 +4,8 @@
 #include "Game.h"
 
 #include "objects/Mario.h"
+#include "objects/materials/EnterablePipe.h"
+
 #include "scenes/PlayScene.h"
 
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
@@ -21,9 +23,23 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 
 	switch (KeyCode)
 	{
+	case DIK_UP:
+		if (dynamic_cast<LPENTERABLE_PIPE>(mario->GetPipe()))
+		{
+			if (mario->GetPipe()->GetDirection() == PIPE_DIRECTION_DOWN)
+			{
+				mario->SetState(MARIO_STATE_ENTER_PIPE);
+			}
+		}
+		break;
 	case DIK_DOWN:
-		if (mario->GetPipe())
-			mario->SetState(MARIO_STATE_ENTER_PIPE);
+		if (dynamic_cast<LPENTERABLE_PIPE>(mario->GetPipe()))
+		{
+			if (mario->GetPipe()->GetDirection() == PIPE_DIRECTION_UP)
+			{
+				mario->SetState(MARIO_STATE_ENTER_PIPE);
+			}
+		}
 		else
 			mario->SetState(MARIO_STATE_SIT);
 		break;

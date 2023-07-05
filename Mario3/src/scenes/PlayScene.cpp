@@ -18,6 +18,7 @@
 #include "objects/materials/bricks/QuestionBrick.h"
 #include "objects/materials/bricks/BreakableBrick.h"
 #include "objects/materials/Pipe.h"
+#include "objects/materials/EnterablePipe.h"
 
 #include "objects/items/Coin.h"
 
@@ -209,7 +210,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		int state = PIPE_STATE_LONG;
 		int plant_type = PIPE_PLANT_NOTHING;
-		int hidden_map_id = INT_MAX;
+		int direction = PIPE_DIRECTION_UP;
+		int color = PIPE_COLOR_GREEN;
 		if (tokens.size() >= 4)
 		{
 			state = atoi(tokens[3].c_str());
@@ -220,10 +222,25 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		if (tokens.size() >= 6)
 		{
-			hidden_map_id = atoi(tokens[5].c_str());
+			direction = atoi(tokens[5].c_str());
+		}
+		if (tokens.size() >= 7)
+		{
+			color = atoi(tokens[6].c_str());
 		}
 
-		obj = new CPipe(x, y, state, plant_type, hidden_map_id);
+		obj = new CPipe(x, y, state, plant_type, direction, color);
+	}
+	break;
+	case OBJECT_TYPE_ENTERABLE_PIPE:
+	{
+		int state = atoi(tokens[3].c_str());
+		int plant_type = atoi(tokens[4].c_str());
+		int direction = atoi(tokens[5].c_str());
+		int color = atoi(tokens[6].c_str());
+		int scene_id = atoi(tokens[7].c_str());
+
+		obj = new CEnterablePipe(x, y, state, plant_type, direction, color, scene_id);
 	}
 	break;
 	case OBJECT_TYPE_KOOPA:
@@ -468,17 +485,27 @@ void CPlayScene::Render()
 {
 	// if player is entering pipe then render player first
 	// because player is behind pipe
-	if (player)
-	{
-		CMario* mario = (CMario*)player;
-		if (mario->IsEnteringPipe())
-			player->Render();
-	}
+	//
+	//if (player)
+	//{
+	//	CMario* mario = (CMario*)player;
+	//	if (mario->IsEnteringPipe())
+	//		player->Render();
+	//}
 
 	for (int i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CMario*>(objects[i]))
 			continue;
+		if (dynamic_cast<LPENTERABLE_PIPE>(objects[i]))
+		{
+			if (player)
+			{
+				if (((CMario*)player)->IsEnteringPipe() &&
+					((CMario*)player)->GetPipe() == objects[i])
+					continue;
+			}
+		}
 		if (dynamic_cast<CEffect*>(objects[i]))
 		{
 			if (((CEffect*)objects[i])->GetType() == CHANGE_SCENE)
@@ -493,8 +520,9 @@ void CPlayScene::Render()
 	if (player)
 	{
 		CMario* mario = (CMario*)player;
-		if (!mario->IsEnteringPipe())
-			player->Render();
+		player->Render();
+		if (mario->IsEnteringPipe() && mario->GetPipe())
+			mario->GetPipe()->Render();
 	}
 
 	// change scene effect is have to render last

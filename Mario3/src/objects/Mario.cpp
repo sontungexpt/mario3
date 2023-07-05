@@ -22,7 +22,7 @@
 #include "materials/EffectManager.h"
 #include "materials/bricks/BreakableBrick.h"
 #include "materials/bricks/QuestionBrick.h"
-
+#include "materials/EnterablePipe.h"
 #include "configs/monsters/Gommba600000.h"
 #include "configs/materials/QuestionBrick100000.h"
 #include "configs/core/SceneIds.h"
@@ -54,8 +54,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithQuestionBrick(e);
 	if (dynamic_cast<CBreakableBrick*>(e->obj))
 		OnCollisionWithBreakableBrick(e);
-	if (dynamic_cast<CPipe*>(e->obj))
-		OnCollisionWithPipe(e);
+	if (dynamic_cast<CEnterablePipe*>(e->obj))
+		OnCollisionWithEnterablePipe(e);
 
 	// collide in y dimension and the object is a blocking object like platform
 	if (e->IsCollidedInYDimension() && e->obj->IsBlocking())
@@ -188,15 +188,24 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 	CGame::GetInstance()->InitiateSwitchScene(portal->GetSceneId());
 }
 
-void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
+void CMario::OnCollisionWithEnterablePipe(LPCOLLISIONEVENT e)
 {
-	if (e->IsCollidedInYDimension())
+	LPENTERABLE_PIPE pipe_obj = dynamic_cast<LPENTERABLE_PIPE>(e->obj);
+	if (pipe_obj->GetDirection() == PIPE_DIRECTION_DOWN)
 	{
-		start_y = y;
-		is_on_platform = TRUE;
-		pipe = dynamic_cast<CPipe*>(e->obj);
-		if (!pipe->CanEnterHiddenMap())
-			pipe = nullptr;
+		if (e->IsCollidedFromBottom())
+		{
+			start_y = y;
+			pipe = pipe_obj;
+		}
+	}
+	else if (pipe_obj->GetDirection() == PIPE_DIRECTION_UP)
+	{
+		if (e->IsCollidedFromTop())
+		{
+			start_y = y;
+			pipe = pipe_obj;
+		}
 	}
 }
 
@@ -529,21 +538,33 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			pipe = nullptr;
 			return;
 		}
-		if (pipe)
+		if (dynamic_cast<LPENTERABLE_PIPE>(pipe))
 		{
-			if (GetTop() > pipe->GetTop())
+			if (pipe->GetDirection() == PIPE_DIRECTION_UP)
 			{
-				y = pipe->GetTop() + GetHeight() / 2 + 1;
-				vy = 0;
-				pipe->EnterHiddenMap();
-				pipe = nullptr;
+				if (GetTop() > pipe->GetTop())
+				{
+					y = pipe->GetTop() + GetHeight() / 2 + 1;
+					vy = 0;
+					((LPENTERABLE_PIPE)pipe)->EnterHiddenMap();
+				}
+			}
+			else if (pipe->GetDirection() == PIPE_DIRECTION_DOWN)
+			{
+				if (GetBottom() < pipe->GetBottom())
+				{
+					y = pipe->GetBottom() - GetHeight() / 2 - 1;
+					vy = 0;
+					((LPENTERABLE_PIPE)pipe)->EnterHiddenMap();
+				}
 			}
 		}
 		return;
 	}
 
-	// move out of zone which is allowed to enter pipe
-	if (pipe)
+	// if is not entering pipe
+	// if mario is out of enter pipe position, set pipe to null
+	if (dynamic_cast<LPENTERABLE_PIPE>(pipe))
 	{
 		if (GetLeft() < pipe->GetLeft() || GetRight() > pipe->GetRight())
 			pipe = nullptr;
@@ -594,10 +615,14 @@ void CMario::SetState(int state)
 	{
 	case MARIO_STATE_ENTER_PIPE:
 		// can not enter pipe if not touching pipe
-		if (!pipe) return;
-		pipe->GetPlant()->SetDisabledUpDown(TRUE);
+		if (!dynamic_cast<LPENTERABLE_PIPE>(pipe)) return;
+		if (pipe->GetPlant())
+			pipe->GetPlant()->SetDisabledUpDown(TRUE);
 		x = pipe->GetX();
-		vy = MARIO_ENTER_PIPE_SPEED;
+		if (pipe->GetDirection() == PIPE_DIRECTION_UP)
+			vy = MARIO_ENTER_PIPE_SPEED;
+		else if (pipe->GetDirection() == PIPE_DIRECTION_DOWN)
+			vy = -MARIO_ENTER_PIPE_SPEED;
 		vx = 0;
 		ay = 0;
 		ax = 0;

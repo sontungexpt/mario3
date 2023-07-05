@@ -38,3 +38,4 @@ height	240
 140	src\assets\textures\mario_world_map.png
 150	src\assets\textures\world_map_source.png
 160	src\assets\textures\hidden_map_source.png
+170	src\assets\textures\full_hidden_map.png

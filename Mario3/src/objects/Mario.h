@@ -40,7 +40,8 @@ protected:
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
-	void OnCollisionWithPipe(LPCOLLISIONEVENT e);
+	//void OnCollisionWithPipe(LPCOLLISIONEVENT e);
+	void OnCollisionWithEnterablePipe(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
