@@ -22,7 +22,7 @@ src\settings\objects\items\coin.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	168	30
+0	160	30
 
 #COIN
 10	232	40

@@ -1,6 +1,4 @@
 #pragma once
-#include "scenes/PlayScene.h"
-
 #include "Pipe.h"
 #include "objects/monsters/plants/PlantShooter.h"
 #include "objects/monsters/plants/CarnivorousPlant.h"

@@ -127,6 +127,7 @@ int CLevelMapScene::CreatePlayer(float x, float y)
 		CGameObject* obj = new CMarioLevelMap(x, y);
 		player = (CMarioLevelMap*)obj;
 		obj->SetPosition(x, y);
+		CGame::GetInstance()->SetCamPos(x - CGame::GetInstance()->GetBackBufferWidth() / 2, y);
 		objects.push_back(obj);
 		DebugOut(L"[INFO] Player object has been created!\n");
 		return 1;

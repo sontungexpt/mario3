@@ -134,6 +134,25 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	CAnimations::GetInstance()->Add(ani_id, ani);
 }
 
+int CPlayScene::CreatePlayer(float x, float y)
+{
+	if (player != nullptr)
+	{
+		DebugOut(L"[ERROR] MARIO object was created before!\n");
+		return 0;
+	}
+	else
+	{
+		CGameObject* obj = new CMario(x, y);
+		player = (CMario*)obj;
+		obj->SetPosition(x, y);
+		CGame::GetInstance()->SetCamPos(x - CGame::GetInstance()->GetBackBufferWidth() / 2, y);
+		objects.push_back(obj);
+		DebugOut(L"[INFO] Player object has been created!\n");
+		return 1;
+	}
+}
+
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
@@ -157,6 +176,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 		obj = new CMario(x, y);
+		CGame::GetInstance()->SetCamPos(x - CGame::GetInstance()->GetBackBufferWidth() / 2, y);
 		player = (CMario*)obj;
 
 		DebugOut(L"[INFO] Player object has been created!\n");
@@ -485,13 +505,6 @@ void CPlayScene::Render()
 {
 	// if player is entering pipe then render player first
 	// because player is behind pipe
-	//
-	//if (player)
-	//{
-	//	CMario* mario = (CMario*)player;
-	//	if (mario->IsEnteringPipe())
-	//		player->Render();
-	//}
 
 	for (int i = 0; i < objects.size(); i++)
 	{
@@ -543,7 +556,10 @@ void CPlayScene::Clear()
 void CPlayScene::Unload()
 {
 	for (int i = 0; i < objects.size(); i++)
+	{
 		delete objects[i];
+		objects[i] = nullptr;
+	}
 
 	objects.clear();
 

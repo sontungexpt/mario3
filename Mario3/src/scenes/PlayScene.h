@@ -35,6 +35,8 @@ protected:
 	virtual void _ParseSection_SPRITES(string line);
 	virtual void _ParseSection_ANIMATIONS(string line);
 
+	virtual int CreatePlayer(float x, float y);
+
 	virtual void _ParseSection_ASSETS(string line);
 	virtual void _ParseSection_OBJECTS(string line);
 	virtual void _ParseSection_SETTINGS(string line);
