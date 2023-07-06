@@ -25,7 +25,10 @@ void CHud::RenderMarioRemainingLife()
 
 	CDrawingManager::RenderIcon("life", life_icon_x, life_icon_y);
 	CDrawingManager::RenderIcon("X", life_icon_x + HUD_LIFE_BBOX_WIDTH / 2 + HUD_X_ICON_BBOX_WIDTH / 2 + 3, life_icon_y + 1.0f);
-	CDrawingManager::RenderNumber(CGameData::GetInstance()->GetLife(), start_x, start_y);
+
+	int remain_life = CGameData::GetInstance()->GetLife();
+	if (remain_life < 0) remain_life = 0;
+	CDrawingManager::RenderNumber(remain_life, start_x, start_y);
 }
 
 void CHud::RenderArrowPower()
@@ -88,7 +91,7 @@ void CHud::RenderWorldNumber()
 	float start_x = GetLeft() + 56;
 	float start_y = GetTop() + 5;
 
-	CDrawingManager::RenderString("WORLD", start_x - HUD_CHAR_BBOX_WIDTH * 5 - 4, start_y - 2);
+	CDrawingManager::RenderString("WORLD", start_x - HUD_CHAR_BBOX_WIDTH * 5 - 4, start_y - 1);
 	CDrawingManager::RenderNumber(CGameData::GetInstance()->GetEntryDoorLevel(), start_x, start_y);
 }
 
@@ -123,6 +126,7 @@ void CHud::Render()
 	RenderWorldNumber();
 	RenderMarioRemainingTime();
 }
+
 void CHud::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x - HUD_BACKGROUND_BBOX_WIDTH / 2;

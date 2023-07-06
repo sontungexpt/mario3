@@ -82,6 +82,8 @@ int CDrawingManager::GetAniIdChar(char char_)
 		return ID_ANI_CHAR_Y;
 	case 'Z':
 		return ID_ANI_CHAR_Z;
+	case '!':
+		return ID_ANI_CHAR_EXCLAMATION;
 	default:
 		return -1;
 	}
@@ -102,6 +104,10 @@ int CDrawingManager::GetAniIdIcon(string icon)
 		return ID_ANI_LIFE_ICON;
 	else if (icon == "X")
 		return ID_ANI_X_ICON;
+	else if (icon == "MARIO DIE")
+		return ID_ANI_MARIO_DIE;
+	else if (icon == "RED ARROW")
+		return ID_ANI_RED_ARROW_ICON;
 	return -1;
 }
 
@@ -134,7 +140,7 @@ int CDrawingManager::GetAniIdNumber(int number)
 	}
 }
 
-void CDrawingManager::RenderOverlay()
+void CDrawingManager::RenderOverlay(float alpha)
 {
 	float cx, cy;
 	CGame::GetInstance()->GetCamPos(cx, cy);
@@ -152,15 +158,17 @@ void CDrawingManager::RenderOverlay()
 	rect.right = (int)CGame::GetInstance()->GetBackBufferWidth();
 	rect.bottom = (int)CGame::GetInstance()->GetBackBufferHeight();
 
-	CGame::GetInstance()->Draw(x - cx, y - cy, bbox, &rect, 0.6f);
+	CGame::GetInstance()->Draw(x - cx, y - cy, bbox, &rect, alpha);
 }
 
 void CDrawingManager::RenderBlackBackground(float left, float top, int number_cell_with, int number_cell_height)
 {
 }
 
-void CDrawingManager::RenderBlueFrame(float left, float top, int number_cell_with, int number_cell_height)
+void CDrawingManager::RenderBlueFrame(float x, float y, int number_cell_with, int number_cell_height)
 {
+	float left = x - number_cell_with / 2.0f * HUD_FRAME_CELL_WIDTH;
+	float top = y - number_cell_height / 2.0f * HUD_FRAME_CELL_HEIGHT;
 	if (number_cell_height < 2 || number_cell_with < 2)
 	{
 		DebugOut(L"[ERROR] RenderFrame: number_cell_with or number_cell_height must be greater than 1\n");

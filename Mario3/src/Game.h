@@ -125,7 +125,8 @@ public:
 		if (is_paused)
 		{
 			CDrawingManager::RenderOverlay();
-			CDrawingManager::RenderString("PAUSE",
+			CDrawingManager::RenderString(
+				"PAUSE",
 				cam_x + backBufferWidth / 2 - HUD_CHAR_BBOX_WIDTH * 5 / 2,
 				cam_y + backBufferHeight / 2 - HUD_CHAR_BBOX_HEIGHT / 2
 			);

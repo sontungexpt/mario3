@@ -566,6 +566,10 @@ void CPlayScene::Render()
 	if (change_scene_effect) change_scene_effect->Render();
 }
 
+void CPlayScene::RenderChangeSceneEffect()
+{
+}
+
 void CPlayScene::Clear()
 {
 	vector<LPGAMEOBJECT>::iterator it;

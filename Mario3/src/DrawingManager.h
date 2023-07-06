@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "configs/materials/Hud103000.h"
+#include "configs/Mario.h"
 
 using namespace std;
 
@@ -19,9 +20,9 @@ public:
 	{
 	}
 
-	static void RenderOverlay();
+	static void RenderOverlay(float alpha = 0.6f);
 	static void RenderBlackBackground(float left, float top, int number_cell_with, int number_cell_height);
-	static void RenderBlueFrame(float left, float top, int number_cell_with, int number_cell_height);
+	static void RenderBlueFrame(float x, float y, int number_cell_with, int number_cell_height);
 	static void RenderIcon(string icon, float left, float top);
 	static void RenderNumber(int number, float left, float top, int min_char = 0);
 	static void RenderString(string str, float left, float top);

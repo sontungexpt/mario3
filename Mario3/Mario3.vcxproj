@@ -132,6 +132,7 @@
     <ClCompile Include="src\components\KeyboardHandler\LevelMapKeyEventHandler.cpp" />
     <ClCompile Include="src\DrawingManager.cpp" />
     <ClCompile Include="src\GameData.cpp" />
+    <ClCompile Include="src\objects\GameOverControlPanel.cpp" />
     <ClCompile Include="src\objects\items\LifeUpMushroom.cpp" />
     <ClCompile Include="src\objects\MarioAttackingZone.cpp" />
     <ClCompile Include="src\objects\GameObject.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="src\components\KeyboardHandler\LevelMapKeyEventHandler.h" />
     <ClInclude Include="src\configs\All.h" />
     <ClInclude Include="src\configs\Effect.h" />
+    <ClInclude Include="src\configs\GameOverControlPanel.h" />
     <ClInclude Include="src\configs\materials\Brick.h" />
     <ClInclude Include="src\configs\materials\Hud103000.h" />
     <ClInclude Include="src\configs\items\All.h" />
@@ -213,6 +215,7 @@
     <ClInclude Include="src\configs\monsters\PlantShooter602000.h" />
     <ClInclude Include="src\DrawingManager.h" />
     <ClInclude Include="src\GameData.h" />
+    <ClInclude Include="src\objects\GameOverControlPanel.h" />
     <ClInclude Include="src\objects\items\LifeUpMushroom.h" />
     <ClInclude Include="src\objects\MarioAttackingZone.h" />
     <ClInclude Include="src\objects\items\Bullet.h" />

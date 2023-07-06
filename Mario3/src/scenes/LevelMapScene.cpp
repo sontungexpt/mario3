@@ -155,7 +155,48 @@ void CLevelMapScene::Render()
 	if (hud) hud->Render();
 	RenderStartPoint();
 	if (player) player->Render();
+	RenderGameOverPanel();
 	if (change_scene_effect) change_scene_effect->Render();
+}
+
+void CLevelMapScene::UpdateGameOverPanel(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
+{
+	if (!game_over_control_panel)
+		game_over_control_panel = new GameOverControlPanel(SCREEN_WIDTH / 2.0f, CGame::GetInstance()->GetBackBufferHeight() / 2.0f);
+
+	game_over_control_panel->Update(dt);
+}
+
+void CLevelMapScene::RenderGameOverPanel()
+{
+	if (!game_over_control_panel)
+		game_over_control_panel = new GameOverControlPanel(SCREEN_WIDTH / 2.0f, CGame::GetInstance()->GetBackBufferHeight() / 2.0f);
+
+	game_over_control_panel->Render();
+
+	//CDrawingManager::RenderOverlay(0.15f);
+
+	//CGame* game = CGame::GetInstance();
+	//int number_cell_width = 8;
+	//int number_cell_height = 4;
+	//float x = SCREEN_WIDTH / 2.0f;
+	//float y = game->GetBackBufferHeight() / 2.0f;
+	//float left = x - number_cell_width / 2.0f * HUD_FRAME_CELL_WIDTH;
+	//float top = y - number_cell_height / 2.0f * HUD_FRAME_CELL_HEIGHT;
+	//CDrawingManager::RenderBlueFrame(x, y, number_cell_width, number_cell_height);
+
+	//CDrawingManager::RenderString("MARIO", left + 10, top + 2);
+	//CDrawingManager::RenderString("GAME OVER!", x - 10.0f / 2 * HUD_CHAR_BBOX_WIDTH, top + 16);
+
+	//CDrawingManager::RenderIcon("MARIO DIE", left + 16, top + 40);
+
+	//float continue_left = left + 50;
+	//float continue_top = top + 30;
+	//CDrawingManager::RenderString("CONTINUE", continue_left, continue_top);
+
+	//float end_left = left + 50;
+	//float end_top = top + 40;
+	//CDrawingManager::RenderString("END", end_left, end_top);
 }
 
 void CLevelMapScene::Update(DWORD dt)
@@ -172,11 +213,13 @@ void CLevelMapScene::Update(DWORD dt)
 	// if player is dead, and still have life,
 	// then the player will be moved to the previous door
 	CGameData* data = CGameData::GetInstance();
-	if (data->IsLostALife() && data->GetLife() > 0)
+	if (data->IsLostALife() && data->GetLife() >= 0)
 	{
 		((CMarioLevelMap*)player)->MoveToSpecialPos(prev_door_x, prev_door_y);
-		data->SetGameOver(FALSE);
+		data->SetIsLostALife(FALSE);
 	}
+
+	UpdateGameOverPanel(dt);
 
 	vector<LPGAMEOBJECT> coObjects;
 

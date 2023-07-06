@@ -58,7 +58,7 @@ public:
 	int GetEntryDoorLevel() { return entry_door_level; };
 
 	void SetLife(int player_life) { this->player_life = player_life; };
-	void DecreaseLifeBy1() { player_life = player_life > 0 ? player_life - 1 : 0; };
+	void DecreaseLifeBy1() { player_life--; };
 	void IncreaseLifeBy1() { player_life++; }
 	int GetLife() { return player_life; };
 
@@ -73,9 +73,9 @@ public:
 	void IncreasePointBy(int player_point) { this->player_point += player_point; };
 	int GetPoint() { return player_point; };
 
-	void SetGameOver(BOOLEAN is_lost_life) { this->is_lost_life = is_lost_life; };
+	void SetIsLostALife(BOOLEAN is_lost_life) { this->is_lost_life = is_lost_life; };
 	BOOLEAN IsLostALife() { return is_lost_life == TRUE; };
-	BOOLEAN IsGameOver() { return is_lost_life == TRUE && player_life == 0; }
+	BOOLEAN IsGameOver() { return is_lost_life == TRUE && player_life < 0; }
 
 	void CountDownRemainTime();
 	void InitRemainTime(ULONGLONG remain_time) { this->remain_time = remain_time; };
@@ -89,7 +89,11 @@ public:
 		player_coin = 0;
 		player_point = 0;
 		remain_time = 0;
+		entry_door_level = 0;
 		count_down_time_start = 0;
+		max_door_level_passed = 0;
+		current_scene_id = INT_MAX;
 		is_lost_life = FALSE;
+		mario_level = MARIO_LEVEL_SMALL;
 	};
 };

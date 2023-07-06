@@ -65,6 +65,7 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
+	virtual void RenderChangeSceneEffect();
 	LPGAMEOBJECT GetMaxObjectY() { return max_object_y; }
 	LPGAMEOBJECT GetMaxObjectX() { return max_object_x; }
 

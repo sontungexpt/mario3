@@ -16,7 +16,7 @@ void CDoor::EnterDoor()
 	//		return;
 	//}
 
-	CGameData::GetInstance()->SetGameOver(FALSE);
+	CGameData::GetInstance()->SetIsLostALife(FALSE);
 	CGameData::GetInstance()->SetEntryDoorLevel(door_level);
 	CGame::GetInstance()->InitiateSwitchScene(scene_id);
 }
