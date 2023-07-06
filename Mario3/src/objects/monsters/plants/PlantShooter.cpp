@@ -6,7 +6,6 @@
 #include "objects/materials/Pipe.h"
 
 void CPlantShooter::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
-	if (is_deleted) return; // notthing to get
 	switch (type)
 	{
 	case PLANT_SHOOTER_RED:
@@ -29,15 +28,11 @@ void CPlantShooter::GetBoundingBox(float& left, float& top, float& right, float&
 
 void CPlantShooter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (is_disabled_up_down) return;
-
 	if (!IsInCamera()) return;
 
-	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-	CMario* mario = (CMario*)scene->GetPlayer();
-	if (mario->IsDead()) return; // if mario dead, plant not need to update
-
 	CPlant::Update(dt, coObjects);
+
+	if (is_disabled_up_down) return;
 
 	if (is_upping && y <= min_y) {
 		if (!is_shooted)// just one bullet per state up
@@ -49,6 +44,8 @@ void CPlantShooter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			else
 			{
+				CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+				CMario* mario = (CMario*)scene->GetPlayer();
 				// after finished reloading bullet, then shoot bullet
 				if (GetTickCount64() - time_reload_bullet_start > TIME_RELOAD_BULLET) {
 					float bullet_y = CompareYWithMario() == 1 ? GetTop() + 10 : GetTop() + 4;
@@ -69,7 +66,6 @@ void CPlantShooter::Render()
 {
 	if (is_disabled_up_down) return;
 
-	if (is_deleted) return; // notthing to render
 	if (!IsInCamera()) return; // lazy load
 
 	int aniId = -1;
@@ -87,13 +83,14 @@ void CPlantShooter::Render()
 		return;
 	}
 
+	if (aniId == -1) return;
+
 	CAnimations* animations = CAnimations::GetInstance();
 	animations->Get(aniId)->Render(x, y);
 }
 
 int CPlantShooter::GetAniIdRed()
 {
-	int aniId = -1;
 	switch (state)
 	{
 	case PLANT_STATE_UP:
@@ -101,29 +98,25 @@ int CPlantShooter::GetAniIdRed()
 		if (CompareXWithMario() == 1)
 		{
 			if (CompareYWithMario() == 1)
-				aniId = ID_ANI_RED_PLANT_SHOOTER_LEFT_NOT_SHOOT_UNDER;
+				return ID_ANI_RED_PLANT_SHOOTER_LEFT_NOT_SHOOT_UNDER;
 			else //plant under right with mario
-				aniId = ID_ANI_RED_PLANT_SHOOTER_LEFT_NOT_SHOOT_TOP;
+				return ID_ANI_RED_PLANT_SHOOTER_LEFT_NOT_SHOOT_TOP;
 		}
 		// plant top left with mario
 		else if (CompareXWithMario() == -1)
 		{
 			if (CompareYWithMario() == 1)
-				aniId = ID_ANI_RED_PLANT_SHOOTER_RIGHT_NOT_SHOOT_UNDER;
+				return ID_ANI_RED_PLANT_SHOOTER_RIGHT_NOT_SHOOT_UNDER;
 			else // plant under left with mario
-				aniId = ID_ANI_RED_PLANT_SHOOTER_RIGHT_NOT_SHOOT_TOP;
+				return ID_ANI_RED_PLANT_SHOOTER_RIGHT_NOT_SHOOT_TOP;
 		}
 		break;
-	default:
-		DebugOut(L"[ERROR] Unhandled state %d at CPlantShooter::GetAniIdRed\n", state);
-		break;
 	}
-	return aniId;
+	return -1;
 }
 
 int CPlantShooter::GetAniIdGreen()
 {
-	int aniId = -1;
 	switch (state)
 	{
 	case PLANT_STATE_UP:
@@ -131,24 +124,21 @@ int CPlantShooter::GetAniIdGreen()
 		if (CompareXWithMario() == 1)
 		{
 			if (CompareYWithMario() == 1)
-				aniId = ID_ANI_GREEN_PLANT_SHOOTER_LEFT_NOT_SHOOT_UNDER;
+				return ID_ANI_GREEN_PLANT_SHOOTER_LEFT_NOT_SHOOT_UNDER;
 			else //plant under right with mario
-				aniId = ID_ANI_GREEN_PLANT_SHOOTER_LEFT_NOT_SHOOT_TOP;
+				return ID_ANI_GREEN_PLANT_SHOOTER_LEFT_NOT_SHOOT_TOP;
 		}
 		// plant top left with mario
 		else if (CompareXWithMario() == -1)
 		{
 			if (CompareYWithMario() == 1)
-				aniId = ID_ANI_GREEN_PLANT_SHOOTER_RIGHT_NOT_SHOOT_UNDER;
+				return ID_ANI_GREEN_PLANT_SHOOTER_RIGHT_NOT_SHOOT_UNDER;
 			else // plant under left with mario
-				aniId = ID_ANI_GREEN_PLANT_SHOOTER_RIGHT_NOT_SHOOT_TOP;
+				return ID_ANI_GREEN_PLANT_SHOOTER_RIGHT_NOT_SHOOT_TOP;
 		}
 		break;
-	default:
-		DebugOut(L"[ERROR] Unhandled state %d at CPlantShooter::GetAniIdRed\n", state);
-		break;
 	}
-	return aniId;
+	return -1;
 }
 
 void CPlantShooter::SetState(int state)

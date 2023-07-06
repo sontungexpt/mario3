@@ -27,6 +27,7 @@ void CPipe::CreatePlant(int plant_type)
 		plant = (CCarnivorousPlant*)scene->AddObject(new CCarnivorousPlant(plant_x, plant_y, PLANT_STATE_DOWN));
 		break;
 	default:
+		plant = nullptr;
 		return;
 	}
 	if (plant)

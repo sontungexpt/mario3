@@ -19,6 +19,7 @@
 #include "objects/materials/bricks/BreakableBrick.h"
 #include "objects/materials/Pipe.h"
 #include "objects/materials/EnterablePipe.h"
+#include "objects/materials/OuterablePipe.h"
 
 #include "objects/items/Coin.h"
 
@@ -136,7 +137,7 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 
 int CPlayScene::CreatePlayer(float x, float y)
 {
-	if (player != nullptr)
+	if (player)
 	{
 		DebugOut(L"[ERROR] MARIO object was created before!\n");
 		return 0;
@@ -170,16 +171,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 	case OBJECT_TYPE_MARIO:
 	{
-		if (player != nullptr)
-		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
-			return;
-		}
-		obj = new CMario(x, y);
-		CGame::GetInstance()->SetCamPos(x - CGame::GetInstance()->GetBackBufferWidth() / 2, y);
-		player = (CMario*)obj;
-
-		DebugOut(L"[INFO] Player object has been created!\n");
+		CreatePlayer(x, y);
+		return;
 	}
 	break;
 	case OBJECT_TYPE_GOOMBA:
@@ -261,6 +254,26 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int scene_id = atoi(tokens[7].c_str());
 
 		obj = new CEnterablePipe(x, y, state, plant_type, direction, color, scene_id);
+	}
+	break;
+	case OBJECT_TYPE_OUTERABLE_PIPE:
+	{
+		int state = atoi(tokens[3].c_str());
+		int plant_type = atoi(tokens[4].c_str());
+		int direction = atoi(tokens[5].c_str());
+		int color = atoi(tokens[6].c_str());
+		int scene_id = atoi(tokens[7].c_str());
+
+		obj = new COuterablePipe(x, y, state, plant_type, direction, color, scene_id);
+
+		if (((LPOUTERABLE_PIPE)obj)->IsCurrentOutdoor())
+		{
+			if (!player)
+				CreatePlayer(x, y);
+
+			((CMario*)player)->SetPipe((LPOUTERABLE_PIPE)obj);
+			((CMario*)player)->MoveOutPipe();
+		}
 	}
 	break;
 	case OBJECT_TYPE_KOOPA:
@@ -510,16 +523,27 @@ void CPlayScene::Render()
 	{
 		if (dynamic_cast<CMario*>(objects[i]))
 			continue;
-		if (dynamic_cast<LPENTERABLE_PIPE>(objects[i]))
+		else if (dynamic_cast<LPENTERABLE_PIPE>(objects[i]))
 		{
 			if (player)
 			{
-				if (((CMario*)player)->IsEnteringPipe() &&
-					((CMario*)player)->GetPipe() == objects[i])
+				CMario* mario = (CMario*)player;
+				if (mario->IsEnteringPipe() &&
+					mario->GetPipe() == objects[i])
 					continue;
 			}
 		}
-		if (dynamic_cast<CEffect*>(objects[i]))
+		else if (dynamic_cast<LPOUTERABLE_PIPE>(objects[i]))
+		{
+			if (player)
+			{
+				CMario* mario = (CMario*)player;
+				if (mario->IsOuteringPipe() &&
+					mario->GetPipe() == objects[i])
+					continue;
+			}
+		}
+		else if (dynamic_cast<CEffect*>(objects[i]))
 		{
 			if (((CEffect*)objects[i])->GetType() == CHANGE_SCENE)
 				continue;
@@ -534,7 +558,8 @@ void CPlayScene::Render()
 	{
 		CMario* mario = (CMario*)player;
 		player->Render();
-		if (mario->IsEnteringPipe() && mario->GetPipe())
+
+		if (mario->IsEnteringPipe() || mario->IsOuteringPipe())
 			mario->GetPipe()->Render();
 	}
 

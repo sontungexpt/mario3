@@ -14,7 +14,15 @@ class CGameData {
 	int mario_level;
 	int max_door_level_passed;
 	int entry_door_level;
-	int hidden_map_id;
+
+	// if the player is completely move to hidden map this variable will be assigned with the scene_id
+	// if the player is completely move out hidden map this variable will be assigned with INT_MAX
+	// example: the player is in world 1-1, he move to hidden map 1-1,
+	// when player is completely in pipe then this var will be assign with the scene_id of hidden_map
+	// when player change to hidden map 1-1 and completely move out pipe then this var will be assign with INT_MAX
+	// and when the player comback to world 1-1 and completely in pipe, this var will be assign the scene_id of world 1-1
+	// and when player change to world 1-1 and completely move out pipe, this var will be assign with INT_MAX
+	int current_scene_id;
 
 	BOOLEAN is_lost_life;
 
@@ -30,7 +38,7 @@ public:
 		entry_door_level = 0;
 		count_down_time_start = 0;
 		max_door_level_passed = 0;
-		hidden_map_id = INT_MAX;
+		current_scene_id = INT_MAX;
 
 		is_lost_life = FALSE;
 		mario_level = MARIO_LEVEL_SMALL;
@@ -39,12 +47,12 @@ public:
 
 	static CGameData* GetInstance();
 
-	void SetCurrentSceneId(int id) { hidden_map_id = id; };
-	int GetHiddenMapId() { return hidden_map_id; };
-	BOOLEAN IsMoveOutHiddenMap() { return hidden_map_id != INT_MAX; };
-	BOOLEAN IsMoveInHiddenMap() { return hidden_map_id == INT_MAX; };
-	void MoveOutHiddenMap() { hidden_map_id = INT_MAX; };
-	void MoveInHiddenMap(int id) { hidden_map_id = id; };
+	void SetCurrentSceneId(int id) { current_scene_id = id; };
+	int GetCurrentSceneId() { return current_scene_id; };
+	BOOLEAN IsMoveOutHiddenMap() { return current_scene_id != INT_MAX; };
+	BOOLEAN IsMoveInHiddenMap() { return current_scene_id == INT_MAX; };
+	void MoveOutHiddenMap() { current_scene_id = INT_MAX; };
+	void MoveInHiddenMap(int id) { current_scene_id = id; };
 
 	void SetEntryDoorLevel(int level) { entry_door_level = level; };
 	int GetEntryDoorLevel() { return entry_door_level; };

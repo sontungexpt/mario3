@@ -149,6 +149,7 @@
     <ClCompile Include="src\objects\materials\Grass.cpp" />
     <ClCompile Include="src\objects\items\Mushroom.cpp" />
     <ClCompile Include="src\objects\materials\Hud.cpp" />
+    <ClCompile Include="src\objects\materials\OuterablePipe.cpp" />
     <ClCompile Include="src\objects\materials\Pipe.cpp" />
     <ClCompile Include="src\objects\monsters\Hammer.cpp" />
     <ClCompile Include="src\objects\monsters\plants\CarnivorousPlant.cpp" />
@@ -195,7 +196,6 @@
     <ClInclude Include="src\configs\GameData.h" />
     <ClInclude Include="src\configs\GameObject.h" />
     <ClInclude Include="src\configs\items\Coin300000.h" />
-    <ClInclude Include="src\configs\materials\Pipe10100.h" />
     <ClInclude Include="src\configs\monsters\All.h" />
     <ClInclude Include="src\configs\monsters\CarnivorousPlant603000.h" />
     <ClInclude Include="src\configs\monsters\Gommba600000.h" />
@@ -228,6 +228,7 @@
     <ClInclude Include="src\objects\items\Leaf.h" />
     <ClInclude Include="src\objects\items\Mushroom.h" />
     <ClInclude Include="src\objects\materials\Hud.h" />
+    <ClInclude Include="src\objects\materials\OuterablePipe.h" />
     <ClInclude Include="src\objects\materials\Pipe.h" />
     <ClInclude Include="src\objects\monsters\Hammer.h" />
     <ClInclude Include="src\objects\monsters\plants\CarnivorousPlant.h" />

@@ -5,6 +5,9 @@
 #include "MarioAttackingZone.h"
 
 #include "materials/Pipe.h"
+#include "materials/EnterablePipe.h"
+#include "materials/OuterablePipe.h"
+
 #include "monsters/Monster.h"
 
 #include "components/Animation/Animation.h"
@@ -40,7 +43,6 @@ protected:
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
-	//void OnCollisionWithPipe(LPCOLLISIONEVENT e);
 	void OnCollisionWithEnterablePipe(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e);
@@ -50,7 +52,7 @@ protected:
 
 	int GetAniIdBig();
 	int GetAniIdTail();
-	int GetAniIdEnterPipe();
+	int GetAniIdEnterOuterPipe();
 	int GetAniIdSmall();
 
 	int GetAniIdWhenAppearanceChanging();
@@ -82,7 +84,6 @@ public:
 
 		weapon_monster = nullptr;
 		pipe = nullptr;
-		//attacking_zone = nullptr;
 
 		level = CGameData::GetInstance()->GetMarioLevel();
 
@@ -108,7 +109,12 @@ public:
 	void SetState(int state);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
-	int IsCollidable() { return state != MARIO_STATE_DIE && state != MARIO_STATE_ENTER_PIPE; }
+	int IsCollidable()
+	{
+		return state != MARIO_STATE_DIE &&
+			state != MARIO_STATE_ENTER_PIPE &&
+			state != MARIO_STATE_OUTER_PIPE;
+	}
 	//int IsBlocking() { return (state != MARIO_STATE_DIE && !untouchable); }
 
 	int IsBlocking() { return 0; }
@@ -122,9 +128,20 @@ public:
 	BOOLEAN IsBig() { return level == MARIO_LEVEL_BIG; };
 	BOOLEAN HasTail() { return level == MARIO_LEVEL_TAIL_SUIT; }
 	BOOLEAN IsFullPower() { return power == MARIO_MAX_POWER; }
-	BOOLEAN IsEnteringPipe() { return state == MARIO_STATE_ENTER_PIPE; }
+	BOOLEAN IsEnteringPipe()
+	{
+		return dynamic_cast<LPENTERABLE_PIPE>(pipe) &&
+			state == MARIO_STATE_ENTER_PIPE;
+	}
+	BOOLEAN IsOuteringPipe()
+	{
+		return dynamic_cast<LPOUTERABLE_PIPE>(pipe) &&
+			state == MARIO_STATE_OUTER_PIPE;
+	}
 
 	LPPIPE GetPipe() { return pipe; }
+	void SetPipe(LPPIPE pipe) { this->pipe = pipe; }
+	void MoveOutPipe() { SetState(MARIO_STATE_OUTER_PIPE); }
 
 	void Shrink() { SetLevel(MARIO_LEVEL_SMALL); }
 	void Zoom() { SetLevel(MARIO_LEVEL_BIG); }

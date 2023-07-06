@@ -2,14 +2,15 @@
 #include "Pipe.h"
 
 #include "configs/materials/Pipe101000.h"
+#include "GameData.h"
 
-class CEnterablePipe : public CPipe
+class COuterablePipe : public CPipe
 {
 protected:
 	int scene_id;
 
 public:
-	CEnterablePipe(
+	COuterablePipe(
 		float x,
 		float y,
 		int state = PIPE_STATE_LONG,
@@ -25,7 +26,13 @@ public:
 	int IsCollidable() { return 1; };
 	int IsBlocking() { return 1; }
 
-	void PlayerEntered();
+	BOOLEAN IsCurrentOutdoor()
+	{
+		CGameData* data = CGameData::GetInstance();
+		return data->GetCurrentSceneId() != INT_MAX &&
+			scene_id == data->GetCurrentSceneId();
+	}
+	void PlayerMovedOut();
 };
 
-typedef CEnterablePipe* LPENTERABLE_PIPE;
+typedef COuterablePipe* LPOUTERABLE_PIPE;

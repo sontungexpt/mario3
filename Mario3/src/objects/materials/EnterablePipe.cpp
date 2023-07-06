@@ -1,7 +1,7 @@
 #include "EnterablePipe.h"
 #include "GameData.h"
 
-void CEnterablePipe::EnterHiddenMap()
+void CEnterablePipe::PlayerEntered()
 {
 	CGame* game = CGame::GetInstance();
 	CGameData::GetInstance()->SetCurrentSceneId(scene_id);

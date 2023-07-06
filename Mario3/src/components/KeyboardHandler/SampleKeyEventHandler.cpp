@@ -10,14 +10,17 @@
 
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
-	if (KeyCode == DIK_ESCAPE)
-		CGame::GetInstance()->TogglePause();
+	LPGAME game = CGame::GetInstance();
+
+	if (KeyCode == DIK_ESCAPE || KeyCode == DIK_W)
+		game->TogglePause();
 
 	// disable control key when pause game
-	if (CGame::GetInstance()->IsPaused())
+	if (game->IsPaused())
+		return;
+	if (game->IsInTransitionScene())
 		return;
 
-	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)game->GetCurrentScene())->GetPlayer();
 	if (!mario) return;
 
@@ -75,10 +78,13 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 void CSampleKeyHandler::OnKeyUp(int KeyCode)
 {
 	// disable control key when pause game
-	if (CGame::GetInstance()->IsPaused())
+	LPGAME game = CGame::GetInstance();
+
+	if (game->IsPaused())
+		return;
+	if (game->IsInTransitionScene())
 		return;
 
-	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)game->GetCurrentScene())->GetPlayer();
 	if (!mario) return;
 
@@ -100,10 +106,12 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 void CSampleKeyHandler::KeyState(BYTE* states)
 {
 	// disable control key when pause game
-	if (CGame::GetInstance()->IsPaused())
-		return;
-
 	LPGAME game = CGame::GetInstance();
+
+	if (game->IsPaused())
+		return;
+	if (game->IsInTransitionScene())
+		return;
 	CMario* mario = (CMario*)((LPPLAYSCENE)game->GetCurrentScene())->GetPlayer();
 	if (!mario) return;
 

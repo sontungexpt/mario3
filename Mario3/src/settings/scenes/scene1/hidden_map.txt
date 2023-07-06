@@ -45,6 +45,11 @@ src\settings\objects\items\coin.txt
 10	248	136
 
 #PIPE
+# object_type, x, y, state, plant_type, direction, color,
+#OUTERABLE PIPE
+13	144	16	2	0	1	2	-1
+
+#ENTERABLE PIPE
 12	368	16	2	0	1	2	1
 
 # PLATFORM

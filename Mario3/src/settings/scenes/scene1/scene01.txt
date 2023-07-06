@@ -236,18 +236,19 @@ src\settings\objects\monsters\carnivorous_plant.txt
 
 61	1471	595	2
 
-# Pipe
+# PIPE
 # object_type, x, y, state, plant_type, direction, color,
-
-12	354	621	1	1	2	1	-1
-
 11	1792	628	2	3	2	1
 
 11	1856	621	1	2	2	1
 
 11	2264	621	1	0	2	1
 
-11	2336	628	2	0	2	1
+# ENTERABLE PIPE
+12	354	621	1	1	2	1	-1
+
+# OUTERING PIPE
+13	2336	628	1	0	2	1	1
 
 ### Monsters ###
 #Goombas

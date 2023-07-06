@@ -22,7 +22,7 @@
 #include "materials/EffectManager.h"
 #include "materials/bricks/BreakableBrick.h"
 #include "materials/bricks/QuestionBrick.h"
-#include "materials/EnterablePipe.h"
+
 #include "configs/monsters/Gommba600000.h"
 #include "configs/materials/QuestionBrick100000.h"
 #include "configs/core/SceneIds.h"
@@ -484,7 +484,7 @@ int CMario::GetAniIdTail()
 	return aniId;
 }
 
-int CMario::GetAniIdEnterPipe()
+int CMario::GetAniIdEnterOuterPipe()
 {
 	if (level == MARIO_LEVEL_TAIL_SUIT)
 		return ID_ANI_MARIO_TAIL_FORWARD;
@@ -501,8 +501,8 @@ void CMario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
-	else if (state == MARIO_STATE_ENTER_PIPE)
-		aniId = GetAniIdEnterPipe();
+	else if (state == MARIO_STATE_ENTER_PIPE || state == MARIO_STATE_OUTER_PIPE)
+		aniId = GetAniIdEnterOuterPipe();
 	else if (is_appearance_changing)
 		aniId = GetAniIdWhenAppearanceChanging();
 	else if (level == MARIO_LEVEL_BIG)
@@ -528,7 +528,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if (IsDead() || IsEnteringPipe())
+	if (IsDead() || IsEnteringPipe() || IsOuteringPipe())
 	{
 		x += vx * dt;
 		y += vy * dt;
@@ -538,7 +538,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			pipe = nullptr;
 			return;
 		}
-		if (dynamic_cast<LPENTERABLE_PIPE>(pipe))
+		else if (dynamic_cast<LPENTERABLE_PIPE>(pipe))
 		{
 			if (pipe->GetDirection() == PIPE_DIRECTION_UP)
 			{
@@ -546,7 +546,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					y = pipe->GetTop() + GetHeight() / 2 + 1;
 					vy = 0;
-					((LPENTERABLE_PIPE)pipe)->EnterHiddenMap();
+					((LPENTERABLE_PIPE)pipe)->PlayerEntered();
 				}
 			}
 			else if (pipe->GetDirection() == PIPE_DIRECTION_DOWN)
@@ -555,7 +555,34 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					y = pipe->GetBottom() - GetHeight() / 2 - 1;
 					vy = 0;
-					((LPENTERABLE_PIPE)pipe)->EnterHiddenMap();
+					((LPENTERABLE_PIPE)pipe)->PlayerEntered();
+				}
+			}
+		}
+		else if (dynamic_cast<LPOUTERABLE_PIPE>(pipe))
+		{
+			if (pipe->GetDirection() == PIPE_DIRECTION_UP)
+			{
+				if (GetBottom() < pipe->GetTop())
+				{
+					vy = 0;
+					((LPOUTERABLE_PIPE)pipe)->PlayerMovedOut();
+					if (pipe->GetPlant())
+						pipe->GetPlant()->SetDisabledUpDown(FALSE);
+					pipe = nullptr;
+					StartUntouchable();
+				}
+			}
+			else if (pipe->GetDirection() == PIPE_DIRECTION_DOWN)
+			{
+				if (GetTop() > pipe->GetBottom())
+				{
+					vy = 0;
+					((LPOUTERABLE_PIPE)pipe)->PlayerMovedOut();
+					if (pipe->GetPlant())
+						pipe->GetPlant()->SetDisabledUpDown(FALSE);
+					pipe = nullptr;
+					StartUntouchable();
 				}
 			}
 		}
@@ -608,8 +635,8 @@ void CMario::SetState(int state)
 	// DIE is the end state, cannot be changed!
 	if (IsDead()) return;
 
-	// cannot change state when entering pipe
-	if (IsEnteringPipe()) return;
+	// cannot change state when entering pipe or outering pipe
+	if (IsEnteringPipe() || IsOuteringPipe()) return;
 
 	switch (state)
 	{
@@ -623,6 +650,25 @@ void CMario::SetState(int state)
 			vy = MARIO_ENTER_PIPE_SPEED;
 		else if (pipe->GetDirection() == PIPE_DIRECTION_DOWN)
 			vy = -MARIO_ENTER_PIPE_SPEED;
+		vx = 0;
+		ay = 0;
+		ax = 0;
+		break;
+	case MARIO_STATE_OUTER_PIPE:
+		if (!dynamic_cast<LPOUTERABLE_PIPE>(pipe)) return;
+		if (pipe->GetPlant())
+			pipe->GetPlant()->SetDisabledUpDown(TRUE);
+		x = pipe->GetX();
+		if (pipe->GetDirection() == PIPE_DIRECTION_UP)
+		{
+			y = pipe->GetTop() + GetHeight() / 2 + 1;
+			vy = -MARIO_ENTER_PIPE_SPEED;
+		}
+		else if (pipe->GetDirection() == PIPE_DIRECTION_DOWN)
+		{
+			y = pipe->GetBottom() - GetHeight() / 2 - 1;
+			vy = MARIO_ENTER_PIPE_SPEED;
+		}
 		vx = 0;
 		ay = 0;
 		ax = 0;
@@ -705,6 +751,7 @@ void CMario::SetState(int state)
 	case MARIO_STATE_IDLE:
 		ax = 0.0f;
 		vx = 0.0f;
+		ay = MARIO_GRAVITY;
 		break;
 	case MARIO_STATE_DIE:
 		ax = 0;
@@ -722,7 +769,7 @@ void CMario::SetState(int state)
 void CMario::Die()
 {
 	// cannot die when entering pipe
-	if (IsEnteringPipe()) return;
+	if (IsEnteringPipe() || IsOuteringPipe()) return;
 
 	// not untouchable -> can die
 	if (!untouchable)
