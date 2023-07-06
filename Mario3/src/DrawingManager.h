@@ -4,24 +4,27 @@
 
 using namespace std;
 
-class CFontManager
+class CDrawingManager
 {
 	static int GetAniIdChar(char number);
 	static int GetAniIdIcon(string icon);
 	static int GetAniIdNumber(int number);
 
 public:
-	CFontManager()
+	CDrawingManager()
 	{
 	}
 
-	~CFontManager()
+	~CDrawingManager()
 	{
 	}
 
+	static void RenderOverlay();
+	static void RenderBlackBackground(float left, float top, int number_cell_with, int number_cell_height);
+	static void RenderBlueFrame(float left, float top, int number_cell_with, int number_cell_height);
 	static void RenderIcon(string icon, float left, float top);
 	static void RenderNumber(int number, float left, float top, int min_char = 0);
 	static void RenderString(string str, float left, float top);
 };
 
-typedef CFontManager* LPFONTMANAGER;
+typedef CDrawingManager* LPFONTMANAGER;

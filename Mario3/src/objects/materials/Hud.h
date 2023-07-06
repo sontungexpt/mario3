@@ -12,9 +12,6 @@ class CHud : public CGameObject
 	void RenderPlayerCoin();
 	void RenderMarioRemainingTime();
 
-	// width and height automatic multiply by 6
-	void RenderFrame(float left, float top, int width, int height);
-
 	BOOLEAN is_full_power_dark;
 
 	ULONGLONG time_change_full_power_status_start;

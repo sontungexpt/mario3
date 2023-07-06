@@ -518,7 +518,6 @@ void CPlayScene::Render()
 {
 	// if player is entering pipe then render player first
 	// because player is behind pipe
-
 	for (int i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CMario*>(objects[i]))

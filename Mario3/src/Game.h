@@ -12,6 +12,7 @@
 #include "components/Texture/Texture.h"
 #include "components/KeyboardHandler/KeyEventHandler.h"
 #include "components/Scene/Scene.h"
+#include "DrawingManager.h"
 #include "configs/Game.h"
 
 using namespace std;
@@ -120,10 +121,17 @@ public:
 	void SetSwitchSceneWaitingTime(int time) { switch_scene_waiting_time = time; }
 
 	BOOLEAN IsPaused() { return is_paused; }
-	void TogglePause()
-	{
-		is_paused = ~is_paused;
+	void RenderPause() {
+		if (is_paused)
+		{
+			CDrawingManager::RenderOverlay();
+			CDrawingManager::RenderString("PAUSE",
+				cam_x + backBufferWidth / 2 - HUD_CHAR_BBOX_WIDTH * 5 / 2,
+				cam_y + backBufferHeight / 2 - HUD_CHAR_BBOX_HEIGHT / 2
+			);
+		}
 	}
+	void TogglePause() { is_paused = ~is_paused; }
 
 	D3DXCOLOR GetBackgroundColor() { return background_color; }
 	void SetBackgroundColor(float R, float G, float B, float A)

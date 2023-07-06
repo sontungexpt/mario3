@@ -130,7 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\components\KeyboardHandler\LevelMapKeyEventHandler.cpp" />
-    <ClCompile Include="src\FontManager.cpp" />
+    <ClCompile Include="src\DrawingManager.cpp" />
     <ClCompile Include="src\GameData.cpp" />
     <ClCompile Include="src\objects\items\LifeUpMushroom.cpp" />
     <ClCompile Include="src\objects\MarioAttackingZone.cpp" />
@@ -211,7 +211,7 @@
     <ClInclude Include="src\configs\materials\QuestionBrick100000.h" />
     <ClInclude Include="src\configs\monsters\Plant.h" />
     <ClInclude Include="src\configs\monsters\PlantShooter602000.h" />
-    <ClInclude Include="src\FontManager.h" />
+    <ClInclude Include="src\DrawingManager.h" />
     <ClInclude Include="src\GameData.h" />
     <ClInclude Include="src\objects\items\LifeUpMushroom.h" />
     <ClInclude Include="src\objects\MarioAttackingZone.h" />

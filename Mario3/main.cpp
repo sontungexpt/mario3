@@ -52,6 +52,7 @@ void Render()
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
 	CGame::GetInstance()->GetCurrentScene()->Render();
+	CGame::GetInstance()->RenderPause();
 
 	spriteHandler->End();
 	pSwapChain->Present(0, 0);
@@ -134,10 +135,9 @@ int Run()
 			CGame::GetInstance()->ProcessKeyboard();
 
 			// pause game then no need to update and render
-			if (CGame::GetInstance()->IsPaused())
-				continue;
+			if (!CGame::GetInstance()->IsPaused())
+				Update(dt);
 
-			Update(dt);
 			Render();
 			CGame::GetInstance()->SwitchScene();
 		}
