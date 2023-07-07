@@ -443,6 +443,48 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
 
+void CPlayScene::UpdateHud(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
+{
+	CGame* game = CGame::GetInstance();
+
+	if (hud == nullptr)
+		hud = new CHud(game->GetCamXPos() + game->GetBackBufferWidth() / 2, game->GetCamYPos() + game->GetBackBufferHeight() - HUD_BACKGROUND_BBOX_HEIGHT / 2);
+	else
+	{
+		hud->SetX(game->GetCamXPos() + game->GetBackBufferWidth() / 2);
+		hud->SetY(game->GetCamYPos() + game->GetBackBufferHeight() - HUD_BACKGROUND_BBOX_HEIGHT / 2);
+	}
+
+	hud->Update(dt);
+}
+
+void CPlayScene::UpdateCamera()
+{
+	CGame* game = CGame::GetInstance();
+
+	if (player == nullptr) {
+		game->SetCamPos(0, 0);
+		return;
+	};
+
+	float cx, cy;
+	player->GetPosition(cx, cy);
+
+	cx -= game->GetBackBufferWidth() / 2;
+
+	// having floor then mario can jump to hole and die
+	// if mario jump to hole (new_cam_y >= max_object_y) then not update camera
+	float new_cam_y = floor(cy / game->GetBackBufferHeight()) * game->GetBackBufferHeight();
+
+	cy = max_object_y != nullptr && new_cam_y >= max_object_y->GetY() ?
+		game->GetCamYPos() : new_cam_y;
+
+	if (cx < 0) cx = 0;
+	if (cy < 0) cy = 0;
+
+	game->SetCamPos(cx, cy);
+}
+
 void CPlayScene::Update(DWORD dt)
 {
 	//player is dead not need to update other objects
@@ -475,42 +517,9 @@ void CPlayScene::Update(DWORD dt)
 		objects[i]->Update(dt, &coObjects);
 	}
 
-	// skip the rest if scene was already unloaded
-	// (Mario::Update might trigger PlayScene::Unload)
+	UpdateCamera();
+	UpdateHud(dt);
 
-	if (player == nullptr) {
-		game->SetCamPos(0, 0);
-		return;
-	};
-
-	// Update camera to follow mario
-	float cx, cy;
-	player->GetPosition(cx, cy);
-
-	cx -= game->GetBackBufferWidth() / 2;
-
-	// having floor then mario can jump to hole and die
-	// if mario jump to hole (new_cam_y >= max_object_y) then not update camera
-	float new_cam_y = floor(cy / game->GetBackBufferHeight()) * game->GetBackBufferHeight();
-
-	cy = max_object_y != nullptr && new_cam_y >= max_object_y->GetY() ?
-		game->GetCamYPos() : new_cam_y;
-
-	if (cx < 0) cx = 0;
-	if (cy < 0) cy = 0;
-
-	game->SetCamPos(cx, cy);
-
-	// update hud
-	if (hud == nullptr)
-		hud = new CHud(cx + game->GetBackBufferWidth() / 2, cy + game->GetBackBufferHeight() - HUD_BACKGROUND_BBOX_HEIGHT / 2);
-	else
-	{
-		hud->SetX(cx + game->GetBackBufferWidth() / 2);
-		hud->SetY(cy + game->GetBackBufferHeight() - HUD_BACKGROUND_BBOX_HEIGHT / 2);
-	}
-
-	hud->Update(dt);
 	PurgeDeletedObjects();
 }
 
@@ -591,8 +600,7 @@ void CPlayScene::Unload()
 
 	objects.clear();
 
-	//clear hidden maps if next scene is not a hidden map
-
+	//clear hidden maps if next scene is not a hidden map of this scene
 	vector<int>::iterator it =
 		find(hidden_map_ids.begin(),
 			hidden_map_ids.end(),
@@ -604,6 +612,7 @@ void CPlayScene::Unload()
 	max_object_x = nullptr;
 	max_object_y = nullptr;
 	change_scene_effect = nullptr;
+
 	if (hud != nullptr)
 	{
 		delete hud;

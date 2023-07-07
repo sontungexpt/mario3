@@ -6,10 +6,13 @@ height	240
 #id		type	file
 # type: 0: intro, 1: play scene
 [SCENES]
-11   src\settings\scenes\intro.txt
+# INTRO SCENE
+11	src\settings\scenes\intro.txt
+
+# LEVEL MAP SCENE
 10	src\settings\scenes\levelmap.txt
 
-# Play scenes
+# PLAY SCENES
 1	src\settings\scenes\scene1\scene01.txt
 2	src\settings\scenes\scene2\scene02.txt
 3	src\settings\scenes\scene3\scene03.txt

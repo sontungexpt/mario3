@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\components\KeyboardHandler\GameOverControlPanelKeyEventHandler.cpp" />
     <ClCompile Include="src\components\KeyboardHandler\LevelMapKeyEventHandler.cpp" />
     <ClCompile Include="src\DrawingManager.cpp" />
     <ClCompile Include="src\GameData.cpp" />
@@ -182,6 +183,7 @@
     <ClCompile Include="src\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\components\KeyboardHandler\GameOverControlPanelKeyEventHandler.h" />
     <ClInclude Include="src\components\KeyboardHandler\LevelMapKeyEventHandler.h" />
     <ClInclude Include="src\configs\All.h" />
     <ClInclude Include="src\configs\Effect.h" />
@@ -295,6 +297,8 @@
     <Text Include="src\settings\objects\monsters\plant_shooter.txt" />
     <Text Include="src\settings\objects\materials\question_brick.txt" />
     <Text Include="src\settings\objects\platform.txt" />
+    <Text Include="src\settings\scenes\intro.txt" />
+    <Text Include="src\settings\scenes\scene1\hidden_map.txt" />
     <Text Include="src\settings\scenes\scene5\scene05.txt" />
     <Text Include="src\settings\scenes\scene1\scene01.txt" />
     <Text Include="src\settings\scenes\scene2\scene02.txt" />

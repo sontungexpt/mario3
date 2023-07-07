@@ -1,6 +1,6 @@
 #include "LevelMapScene.h"
+
 #include "utils/Utils.h"
-#include "configs/core/ObjectTypes.h"
 
 #include "objects/Mario.h"
 #include "objects/MarioLevelMap.h"
@@ -10,6 +10,8 @@
 #include "objects/materials/Effect.h"
 
 #include "objects/monsters/Hammer.h"
+
+#include "configs/core/ObjectTypes.h"
 
 void CLevelMapScene::_ParseSection_OBJECTS(string line)
 {
@@ -154,49 +156,72 @@ void CLevelMapScene::Render()
 	}
 	if (hud) hud->Render();
 	RenderStartPoint();
-	if (player) player->Render();
-	RenderGameOverPanel();
+
+	if (!CGameData::GetInstance()->IsGameOver())
+		if (player) player->Render();
+	if (game_over_control_panel) game_over_control_panel->Render();
 	if (change_scene_effect) change_scene_effect->Render();
 }
 
-void CLevelMapScene::UpdateGameOverPanel(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
+void CLevelMapScene::UpdateHud(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
-	if (!game_over_control_panel)
-		game_over_control_panel = new GameOverControlPanel(SCREEN_WIDTH / 2.0f, CGame::GetInstance()->GetBackBufferHeight() / 2.0f);
+	CGame* game = CGame::GetInstance();
 
-	game_over_control_panel->Update(dt);
+	if (hud == nullptr)
+		hud = new CHud(
+			game->GetCamXPos() + game->GetBackBufferWidth() / 2,
+			game->GetCamYPos() + game->GetBackBufferHeight() - HUD_BACKGROUND_BBOX_HEIGHT / 2
+		);
+
+	hud->Update(dt);
 }
 
-void CLevelMapScene::RenderGameOverPanel()
+void CLevelMapScene::UpdateCamera()
 {
-	if (!game_over_control_panel)
-		game_over_control_panel = new GameOverControlPanel(SCREEN_WIDTH / 2.0f, CGame::GetInstance()->GetBackBufferHeight() / 2.0f);
+	CGame::GetInstance()->SetCamPos(0, 0);
+}
 
-	game_over_control_panel->Render();
+int CLevelMapScene::UpdateGameOverPanel(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
+{
+	CGameData* data = CGameData::GetInstance();
 
-	//CDrawingManager::RenderOverlay(0.15f);
+	if (data->IsGameOver())
+	{
+		// clear old key_handler
+		if (dynamic_cast<CLevelMapKeyHandler*>(key_handler))
+		{
+			delete key_handler;
+			key_handler = nullptr;
+		}
+		if (!key_handler)
+		{
+			key_handler = new CGameOverControlPanelKeyEventHandler(this);
+			CGame::GetInstance()->SetKeyHandler(key_handler);
+		}
 
-	//CGame* game = CGame::GetInstance();
-	//int number_cell_width = 8;
-	//int number_cell_height = 4;
-	//float x = SCREEN_WIDTH / 2.0f;
-	//float y = game->GetBackBufferHeight() / 2.0f;
-	//float left = x - number_cell_width / 2.0f * HUD_FRAME_CELL_WIDTH;
-	//float top = y - number_cell_height / 2.0f * HUD_FRAME_CELL_HEIGHT;
-	//CDrawingManager::RenderBlueFrame(x, y, number_cell_width, number_cell_height);
+		if (!game_over_control_panel)
+			game_over_control_panel = new GameOverControlPanel(
+				SCREEN_WIDTH / 2.0f,
+				CGame::GetInstance()->GetBackBufferHeight() / 2.0f
+			);
 
-	//CDrawingManager::RenderString("MARIO", left + 10, top + 2);
-	//CDrawingManager::RenderString("GAME OVER!", x - 10.0f / 2 * HUD_CHAR_BBOX_WIDTH, top + 16);
-
-	//CDrawingManager::RenderIcon("MARIO DIE", left + 16, top + 40);
-
-	//float continue_left = left + 50;
-	//float continue_top = top + 30;
-	//CDrawingManager::RenderString("CONTINUE", continue_left, continue_top);
-
-	//float end_left = left + 50;
-	//float end_top = top + 40;
-	//CDrawingManager::RenderString("END", end_left, end_top);
+		game_over_control_panel->Update(dt);
+		return 1;
+	}
+	else
+	{
+		if (dynamic_cast<CGameOverControlPanelKeyEventHandler*>(key_handler))
+		{
+			delete key_handler;
+			key_handler = nullptr;
+		}
+		if (!key_handler)
+		{
+			key_handler = new CLevelMapKeyHandler(this);
+			CGame::GetInstance()->SetKeyHandler(key_handler);
+		}
+		return 0;
+	}
 }
 
 void CLevelMapScene::Update(DWORD dt)
@@ -210,40 +235,33 @@ void CLevelMapScene::Update(DWORD dt)
 		return;
 	}
 
-	// if player is dead, and still have life,
-	// then the player will be moved to the previous door
 	CGameData* data = CGameData::GetInstance();
-	if (data->IsLostALife() && data->GetLife() >= 0)
+
+	if (!data->IsGameOver())
 	{
-		((CMarioLevelMap*)player)->MoveToSpecialPos(prev_door_x, prev_door_y);
-		data->SetIsLostALife(FALSE);
+		if (data->IsLostALife())
+		{
+			((CMarioLevelMap*)player)->MoveToSpecialPos(prev_door_x, prev_door_y);
+			data->SetIsLostALife(FALSE);
+		}
+
+		vector<LPGAMEOBJECT> coObjects;
+		for (size_t i = 0; i < objects.size(); i++)
+		{
+			/*	if (dynamic_cast<CMario*>(objects[i]))
+					continue;*/
+			coObjects.push_back(objects[i]);
+		}
+
+		for (size_t i = 0; i < objects.size(); i++)
+		{
+			objects[i]->Update(dt, &coObjects);
+		}
 	}
 
+	UpdateCamera();
+	UpdateHud(dt);
 	UpdateGameOverPanel(dt);
-
-	vector<LPGAMEOBJECT> coObjects;
-
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		/*	if (dynamic_cast<CMario*>(objects[i]))
-				continue;*/
-		coObjects.push_back(objects[i]);
-	}
-
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		objects[i]->Update(dt, &coObjects);
-	}
-
-	// skip the rest if scene was already unloaded
-	// (Mario::Update might trigger PlayScene::Unload)
-	if (player == nullptr) return;
-
-	game->SetCamPos(0, 0);
-	if (hud == nullptr)
-		hud = new CHud(game->GetCamXPos() + game->GetBackBufferWidth() / 2, game->GetCamYPos() + game->GetBackBufferHeight() - HUD_BACKGROUND_BBOX_HEIGHT / 2);
-
-	hud->Update(dt);
 
 	PurgeDeletedObjects();
 }

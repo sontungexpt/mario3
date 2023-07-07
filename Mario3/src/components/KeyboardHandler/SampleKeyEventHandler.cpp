@@ -7,6 +7,7 @@
 #include "objects/materials/EnterablePipe.h"
 
 #include "scenes/PlayScene.h"
+#include "configs/core/SceneIds.h"
 
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
@@ -61,12 +62,19 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_0:
 		mario->SetState(MARIO_STATE_DIE);
 		break;
+	case DIK_8: // move to hidden map 1
+		game->InitiateSwitchScene(-1);
+		break;
+	case DIK_9: // make game over
+		CGameData::GetInstance()->SetLife(-1);
+		CGameData::GetInstance()->SetIsLostALife(TRUE);
+		CGameData::GetInstance()->SetMarioLevel(MARIO_LEVEL_SMALL);
+		CGame::GetInstance()->InitiateSwitchScene(ID_LEVEL_MAP_SCENE);
+		break;
 	case DIK_A:
 		mario->WantHoldKoopa();
 		break;
-	case DIK_8:
-		game->InitiateSwitchScene(-1);
-		break;
+
 	case DIK_R: // reset
 		//Reload();
 		break;

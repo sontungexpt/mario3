@@ -2,6 +2,8 @@
 #include "PlayScene.h"
 #include "GameData.h"
 #include "objects/GameOverControlPanel.h"
+
+#include "components/KeyboardHandler/GameOverControlPanelKeyEventHandler.h"
 #include "components/KeyboardHandler/LevelMapKeyEventHandler.h"
 
 class CLevelMapScene : public CPlayScene
@@ -21,6 +23,15 @@ private:
 	int CreatePlayer(float x, float y);
 	void _ParseSection_OBJECTS(string line) override;
 
+	void UpdateHud(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr);
+	void UpdateCamera();
+	int UpdateGameOverPanel(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr);
+	void SetPlayerStartPos(float x, float y)
+	{
+		start_x = x;
+		start_y = y;
+	}
+
 public:
 
 	CLevelMapScene(int id, LPCWSTR filePath) : CPlayScene(id, filePath)
@@ -33,14 +44,8 @@ public:
 		key_handler = new CLevelMapKeyHandler(this);
 	};
 	void Render();
-	void UpdateGameOverPanel(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr);
-	void RenderGameOverPanel();
 	void Update(DWORD dt);
-	void SetPlayerStartPos(float x, float y)
-	{
-		start_x = x;
-		start_y = y;
-	}
+	LPGAMEOVER_CONTROL_PANEL GetGameOverControlPanel() { return game_over_control_panel; }
 };
 
 typedef CLevelMapScene* LPLEVELMAPSCENE;

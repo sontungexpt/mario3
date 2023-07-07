@@ -42,6 +42,8 @@ protected:
 	virtual void _ParseSection_SETTINGS(string line);
 
 	virtual void LoadAssets(LPCWSTR assetFile);
+	virtual void UpdateHud(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr);
+	virtual void UpdateCamera();
 
 	virtual void SetMaxCoordinate(LPGAMEOBJECT object)
 	{

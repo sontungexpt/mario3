@@ -165,6 +165,12 @@
     <ClCompile Include="src\DrawingManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\GameOverControlPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\KeyboardHandler\GameOverControlPanelKeyEventHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\Animation\Animation.h">
@@ -428,6 +434,12 @@
     <ClInclude Include="src\objects\GameOverControlPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\configs\GameOverControlPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\KeyboardHandler\GameOverControlPanelKeyEventHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -457,6 +469,8 @@
     <Text Include="src\settings\objects\effect.txt" />
     <Text Include="src\settings\objects\hud.txt" />
     <Text Include="src\settings\objects\monsters\hammer.txt" />
+    <Text Include="src\settings\scenes\intro.txt" />
+    <Text Include="src\settings\scenes\scene1\hidden_map.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\assets\textures\misc_left.png">
