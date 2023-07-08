@@ -72,19 +72,9 @@ void CLeaf::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = t + LEAF_BBOX_HEIGHT;
 }
 
-void CLeaf::OnCollisionWithPlayer(LPCOLLISIONEVENT e) {
-	CItem::BeCollected();
-	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CMario* mario = (CMario*)scene->GetPlayer();
-
-	if (mario->IsBig())
-	{
-		CEffectManager::Gennerate(this, POINT_1000);
-		CGameData::GetInstance()->IncreasePointBy(1000);
-
-		mario->GrowTail();
-		is_deleted = true;
-	}
+void CLeaf::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
+{
+	BeCollected();
 }
 
 void CLeaf::Render()
@@ -117,16 +107,15 @@ void CLeaf::SetState(int state)
 
 void CLeaf::BeCollected()
 {
+	if (is_collected) return;
 	CItem::BeCollected();
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 
 	if (mario->IsBig())
-	{
-		CEffectManager::Gennerate(this, POINT_1000);
-		CGameData::GetInstance()->IncreasePointBy(1000);
-
 		mario->GrowTail();
-		is_deleted = true;
-	}
+
+	CEffectManager::Gennerate(this, POINT_1000);
+	CGameData::GetInstance()->IncreasePointBy(1000);
+	is_deleted = true;
 }

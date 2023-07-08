@@ -15,6 +15,25 @@ void CHud::RenderHudBackground()
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_BACKGROUND)->Render(x, y);
 }
 
+void CHud::RenderCardItem()
+{
+	vector<string> available_items = CGameData::GetInstance()->GetAvailableItems();
+
+	float start_x = x + 55;
+	float start_y = y - 2;
+
+	for (int i = 0; i < available_items.size(); i++)
+	{
+		if (available_items[i] == "Mushroom")
+			CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM_CARD_ICON)->Render(start_x, start_y);
+		else if (available_items[i] == "Star")
+			CAnimations::GetInstance()->Get(ID_ANI_STAR_CARD_ICON)->Render(start_x, start_y);
+		else if (available_items[i] == "Flower")
+			CAnimations::GetInstance()->Get(ID_ANI_FLOWER_CARD_ICON)->Render(start_x, start_y);
+		start_x += 24;
+	}
+}
+
 void CHud::RenderMarioRemainingLife()
 {
 	float start_x = GetLeft() + 44;
@@ -125,6 +144,7 @@ void CHud::Render()
 	RenderPlayerCoin();
 	RenderWorldNumber();
 	RenderMarioRemainingTime();
+	RenderCardItem();
 }
 
 void CHud::GetBoundingBox(float& left, float& top, float& right, float& bottom)

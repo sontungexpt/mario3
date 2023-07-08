@@ -15,7 +15,7 @@ void CBlackBackground::Render()
 		x,
 		y,
 		length,
-		CGame::GetInstance()->GetBackBufferHeight()
+		(float)CGame::GetInstance()->GetBackBufferHeight()
 	);
 }
 

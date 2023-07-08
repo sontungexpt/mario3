@@ -8,6 +8,7 @@ class CHud : public CGameObject
 	void RenderMarioRemainingLife();
 	void RenderPlayerPoint();
 	void RenderHudBackground();
+	void RenderCardItem();
 	void RenderWorldNumber();
 	void RenderPlayerCoin();
 	void RenderMarioRemainingTime();

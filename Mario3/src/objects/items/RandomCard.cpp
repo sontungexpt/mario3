@@ -1,5 +1,6 @@
 #include "RandomCard.h"
 #include "GameData.h"
+#include <objects/Mario.h>
 
 void CRandomCard::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
@@ -46,6 +47,36 @@ void CRandomCard::SetState(int state)
 void CRandomCard::BeCollected()
 {
 	if (is_collected) return;
-	CGameData::GetInstance()->AddAvailableItem(items[random_item_index]);
 	CItem::BeCollected();
+
+	CGameData* data = CGameData::GetInstance();
+	data->AddAvailableItem(items[random_item_index]);
+	vector<string> available_items = CGameData::GetInstance()->GetAvailableItems();
+	size_t size = available_items.size();
+	if (size >= 3)
+	{
+		bool all_equal = true;
+		string first_item = available_items[0];
+
+		for (int i = 1; i < size; i++) {
+			if (available_items[i] != first_item) {
+				all_equal = false;
+				break;
+			}
+		}
+		if (all_equal)
+		{
+			if (first_item == "Mushroom")
+				data->SetLife(data->GetLife() + 2);
+			else if (first_item == "Flower")
+				data->SetLife(data->GetLife() + 3);
+			else if (first_item == "Star")
+				data->SetLife(data->GetLife() + 5);
+		}
+		else
+		{
+			data->IncreaseLifeBy1();
+		}
+		data->ClearAvailableItems();
+	}
 }

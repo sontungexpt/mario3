@@ -65,6 +65,7 @@ public:
 
 	void AddAvailableItem(string item) { available_items.push_back(item); };
 	vector<string> GetAvailableItems() { return available_items; };
+	void ClearAvailableItems() { available_items.clear(); };
 
 	void SetCurrentSceneId(int id) { current_scene_id = id; };
 	int GetCurrentSceneId() { return current_scene_id; };

@@ -62,6 +62,9 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_0:
 		mario->SetState(MARIO_STATE_DIE);
 		break;
+	case DIK_7:
+		CGame::GetInstance()->InitiateSwitchScene(ID_LEVEL_MAP_SCENE);
+		break;
 	case DIK_8: // move to hidden map 1
 		game->InitiateSwitchScene(-1);
 		break;
