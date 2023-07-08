@@ -528,10 +528,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if (IsDead() || IsEnteringPipe() || IsOuteringPipe())
+	if (IsWinScene() || IsDead() || IsEnteringPipe() || IsOuteringPipe())
 	{
 		x += vx * dt;
 		y += vy * dt;
+
+		if (IsWinScene()) return;
 
 		if (IsDead())
 		{
@@ -633,6 +635,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed!
+	if (IsWinScene()) return;
+
 	if (IsDead()) return;
 
 	// cannot change state when entering pipe or outering pipe
@@ -753,6 +757,12 @@ void CMario::SetState(int state)
 		vx = 0.0f;
 		ay = MARIO_GRAVITY;
 		break;
+	case MARIO_STATE_WIN_SCENE:
+		ax = 0;
+		vx = MARIO_WALKING_SPEED;
+		vy = 0;
+
+		break;
 	case MARIO_STATE_DIE:
 		ax = 0;
 		vx = 0;
@@ -769,7 +779,7 @@ void CMario::SetState(int state)
 void CMario::Die()
 {
 	// cannot die when entering pipe
-	if (IsEnteringPipe() || IsOuteringPipe()) return;
+	if (IsWinScene() || IsEnteringPipe() || IsOuteringPipe()) return;
 
 	// not untouchable -> can die
 	if (!untouchable)

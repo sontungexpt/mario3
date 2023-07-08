@@ -120,13 +120,13 @@ void CEffect::RenderStartFollowPlayerEffect()
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario)
 	{
-		constexpr auto PI = 3.14159265;
+		constexpr float PI = 3.14159265;
 
 		float radius = fabs(x - mario->GetX());
 
 		for (int i = 1; i <= 6; i++)
 		{
-			float angle = 60 * (i - 1) * PI / 180.f;
+			float angle = 60.0f / 180.f * (i - 1) * PI;
 			float xi = x + radius * cos(angle);
 			float yi = y - radius * sin(angle);
 			CAnimations::GetInstance()->Get(EFFECT_ANI_ID_START)->Render(xi, yi);

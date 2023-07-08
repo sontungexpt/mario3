@@ -113,9 +113,17 @@ public:
 	{
 		return state != MARIO_STATE_DIE &&
 			state != MARIO_STATE_ENTER_PIPE &&
-			state != MARIO_STATE_OUTER_PIPE;
+			state != MARIO_STATE_OUTER_PIPE &&
+			state != MARIO_STATE_WIN_SCENE;
 	}
-	//int IsBlocking() { return (state != MARIO_STATE_DIE && !untouchable); }
+	/*int IsBlocking()
+	{
+		return state != MARIO_STATE_DIE &&
+			state != MARIO_STATE_ENTER_PIPE &&
+			state != MARIO_STATE_OUTER_PIPE &&
+			state != MARIO_STATE_WIN_SCENE &&
+			!untouchable;
+	}*/
 
 	int IsBlocking() { return 0; }
 
@@ -162,6 +170,9 @@ public:
 
 	void Die();
 	BOOLEAN IsDead() { return state == MARIO_STATE_DIE; }
+
+	BOOLEAN IsWinScene() { return state == MARIO_STATE_WIN_SCENE; }
+	void WinScene() { SetState(MARIO_STATE_WIN_SCENE); }
 
 	void WantHoldKoopa() { is_want_holding_koopa = TRUE; }
 	void WantKickKoopa() { is_want_holding_koopa = FALSE; }
