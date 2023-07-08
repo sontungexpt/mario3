@@ -640,7 +640,8 @@ void CPlayScene::PurgeDeletedObjects()
 	// NOTE: remove_if will swap all deleted items to the end of the vector
 	// then simply trim the vector, this is much more efficient than deleting individual items
 	objects.erase(
-		std::remove_if(objects.begin(), objects.end(), CPlayScene::IsGameObjectDeleted),
+		remove_if(objects.begin(),
+			objects.end(), CPlayScene::IsGameObjectDeleted),
 		objects.end());
 }
 

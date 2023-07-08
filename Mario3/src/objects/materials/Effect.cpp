@@ -1,6 +1,9 @@
 #include "Effect.h"
 #include "scenes/PlayScene.h"
 #include "configs/GameObject.h"
+#include "objects/Mario.h"
+
+using namespace std;
 
 void CEffect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -27,6 +30,36 @@ void CEffect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			increase_alpha_time_start = GetTickCount64();
 			alpha += 0.009f;
+		}
+	}
+	else if (effect == EFFECT_START_FOLLOW_PLAYER)
+	{
+		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+
+		CMario* mario = (CMario*)scene->GetPlayer();
+		if (mario) {
+			float distance_x = fabs(mario->GetX() - x);
+			float distance_y = fabs(mario->GetY() - y);
+
+			float atan = distance_y / distance_x;
+
+			x = mario->GetX() > x ?
+				x + 3.0f : x - 3.0f;
+
+			y = mario->GetY() > y ?
+				y + 3.0f * atan : y - 3.0f * atan;
+
+			if (fabs(mario->GetX() - x) < mario->GetWidth() || fabs(mario->GetY() - y) < mario->GetHeight())
+			{
+				x = mario->GetX();
+				y = mario->GetY();
+			}
+
+			if (x == mario->GetX() && y == mario->GetY())
+			{
+				is_deleted = TRUE;
+				return;
+			}
 		}
 	}
 }
@@ -69,6 +102,9 @@ void CEffect::Render()
 	case CHANGE_SCENE:
 		RenderChangeScreenEffect();
 		return;
+	case START_FOLLOW_PLAYER:
+		RenderStartFollowPlayerEffect();
+		return;
 	default:
 		DebugOut(L"can not handle type %d\n", type);
 		return;
@@ -79,25 +115,46 @@ void CEffect::Render()
 		ani->Render(x, y);
 }
 
+void CEffect::RenderStartFollowPlayerEffect()
+{
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	if (mario)
+	{
+		constexpr auto PI = 3.14159265;
+
+		float radius = fabs(x - mario->GetX());
+
+		for (int i = 1; i <= 6; i++)
+		{
+			float angle = 60 * (i - 1) * PI / 180.f;
+			float xi = x + radius * cos(angle);
+			float yi = y - radius * sin(angle);
+			CAnimations::GetInstance()->Get(EFFECT_ANI_ID_START)->Render(xi, yi);
+		}
+	}
+}
+
 void CEffect::RenderChangeScreenEffect()
 {
-	D3DXVECTOR3 p(x, y, 0);
+	CGame* game = CGame::GetInstance();
+
+	float cx, cy;
+	game->GetCamPos(cx, cy);
+
+	float xx = cx + game->GetBackBufferWidth() / 2;
+	float yy = cy + game->GetBackBufferHeight() / 2;
+
+	D3DXVECTOR3 p(xx, yy, 0);
 	RECT rect;
 
 	LPTEXTURE bbox = CTextures::GetInstance()->Get(ID_TEX_BBOX_BLACK);
 
-	float l, t, r, b;
-
-	GetBoundingBox(l, t, r, b);
 	rect.left = 0;
 	rect.top = 0;
-	rect.right = (int)r - (int)l;
-	rect.bottom = (int)b - (int)t;
+	rect.right = (int)game->GetBackBufferWidth();
+	rect.bottom = (int)game->GetBackBufferHeight();
 
-	float cx, cy;
-	CGame::GetInstance()->GetCamPos(cx, cy);
-
-	CGame::GetInstance()->Draw(x - cx, y - cy, bbox, &rect, alpha);
+	game->Draw(xx - cx, yy - cy, bbox, &rect, alpha);
 }
 
 void CEffect::SetState(int state)
@@ -143,11 +200,27 @@ void CEffect::GetBoundingBox(float& left, float& top, float& right, float& botto
 		break;
 	case CHANGE_SCENE:
 		// plus 10 or 20 to make sure the effect is cover full screen
-		left = CGame::GetInstance()->GetCamXPos() - 10;
-		top = CGame::GetInstance()->GetCamYPos() - 10;
-		right = left + CGame::GetInstance()->GetBackBufferWidth() + 20;
-		bottom = top + CGame::GetInstance()->GetBackBufferHeight() + 20;
+		left = CGame::GetInstance()->GetCamXPos();
+		top = CGame::GetInstance()->GetCamYPos();
+		right = left + CGame::GetInstance()->GetBackBufferWidth();
+		bottom = top + CGame::GetInstance()->GetBackBufferHeight();
 		break;
+	case START_FOLLOW_PLAYER:
+	{
+		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+
+		CMario* mario = (CMario*)scene->GetPlayer();
+		if (mario)
+		{
+			left = x - fabs(x - mario->GetX());
+			top = y - fabs(x - mario->GetX());
+			right = left + fabs(x - mario->GetX()) * 2;
+			bottom = top + fabs(x - mario->GetX()) * 2;
+		}
+		else
+			left = top = right = bottom = 0;
+	}
+	break;
 	case HELP_LEVEL_MAP:
 		left = x - HELP_LEVEL_MAP_BBOX_WIDTH / 2;
 		top = y - HELP_LEVEL_MAP_BBOX_HEIGHT / 2;

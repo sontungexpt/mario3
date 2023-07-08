@@ -24,8 +24,10 @@ void GameOverControlPanel::HandleChoice()
 	switch (current_choice_index)
 	{
 	case 0: // continue
+		CGameData::GetInstance()->CreateNewGame();
 		break;
 	case 1: // end
+		CGameData::GetInstance()->ClearOldData();
 		CGame::GetInstance()->InitiateSwitchScene(ID_INTRO_SCENE);
 		break;
 	default:

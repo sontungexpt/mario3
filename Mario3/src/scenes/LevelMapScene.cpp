@@ -136,6 +136,28 @@ int CLevelMapScene::CreatePlayer(float x, float y)
 	}
 }
 
+void CLevelMapScene::RenderNewGameDialog()
+{
+	CDrawingManager::RenderOverlay(0.4f);
+	int number_cell_width = 8;
+	int number_cell_height = 4;
+	float x_new_game_dialog = SCREEN_WIDTH / 2.0f;
+	float y_new_game_dialog = CGame::GetInstance()->GetBackBufferHeight() / 2.0f;
+
+	float left = x_new_game_dialog - number_cell_width / 2.0f * HUD_FRAME_CELL_WIDTH;
+	float top = y_new_game_dialog - number_cell_height / 2.0f * HUD_FRAME_CELL_HEIGHT;
+
+	CDrawingManager::RenderBlueFrame(x_new_game_dialog, y_new_game_dialog, number_cell_width, number_cell_height);
+
+	CDrawingManager::RenderString("WORLD 1", x_new_game_dialog - 7.0f / 2 * HUD_CHAR_BBOX_WIDTH, top + 6);
+	CDrawingManager::RenderString("MARIO", left + 16, top + 28);
+
+	CDrawingManager::RenderIcon("MARIO LEVEL DIALOG", left + 64, top + 30);
+
+	CDrawingManager::RenderIcon("X", left + 82, top + 31);
+	CDrawingManager::RenderNumber(CGameData::GetInstance()->GetLife(), left + 96, top + 28);
+}
+
 void CLevelMapScene::RenderStartPoint()
 {
 	CAnimations::GetInstance()->Get(ID_ANI_START_POINT)->Render(start_x, start_y);
@@ -151,15 +173,30 @@ void CLevelMapScene::Render()
 		{
 			if (((CEffect*)objects[i])->GetType() == CHANGE_SCENE)
 				continue;
+			else if (((CEffect*)objects[i])->GetType() == START_FOLLOW_PLAYER)
+				continue;
 		}
 		objects[i]->Render();
 	}
 	if (hud) hud->Render();
+
 	RenderStartPoint();
 
-	if (!CGameData::GetInstance()->IsGameOver())
-		if (player) player->Render();
+	CGameData* data = CGameData::GetInstance();
+
+	if (player &&
+		!data->IsGameOver() &&
+		!IsShowNewGameDialog() &&
+		!star_follow_mario_effect
+		)
+		player->Render();
+
+	if (star_follow_mario_effect) star_follow_mario_effect->Render();
+
 	if (game_over_control_panel) game_over_control_panel->Render();
+
+	if (IsShowNewGameDialog()) RenderNewGameDialog();
+
 	if (change_scene_effect) change_scene_effect->Render();
 }
 
@@ -220,8 +257,41 @@ int CLevelMapScene::UpdateGameOverPanel(DWORD dt, vector<LPGAMEOBJECT>* co_objec
 			key_handler = new CLevelMapKeyHandler(this);
 			CGame::GetInstance()->SetKeyHandler(key_handler);
 		}
+		if (game_over_control_panel)
+		{
+			((CMarioLevelMap*)player)->MoveToSpecialPos(start_x, start_y);
+			delete game_over_control_panel;
+			game_over_control_panel = nullptr;
+		}
 		return 0;
 	}
+}
+
+int CLevelMapScene::UpdateShowNewGameDialog()
+{
+	if (IsShowNewGameDialog())
+	{
+		CGameData::GetInstance()->UpdateShowNewGameDialog();
+		is_showed_follow_mario_effect = FALSE;
+		return 1;
+	}
+
+	if (!star_follow_mario_effect && !is_showed_follow_mario_effect)
+	{
+		float x_new_game_dialog = SCREEN_WIDTH / 2.0f;
+		float y_new_game_dialog = CGame::GetInstance()->GetBackBufferHeight() / 2.0f;
+		CEffectManager::Gennerate(x_new_game_dialog, y_new_game_dialog, START_FOLLOW_PLAYER, EFFECT_START_FOLLOW_PLAYER);
+		is_showed_follow_mario_effect = TRUE;
+	}
+	return 0;
+};
+
+BOOLEAN CLevelMapScene::IsShowNewGameDialog()
+{
+	return CGameData::GetInstance()->IsShowNewGameDialog() &&
+		!game_over_control_panel &&
+		player->GetX() == start_x &&
+		player->GetY() == start_y;
 }
 
 void CLevelMapScene::Update(DWORD dt)
@@ -237,7 +307,7 @@ void CLevelMapScene::Update(DWORD dt)
 
 	CGameData* data = CGameData::GetInstance();
 
-	if (!data->IsGameOver())
+	if (!data->IsGameOver() && !IsShowNewGameDialog() && !star_follow_mario_effect)
 	{
 		if (data->IsLostALife())
 		{
@@ -248,8 +318,8 @@ void CLevelMapScene::Update(DWORD dt)
 		vector<LPGAMEOBJECT> coObjects;
 		for (size_t i = 0; i < objects.size(); i++)
 		{
-			/*	if (dynamic_cast<CMario*>(objects[i]))
-					continue;*/
+			if (dynamic_cast<CMario*>(objects[i]))
+				continue;
 			coObjects.push_back(objects[i]);
 		}
 
@@ -261,7 +331,56 @@ void CLevelMapScene::Update(DWORD dt)
 
 	UpdateCamera();
 	UpdateHud(dt);
-	UpdateGameOverPanel(dt);
 
+	if (star_follow_mario_effect)
+		star_follow_mario_effect->Update(dt);
+
+	UpdateGameOverPanel(dt);
+	UpdateShowNewGameDialog();
 	PurgeDeletedObjects();
+}
+
+void CLevelMapScene::PurgeDeletedObjects()
+{
+	vector<LPGAMEOBJECT>::iterator it;
+	for (it = objects.begin(); it != objects.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+
+		if (o->IsDeleted())
+		{
+			CEffect* effect = dynamic_cast<CEffect*>(o);
+			if (effect && effect->GetType() == START_FOLLOW_PLAYER)
+				star_follow_mario_effect = nullptr;
+
+			delete o;
+			*it = nullptr;
+		}
+	}
+
+	// NOTE: remove_if will swap all deleted items to the end of the vector
+	// then simply trim the vector, this is much more efficient than deleting individual items
+	objects.erase(
+		remove_if(objects.begin(),
+			objects.end(), CPlayScene::IsGameObjectDeleted),
+		objects.end());
+}
+
+LPGAMEOBJECT CLevelMapScene::AddObject(LPGAMEOBJECT obj)
+{
+	LPGAMEOBJECT object = CPlayScene::AddObject(obj);
+	CEffect* effect = dynamic_cast<CEffect*>(object);
+	if (effect && effect->GetType() == START_FOLLOW_PLAYER)
+		star_follow_mario_effect = effect;
+	return object;
+}
+
+LPGAMEOBJECT CLevelMapScene::AddObjectToFirst(LPGAMEOBJECT obj)
+{
+	LPGAMEOBJECT object = CPlayScene::AddObjectToFirst(obj);
+
+	CEffect* effect = dynamic_cast<CEffect*>(object);
+	if (effect && effect->GetType() == START_FOLLOW_PLAYER)
+		star_follow_mario_effect = effect;
+	return object;
 }

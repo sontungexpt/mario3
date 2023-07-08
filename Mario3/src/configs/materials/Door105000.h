@@ -4,6 +4,9 @@
 #define DOOR_BBOX_WIDTH 16
 #define DOOR_BBOX_HEIGHT 16
 
+#define START_POINT_BBOX_WIDTH 16
+#define START_POINT_BBOX_HEIGHT 16
+
 // animations
 #define ID_ANI_DOOR_1 105001
 #define ID_ANI_DOOR_2 105002

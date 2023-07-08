@@ -35,6 +35,7 @@ public:
 	// core
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr);
 	void Render();
+	void RenderStartFollowPlayerEffect();
 	void RenderChangeScreenEffect();
 	void SetState(int state);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);

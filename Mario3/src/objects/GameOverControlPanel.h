@@ -56,6 +56,9 @@ public:
 	void SetCurrentChoiceIndex(int index) { current_choice_index = index; }
 	size_t GetCurrentChoiceIndex() { return current_choice_index; }
 
+	BOOLEAN IsEnd() { return current_choice_index == 1; }
+	BOOLEAN IsContinue() { return current_choice_index == 0; }
+
 	void HandleChoice();
 	void MoveSelectionDown();
 	void MoveSelectionUp();

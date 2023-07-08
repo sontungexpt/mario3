@@ -106,8 +106,11 @@ int CDrawingManager::GetAniIdIcon(string icon)
 		return ID_ANI_X_ICON;
 	else if (icon == "MARIO DIE")
 		return ID_ANI_MARIO_DIE;
+	else if (icon == "MARIO LEVEL DIALOG")
+		return ID_ANI_MARIO_LEVEL_MAP_SMALL_FORWARD;
 	else if (icon == "RED ARROW")
 		return ID_ANI_RED_ARROW_ICON;
+
 	return -1;
 }
 
@@ -248,6 +251,11 @@ void CDrawingManager::RenderString(string str, float left, float top)
 	{
 		int ani_id = GetAniIdChar(str[i]);
 		if (ani_id != -1)
-			CAnimations::GetInstance()->Get(ani_id)->Render(left + i * (HUD_CHAR_BBOX_WIDTH), top + HUD_CHAR_BBOX_HEIGHT / 2);
+		{
+			if (48 <= (int)str[i] && (int)str[i] <= 57)// number
+				CAnimations::GetInstance()->Get(ani_id)->Render(left + i * (HUD_CHAR_BBOX_WIDTH), top + HUD_CHAR_BBOX_HEIGHT / 2 + 1);
+			else
+				CAnimations::GetInstance()->Get(ani_id)->Render(left + i * (HUD_CHAR_BBOX_WIDTH), top + HUD_CHAR_BBOX_HEIGHT / 2);
+		}
 	}
 }

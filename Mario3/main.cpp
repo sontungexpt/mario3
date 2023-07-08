@@ -19,6 +19,13 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
+	case WM_CHAR:
+		//DebugOut(L"[INFO] key: %c\n", wParam);
+		break;
+	case WM_KEYDOWN:
+		//DebugOut(L"[INFO] key: %c\n", wParam);
+
+		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}

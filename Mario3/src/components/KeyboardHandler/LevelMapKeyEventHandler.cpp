@@ -9,10 +9,10 @@ void CLevelMapKeyHandler::OnKeyDown(int KeyCode)
 		CGame::GetInstance()->TogglePause();
 
 	// disable control key when pause game
-	if (CGame::GetInstance()->IsPaused())
-		return;
-	if (CGame::GetInstance()->IsInTransitionScene())
-		return;
+	if (CGame::GetInstance()->IsPaused()) return;
+	if (CGame::GetInstance()->IsInTransitionScene()) return;
+	if (CGameData::GetInstance()->IsShowNewGameDialog()) return;
+
 	CMarioLevelMap* mario = (CMarioLevelMap*)((LPLEVELMAPSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	switch (KeyCode)

@@ -1,7 +1,9 @@
 #pragma once
 #include <Windows.h>
+
 #include "configs/GameData.h"
 #include "configs/Mario.h"
+#include "configs/Game.h"
 
 class Door;
 
@@ -25,8 +27,10 @@ class CGameData {
 	int current_scene_id;
 
 	BOOLEAN is_lost_life;
+	BOOLEAN is_show_new_game_dialog;
 
 	ULONGLONG count_down_time_start;
+	ULONGLONG show_dialog_time_start;
 	ULONGLONG remain_time;
 
 public:
@@ -37,10 +41,12 @@ public:
 		remain_time = 0;
 		entry_door_level = 0;
 		count_down_time_start = 0;
+		show_dialog_time_start = 0;
 		max_door_level_passed = 0;
-		current_scene_id = INT_MAX;
 
+		current_scene_id = INT_MAX;
 		is_lost_life = FALSE;
+		is_show_new_game_dialog = FALSE;
 		mario_level = MARIO_LEVEL_SMALL;
 	};
 	~CGameData() {};
@@ -84,16 +90,38 @@ public:
 	void SetMarioLevel(int mario_level) { this->mario_level = mario_level; };
 	int GetMarioLevel() { return mario_level; };
 
+	BOOLEAN IsShowNewGameDialog() { return is_show_new_game_dialog; };
+	BOOLEAN IsStoppedUpdateNewGameDialog() { return !is_show_new_game_dialog && show_dialog_time_start == 0; };
+	void UpdateShowNewGameDialog()
+	{
+		if (show_dialog_time_start &&
+			GetTickCount64() - show_dialog_time_start > TIME_OUT_SHOW_DIALOG_NEW_GAME)
+		{
+			is_show_new_game_dialog = FALSE;
+			show_dialog_time_start = 0;
+		}
+	};
+
 	void CreateNewGame() {
+		ClearOldData();
+		is_show_new_game_dialog = TRUE;
+		show_dialog_time_start = GetTickCount64();
 		player_life = 4;
+	};
+
+	void ClearOldData()
+	{
+		player_life = 0;
 		player_coin = 0;
 		player_point = 0;
 		remain_time = 0;
 		entry_door_level = 0;
 		count_down_time_start = 0;
+		show_dialog_time_start = 0;
 		max_door_level_passed = 0;
 		current_scene_id = INT_MAX;
 		is_lost_life = FALSE;
+		is_show_new_game_dialog = FALSE;
 		mario_level = MARIO_LEVEL_SMALL;
-	};
+	}
 };

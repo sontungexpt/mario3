@@ -75,9 +75,9 @@ public:
 
 	virtual void Clear();
 	virtual void PurgeDeletedObjects();
-	LPGAMEOBJECT AddObject(LPGAMEOBJECT obj);
+	virtual LPGAMEOBJECT AddObject(LPGAMEOBJECT obj);
 
-	LPGAMEOBJECT AddObjectToFirst(LPGAMEOBJECT obj);
+	virtual LPGAMEOBJECT AddObjectToFirst(LPGAMEOBJECT obj);
 
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 };

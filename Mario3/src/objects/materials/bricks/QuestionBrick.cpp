@@ -100,12 +100,10 @@ void CQuestionBrick::CreateItem()
 	case QUESTION_BRICK_ITEM_SUPPORT:
 	{
 		CMario* mario = (CMario*)scene->GetPlayer();
-		if (mario->IsBig())
+		if (!mario->IsSmall())
 			((CLeaf*)CreateItem(new CLeaf()))->Fly();
 		else
-		{
 			((CMushroom*)CreateItem(new CMushroom()))->Walk();
-		}
 	}
 	break;
 	case QUESTION_BRICK_MUSHROOM_LIFE_UP:
