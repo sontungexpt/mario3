@@ -1,9 +1,11 @@
-#include "debug.h"
+﻿#include "debug.h"
 
 #include "DrawingManager.h"
 #include "components/Texture/Textures.h"
 #include "components/Animation/Animations.h"
+
 #include "configs/GameObject.h"
+#include <d3dx9.h>
 
 int CDrawingManager::GetAniIdChar(char char_)
 {
@@ -164,8 +166,35 @@ void CDrawingManager::RenderOverlay(float alpha)
 	CGame::GetInstance()->Draw(x - cx, y - cy, bbox, &rect, alpha);
 }
 
-void CDrawingManager::RenderBlackBackground(float left, float top, int number_cell_with, int number_cell_height)
+void CDrawingManager::RenderBlackBackground(float x, float y, float length, float height)
 {
+	if (length <= 0 || height <= 0) return;
+	float xx = x;
+	float yy = y;
+	float cx, cy;
+
+	while (yy < y + height)
+	{
+		xx = x;
+		while (xx < x + length)
+		{
+			D3DXVECTOR3 p(xx, yy, 0);
+			RECT rect;
+
+			LPTEXTURE bbox = CTextures::GetInstance()->Get(ID_TEX_BBOX_BLACK);
+
+			rect.left = 0;
+			rect.top = 0;
+			rect.right = (int)HUD_FRAME_CELL_WIDTH;
+			rect.bottom = (int)HUD_FRAME_CELL_HEIGHT;
+
+			CGame::GetInstance()->GetCamPos(cx, cy);
+
+			CGame::GetInstance()->Draw(xx - cx, yy - cy, bbox, &rect, 1.0f, rect.right, rect.bottom);
+			xx += HUD_FRAME_CELL_WIDTH;
+		}
+		yy += HUD_FRAME_CELL_HEIGHT;
+	}
 }
 
 void CDrawingManager::RenderBlueFrame(float x, float y, int number_cell_with, int number_cell_height)

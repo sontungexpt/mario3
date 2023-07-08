@@ -4,6 +4,10 @@
 #include "configs/GameData.h"
 #include "configs/Mario.h"
 #include "configs/Game.h"
+#include <string>
+#include <vector>
+
+using namespace std;
 
 class Door;
 
@@ -33,6 +37,8 @@ class CGameData {
 	ULONGLONG show_dialog_time_start;
 	ULONGLONG remain_time;
 
+	vector<string> available_items;
+
 public:
 	CGameData() {
 		player_life = 0;
@@ -48,10 +54,17 @@ public:
 		is_lost_life = FALSE;
 		is_show_new_game_dialog = FALSE;
 		mario_level = MARIO_LEVEL_SMALL;
+		available_items.clear();
 	};
-	~CGameData() {};
+	~CGameData()
+	{
+		available_items.clear();
+	};
 
 	static CGameData* GetInstance();
+
+	void AddAvailableItem(string item) { available_items.push_back(item); };
+	vector<string> GetAvailableItems() { return available_items; };
 
 	void SetCurrentSceneId(int id) { current_scene_id = id; };
 	int GetCurrentSceneId() { return current_scene_id; };
@@ -123,5 +136,7 @@ public:
 		is_lost_life = FALSE;
 		is_show_new_game_dialog = FALSE;
 		mario_level = MARIO_LEVEL_SMALL;
+
+		available_items.clear();
 	}
 };

@@ -135,6 +135,7 @@
     <ClCompile Include="src\GameData.cpp" />
     <ClCompile Include="src\objects\GameOverControlPanel.cpp" />
     <ClCompile Include="src\objects\items\LifeUpMushroom.cpp" />
+    <ClCompile Include="src\objects\items\RandomCard.cpp" />
     <ClCompile Include="src\objects\MarioAttackingZone.cpp" />
     <ClCompile Include="src\objects\GameObject.cpp" />
     <ClCompile Include="src\objects\items\Bullet.cpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="src\objects\items\Item.cpp" />
     <ClCompile Include="src\objects\items\Leaf.cpp" />
     <ClCompile Include="src\objects\MarioLevelMap.cpp" />
+    <ClCompile Include="src\objects\materials\BlackBackground.cpp" />
     <ClCompile Include="src\objects\materials\bricks\BreakableBrick.cpp" />
     <ClCompile Include="src\objects\materials\bricks\CreatableBrick.cpp" />
     <ClCompile Include="src\objects\materials\Door.cpp" />
@@ -219,10 +221,12 @@
     <ClInclude Include="src\GameData.h" />
     <ClInclude Include="src\objects\GameOverControlPanel.h" />
     <ClInclude Include="src\objects\items\LifeUpMushroom.h" />
+    <ClInclude Include="src\objects\items\RandomCard.h" />
     <ClInclude Include="src\objects\MarioAttackingZone.h" />
     <ClInclude Include="src\objects\items\Bullet.h" />
     <ClInclude Include="src\objects\items\DebrisBrick.h" />
     <ClInclude Include="src\objects\items\Item.h" />
+    <ClInclude Include="src\objects\materials\BlackBackground.h" />
     <ClInclude Include="src\objects\materials\bricks\BreakableBrick.h" />
     <ClInclude Include="src\objects\materials\bricks\CreatableBrick.h" />
     <ClInclude Include="src\objects\materials\Door.h" />

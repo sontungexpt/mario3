@@ -96,6 +96,9 @@ public:
 	ID3DX10Sprite* GetSpriteHandler() { return spriteObject; }
 
 	ID3D10BlendState* GetAlphaBlending() { return pBlendStateAlpha; };
+	float GetScreenWidth() { return (float)GetSystemMetrics(SM_CXSCREEN); }
+	float GetScreenHeight() { return (float)GetSystemMetrics(SM_CYSCREEN); }
+	float GetScaleFactor();
 
 	int GetBackBufferWidth() { return backBufferWidth; }
 	int GetBackBufferHeight() { return backBufferHeight; }

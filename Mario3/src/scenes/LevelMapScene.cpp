@@ -366,6 +366,19 @@ void CLevelMapScene::PurgeDeletedObjects()
 		objects.end());
 }
 
+void CLevelMapScene::Unload()
+{
+	if (game_over_control_panel)
+		delete game_over_control_panel;
+
+	if (star_follow_mario_effect)
+		delete star_follow_mario_effect;
+
+	game_over_control_panel = nullptr;
+	star_follow_mario_effect = nullptr;
+	CPlayScene::Unload();
+}
+
 LPGAMEOBJECT CLevelMapScene::AddObject(LPGAMEOBJECT obj)
 {
 	LPGAMEOBJECT object = CPlayScene::AddObject(obj);

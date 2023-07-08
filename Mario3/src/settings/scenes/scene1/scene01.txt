@@ -320,6 +320,9 @@ src\settings\objects\monsters\carnivorous_plant.txt
 
 60	2113	619
 
+# RANDOM CARD
+14	2600	570
+
 #Platform
 5	0	652	16	16	39	1000010	1000020	1000030	1	1
 5	624	652	16	16	29	1000110	1000120	1000130	1	1

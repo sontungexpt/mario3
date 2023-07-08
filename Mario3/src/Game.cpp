@@ -586,6 +586,22 @@ CGame::~CGame()
 	pD3DDevice->Release();
 }
 
+float CGame::GetScaleFactor()
+{
+	RECT clientRect;
+	GetClientRect(hWnd, &clientRect);
+
+	float clientWidth = (float)(clientRect.right - clientRect.left);
+	float clientHeight = (float)(clientRect.bottom - clientRect.top);
+
+	float screenWidth = (float)GetSystemMetrics(SM_CXSCREEN);
+	float screenHeight = (float)GetSystemMetrics(SM_CYSCREEN);
+
+	float scaleFactor = max(screenWidth / clientWidth, screenHeight / clientHeight);
+
+	return scaleFactor;
+}
+
 CGame* CGame::GetInstance()
 {
 	if (__instance == nullptr)

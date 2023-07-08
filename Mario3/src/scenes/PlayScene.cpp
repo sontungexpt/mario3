@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 
 #include "configs/All.h"
@@ -22,6 +22,7 @@
 #include "objects/materials/OuterablePipe.h"
 
 #include "objects/items/Coin.h"
+#include "objects/items/RandomCard.h"
 
 #include "objects/monsters/WindGoomba.h"
 #include "objects/monsters/WindKoopa.h"
@@ -219,6 +220,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBreakableBrick(x, y, item_type);
 		break;
 	}
+	case OBJECT_TYPE_RANDOM_CARD:
+		obj = new CRandomCard(x, y);
+		break;
+	case OBJECT_TYPE_BLACK_BAKCGROUND:
+	{
+		int length = atoi(tokens[3].c_str());
+	}
+	break;
 	case OBJECT_TYPE_PIPE:
 	{
 		int state = PIPE_STATE_LONG;
@@ -457,7 +466,88 @@ void CPlayScene::UpdateHud(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 
 	hud->Update(dt);
 }
+//void CPlayScene::UpdateCamera()
+//{
+//	CGame* game = CGame::GetInstance();
+//
+//	if (player == nullptr) {
+//		game->SetCamPos(0, 0);
+//		return;
+//	}
+//
+//	float cx, cy;
+//	player->GetPosition(cx, cy);
+//
+//	float cameraWidth = game->GetBackBufferWidth();
+//	float cameraHeight = game->GetBackBufferHeight();
+//
+//	// Tính toán vị trí camera dựa trên vị trí của player
+//	float newCameraX = cx - cameraWidth / 2;
+//	float newCameraY = cy - cameraHeight / 2;
+//
+//	// Giới hạn camera không cho phép di chuyển vượt quá biên của map
+//	float mapWidth = cameraWidth * game->GetScaleFactor();
+//	float mapHeight = cameraHeight * game->GetScaleFactor();
+//	float maxCameraX = mapWidth - cameraWidth;
+//	float maxCameraY = mapHeight - cameraHeight;
+//
+//	if (newCameraX < 0) newCameraX = 0;
+//	if (newCameraY < 0) newCameraY = 0;
+//	if (newCameraX > maxCameraX) newCameraX = maxCameraX;
+//	if (newCameraY > maxCameraY) newCameraY = maxCameraY;
+//
+//	// Điều chỉnh vị trí camera để có camera mượt hơn
+//	float cameraMoveSpeed = 0.1f;
+//	float cameraDeltaX = newCameraX - game->GetCamXPos();
+//	float cameraDeltaY = newCameraY - game->GetCamYPos();
+//
+//	float new_cam_y = floor(newCameraY / game->GetBackBufferHeight()) * game->GetBackBufferHeight();
+//	if (max_object_y != nullptr && new_cam_y >= max_object_y->GetY()) {
+//		newCameraY = game->GetCamYPos();
+//	}
+//
+//	game->SetCamPos(game->GetCamXPos() + cameraDeltaX * cameraMoveSpeed,
+//		game->GetCamYPos() + (newCameraY - game->GetCamYPos()) * cameraMoveSpeed);
+//}
 
+//void CPlayScene::UpdateCamera()
+//{
+//	CGame* game = CGame::GetInstance();
+//
+//	if (player == nullptr) {
+//		game->SetCamPos(0, 0);
+//		return;
+//	}
+//
+//	float cx, cy;
+//	player->GetPosition(cx, cy);
+//
+//	float cameraWidth = game->GetBackBufferWidth();
+//	float cameraHeight = game->GetBackBufferHeight();
+//
+//	float mapWidth = cameraWidth * game->GetScaleFactor();
+//	float mapHeight = cameraHeight * game->GetScaleFactor();
+//
+//	// Tính toán vị trí camera dựa trên vị trí của Mario
+//	float newCameraX = cx - cameraWidth / 2;
+//	float newCameraY = cy - cameraHeight / 2;
+//
+//	// Giới hạn camera không cho phép di chuyển vượt quá biên của map
+//	float maxCameraX = mapWidth - cameraWidth;
+//	float maxCameraY = mapHeight - cameraHeight;
+//
+//	if (newCameraX < 0) newCameraX = 0;
+//	if (newCameraY < 0) newCameraY = 0;
+//	if (newCameraX > maxCameraX) newCameraX = maxCameraX;
+//	if (newCameraY > maxCameraY) newCameraY = maxCameraY;
+//
+//	// Cập nhật vị trí camera một cách mượt mà (chỉ di chuyển một phần nhỏ)
+//	float cameraMoveSpeed = 0.1f;
+//	float cameraDeltaX = newCameraX - game->GetCamXPos();
+//	float cameraDeltaY = newCameraY - game->GetCamYPos();
+//	game->SetCamPos(game->GetCamXPos() + cameraDeltaX * cameraMoveSpeed, game->GetCamYPos() + cameraDeltaY * cameraMoveSpeed);
+//}
+//
 void CPlayScene::UpdateCamera()
 {
 	CGame* game = CGame::GetInstance();

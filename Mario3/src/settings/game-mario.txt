@@ -43,3 +43,5 @@ height	240
 160	src\assets\textures\hidden_map_source.png
 170	src\assets\textures\full_hidden_map.png
 180	src\assets\textures\dialogs_rmbg.png
+190	src\assets\textures\card.png
+200	src\assets\textures\enemies_3.png

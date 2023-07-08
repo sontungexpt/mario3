@@ -57,6 +57,7 @@ public:
 	void Render();
 	void Update(DWORD dt);
 	void PurgeDeletedObjects();
+	void Unload();
 	LPGAMEOBJECT AddObject(LPGAMEOBJECT obj);
 	LPGAMEOBJECT AddObjectToFirst(LPGAMEOBJECT obj);
 
