@@ -171,7 +171,6 @@ void CDrawingManager::RenderBlackBackground(float x, float y, float length, floa
 	if (length <= 0 || height <= 0) return;
 	float xx = x;
 	float yy = y;
-	float cx, cy;
 
 	while (yy < y + height)
 	{
@@ -180,7 +179,6 @@ void CDrawingManager::RenderBlackBackground(float x, float y, float length, floa
 		{
 			D3DXVECTOR3 p(xx, yy, 0);
 			RECT rect;
-
 			LPTEXTURE bbox = CTextures::GetInstance()->Get(ID_TEX_BBOX_BLACK);
 
 			rect.left = 0;
@@ -188,9 +186,10 @@ void CDrawingManager::RenderBlackBackground(float x, float y, float length, floa
 			rect.right = (int)HUD_FRAME_CELL_WIDTH;
 			rect.bottom = (int)HUD_FRAME_CELL_HEIGHT;
 
+			float cx, cy;
 			CGame::GetInstance()->GetCamPos(cx, cy);
 
-			CGame::GetInstance()->Draw(xx - cx, yy - cy, bbox, &rect, 1.0f, rect.right, rect.bottom);
+			CGame::GetInstance()->Draw(xx - cx + HUD_FRAME_CELL_WIDTH / 2, yy - cy + HUD_FRAME_CELL_HEIGHT / 2, bbox, &rect, 1.0f, rect.right, rect.bottom);
 			xx += HUD_FRAME_CELL_WIDTH;
 		}
 		yy += HUD_FRAME_CELL_HEIGHT;

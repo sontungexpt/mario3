@@ -20,6 +20,7 @@
 #include "objects/materials/Pipe.h"
 #include "objects/materials/EnterablePipe.h"
 #include "objects/materials/OuterablePipe.h"
+#include "objects/materials/BlackBackground.h"
 
 #include "objects/items/Coin.h"
 #include "objects/items/RandomCard.h"
@@ -225,7 +226,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BLACK_BAKCGROUND:
 	{
-		int length = atoi(tokens[3].c_str());
+		float length = atof(tokens[3].c_str());
+		obj = new CBlackBackground(x, y, length);
 	}
 	break;
 	case OBJECT_TYPE_PIPE:
@@ -466,113 +468,38 @@ void CPlayScene::UpdateHud(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 
 	hud->Update(dt);
 }
-//void CPlayScene::UpdateCamera()
-//{
-//	CGame* game = CGame::GetInstance();
-//
-//	if (player == nullptr) {
-//		game->SetCamPos(0, 0);
-//		return;
-//	}
-//
-//	float cx, cy;
-//	player->GetPosition(cx, cy);
-//
-//	float cameraWidth = game->GetBackBufferWidth();
-//	float cameraHeight = game->GetBackBufferHeight();
-//
-//	// Tính toán vị trí camera dựa trên vị trí của player
-//	float newCameraX = cx - cameraWidth / 2;
-//	float newCameraY = cy - cameraHeight / 2;
-//
-//	// Giới hạn camera không cho phép di chuyển vượt quá biên của map
-//	float mapWidth = cameraWidth * game->GetScaleFactor();
-//	float mapHeight = cameraHeight * game->GetScaleFactor();
-//	float maxCameraX = mapWidth - cameraWidth;
-//	float maxCameraY = mapHeight - cameraHeight;
-//
-//	if (newCameraX < 0) newCameraX = 0;
-//	if (newCameraY < 0) newCameraY = 0;
-//	if (newCameraX > maxCameraX) newCameraX = maxCameraX;
-//	if (newCameraY > maxCameraY) newCameraY = maxCameraY;
-//
-//	// Điều chỉnh vị trí camera để có camera mượt hơn
-//	float cameraMoveSpeed = 0.1f;
-//	float cameraDeltaX = newCameraX - game->GetCamXPos();
-//	float cameraDeltaY = newCameraY - game->GetCamYPos();
-//
-//	float new_cam_y = floor(newCameraY / game->GetBackBufferHeight()) * game->GetBackBufferHeight();
-//	if (max_object_y != nullptr && new_cam_y >= max_object_y->GetY()) {
-//		newCameraY = game->GetCamYPos();
-//	}
-//
-//	game->SetCamPos(game->GetCamXPos() + cameraDeltaX * cameraMoveSpeed,
-//		game->GetCamYPos() + (newCameraY - game->GetCamYPos()) * cameraMoveSpeed);
-//}
 
-//void CPlayScene::UpdateCamera()
-//{
-//	CGame* game = CGame::GetInstance();
-//
-//	if (player == nullptr) {
-//		game->SetCamPos(0, 0);
-//		return;
-//	}
-//
-//	float cx, cy;
-//	player->GetPosition(cx, cy);
-//
-//	float cameraWidth = game->GetBackBufferWidth();
-//	float cameraHeight = game->GetBackBufferHeight();
-//
-//	float mapWidth = cameraWidth * game->GetScaleFactor();
-//	float mapHeight = cameraHeight * game->GetScaleFactor();
-//
-//	// Tính toán vị trí camera dựa trên vị trí của Mario
-//	float newCameraX = cx - cameraWidth / 2;
-//	float newCameraY = cy - cameraHeight / 2;
-//
-//	// Giới hạn camera không cho phép di chuyển vượt quá biên của map
-//	float maxCameraX = mapWidth - cameraWidth;
-//	float maxCameraY = mapHeight - cameraHeight;
-//
-//	if (newCameraX < 0) newCameraX = 0;
-//	if (newCameraY < 0) newCameraY = 0;
-//	if (newCameraX > maxCameraX) newCameraX = maxCameraX;
-//	if (newCameraY > maxCameraY) newCameraY = maxCameraY;
-//
-//	// Cập nhật vị trí camera một cách mượt mà (chỉ di chuyển một phần nhỏ)
-//	float cameraMoveSpeed = 0.1f;
-//	float cameraDeltaX = newCameraX - game->GetCamXPos();
-//	float cameraDeltaY = newCameraY - game->GetCamYPos();
-//	game->SetCamPos(game->GetCamXPos() + cameraDeltaX * cameraMoveSpeed, game->GetCamYPos() + cameraDeltaY * cameraMoveSpeed);
-//}
-//
 void CPlayScene::UpdateCamera()
 {
 	CGame* game = CGame::GetInstance();
-
-	if (player == nullptr) {
+	if (player == nullptr)
+	{
 		game->SetCamPos(0, 0);
 		return;
 	};
 
-	float cx, cy;
-	player->GetPosition(cx, cy);
+	float camera_width = game->GetBackBufferWidth();
+	float camera_height = game->GetBackBufferHeight();
 
-	cx -= game->GetBackBufferWidth() / 2;
+	float old_cam_x = game->GetCamXPos();
+	float old_cam_y = game->GetCamYPos();
 
-	// having floor then mario can jump to hole and die
-	// if mario jump to hole (new_cam_y >= max_object_y) then not update camera
-	float new_cam_y = floor(cy / game->GetBackBufferHeight()) * game->GetBackBufferHeight();
+	float mario_x = player->GetX();
+	float mario_y = player->GetY();
 
-	cy = max_object_y != nullptr && new_cam_y >= max_object_y->GetY() ?
-		game->GetCamYPos() : new_cam_y;
+	float new_cam_x = mario_x - camera_width / 2;
+	float new_cam_y = floor(mario_y / camera_height) * camera_height;
 
-	if (cx < 0) cx = 0;
-	if (cy < 0) cy = 0;
+	if (new_cam_x < 0) new_cam_x = 0;
+	if (new_cam_y < 0) new_cam_y = 0;
 
-	game->SetCamPos(cx, cy);
+	float max_cam_x = max_object_x->GetRight() - camera_width;
+	if (max_object_x && new_cam_x > max_cam_x)
+		new_cam_x = max_cam_x;
+	if (max_object_y && new_cam_y > max_object_y->GetBottom())
+		new_cam_y = old_cam_y;
+
+	game->SetCamPos(new_cam_x, new_cam_y);
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -615,8 +542,6 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	// if player is entering pipe then render player first
-	// because player is behind pipe
 	for (int i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CMario*>(objects[i]))

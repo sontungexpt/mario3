@@ -35,6 +35,9 @@ src\settings\objects\monsters\carnivorous_plant.txt
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
 # See OBJECT_TYPE constants in AssetIDs.h
 
+# BLACK BACKGROUND
+63	2408	500	300
+
 # FRONT OF FIRST HOLE
 # BLUE BLOCK
 5	272	572	16	16	3	1000205	1000210	1000215	1
@@ -260,7 +263,7 @@ src\settings\objects\monsters\carnivorous_plant.txt
 13	2336	621	1	0	2	1	1
 
 ### Monsters ###
-#Goombas
+#GOOMBAS
 1	200	635
 1	450	635
 
@@ -269,7 +272,7 @@ src\settings\objects\monsters\carnivorous_plant.txt
 
 1	1040	619	1
 
-# Koopas
+# KOOPAS
 2	520	590
 
 2	1340	520	1	1
@@ -321,7 +324,7 @@ src\settings\objects\monsters\carnivorous_plant.txt
 60	2113	619
 
 # RANDOM CARD
-14	2600	570
+14	2570	570
 
 #Platform
 5	0	652	16	16	39	1000010	1000020	1000030	1	1

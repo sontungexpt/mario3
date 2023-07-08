@@ -23,20 +23,21 @@ CGameObject::CGameObject()
 }
 
 void CGameObject::ResetPositionIfOutOfWidthScreen(float& curr_x, float& curr_y) {
-	float cam_x, cam_y;
-	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 	float left, top, right, bottom;
 	GetBoundingBox(left, top, right, bottom);
+	float max_width = ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetMaxObjectX()->GetRight();
 
 	// no permit move out of screen
-	if (left <= cam_x)
+	if (left < 0)
 	{
-		curr_x = cam_x + (right - left) / 2;
+		curr_x = (right - left) / 2;
+		vx = 0;
 	}
-	//else if (right > cam_x + CGame::GetInstance()->GetBackBufferWidth())
-	//{
-	//	curr_x = cam_x + CGame::GetInstance()->GetBackBufferWidth() - (right - left) / 2;
-	//}
+	else if (right > max_width)
+	{
+		curr_x = max_width - (right - left) / 2;
+		vx = 0;
+	}
 }
 
 int CGameObject::RemoveWhenMoveToDangerousSpace()

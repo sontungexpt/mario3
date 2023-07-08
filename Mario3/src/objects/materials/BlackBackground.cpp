@@ -4,26 +4,25 @@
 
 void CBlackBackground::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	float cx, cy;
+	CGame::GetInstance()->GetCamPos(cx, cy);
+	y = cy;
 }
 
 void CBlackBackground::Render()
 {
-	CMario* mario = (CMario*)((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	if (mario)
-	{
-		CDrawingManager::RenderBlackBackground(
-			x,
-			y,
-			length,
-			height
-		);
-	}
-}
-
-void CBlackBackground::SetState(int state)
-{
+	CDrawingManager::RenderBlackBackground(
+		x,
+		y,
+		length,
+		CGame::GetInstance()->GetBackBufferHeight()
+	);
 }
 
 void CBlackBackground::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
+	left = x;
+	top = y;
+	right = x + length;
+	bottom = y + CGame::GetInstance()->GetBackBufferHeight();
 }
