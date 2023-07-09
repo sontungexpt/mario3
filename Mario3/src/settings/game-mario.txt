@@ -19,6 +19,7 @@ height	240
 4	src\settings\scenes\scene4\scene04.txt
 5	src\settings\scenes\scene5\scene05.txt
 6	src\settings\scenes\scene6\scene06.txt
+7	src\settings\scenes\scene7\scene07.txt
 
 # id	file
 [TEXTURES]

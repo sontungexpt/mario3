@@ -29,7 +29,7 @@ void CRandomCard::Render()
 	}
 	else
 	{
-		CDrawingManager::RenderString("COURSE CLEAR", x - 12.0f / 2 * HUD_CHAR_BBOX_WIDTH, y - 70);
+		CDrawingManager::RenderString("COURSE CLEAR !", x - 14.0f / 2 * HUD_CHAR_BBOX_WIDTH, y - 70);
 		CDrawingManager::RenderString(
 			"YOU GOT A CARD",
 			x - 7.0f * HUD_CHAR_BBOX_WIDTH - HUD_FRAME_CELL_WIDTH,
@@ -53,6 +53,7 @@ void CRandomCard::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 		IncreaseCyclicRandomItemIndex();
 		time_start = GetTickCount64();
 	}
+	CItem::Update(dt, co_objects);
 }
 
 void CRandomCard::GetBoundingBox(float& l, float& t, float& r, float& b)

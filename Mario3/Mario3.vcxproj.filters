@@ -463,8 +463,6 @@
     <Text Include="src\settings\game-mario.txt" />
     <Text Include="src\settings\objects\mario.txt" />
     <Text Include="src\settings\scenes\scene1\scene01.txt" />
-    <Text Include="src\settings\scenes\scene2\scene02.txt" />
-    <Text Include="src\settings\scenes\scene5\scene05.txt" />
     <Text Include="src\settings\objects\materials\door.txt" />
     <Text Include="src\settings\scenes\levelmap.txt" />
     <Text Include="src\settings\objects\materials\grass.txt" />
@@ -483,6 +481,18 @@
     <Text Include="src\settings\objects\monsters\hammer.txt" />
     <Text Include="src\settings\scenes\intro.txt" />
     <Text Include="src\settings\scenes\scene1\hidden_map.txt" />
+    <Text Include="src\settings\scenes\scene2\hidden_map.txt" />
+    <Text Include="src\settings\scenes\scene2\scene02.txt" />
+    <Text Include="src\settings\scenes\scene3\hidden_map.txt" />
+    <Text Include="src\settings\scenes\scene3\scene03.txt" />
+    <Text Include="src\settings\scenes\scene4\hidden_map.txt" />
+    <Text Include="src\settings\scenes\scene4\scene04.txt" />
+    <Text Include="src\settings\scenes\scene5\hidden_map.txt" />
+    <Text Include="src\settings\scenes\scene5\scene05.txt" />
+    <Text Include="src\settings\scenes\scene6\hidden_map.txt" />
+    <Text Include="src\settings\scenes\scene6\scene06.txt" />
+    <Text Include="src\settings\scenes\scene7\scene07.txt" />
+    <Text Include="src\settings\scenes\scene7\hidden_map.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\assets\textures\misc_left.png">
