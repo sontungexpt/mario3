@@ -537,31 +537,43 @@ void CGame::Load(LPCWSTR gameFile)
 
 void CGame::SwitchScene()
 {
+	// not thing change
 	if (next_scene == current_scene) return;
-	//if (next_scene < 0 || next_scene == current_scene) return;
+
+	auto it = scenes.find(next_scene);
+
+	// if scene not found, do nothing
+	if (it == scenes.end()) return;
+	LPSCENE s = it->second;
+
 	is_in_transition_scene = TRUE;
 
 	if (GetTickCount64() - switch_scene_time_start > switch_scene_waiting_time)
 	{
 		// when you create something new, you don't have anything to clear
-		if (current_scene != INT_MIN)
-		{
-			scenes[current_scene]->Unload();
+		try {
+			if (current_scene != INT_MIN)
+			{
+				scenes.at(current_scene)->Unload();
+				CSprites::GetInstance()->Clear();
+				CAnimations::GetInstance()->Clear();
+			}
 
-			CSprites::GetInstance()->Clear();
-			CAnimations::GetInstance()->Clear();
+			current_scene = next_scene;
+			this->SetKeyHandler(s->GetKeyEventHandler());
+
+			s->Load();
+			switch_scene_time_start = 0;
+
+			// auto reset to default waiting time
+			switch_scene_waiting_time = SCENE_SWITCH_WAITING_TIME;
+			is_in_transition_scene = FALSE;
 		}
-
-		current_scene = next_scene;
-		LPSCENE s = scenes[next_scene];
-		this->SetKeyHandler(s->GetKeyEventHandler());
-
-		s->Load();
-		switch_scene_time_start = 0;
-		is_in_transition_scene = FALSE;
-
-		// auto reset to default waiting time
-		switch_scene_waiting_time = SCENE_SWITCH_WAITING_TIME;
+		catch (const std::out_of_range& e)
+		{
+			DebugOut(L"[ERROR] SwitchScene out of range: %s\n", e.what());
+			return;
+		}
 	}
 }
 
