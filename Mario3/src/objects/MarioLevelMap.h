@@ -24,8 +24,8 @@ private:
 	// by pass block door rule when press 4
 	BOOLEAN is_bypass_door_block_rule;
 
-	float CalulateVx(float target_x, float target_y);
-	float CalulateVy(float target_x, float target_y);
+	float CalculateVx(float target_x, float target_y);
+	float CalculateVy(float target_x, float target_y);
 	void OnCollisionWithDoor(LPCOLLISIONEVENT e);
 
 public:

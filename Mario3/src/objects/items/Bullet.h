@@ -9,61 +9,24 @@ protected:
 	float target_y;
 
 	void OnCollisionWithPlayer(LPCOLLISIONEVENT e);
+	float CalculateVx(float target_x, float target_y);
+	float CalculateVy(float target_x, float target_y);
 
 public:
-	CBullet(float x, float y) : CItem(x, y) {
-		ay = BULLET_GRAVITY;
-	};
 
-	CBullet(float x, float y, float target_x, float target_y) : CItem(x, y) {
-		this->target_x = target_x;
-		this->target_y = target_y;
-
-		// in future may be we will calculate to have the exactly speed in vx and vy to improve bullet accuracy
-		// but now we just use the dèault speed and shoot the bullet with tan(alpha) = y/x
-
-		vx = CalulateVx(target_x, target_y);
-		vy = CalulateVy(target_x, target_y);
-	};
+	CBullet(float x = 0, float y = 0, float target_x = 0, float target_y = 0)
+		: CItem(x, y, BULLET_GRAVITY, UNKNOWN_STATE),
+		target_x(target_x), target_y(target_y)
+	{};
 
 	void Render();
 	void SetState(int state);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-
-	float CalulateVx(float target_x, float target_y) {
-		float distance_x = target_x - x;
-		float distance_y = target_y - y;
-
-		float alpha = atan(fabs(distance_y) / fabs(distance_x));
-
-		float v_x = BULLET_SPEED * cos(alpha); // v>0 because 0< alpha < 90 degree
-
-		return distance_x >= 0 ? v_x : -v_x;
-	}
-
-	float CalulateVy(float target_x, float target_y) {
-		float distance_x = target_x - x;
-		float distance_y = target_y - y;
-
-		float alpha = atan(fabs(distance_y) / fabs(distance_x));
-
-		float v_y = BULLET_SPEED * sin(alpha); // v > 0 because 0 < alpha < 90 degree
-
-		return distance_y > 0 ? v_y : -v_y;
-	}
-
-	int IsCollidable() { return 0; }
-
-	void Shoot(float target_x, float target_y) {
-		this->target_x = target_x;
-		this->target_y = target_y;
-
-		// in future may be we will calculate to have the exactly speed in vx and vy to improve bullet accuracy
-		// but now we just use the dèault speed and shoot the bullet with tan(alpha) = y/x
-		SetState(BULLET_STATE_SHOOT);
-	}
-
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 
+	int IsCollidable() { return 0; }
+	int IsBlocking() { return 0; }
+
+	void Shoot(float target_x, float target_y);
 	void BeCollected();
 };

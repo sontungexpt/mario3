@@ -30,7 +30,9 @@ public:
 		upward_wind_chance_distribution(0, 9),
 		wind_speed_generator(LEAF_MIN_WIN_SPEED, LEAF_MAX_WIN_SPEED),
 		is_falling(false)
-	{}
+	{
+		SetState(state);
+	}
 
 	void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr);

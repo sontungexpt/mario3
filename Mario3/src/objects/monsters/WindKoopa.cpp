@@ -105,22 +105,14 @@ void CWindKoopa::Defend()
 	if (has_wind) {
 		has_wind = FALSE;
 
+		const float fly_height_diff = (KOOPA_BBOX_HEIGHT_FLY - KOOPA_BBOX_HEIGHT) / 2.0f;
+
 		// adjust position before set state
-		switch (state)
-		{
-		case MONSTER_STATE_FLY_LEFT:
-		case MONSTER_STATE_FLY_RIGHT:
-			y += (KOOPA_BBOX_HEIGHT_FLY - KOOPA_BBOX_HEIGHT) / 2;
-			break;
-		default:
-			break;
-		}
+		if (state == MONSTER_STATE_FLY_LEFT || state == MONSTER_STATE_FLY_RIGHT)
+			y += fly_height_diff;
 
 		// set state
-		if (vx > 0)
-			SetState(MONSTER_STATE_WALKING_RIGHT);
-		else
-			SetState(MONSTER_STATE_WALKING_LEFT);
+		SetState(vx > 0 ? MONSTER_STATE_WALKING_RIGHT : MONSTER_STATE_WALKING_LEFT);
 
 		ay = GRAVITY;
 		return;

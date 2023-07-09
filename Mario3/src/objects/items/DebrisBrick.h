@@ -19,12 +19,13 @@ private:
 	void SetState(int state);
 
 public:
-
 	CDebrisBrick(float x = 0, float y = 0, int state = DEBRIS_BRICK_STATE_SPLASHING)
 		: CItem(x, y, state), time_debris_splashing_start(0),
 		debris_brick_speed_generator(DEBRIS_BRICK_MIN_SPEED, DEBRIS_BRICK_MAX_SPEED),
 		debris_brick_direction_generator(0, 1)
-	{}
+	{
+		SetState(state);
+	}
 
 	// core
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);

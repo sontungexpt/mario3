@@ -15,8 +15,8 @@ protected:
 	BOOLEAN is_mario_holding;
 	BOOLEAN is_limit_moving_space;
 
-	float limit_x_positive = 0;
-	float limit_x_negative = 0;
+	float limit_x_positive;
+	float limit_x_negative;
 
 	float mario_speed_when_kicked;
 
@@ -30,35 +30,34 @@ protected:
 	virtual int GetAniIdRed();
 	virtual int GetAniIdGreen();
 
-	virtual void SetState(int state);
-
 	// reset to default state
 	virtual void Reset();
 
 public:
-	CKoopa(float x, float y, int color = KOOPA_RED, BOOLEAN is_limit_moving_space = TRUE) : CMonster(x, y) {
-		this->color = color;
+	CKoopa(float x, float y, int color = KOOPA_RED, BOOLEAN is_limit_moving_space = TRUE)
+		: CMonster(x, y),
+		color(color),
+		is_defend(FALSE),
+		is_comeback(FALSE),
+		is_mario_kicked(FALSE),
+		is_mario_holding(FALSE),
+		is_limit_moving_space(is_limit_moving_space),
+		mario_speed_when_kicked(0.0f),
+		defend_time_start(-1),
+		comeback_time_start(-1),
+		limit_x_positive(0.0f),
+		limit_x_negative(0.0f)
 
-		is_defend = FALSE;
-		is_comeback = FALSE;
-		is_mario_kicked = FALSE;
-		is_mario_holding = FALSE;
-		is_on_platform = FALSE;
-		this->is_limit_moving_space = is_limit_moving_space;
-
-		mario_speed_when_kicked = 0.0f;
+	{
 		max_vx = KOOPA_MAX_SPEED;
-
-		defend_time_start = -1;
-		comeback_time_start = -1;
-		// always move to mario in the first time
-		SetState(MONSTER_STATE_WALKING_LEFT);
+		//SetState(MONSTER_STATE_WALKING_LEFT);
 	};
 
 	//core
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	virtual void SetState(int state);
 
 	//collision
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);

@@ -14,7 +14,9 @@ public:
 
 	CMushroom(float x = 0, float y = 0, int state = UNKNOWN_STATE)
 		:CItem(x, y, MUSHROOM_GRAVITY, state)
-	{};
+	{
+		SetState(state);
+	};
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr);
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);

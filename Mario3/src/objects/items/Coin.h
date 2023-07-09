@@ -15,7 +15,10 @@ class CCoin : public CItem {
 
 public:
 	CCoin(float x = 0, float y = 0, int state = UNKNOWN_STATE)
-		:CItem(x, y, 0, state) {}
+		:CItem(x, y, 0, state)
+	{
+		SetState(state);
+	}
 
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 

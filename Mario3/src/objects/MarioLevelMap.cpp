@@ -138,8 +138,8 @@ void CMarioLevelMap::MoveToSpecialPos(float target_x, float target_y)
 	distance_specical_x = fabs(x - target_x);
 	distance_specical_y = fabs(y - target_y);
 
-	vx = CalulateVx(target_x, target_y);
-	vy = CalulateVy(target_x, target_y);
+	vx = CalculateVx(target_x, target_y);
+	vy = CalculateVy(target_x, target_y);
 
 	SetState(MARIO_LEVEL_MAP_STATE_MOVING_SPECIAL_POS);
 }
@@ -156,7 +156,7 @@ void CMarioLevelMap::MoveToSpecialPosFrom(float x, float y, float special_posx, 
 	MoveToSpecialPos(special_posx, special_posy);
 }
 
-float CMarioLevelMap::CalulateVx(float target_x, float target_y)
+float CMarioLevelMap::CalculateVx(float target_x, float target_y)
 {
 	float distance_x = target_x - x;
 	float distance_y = target_y - y;
@@ -165,7 +165,7 @@ float CMarioLevelMap::CalulateVx(float target_x, float target_y)
 	return distance_x >= 0 ? v_x : -v_x;
 }
 
-float CMarioLevelMap::CalulateVy(float target_x, float target_y)
+float CMarioLevelMap::CalculateVy(float target_x, float target_y)
 {
 	float distance_x = target_x - x;
 	float distance_y = target_y - y;

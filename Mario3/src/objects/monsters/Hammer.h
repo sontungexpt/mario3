@@ -1,20 +1,13 @@
 #pragma once
-#pragma once
 
 #include "Monster.h"
-#include "configs/monsters/Monster.h"
 #include "configs/monsters/Hammer604000.h"
 
 class CHammer : public CMonster
 {
 public:
 
-	CHammer(float x, float y) : CMonster(x, y)
-	{
-		ax = 0;
-		ay = 0;
-		SetState(MONSTER_STATE_WALKING_LEFT);
-	};
+	CHammer(float x, float y) : CMonster(x, y, 0, MONSTER_STATE_WALKING_LEFT) {};
 
 	// core
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects);
@@ -25,5 +18,3 @@ public:
 	int IsBlocking() { return 0; }
 	void OnCollisionWith(LPCOLLISIONEVENT e) {};
 };
-
-typedef  CMonster* LPMONSTER;

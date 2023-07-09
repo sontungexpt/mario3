@@ -315,12 +315,9 @@ void CKoopa::BeKickedByKoopa()
 void CKoopa::Defend()
 {
 	// adjust position before change to new state
-	switch (state) // current state
-	{
-	case MONSTER_STATE_WALKING_LEFT:
-	case MONSTER_STATE_WALKING_RIGHT:
-		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2;
-		break;
+	const float defend_height_diff = (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DEFEND) / 2.0f;
+	if (state == MONSTER_STATE_WALKING_LEFT || state == MONSTER_STATE_WALKING_RIGHT) {
+		y += defend_height_diff;
 	}
 
 	// new state

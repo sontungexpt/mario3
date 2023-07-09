@@ -1,4 +1,5 @@
 #pragma once
+
 #include "objects/GameObject.h"
 
 #include "configs/Game.h"
@@ -6,25 +7,6 @@
 
 class CMonster : public CGameObject
 {
-private:
-	void Init() {
-		ax = 0; // acceleration x
-		ay = GRAVITY; // acceleration y
-
-		vx = MONSTER_WALKING_SPEED;
-		max_vx = -1; // no limit speed
-
-		// TODO: need to create new class for moving object
-		// This is a temporary solution
-
-		dead_time = 0; // the time when monster die
-		disapear_time = MONSTER_DISAPPEAR_TIME; // the time to disappear after dead
-
-		dead = FALSE; // is dead or not
-		is_enemy = TRUE;
-		is_on_platform = FALSE;
-	};
-
 protected:
 	float max_vx;
 
@@ -50,19 +32,24 @@ protected:
 
 public:
 
-	CMonster(float x, float y, ULONGLONG disapear_time = MONSTER_DISAPPEAR_TIME) : CGameObject(x, y)
+	CMonster(float x = 0, float y = 0, ULONGLONG disapear_time = MONSTER_DISAPPEAR_TIME)
+		: CGameObject(x, y, MONSTER_WALKING_SPEED, 0, 0, GRAVITY, -1, -1, MONSTER_STATE_WALKING_LEFT, 1, 0),
+		dead_time(0), disapear_time(disapear_time),
+		dead(FALSE), is_enemy(TRUE), is_on_platform(FALSE)
 	{
-		Init();
-
-		this->disapear_time = disapear_time;
-
-		// default is moving left
 		SetState(MONSTER_STATE_WALKING_LEFT);
 	};
 
-	CMonster(float x, float y, int state) : CGameObject(x, y, state)
+	CMonster(float x, float y, int state)
+		:CMonster(x, y, GRAVITY, state)
+	{};
+
+	CMonster(float x, float y, float ay, int state = MONSTER_STATE_WALKING_LEFT)
+		: CGameObject(x, y, MONSTER_WALKING_SPEED, 0, 0, ay, -1, -1, state, 1, 0),
+		dead_time(0), disapear_time(MONSTER_DISAPPEAR_TIME),
+		dead(FALSE), is_enemy(TRUE), is_on_platform(FALSE)
 	{
-		Init();
+		SetState(state);
 	};
 
 	virtual void LimitSpeed(float speed) { max_vx = speed; };

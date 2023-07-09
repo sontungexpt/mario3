@@ -1,8 +1,5 @@
 #pragma once
-
-#pragma once
 #include "Goomba.h"
-#include "objects/monsters/Monster.h"
 #include "configs/monsters/Gommba600000.h"
 
 class CWindGoomba : public CGoomba
@@ -13,9 +10,8 @@ private:
 
 public:
 
-	CWindGoomba(float x, float y) :CGoomba(x, y) {
-		has_wind = TRUE;
-		time_jump_start = 0;
+	CWindGoomba(float x, float y) :CGoomba(x, y), has_wind(FALSE), time_jump_start(0)
+	{
 		SetState(MONSTER_STATE_FLY_LEFT);
 	}
 
@@ -30,5 +26,6 @@ public:
 	BOOLEAN HasWind() { return has_wind; }
 	void CutWind() { has_wind = FALSE; }
 	void ReverseWind() { has_wind = TRUE; }
+
 	void Die();
 };

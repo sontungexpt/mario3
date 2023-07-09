@@ -115,9 +115,7 @@ public:
 		: x(x), y(y), vx(v0x), vy(v0y), ax(ax), ay(ay),
 		start_x(x), start_y(y), max_vx(max_vx), max_vy(max_vy),
 		state(state), is_deleted(FALSE), is_collidable(is_collidable), is_blocking(is_blocking)
-	{
-		SetState(state);
-	}
+	{}
 
 	~CGameObject() = default;
 

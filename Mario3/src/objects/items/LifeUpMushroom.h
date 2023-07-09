@@ -14,7 +14,9 @@ public:
 
 	CLifeUpMushroom(float x = 0, float y = 0, int state = UNKNOWN_STATE)
 		:CMushroom(x, y, state)
-	{};
+	{
+		SetState(state);
+	};
 
 	void Render();
 	void BeCollected();

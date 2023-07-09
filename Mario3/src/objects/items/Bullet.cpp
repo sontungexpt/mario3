@@ -11,10 +11,33 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	CItem::Update(dt, co_objects);
 }
 
+float CBullet::CalculateVx(float target_x, float target_y)
+{
+	float distance_x = target_x - x;
+	float distance_y = target_y - y;
+
+	float alpha = atan(fabs(distance_y) / fabs(distance_x));
+
+	float v_x = BULLET_SPEED * cos(alpha); // v>0 because 0< alpha < 90 degree
+
+	return distance_x >= 0 ? v_x : -v_x;
+}
+
+float CBullet::CalculateVy(float target_x, float target_y)
+{
+	float distance_x = target_x - x;
+	float distance_y = target_y - y;
+
+	float alpha = atan(fabs(distance_y) / fabs(distance_x));
+
+	float v_y = BULLET_SPEED * sin(alpha); // v > 0 because 0 < alpha < 90 degree
+
+	return distance_y > 0 ? v_y : -v_y;
+}
+
 void CBullet::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
-	CMario* mario = dynamic_cast<CMario*>(e->obj);
-	mario->Die();
+	BeCollected();
 }
 
 void CBullet::Render()
@@ -44,13 +67,21 @@ void CBullet::SetState(int state) {
 		vy = 0;
 		break;
 	case BULLET_STATE_SHOOT:
-		vx = CalulateVx(target_x, target_y);
-		vy = CalulateVy(target_x, target_y);
+		vx = CalculateVx(target_x, target_y);
+		vy = CalculateVy(target_x, target_y);
 		break;
 	default:
 		DebugOut(L"[ERROR] Can not handle state %d", state);
 		break;
 	}
+}
+
+void CBullet::Shoot(float target_x, float target_y)
+{
+	this->target_x = target_x;
+	this->target_y = target_y;
+
+	SetState(BULLET_STATE_SHOOT);
 }
 
 void CBullet::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -63,9 +94,11 @@ void CBullet::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CBullet::BeCollected()
 {
-	CItem::BeCollected();
+	LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
 
-	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CMario* mario = (CMario*)scene->GetPlayer();
+	CMario* mario = scene ? dynamic_cast<CMario*>(scene->GetPlayer()) : nullptr;
+	if (!mario) return;
+
+	CItem::BeCollected();
 	mario->Die();
 }

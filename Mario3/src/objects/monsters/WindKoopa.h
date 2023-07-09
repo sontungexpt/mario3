@@ -1,7 +1,7 @@
 #pragma once
 
-#include "configs/monsters/Koopa601000.h"
 #include "Koopa.h"
+#include "configs/monsters/Koopa601000.h"
 
 class CWindKoopa : public CKoopa
 {
@@ -9,14 +9,13 @@ private:
 	BOOLEAN has_wind;
 	ULONGLONG time_jump_start;
 
-	void SetState(int state);
 	int GetAniIdRed();
 	int GetAniIdGreen();
+
 public:
-	CWindKoopa(float x, float y, int color = KOOPA_RED, BOOLEAN is_limit_moving_space = TRUE) : CKoopa(x, y, color, is_limit_moving_space) {
-		// always move to mario in the first time
-		has_wind = TRUE;
-		time_jump_start = 0;
+	CWindKoopa(float x, float y, int color = KOOPA_RED, BOOLEAN is_limit_moving_space = TRUE)
+		: CKoopa(x, y, color, is_limit_moving_space), has_wind(TRUE), time_jump_start(0)
+	{
 		SetState(MONSTER_STATE_FLY_LEFT);
 	};
 
@@ -24,6 +23,7 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void SetState(int state);
 
 	//collision
 	void OnCollisionWith(LPCOLLISIONEVENT e);

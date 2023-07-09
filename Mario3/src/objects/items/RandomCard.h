@@ -32,6 +32,7 @@ public:
 		items.push_back(MUSHROOM);
 		items.push_back(STAR);
 		items.push_back(FLOWER);
+		SetState(state);
 	}
 
 	void Render();
