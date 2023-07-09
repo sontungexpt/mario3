@@ -18,10 +18,9 @@ public:
 		int direction = PIPE_DIRECTION_UP,
 		int color = PIPE_COLOR_GREEN,
 		int scene_id = INT_MAX
-	) : CPipe(x, y, state, plant_type, direction, color)
-	{
-		this->scene_id = scene_id;
-	};
+	) : CPipe(x, y, state, plant_type, direction, color),
+		scene_id(scene_id)
+	{};
 
 	int IsCollidable() { return 1; };
 	int IsBlocking() { return 1; }

@@ -142,3 +142,8 @@ BOOLEAN CGameObject::IsOutTopCamera() {
 		return TRUE;
 	return FALSE;
 }
+
+void CGameObject::ProcessCollision(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
+{
+	CCollision::GetInstance()->Process(this, dt, co_objects);
+}

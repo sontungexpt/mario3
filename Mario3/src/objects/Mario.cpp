@@ -222,13 +222,9 @@ int CMario::GetAniIdWinScene()
 	else
 	{
 		if (vx > 0)
-		{
 			aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
-		}
 		else if (vx < 0)
-		{
 			aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
-		}
 	}
 
 	return aniId;

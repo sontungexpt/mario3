@@ -6,7 +6,7 @@
 #include "objects/materials/Pipe.h"
 
 void CPlantShooter::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
-	switch (type)
+	switch (color)
 	{
 	case PLANT_SHOOTER_RED:
 		left = x - PLANT_SHOOTER_BBOX_WIDTH / 2;
@@ -21,7 +21,7 @@ void CPlantShooter::GetBoundingBox(float& left, float& top, float& right, float&
 		bottom = top + PLANT_SHOOTER_BBOX_HEIGHT_GREEN;
 		break;
 	default:
-		DebugOut(L"[ERROR] Unhandled type %d at CPlantShooter::GetBoundingBox\n", type);
+		DebugOut(L"[ERROR] Unhandled type %d at CPlantShooter::GetBoundingBox\n", color);
 		break;
 	}
 }
@@ -34,43 +34,60 @@ void CPlantShooter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (is_disabled_up_down) return;
 
-	if (is_upping && y <= min_y) {
-		if (!is_shooted)// just one bullet per state up
+	UpdateBullet(dt);
+}
+void CPlantShooter::UpdateBullet(DWORD dt)
+{
+	if (CanShootBullet()) {
+		// if plant is up and not shooted, then reload bullet
+		if (time_reload_bullet_start <= 0)
 		{
-			// if plant is up and not shooted, then reload bullet
-			if (time_reload_bullet_start <= 0)
-			{
-				time_reload_bullet_start = GetTickCount64();
-			}
-			else
-			{
-				CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-				CMario* mario = (CMario*)scene->GetPlayer();
-				// after finished reloading bullet, then shoot bullet
-				if (GetTickCount64() - time_reload_bullet_start > TIME_RELOAD_BULLET) {
-					float bullet_y = CompareYWithMario() == 1 ? GetTop() + 10 : GetTop() + 4;
-					float bullet_x = CompareXWithMario() == 1 ? x - GetWidth() / 2 - 2 : x + GetWidth() / 2 + 2;
-
-					CBullet* bullet = (CBullet*)scene->AddObject(new CBullet(bullet_x, bullet_y));
-
-					bullet->Shoot(mario->GetX(), mario->GetY());
-					is_shooted = TRUE;
-					time_reload_bullet_start = 0;
-				}
-			}
+			time_reload_bullet_start = GetTickCount64();
+		}
+		else
+		{
+			ShootBulletIfReady();
 		}
 	}
+}
+
+void CPlantShooter::ShootBulletIfReady()
+{
+	LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
+	CMario* mario = scene ? dynamic_cast<CMario*>(scene->GetPlayer()) : nullptr;
+
+	if (!mario) return;
+
+	if (GetTickCount64() - time_reload_bullet_start > TIME_RELOAD_BULLET) {
+		float bullet_y = CompareYWithMario() == 1 ?
+			GetTop() + 10 : GetTop() + 4;
+		float bullet_x = CompareXWithMario() == 1 ?
+			x - GetWidth() / 2 - 2 : x + GetWidth() / 2 + 2;
+
+		CBullet* bullet = (CBullet*)scene->AddObject(new CBullet(bullet_x, bullet_y));
+
+		bullet->Shoot(mario->GetX(), mario->GetY());
+		is_shooted = TRUE;
+		time_reload_bullet_start = 0;
+	}
+}
+
+bool CPlantShooter::CanShootBullet()
+{
+	// is upping
+	return direction_up_down <= 0 && y <= min_y && !is_shooted;
 }
 
 void CPlantShooter::Render()
 {
 	if (is_disabled_up_down) return;
+	if (is_deleted) return; // notthing to render
 
 	if (!IsInCamera()) return; // lazy load
 
 	int aniId = -1;
 
-	switch (type)
+	switch (color)
 	{
 	case PLANT_SHOOTER_RED:
 		aniId = GetAniIdRed();
@@ -79,7 +96,7 @@ void CPlantShooter::Render()
 		aniId = GetAniIdGreen();
 		break;
 	default:
-		DebugOut(L"[ERROR] Unhandled type %d at CPlantShooter::Render\n", type);
+		DebugOut(L"[ERROR] Unhandled color %d at CPlantShooter::Render\n", color);
 		return;
 	}
 

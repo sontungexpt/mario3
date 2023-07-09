@@ -93,22 +93,14 @@ void CWindGoomba::Die()
 	if (has_wind) {
 		has_wind = FALSE;
 
+		const float fly_height_diff = (GOOMBA_BBOX_HEIGHT_FLY - GOOMBA_BBOX_HEIGHT) / 2;
+
 		// adjust position before set state
-		switch (state)
-		{
-		case MONSTER_STATE_FLY_LEFT:
-		case MONSTER_STATE_FLY_RIGHT:
-			y += (GOOMBA_BBOX_HEIGHT_FLY - GOOMBA_BBOX_HEIGHT) / 2;
-			break;
-		default:
-			break;
-		}
+		if (state == MONSTER_STATE_FLY_LEFT || state == MONSTER_STATE_FLY_RIGHT)
+			y += fly_height_diff;
 
 		// set state
-		if (vx > 0)
-			SetState(MONSTER_STATE_WALKING_RIGHT);
-		else
-			SetState(MONSTER_STATE_WALKING_LEFT);
+		SetState(vx > 0 ? MONSTER_STATE_WALKING_RIGHT : MONSTER_STATE_WALKING_LEFT);
 
 		ay = GRAVITY;
 		return;

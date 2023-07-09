@@ -44,6 +44,12 @@ public:
 		:CMonster(x, y, GRAVITY, state)
 	{};
 
+	CMonster(float x, float y, float vx, float vy, float ax, float ay)
+		:CGameObject(x, y, vx, vy, ax, ay, -1, -1, UNKNOWN_STATE, 1, 0),
+		dead_time(0), disapear_time(disapear_time),
+		dead(FALSE), is_enemy(TRUE), is_on_platform(FALSE)
+	{};
+
 	CMonster(float x, float y, float ay, int state = MONSTER_STATE_WALKING_LEFT)
 		: CGameObject(x, y, MONSTER_WALKING_SPEED, 0, 0, ay, -1, -1, state, 1, 0),
 		dead_time(0), disapear_time(MONSTER_DISAPPEAR_TIME),

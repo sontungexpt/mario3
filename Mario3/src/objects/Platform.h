@@ -25,16 +25,16 @@ public:
 		int sprite_id_end,
 		int is_blocking = 0,
 		int isColliableAllDirection = -1
-	) :CGameObject(x, y)
+	) :CGameObject(x, y),
+		length(length),
+		cellWidth(cell_width),
+		cellHeight(cell_height),
+		spriteIdBegin(sprite_id_begin),
+		spriteIdMiddle(sprite_id_middle),
+		spriteIdEnd(sprite_id_end),
+		isColliableAllDirection(isColliableAllDirection)
 	{
-		this->length = length;
-		this->cellWidth = cell_width;
-		this->cellHeight = cell_height;
-		this->spriteIdBegin = sprite_id_begin;
-		this->spriteIdMiddle = sprite_id_middle;
-		this->spriteIdEnd = sprite_id_end;
 		this->is_blocking = is_blocking;
-		this->isColliableAllDirection = isColliableAllDirection;
 	}
 
 	int IsDirectionColliable(float nx, float ny);

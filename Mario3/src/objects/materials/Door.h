@@ -19,9 +19,9 @@ private:
 
 public:
 	CDoor(float x, float y, int scene_id, int door_level) :
-		CPortal(x, y, x + DOOR_BBOX_WIDTH, y + DOOR_BBOX_HEIGHT, scene_id)
+		CPortal(x, y, x + DOOR_BBOX_WIDTH, y + DOOR_BBOX_HEIGHT, scene_id),
+		door_level(door_level)
 	{
-		this->door_level = door_level;
 		if (door_level == DOOR_LEVEL_CASTLE)
 			CEffectManager::Gennerate(
 				GetRight() + HELP_LEVEL_MAP_BBOX_WIDTH / 2,

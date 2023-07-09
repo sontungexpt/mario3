@@ -29,6 +29,7 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 void CGoomba::Render()
 {
 	if (!IsInCamera()) return; // lazy load
+	if (is_deleted) return;
 
 	int aniId = -1; // default animation
 

@@ -58,10 +58,6 @@ public:
 		mario_level = MARIO_LEVEL_SMALL;
 		available_items.clear();
 	};
-	~CGameData()
-	{
-		available_items.clear();
-	};
 
 	static CGameData* GetInstance();
 

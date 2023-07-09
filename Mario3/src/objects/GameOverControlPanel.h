@@ -32,13 +32,12 @@ class GameOverControlPanel : public CGameObject
 	BOOLEAN is_ready_to_control;
 
 public:
-	GameOverControlPanel(float x, float y) : CGameObject(x, y)
+	GameOverControlPanel(float x, float y) :
+		CGameObject(x, y),
+		is_ready_to_show_mario(FALSE),
+		is_ready_to_control(FALSE)
 	{
-		left_choice = 0;
-		top_choice = 0;
 		current_choice_index = 0;
-		is_ready_to_show_mario = FALSE;
-		is_ready_to_control = FALSE;
 		create_time_start = GetTickCount64();
 
 		left = x - number_cell_width / 2.0f * HUD_FRAME_CELL_WIDTH;

@@ -14,14 +14,15 @@ class CHud : public CGameObject
 	void RenderMarioRemainingTime();
 
 	BOOLEAN is_full_power_dark;
-
 	ULONGLONG time_change_full_power_status_start;
 
 public:
-	CHud(float x, float y) : CGameObject(x, y) {
-		is_full_power_dark = TRUE;
-		time_change_full_power_status_start = 0;
-	}
+	CHud(float x, float y)
+		: CGameObject(x, y),
+		is_full_power_dark(TRUE),
+		time_change_full_power_status_start(0)
+	{}
+
 	void Update(DWORD dt);
 	int IsBlocking() { return 0; }
 	int IsCollidable() { return 0; }

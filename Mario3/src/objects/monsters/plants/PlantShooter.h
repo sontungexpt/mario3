@@ -6,40 +6,38 @@
 class CPlantShooter : public CPlant
 {
 protected:
+	int color;
+
 	BOOLEAN is_shooted;
-	int type;
 	ULONGLONG time_reload_bullet_start;
 
-	void Init(int type) {
-		this->type = type;
-		vy = PLANT_SPEED_UP_DOWN; // move up and down
+	void UpdateBullet(DWORD dt);
+	void ShootBulletIfReady();
+	bool CanShootBullet();
 
-		is_shooted = FALSE;
+public:
 
-		time_reload_bullet_start = 0;
-		if (type == PLANT_SHOOTER_GREEN)
+	CPlantShooter(float x, float y, int state = PLANT_STATE_DOWN, int color = PLANT_SHOOTER_RED)
+		:CPlant(x, y, state),
+		color(color),
+		time_reload_bullet_start(0),
+		is_shooted(FALSE)
+	{
+		if (color == PLANT_SHOOTER_GREEN)
 		{
 			min_y = start_y - PLANT_SHOOTER_BBOX_HEIGHT_GREEN;
 			max_y = start_y + PLANT_SHOOTER_BBOX_HEIGHT_GREEN;
 		}
-		else if (type == PLANT_SHOOTER_RED)
+		else if (color == PLANT_SHOOTER_RED)
 		{
 			min_y = start_y - PLANT_SHOOTER_BBOX_HEIGHT_RED;
 			max_y = start_y + PLANT_SHOOTER_BBOX_HEIGHT_RED;
 		}
 	};
 
-public:
-	CPlantShooter(float x, float y) : CPlant(x, y) {
-		Init(PLANT_SHOOTER_RED);
-	};
-
-	CPlantShooter(float x, float y, int state, int type = PLANT_SHOOTER_RED) :CPlant(x, y, state) {
-		Init(type);
-	};
-
 	// core
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+
 	void Render();
 	int GetAniIdRed();
 	int GetAniIdGreen();

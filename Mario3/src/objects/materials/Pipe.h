@@ -26,11 +26,12 @@ public:
 		int plant_type = PIPE_PLANT_NOTHING,
 		int direction = PIPE_DIRECTION_UP,
 		int color = PIPE_COLOR_GREEN
-	) : CGameObject(x, y) {
-		this->direction = direction;
-		this->color = color;
-		this->state = state;
-		plant = nullptr;
+	) : CGameObject(x, y, state),
+		plant(nullptr),
+		direction(direction),
+		color(color)
+
+	{
 		CreatePlant(plant_type);
 	};
 

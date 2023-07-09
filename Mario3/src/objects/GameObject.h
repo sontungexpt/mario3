@@ -40,6 +40,7 @@ protected:
 	float ay;
 
 	virtual void ResetPositionIfOutOfWidthScreen(float& curr_x, float& curr_y);
+	virtual void ProcessCollision(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr);
 	virtual int RemoveWhenMoveToDangerousSpace();
 
 public:

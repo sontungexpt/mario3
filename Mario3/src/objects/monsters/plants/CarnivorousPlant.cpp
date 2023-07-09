@@ -4,7 +4,6 @@
 void CCarnivorousPlant::Render()
 {
 	if (is_disabled_up_down) return;
-
 	if (is_deleted) return; // notthing to render
 
 	int aniId = -1;

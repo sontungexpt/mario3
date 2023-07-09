@@ -2,9 +2,6 @@
 #include "scenes/PlayScene.h"
 
 #include "objects/items/Coin.h"
-#include "objects/items/DebrisBrick.h"
-
-#include <random>
 
 void CBreakableBrick::CreateItem()
 {
@@ -72,16 +69,13 @@ void CBreakableBrick::SetState(int state)
 	case BREAKABLE_BRICK_STATE_BREAK:
 	{
 		is_breaked = TRUE;
-		random_device int_gen;
-		uniform_int_distribution<int> int_distribution(BREAKABLE_BRICK_MIN_DEBRIS_BRICK, BREAKABLE_BRICK_MAX_DEBRIS_BRICK);
-		int number_debris_brick = int_distribution(int_gen);
+		int number_debris_brick = breakable_brick_gen_debris(number_debris);
 		for (int i = 0; i < number_debris_brick; i++)
 		{
 			((CDebrisBrick*)CCreatableBrick::CreateItem(new CDebrisBrick()))->Splash();
 		}
 		CreateItem();
 		is_deleted = TRUE;
-		break;
 	}
 	break;
 	case BREAKABLE_BRICK_STATE_BOUNCE:

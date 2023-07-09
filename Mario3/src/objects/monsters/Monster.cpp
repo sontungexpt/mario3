@@ -73,7 +73,7 @@ void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<CMario*>(e->obj))
 		OnCollisionWithPlayer(e);
-	if (dynamic_cast<CMonster*>(e->obj))
+	else if (dynamic_cast<CMonster*>(e->obj))
 		OnCollisionWithMonster(e);
 
 	if (!e->obj->IsBlocking()) return;

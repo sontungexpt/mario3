@@ -10,7 +10,7 @@ private:
 
 public:
 
-	CWindGoomba(float x, float y) :CGoomba(x, y), has_wind(FALSE), time_jump_start(0)
+	CWindGoomba(float x, float y) :CGoomba(x, y), has_wind(TRUE), time_jump_start(0)
 	{
 		SetState(MONSTER_STATE_FLY_LEFT);
 	}

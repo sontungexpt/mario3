@@ -13,8 +13,16 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (is_disabled_up_down) return;
 
-	if (is_upping) {
-		// make sure that the plant will moving after create
+	UpdateVerticalPosition(dt);
+
+	// check collision with other objects after update
+	CCollision::GetInstance()->Process(this, dt, coObjects);
+}
+
+void CPlant::UpdateVerticalPosition(DWORD dt)
+{
+	if (direction_up_down <= 0) // is upping
+	{
 		if (y > min_y) {
 			vy = -PLANT_SPEED_UP_DOWN;
 		}
@@ -24,25 +32,27 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			y = min_y;
 
 			// time out up state of plant move to down state
-			if (GetTickCount64() - time_up_start > time_out_up_state) {
+			if (IsTimeOutUpState()) {
 				SetState(PLANT_STATE_DOWN);
 			}
 		}
 	}
 	else // is downing
 	{
-		//if (y > max_y)
-		//{
-		//	vy = 0;
-		//	y = max_y;
-		//}
-		if (GetTickCount64() - time_down_start > time_out_down_state) {
+		if (direction_up_down > 0 && IsTimeOutDownState()) {
 			SetState(PLANT_STATE_UP);
 		}
 	}
+}
 
-	// check collision with other objects after update
-	CCollision::GetInstance()->Process(this, dt, coObjects);
+BOOLEAN CPlant::IsTimeOutUpState()
+{
+	return GetTickCount64() - time_up_start > time_out_up_state;
+}
+
+BOOLEAN CPlant::IsTimeOutDownState()
+{
+	return GetTickCount64() - time_down_start > time_out_down_state;
 }
 
 void CPlant::SetState(int state)
@@ -50,15 +60,13 @@ void CPlant::SetState(int state)
 	CMonster::SetState(state);
 	switch (state) {
 	case PLANT_STATE_UP:
-		is_downing = FALSE;
-		is_upping = TRUE;
+		direction_up_down = -1; // upping
 		time_up_start = GetTickCount64();
 		time_down_start = 0;
 		vy = -PLANT_SPEED_UP_DOWN;
 		break;
 	case PLANT_STATE_DOWN:
-		is_upping = FALSE;
-		is_downing = TRUE;
+		direction_up_down = 1; // downing
 		time_down_start = GetTickCount64();
 		time_up_start = 0;
 		vy = PLANT_SPEED_UP_DOWN;

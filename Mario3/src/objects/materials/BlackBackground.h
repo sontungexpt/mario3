@@ -9,10 +9,9 @@ class CBlackBackground : public CGameObject
 	float length;
 
 public:
-	CBlackBackground(float x, float y, float length) : CGameObject(x, y)
-	{
-		this->length = length;
-	}
+	CBlackBackground(float x, float y, float length)
+		: CGameObject(x, y), length(length)
+	{}
 
 	// core
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr);

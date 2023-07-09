@@ -5,9 +5,9 @@
 class CCreatableBrick : public CBrick
 {
 protected:
-	int item_type;
 
-	BOOLEAN is_created_item = FALSE;
+	int item_type;
+	BOOLEAN is_created_item;
 
 	virtual CItem* CreateItem(CItem* item);
 
@@ -15,7 +15,9 @@ protected:
 	virtual float GetItemReferenceX(CItem* item) = 0;
 public:
 
-	CCreatableBrick(float x, float y, int item_type) : CBrick(x, y) {
-		this->item_type = item_type;
-	};
+	CCreatableBrick(float x, float y, int item_type)
+		: CBrick(x, y),
+		item_type(item_type),
+		is_created_item(FALSE)
+	{};
 };

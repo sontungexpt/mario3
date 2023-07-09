@@ -1,7 +1,9 @@
 #pragma once
+#include <random>
 
 #include "CreatableBrick.h"
-#include "objects/items/Item.h"
+#include "objects/items/DebrisBrick.h"
+
 #include "configs/materials/BreakableBrick102000.h"
 
 class CBreakableBrick : public CCreatableBrick
@@ -10,6 +12,9 @@ private:
 	BOOLEAN is_breaked;
 	BOOLEAN is_blocked;
 
+	random_device number_debris;
+	uniform_int_distribution<int> breakable_brick_gen_debris;
+
 	float GetItemReferenceY(CItem* item) { return y; };
 	float GetItemReferenceX(CItem* item) { return x; };
 
@@ -17,9 +22,11 @@ private:
 
 public:
 
-	CBreakableBrick(float x, float y, int item_type = BREAKABLE_BRICK_NONE) : CCreatableBrick(x, y, item_type) {
-		is_breaked = FALSE;
-		is_blocked = FALSE;
+	CBreakableBrick(float x, float y, int item_type = BREAKABLE_BRICK_NONE)
+		: CCreatableBrick(x, y, item_type),
+		is_breaked(FALSE), is_blocked(FALSE)
+	{
+		breakable_brick_gen_debris = uniform_int_distribution<int>(BREAKABLE_BRICK_MIN_DEBRIS_BRICK, BREAKABLE_BRICK_MAX_DEBRIS_BRICK);
 		SetState(BREAKABLE_BRICK_STATE_NORMAL);
 	};
 

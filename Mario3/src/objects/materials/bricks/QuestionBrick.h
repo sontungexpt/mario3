@@ -15,10 +15,11 @@ private:
 
 public:
 
-	CQuestionBrick(float x, float y, int item_type = QUESTION_BRICK_COIN) : CBrick(x, y) {
-		is_unboxed = FALSE;
-		this->item_type = item_type;
-	};
+	CQuestionBrick(float x, float y, int item_type = QUESTION_BRICK_COIN)
+		: CBrick(x, y),
+		is_unboxed(FALSE),
+		item_type(item_type)
+	{};
 
 	float GetItemReferenceY(CItem* item)
 	{
@@ -42,7 +43,6 @@ public:
 
 	// collision
 	void OnNoCollision(DWORD dt);
-
 	int IsCollidable() { return !is_unboxed; };
 
 	// is wall
