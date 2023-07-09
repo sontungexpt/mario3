@@ -12,18 +12,9 @@ private:
 
 public:
 
-	CLifeUpMushroom() :CMushroom()
-	{
-		ay = MUSHROOM_GRAVITY;
-	};
-	CLifeUpMushroom(float x, float y) :CMushroom(x, y)
-	{
-		ay = MUSHROOM_GRAVITY;
-	};
-	CLifeUpMushroom(float x, float y, int state) :CMushroom(x, y, state)
-	{
-		ay = MUSHROOM_GRAVITY;
-	};
+	CLifeUpMushroom(float x = 0, float y = 0, int state = UNKNOWN_STATE)
+		:CMushroom(x, y, state)
+	{};
 
 	void Render();
 	void BeCollected();

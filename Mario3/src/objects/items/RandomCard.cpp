@@ -10,12 +10,19 @@ void CRandomCard::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 
 void CRandomCard::RenderItem(float xx, float yy)
 {
-	if (items[random_item_index] == "Mushroom")
+	if (items[random_item_index] == CRandomCard::MUSHROOM)
 		CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM_CARD_ICON)->Render(xx, yy);
-	else if (items[random_item_index] == "Star")
+	else if (items[random_item_index] == CRandomCard::STAR)
 		CAnimations::GetInstance()->Get(ID_ANI_STAR_CARD_ICON)->Render(xx, yy);
-	else if (items[random_item_index] == "Flower")
+	else if (items[random_item_index] == CRandomCard::FLOWER)
 		CAnimations::GetInstance()->Get(ID_ANI_FLOWER_CARD_ICON)->Render(xx, yy);
+}
+
+void CRandomCard::IncreaseCyclicRandomItemIndex()
+{
+	random_item_index++;
+	if (random_item_index >= items.size())
+		random_item_index = 0;
 }
 
 void CRandomCard::Render()
@@ -64,10 +71,6 @@ void CRandomCard::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = t + HUD_WHITE_FRAME_BBOX_HEIGHT;
 }
 
-void CRandomCard::SetState(int state)
-{
-}
-
 void CRandomCard::BeCollected()
 {
 	if (is_collected) return;
@@ -75,12 +78,13 @@ void CRandomCard::BeCollected()
 
 	CGameData* data = CGameData::GetInstance();
 	data->AddAvailableItem(items[random_item_index]);
-	vector<string> available_items = data->GetAvailableItems();
+	vector<RandomItem>& available_items = data->GetAvailableItems();
 	size_t size = available_items.size();
+
 	if (size >= 3)
 	{
 		bool all_equal = true;
-		string first_item = available_items[0];
+		int first_item = available_items[0];
 
 		for (int i = 1; i < size; i++) {
 			if (available_items[i] != first_item) {
@@ -90,11 +94,11 @@ void CRandomCard::BeCollected()
 		}
 		if (all_equal)
 		{
-			if (first_item == "Mushroom")
+			if (first_item == CRandomCard::MUSHROOM)
 				data->SetLife(data->GetLife() + 2);
-			else if (first_item == "Flower")
+			else if (first_item == CRandomCard::FLOWER)
 				data->SetLife(data->GetLife() + 3);
-			else if (first_item == "Star")
+			else if (first_item == CRandomCard::STAR)
 				data->SetLife(data->GetLife() + 5);
 		}
 		else

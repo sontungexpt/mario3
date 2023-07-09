@@ -1,4 +1,6 @@
 #pragma once
+#include <random>
+
 #include "debug.h"
 
 #include "Item.h"
@@ -9,25 +11,29 @@ class CLeaf : public CItem
 {
 	void OnCollisionWithPlayer(LPCOLLISIONEVENT e);
 
+	int nx;
 	BOOLEAN is_falling;
-	BOOLEAN is_moved_right;
-	BOOLEAN is_moved_left;
+
+	// Randomly generate upward wind
+	uniform_int_distribution<int> upward_wind_chance_distribution;
+	default_random_engine has_upward_wind;
+
+	// Wind speed is also never fixed
+	// so leaves fly at an unknown initial speed
+	uniform_real_distribution<float> wind_speed_generator;
+	default_random_engine wind_speed;
 
 public:
-	CLeaf() : CItem() {
-		is_falling = FALSE;
-	}
-	CLeaf(float x, float y) : CItem(x, y) {
-		is_falling = FALSE;
 
-		SetState(LEAF_STATE_FLY);
-	};
-	CLeaf(float x, float y, int state) : CItem(x, y, state) {
-		is_falling = FALSE;
-	};
+	CLeaf(float x = 0, float y = 0, int state = LEAF_STATE_FLY)
+		: CItem(x, y, state),
+		upward_wind_chance_distribution(0, 9),
+		wind_speed_generator(LEAF_MIN_WIN_SPEED, LEAF_MAX_WIN_SPEED),
+		is_falling(false)
+	{}
 
 	void Render();
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	void SetState(int state);
 

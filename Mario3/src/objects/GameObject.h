@@ -9,6 +9,8 @@
 #include "components/Sprite/Sprites.h"
 #include "components/Collision/Collision.h"
 
+#include "configs/GameObject.h"
+
 using namespace std;
 
 class CGameObject
@@ -85,31 +87,39 @@ public:
 	float GetVy() { return vy; }
 	void SetVx(float vx) { this->vx = vx; }
 	void SetVy(float vy) { this->vy = vy; }
-	virtual void AdjustPos() {}; // adjust height when change animation render
 
 	// delete
 	virtual void Delete() { is_deleted = true; }
 	bool IsDeleted() { return is_deleted; }
 
 #pragma region CONSTRUCTOR_DESTRUCTOR
-	CGameObject();
-	CGameObject(float x, float y) :CGameObject()
-	{
-		this->x = x;
-		this->y = y;
-		this->start_x = x;
-		this->start_y = y;
-	}
-	CGameObject(float x, float y, int  state) :CGameObject(x, y)
+	CGameObject()
+		: CGameObject(0, 0, 0, 0, 0, 0, -1, -1, UNKNOWN_STATE, 0, 1) {}
+
+	CGameObject(float x, float y)
+		: CGameObject(x, y, 0, 0, 0, 0, -1, -1, UNKNOWN_STATE, 0, 1) {}
+
+	CGameObject(float x, float y, int state)
+		: CGameObject(x, y, 0, 0, 0, 0, -1, -1, state, 0, 1) {}
+
+	CGameObject(float x, float y, float ay, int state)
+		: CGameObject(x, y, 0, 0, 0, ay, -1, -1, state, 0, 1) {}
+
+	CGameObject(float x, float y, float v0x, float v0y)
+		: CGameObject(x, y, v0x, v0y, 0, 0, -1, -1, UNKNOWN_STATE, 0, 1) {}
+
+	CGameObject(float x, float y, float v0x, float v0y, float ax, float ay)
+		: CGameObject(x, y, v0x, v0y, ax, ay, -1, -1, UNKNOWN_STATE, 0, 1) {}
+
+	CGameObject(float x, float y, float v0x, float v0y, float ax, float ay, float max_vx, float max_vy, int state, bool is_collidable, bool is_blocking)
+		: x(x), y(y), vx(v0x), vy(v0y), ax(ax), ay(ay),
+		start_x(x), start_y(y), max_vx(max_vx), max_vy(max_vy),
+		state(state), is_deleted(FALSE), is_collidable(is_collidable), is_blocking(is_blocking)
 	{
 		SetState(state);
 	}
-	CGameObject(float x, float y, float v0x, float v0y) :CGameObject(x, y)
-	{
-		this->vx = v0x;
-		this->vy = v0y;
-	}
-	~CGameObject() {}
+
+	~CGameObject() = default;
 
 #pragma endregion
 	// core

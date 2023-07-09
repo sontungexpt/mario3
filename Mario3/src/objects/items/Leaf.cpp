@@ -1,9 +1,9 @@
+#include "scenes/PlayScene.h"
+#include "GameData.h"
+
 #include "Leaf.h"
-#include <scenes/PlayScene.h>
-#include <objects/Mario.h>
-#include <random>
+#include "objects/Mario.h"
 #include "objects/materials/EffectManager.h"
-#include <GameData.h>
 
 void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
@@ -13,51 +13,35 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	// v^2 -v0^2 = 2as
 	// v = v0 + at
 
-	// can not fly higher
+	// Check if leaf should fall down
 	if (!is_falling && start_y - y >= LEAF_MAX_FLY_HEIGHT)
 	{
 		is_falling = TRUE;
-		is_moved_right = TRUE;
-		is_moved_left = FALSE;
+		nx = 1; // default right first
 
 		vy = 0;
 		vx = LEAF_SPEED_X;
 		ax = -LEAF_ADJUST_AX_WHEN_FALL;
 	}
 
-	// sometimes the wind blows upwards
-	// so leaves fly higher than usual
-	random_device int_gen;
-	uniform_int_distribution<int> int_distribution(0, 9);
-	if (is_falling && int_distribution(int_gen) == 3)
+	if (is_falling && upward_wind_chance_distribution(has_upward_wind) == LEAF_UPWARD_WIND_CHANCE)
 	{
 		vy -= LEAF_WIND_POWER_SPPED_Y;
 	}
 
-	if (is_moved_right && vx <= 0)
+	// Change direction when reaching edge
+	if (nx > 0 && vx <= 0)
 	{
-		is_moved_right = FALSE;
-		is_moved_left = TRUE;
+		nx = -1;
 
-		// Wind speed is also never fixed
-		// so leaves fly at an unknown initial speed
-		default_random_engine wind_power;
-		uniform_real_distribution<float> distribution(1.1f, 1.5f);
-
-		vx = -distribution(wind_power) * LEAF_SPEED_X;
+		vx = -wind_speed_generator(wind_speed) * LEAF_SPEED_X;
 		ax = LEAF_ADJUST_AX_WHEN_FALL;
 	}
-	else if (is_moved_left && vx >= 0)
+	else if (nx < 0 && vx >= 0)
 	{
-		is_moved_right = TRUE;
-		is_moved_left = FALSE;
+		nx = 1;
 
-		// Wind speed is also never fixed
-		// so leaves fly at an unknown initial speed
-		default_random_engine wind_power;
-		uniform_real_distribution<float> distribution(1.1f, 1.5f);
-
-		vx = distribution(wind_power) * LEAF_SPEED_X;
+		vx = wind_speed_generator(wind_speed) * LEAF_SPEED_X;
 		ax = -LEAF_ADJUST_AX_WHEN_FALL;
 	}
 
@@ -93,12 +77,11 @@ void CLeaf::SetState(int state)
 	case LEAF_STATE_FLY:
 		start_y = y;
 		is_falling = FALSE;
-		is_moved_right = FALSE;
-		is_moved_left = FALSE;
 
 		vy = -LEAF_SPEED_Y;
 		ay = LEAF_GRAVITY;
 		ax = 0;
+		nx = 0; // no direction first
 		break;
 	}
 

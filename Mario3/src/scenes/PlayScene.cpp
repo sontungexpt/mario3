@@ -59,12 +59,14 @@ void CPlayScene::_ParseSection_HIDDEN_MAPS(string line)
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);   // file: ASCII format (single-byte char) => Wide Char
 	LPSCENE scene = nullptr;
-	switch (id)
-	{
-	default:
-		scene = new CPlayScene(id, path);
-		break;
-	}
+	//switch (id)
+	//{
+	//default:
+	//	scene = new CPlayScene(id, path);
+	//	break;
+	//}
+	scene = new CPlayScene(id, path);
+
 	hidden_map_ids.push_back(id);
 	CGame::GetInstance()->AddScene(id, scene);
 }
@@ -226,7 +228,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BLACK_BAKCGROUND:
 	{
-		float length = atof(tokens[3].c_str());
+		float length = stof(tokens[3].c_str());
 		obj = new CBlackBackground(x, y, length);
 	}
 	break;
@@ -478,8 +480,8 @@ void CPlayScene::UpdateCamera()
 		return;
 	};
 
-	float camera_width = game->GetBackBufferWidth();
-	float camera_height = game->GetBackBufferHeight();
+	int camera_width = game->GetBackBufferWidth();
+	int camera_height = game->GetBackBufferHeight();
 
 	float old_cam_x = game->GetCamXPos();
 	float old_cam_y = game->GetCamYPos();

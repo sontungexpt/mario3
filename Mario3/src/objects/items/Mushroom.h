@@ -12,24 +12,15 @@ protected:
 
 public:
 
-	CMushroom() :CItem()
-	{
-		ay = MUSHROOM_GRAVITY;
-	};
-	CMushroom(float x, float y) :CItem(x, y)
-	{
-		ay = MUSHROOM_GRAVITY;
-	};
-	CMushroom(float x, float y, int state) :CItem(x, y, state)
-	{
-		ay = MUSHROOM_GRAVITY;
-	};
+	CMushroom(float x = 0, float y = 0, int state = UNKNOWN_STATE)
+		:CItem(x, y, MUSHROOM_GRAVITY, state)
+	{};
 
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr);
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 	virtual void Render();
 	virtual void SetState(int state);
+
 	virtual void Walk() { SetState(MUSHROOM_STATE_WALKING); }
 	virtual void BeCollected();
 };

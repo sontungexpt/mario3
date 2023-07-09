@@ -9,25 +9,18 @@
 #include "configs/items/Coin300000.h"
 
 class CCoin : public CItem {
-	float collect_y; // the axios of collect point
+	float collect_y; // y when being collected
 
 	void OnCollisionWithPlayer(LPCOLLISIONEVENT e) {};
 
 public:
-	CCoin() : CItem() {
-		ay = 0;
-	}
-	CCoin(float x, float y) : CItem(x, y) {
-		ay = 0;
-	}
-	CCoin(float x, float y, int state = COIN_STATE_IDLE) :CItem(x, y, state) {
-		ay = 0;
-	}
+	CCoin(float x = 0, float y = 0, int state = UNKNOWN_STATE)
+		:CItem(x, y, 0, state) {}
 
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	void Render();
-	void Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects);
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 
 	int IsCollidable() { return 1; }

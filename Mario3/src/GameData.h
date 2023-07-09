@@ -6,10 +6,12 @@
 #include "configs/Game.h"
 #include <string>
 #include <vector>
+#include "objects/items/RandomCard.h"
 
 using namespace std;
 
 class Door;
+class RandomCard;
 
 class CGameData {
 	static CGameData* instance;
@@ -37,7 +39,7 @@ class CGameData {
 	ULONGLONG show_dialog_time_start;
 	ULONGLONG remain_time;
 
-	vector<string> available_items;
+	vector<CRandomCard::RandomItem> available_items;
 
 public:
 	CGameData() {
@@ -63,8 +65,8 @@ public:
 
 	static CGameData* GetInstance();
 
-	void AddAvailableItem(string item) { available_items.push_back(item); };
-	vector<string> GetAvailableItems() { return available_items; };
+	void AddAvailableItem(CRandomCard::RandomItem item) { available_items.push_back(item); };
+	vector<CRandomCard::RandomItem>& GetAvailableItems() { return available_items; };
 	void ClearAvailableItems() { available_items.clear(); };
 
 	void SetCurrentSceneId(int id) { current_scene_id = id; };

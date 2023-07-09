@@ -1,5 +1,7 @@
 #pragma once
 
+#define LEAF_UPWARD_WIND_CHANCE 3
+
 #define LEAF_BBOX_WIDTH 16
 #define LEAF_BBOX_HEIGHT 14
 
@@ -13,6 +15,9 @@
 
 #define LEAF_ADJUST_AX_WHEN_FALL 0.00005f
 #define LEAF_WIND_POWER_SPPED_Y 0.003f
+
+#define LEAF_MIN_WIN_SPEED 1.1f
+#define LEAF_MAX_WIN_SPEED 1.5f
 
 #define LEAF_STATE_FALL 100
 #define LEAF_STATE_FLY 200

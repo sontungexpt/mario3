@@ -9,19 +9,6 @@
 #include "configs/GameObject.h"
 #include "scenes/PlayScene.h"
 
-CGameObject::CGameObject()
-{
-	x = y = 0;
-	vx = vy = 0;
-	ax = ay = 0;
-	start_x, start_y = 0;
-	max_vx = max_vy = -1; // no limit
-	state = -1;
-	is_deleted = false;
-	is_collidable = 0;
-	is_blocking = 1;
-}
-
 void CGameObject::ResetPositionIfOutOfWidthScreen(float& curr_x, float& curr_y) {
 	float left, top, right, bottom;
 	GetBoundingBox(left, top, right, bottom);

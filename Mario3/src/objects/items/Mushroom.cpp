@@ -7,17 +7,7 @@
 
 void CMushroom::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
-	CMario* mario = (CMario*)e->obj;
-
-	if (mario->IsSmall())
-	{
-		if (is_collected) return;
-		CEffectManager::GetInstance()->Gennerate(this, POINT_1000);
-		CGameData::GetInstance()->IncreasePointBy(1000);
-
-		mario->Zoom();
-		is_deleted = true;
-	}
+	BeCollected();
 }
 
 void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
@@ -60,10 +50,10 @@ void CMushroom::SetState(int state)
 	{
 	case MUSHROOM_STATE_WALKING:
 	{
-		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-		CMario* mario = (CMario*)scene->GetPlayer();
+		LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
+		CMario* mario = scene ? dynamic_cast<CMario*>(scene->GetPlayer()) : nullptr;
 
-		vx = x < mario->GetX() ? MUSHROOM_SPEED : -MUSHROOM_SPEED;
+		vx = mario && x < mario->GetX() ? MUSHROOM_SPEED : -MUSHROOM_SPEED;
 	}
 	break;
 	}
@@ -74,16 +64,14 @@ void CMushroom::BeCollected()
 {
 	if (is_collected) return;
 	CItem::BeCollected();
-	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CMario* mario = (CMario*)scene->GetPlayer();
+	LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
+	CMario* mario = scene ? dynamic_cast<CMario*>(scene->GetPlayer()) : nullptr;
 
-	if (mario->IsSmall()) {
-		CEffectManager::GetInstance()->Gennerate(this, POINT_1000);
-		CGameData::GetInstance()->IncreasePointBy(1000);
-
-		// if mario is small, then zoom and delete mushroom
+	if (mario && mario->IsSmall())
 		mario->Zoom();
 
-		is_deleted = true;
-	}
+	CEffectManager::GetInstance()->Gennerate(this, POINT_1000);
+	CGameData::GetInstance()->IncreasePointBy(1000);
+
+	is_deleted = true;
 }

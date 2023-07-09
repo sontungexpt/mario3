@@ -1,22 +1,30 @@
 #pragma once
+#include <random>
+
 #include "Item.h"
 #include "configs/materials/BreakableBrick102000.h"
 
 class CDebrisBrick : public CItem
 {
 private:
-	ULONGLONG time_splasing_start = 0;
+	ULONGLONG time_debris_splashing_start;
+
+	default_random_engine debris_brick_speed;
+	uniform_real_distribution<float> debris_brick_speed_generator;
+
+	default_random_engine debris_brick_direction;
+	uniform_int_distribution<int> debris_brick_direction_generator;
 
 	void OnCollisionWithPlayer(LPCOLLISIONEVENT e) {};
 	void SetState(int state);
 
 public:
 
-	CDebrisBrick() :CItem() { SetState(DEBRIS_BRICK_STATE_SPLASHING); };
-
-	CDebrisBrick(float x, float y) : CItem(x, y) {
-		SetState(DEBRIS_BRICK_STATE_SPLASHING);
-	};
+	CDebrisBrick(float x = 0, float y = 0, int state = DEBRIS_BRICK_STATE_SPLASHING)
+		: CItem(x, y, state), time_debris_splashing_start(0),
+		debris_brick_speed_generator(DEBRIS_BRICK_MIN_SPEED, DEBRIS_BRICK_MAX_SPEED),
+		debris_brick_direction_generator(0, 1)
+	{}
 
 	// core
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);

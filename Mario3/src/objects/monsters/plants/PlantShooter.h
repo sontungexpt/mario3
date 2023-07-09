@@ -29,7 +29,6 @@ protected:
 		}
 	};
 
-	void AdjustPos() {};
 public:
 	CPlantShooter(float x, float y) : CPlant(x, y) {
 		Init(PLANT_SHOOTER_RED);

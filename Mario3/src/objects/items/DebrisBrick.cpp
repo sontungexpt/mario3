@@ -1,5 +1,4 @@
 #include "DebrisBrick.h"
-#include <random>
 
 void CDebrisBrick::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -11,7 +10,7 @@ void CDebrisBrick::GetBoundingBox(float& left, float& top, float& right, float& 
 
 void CDebrisBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
-	if (GetTickCount64() - time_splasing_start > DEBRIS_BRICK_TIME_SPLASHING)
+	if (GetTickCount64() - time_debris_splashing_start > DEBRIS_BRICK_TIME_SPLASHING)
 	{
 		is_deleted = TRUE;
 		return;
@@ -50,15 +49,12 @@ void CDebrisBrick::SetState(int state)
 	{
 	case DEBRIS_BRICK_STATE_SPLASHING:
 	{
-		time_splasing_start = GetTickCount64();
-		default_random_engine float_gen;
-		uniform_real_distribution<float> distribution(DEBRIS_BRICK_MIN_SPEED, DEBRIS_BRICK_MAX_SPEED);
-		random_device int_gen;
-		uniform_int_distribution<int> int_distribution(0, 1);
-		float random_vx = distribution(float_gen);
-		float random_vy = distribution(float_gen);
-		vx = int_distribution(int_gen) ? random_vx : -random_vx;
-		vy = int_distribution(int_gen) ? random_vy : -random_vy;
+		time_debris_splashing_start = GetTickCount64();
+
+		float random_vx = debris_brick_speed_generator(debris_brick_speed);
+		float random_vy = debris_brick_speed_generator(debris_brick_speed);
+		vx = debris_brick_direction_generator(debris_brick_direction) ? random_vx : -random_vx;
+		vy = debris_brick_direction_generator(debris_brick_direction) ? random_vy : -random_vy;
 
 		ay = GRAVITY;
 		ax = 0;
