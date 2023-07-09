@@ -38,23 +38,23 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	// monster
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
-	if (dynamic_cast<CPlant*>(e->obj))
+	else if (dynamic_cast<CPlant*>(e->obj))
 		OnCollisionWithPlant(e);
-	if (dynamic_cast<CKoopa*>(e->obj))
+	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
 
 	// items
-	if (dynamic_cast<CItem*>(e->obj))
+	else if (dynamic_cast<CItem*>(e->obj))
 		OnCollisionWithItem(e);
 
 	// materials
-	if (dynamic_cast<CPortal*>(e->obj))
+	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
-	if (dynamic_cast<CQuestionBrick*>(e->obj))
+	else if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
-	if (dynamic_cast<CBreakableBrick*>(e->obj))
+	else if (dynamic_cast<CBreakableBrick*>(e->obj))
 		OnCollisionWithBreakableBrick(e);
-	if (dynamic_cast<CEnterablePipe*>(e->obj))
+	else if (dynamic_cast<CEnterablePipe*>(e->obj))
 		OnCollisionWithEnterablePipe(e);
 
 	// collide in y dimension and the object is a blocking object like platform
@@ -207,6 +207,31 @@ void CMario::OnCollisionWithEnterablePipe(LPCOLLISIONEVENT e)
 			pipe = pipe_obj;
 		}
 	}
+}
+
+int CMario::GetAniIdWinScene()
+{
+	int aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
+	if (!is_on_platform)
+	{
+		if (nx >= 0)
+			aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT;
+		else
+			aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT;
+	}
+	else
+	{
+		if (vx > 0)
+		{
+			aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
+		}
+		else if (vx < 0)
+		{
+			aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
+		}
+	}
+
+	return aniId;
 }
 
 int CMario::GetAniIdSmall()
@@ -503,6 +528,8 @@ void CMario::Render()
 		aniId = ID_ANI_MARIO_DIE;
 	else if (state == MARIO_STATE_ENTER_PIPE || state == MARIO_STATE_OUTER_PIPE)
 		aniId = GetAniIdEnterOuterPipe();
+	else if (state == MARIO_STATE_WIN_SCENE)
+		aniId = GetAniIdWinScene();
 	else if (is_appearance_changing)
 		aniId = GetAniIdWhenAppearanceChanging();
 	else if (level == MARIO_LEVEL_BIG)
@@ -520,6 +547,13 @@ void CMario::Render()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	// time out -> die
+	if (CGameData::GetInstance()->GetRemainTime() <= 0)
+	{
+		SetState(MARIO_STATE_DIE);
+	}
+
+	// jump to hole -> die
 	if (y >= ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetMaxObjectY()->GetY())
 	{
 		SetState(MARIO_STATE_DIE);
@@ -528,12 +562,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if (IsWinScene() || IsDead() || IsEnteringPipe() || IsOuteringPipe())
+	if (IsWinScene())
+	{
+		CCollision::GetInstance()->Process(this, dt, coObjects);
+		return;
+	}
+
+	if (IsDead() || IsEnteringPipe() || IsOuteringPipe())
 	{
 		x += vx * dt;
 		y += vy * dt;
-
-		if (IsWinScene()) return;
 
 		if (IsDead())
 		{
@@ -758,20 +796,28 @@ void CMario::SetState(int state)
 		ay = MARIO_GRAVITY;
 		break;
 	case MARIO_STATE_WIN_SCENE:
+	{
 		ax = 0;
 		vx = MARIO_WALKING_SPEED;
+		nx = 1;
 		vy = 0;
-
-		break;
+		CGameData* data = CGameData::GetInstance();
+		data->SetMaxDoorLevelPassed(data->GetEntryDoorLevel());
+		CGame::GetInstance()->InitiateSwitchScene(ID_LEVEL_MAP_SCENE);
+	}
+	break;
 	case MARIO_STATE_DIE:
+	{
 		ax = 0;
 		vx = 0;
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
-		CGameData::GetInstance()->DecreaseLifeBy1();
-		CGameData::GetInstance()->SetIsLostALife(TRUE);
-		CGameData::GetInstance()->SetMarioLevel(MARIO_LEVEL_SMALL);
+		CGameData* data = CGameData::GetInstance();
+		data->DecreaseLifeBy1();
+		data->SetIsLostALife(TRUE);
+		data->SetMarioLevel(MARIO_LEVEL_SMALL);
 		CGame::GetInstance()->InitiateSwitchScene(ID_LEVEL_MAP_SCENE);
-		break;
+	}
+	break;
 	}
 	CGameObject::SetState(state);
 }

@@ -1,10 +1,21 @@
 #include "RandomCard.h"
 #include "GameData.h"
 #include <objects/Mario.h>
+#include "DrawingManager.h"
 
 void CRandomCard::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
 	BeCollected();
+}
+
+void CRandomCard::RenderItem(float xx, float yy)
+{
+	if (items[random_item_index] == "Mushroom")
+		CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM_CARD_ICON)->Render(xx, yy);
+	else if (items[random_item_index] == "Star")
+		CAnimations::GetInstance()->Get(ID_ANI_STAR_CARD_ICON)->Render(xx, yy);
+	else if (items[random_item_index] == "Flower")
+		CAnimations::GetInstance()->Get(ID_ANI_FLOWER_CARD_ICON)->Render(xx, yy);
 }
 
 void CRandomCard::Render()
@@ -14,12 +25,24 @@ void CRandomCard::Render()
 
 	if (!is_collected)
 	{
-		if (items[random_item_index] == "Mushroom")
-			CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM_CARD_ICON)->Render(x, y);
-		else if (items[random_item_index] == "Star")
-			CAnimations::GetInstance()->Get(ID_ANI_STAR_CARD_ICON)->Render(x, y);
-		else if (items[random_item_index] == "Flower")
-			CAnimations::GetInstance()->Get(ID_ANI_FLOWER_CARD_ICON)->Render(x, y);
+		RenderItem(x, y);
+	}
+	else
+	{
+		CDrawingManager::RenderString("COURSE CLEAR", x - 12.0f / 2 * HUD_CHAR_BBOX_WIDTH, y - 70);
+		CDrawingManager::RenderString(
+			"YOU GOT A CARD",
+			x - 7.0f * HUD_CHAR_BBOX_WIDTH - HUD_FRAME_CELL_WIDTH,
+			y - 40
+		);
+		CDrawingManager::RenderBlueFrame(
+			x + 7.0f * HUD_CHAR_BBOX_WIDTH + 8,
+			y - 30,
+			2,
+			2
+		);
+		RenderItem(x + 7.0f * HUD_CHAR_BBOX_WIDTH + 8 - HUD_CARD_ITEM_BBOX_WIDTH / 2,
+			y - 30 - HUD_CARD_ITEM_BBOX_HEIGHT / 2);
 	}
 }
 
@@ -51,7 +74,7 @@ void CRandomCard::BeCollected()
 
 	CGameData* data = CGameData::GetInstance();
 	data->AddAvailableItem(items[random_item_index]);
-	vector<string> available_items = CGameData::GetInstance()->GetAvailableItems();
+	vector<string> available_items = data->GetAvailableItems();
 	size_t size = available_items.size();
 	if (size >= 3)
 	{
@@ -79,4 +102,7 @@ void CRandomCard::BeCollected()
 		}
 		data->ClearAvailableItems();
 	}
+
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	mario->WinScene();
 }

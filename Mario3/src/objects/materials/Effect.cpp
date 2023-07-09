@@ -120,7 +120,7 @@ void CEffect::RenderStartFollowPlayerEffect()
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario)
 	{
-		constexpr float PI = 3.14159265;
+		constexpr float PI = 3.14159265f;
 
 		float radius = fabs(x - mario->GetX());
 

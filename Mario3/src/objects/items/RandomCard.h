@@ -19,6 +19,7 @@ class CRandomCard : public CItem {
 	ULONGLONG time_start;
 
 	void OnCollisionWithPlayer(LPCOLLISIONEVENT e);
+	void RenderItem(float xx, float yy);
 
 public:
 

@@ -54,6 +54,7 @@ protected:
 	int GetAniIdTail();
 	int GetAniIdEnterOuterPipe();
 	int GetAniIdSmall();
+	int GetAniIdWinScene();
 
 	int GetAniIdWhenAppearanceChanging();
 
@@ -104,7 +105,7 @@ public:
 	}
 
 	// core
-	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr);
 	void Render();
 	void SetState(int state);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
@@ -113,8 +114,7 @@ public:
 	{
 		return state != MARIO_STATE_DIE &&
 			state != MARIO_STATE_ENTER_PIPE &&
-			state != MARIO_STATE_OUTER_PIPE &&
-			state != MARIO_STATE_WIN_SCENE;
+			state != MARIO_STATE_OUTER_PIPE;
 	}
 	/*int IsBlocking()
 	{

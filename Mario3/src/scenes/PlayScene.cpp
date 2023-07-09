@@ -509,9 +509,24 @@ void CPlayScene::Update(DWORD dt)
 
 	if (game->IsInTransitionScene())
 	{
-		if (player && ((CMario*)player)->IsDead())
+		CMario* mario = dynamic_cast<CMario*>(player);
+
+		if (mario)
 		{
-			player->Update(dt);
+			if (mario->IsDead())
+				mario->Update(dt);
+			else if (mario->IsWinScene())
+			{
+				vector<LPGAMEOBJECT> coObjects;
+				for (size_t i = 0; i < objects.size(); i++)
+				{
+					// if win game scene, only colliable with wall
+					if (!objects[i]->IsBlocking())
+						continue;
+					coObjects.push_back(objects[i]);
+				}
+				mario->Update(dt, &coObjects);
+			}
 		}
 		if (change_scene_effect)
 			change_scene_effect->Update(dt);
@@ -550,7 +565,7 @@ void CPlayScene::Render()
 		{
 			if (player)
 			{
-				CMario* mario = (CMario*)player;
+				CMario* mario = dynamic_cast<CMario*>(player);
 				if (mario->IsEnteringPipe() &&
 					mario->GetPipe() == objects[i])
 					continue;
@@ -560,7 +575,7 @@ void CPlayScene::Render()
 		{
 			if (player)
 			{
-				CMario* mario = (CMario*)player;
+				CMario* mario = dynamic_cast<CMario*>(player);
 				if (mario->IsOuteringPipe() &&
 					mario->GetPipe() == objects[i])
 					continue;
@@ -579,7 +594,7 @@ void CPlayScene::Render()
 	// after other objects
 	if (player)
 	{
-		CMario* mario = (CMario*)player;
+		CMario* mario = dynamic_cast<CMario*>(player);
 		player->Render();
 
 		if (mario->IsEnteringPipe() || mario->IsOuteringPipe())
