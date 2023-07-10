@@ -11,7 +11,6 @@
 
 #include "monsters/Goomba.h"
 #include "monsters/plants/Plant.h"
-#include "monsters/Koopa.h"
 
 #include "items/Bullet.h"
 #include "items/Coin.h"
@@ -272,7 +271,7 @@ int CMario::GetAniIdSmall()
 					aniId = ID_ANI_MARIO_SMALL_BRACE_RIGHT;
 				else if (ax == MARIO_ACCEL_RUN_X)
 				{
-					if (weapon_monster && ((CKoopa*)weapon_monster)->IsMarioHolding())
+					if (IsHoldingKoopa())
 						aniId = ID_ANI_MARIO_SMALL_HOLDING_RUNNING_RIGHT;
 					else
 						aniId = ID_ANI_MARIO_SMALL_RUNNING_RIGHT;
@@ -286,7 +285,7 @@ int CMario::GetAniIdSmall()
 					aniId = ID_ANI_MARIO_SMALL_BRACE_LEFT;
 				else if (ax == -MARIO_ACCEL_RUN_X)
 				{
-					if (weapon_monster && ((CKoopa*)weapon_monster)->IsMarioHolding())
+					if (IsHoldingKoopa())
 						aniId = ID_ANI_MARIO_SMALL_HOLDING_RUNNING_LEFT;
 					else
 						aniId = ID_ANI_MARIO_SMALL_RUNNING_LEFT;
@@ -306,61 +305,43 @@ int CMario::GetAniIdSmall()
 int CMario::GetAniIdWhenAppearanceChanging()
 {
 	int aniId = -1;
-	if (!is_on_platform)
+
+	if (is_sitting)
 	{
-		if (fabs(ax) == MARIO_ACCEL_RUN_X)
+		if (level == MARIO_LEVEL_BIG)
 		{
-			if (nx >= 0)
-				aniId = ID_ANI_MARIO_JUMP_RUN_APPEARANCE_CHANGING_RIGHT;
+			if (nx > 0)
+				aniId = ID_ANI_MARIO_SIT_APPEARANCE_CHANGING_RIGHT_SMALL_BIG;
 			else
-				aniId = ID_ANI_MARIO_JUMP_RUN_APPEARANCE_CHANGING_LEFT;
+				aniId = ID_ANI_MARIO_SIT_APPEARANCE_CHANGING_LEFT_SMALL_BIG;
 		}
-		else
+		else if (level == MARIO_LEVEL_TAIL_SUIT)
 		{
-			if (nx >= 0)
-				aniId = ID_ANI_MARIO_JUMP_WALK_APPEARANCE_CHANGING_RIGHT;
+			if (nx > 0)
+				aniId = ID_ANI_MARIO_SIT_APPEARANCE_CHANGING_RIGHT_BIG_TAIL;
 			else
-				aniId = ID_ANI_MARIO_JUMP_WALK_APPEARANCE_CHANGING_LEFT;
+				aniId = ID_ANI_MARIO_SIT_APPEARANCE_CHANGING_LEFT_BIG_TAIL;
 		}
 	}
 	else
 	{
-		if (is_sitting)
+		if (level == MARIO_LEVEL_BIG)
 		{
 			if (nx > 0)
-				aniId = ID_ANI_MARIO_SIT_APPEARANCE_CHANGING_RIGHT;
+				aniId = ID_ANI_MARIO_IDLE_APPEARANCE_CHANGING_RIGHT_SMALL_BIG;
 			else
-				aniId = ID_ANI_MARIO_SIT_APPEARANCE_CHANGING_LEFT;
+				aniId = ID_ANI_MARIO_IDLE_APPEARANCE_CHANGING_LEFT_SMALL_BIG;
 		}
-		else
+		else if (level == MARIO_LEVEL_TAIL_SUIT)
 		{
-			if (vx == 0)
-			{
-				if (nx > 0) aniId = ID_ANI_MARIO_IDLE_APPEARANCE_CHANGING_RIGHT;
-				else aniId = ID_ANI_MARIO_IDLE_APPEARANCE_CHANGING_LEFT;
-			}
-			else if (vx > 0)
-			{
-				if (ax < 0)
-					aniId = ID_ANI_MARIO_BRACE_APPEARANCE_CHANGING_RIGHT;
-				else if (ax == MARIO_ACCEL_RUN_X)
-					aniId = ID_ANI_MARIO_RUNNING_APPEARANCE_CHANGING_RIGHT;
-				else if (ax == MARIO_ACCEL_WALK_X)
-					aniId = ID_ANI_MARIO_WALKING_APPEARANCE_CHANGING_RIGHT;
-			}
-			else // vx < 0
-			{
-				if (ax > 0)
-					aniId = ID_ANI_MARIO_BRACE_APPEARANCE_CHANGING_LEFT;
-				else if (ax == -MARIO_ACCEL_RUN_X)
-					aniId = ID_ANI_MARIO_RUNNING_APPEARANCE_CHANGING_LEFT;
-				else if (ax == -MARIO_ACCEL_WALK_X)
-					aniId = ID_ANI_MARIO_WALKING_APPEARANCE_CHANGING_LEFT;
-			}
+			if (nx > 0)
+				aniId = ID_ANI_MARIO_IDLE_APPEARANCE_CHANGING_RIGHT_BIG_TAIL;
+			else
+				aniId = ID_ANI_MARIO_IDLE_APPEARANCE_CHANGING_LEFT_BIG_TAIL;
 		}
 	}
 
-	if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_APPEARANCE_CHANGING_RIGHT;
+	if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_APPEARANCE_CHANGING_RIGHT_SMALL_BIG;
 
 	return aniId;
 }
@@ -407,7 +388,7 @@ int CMario::GetAniIdBig()
 					aniId = ID_ANI_MARIO_BRACE_RIGHT;
 				else if (ax == MARIO_ACCEL_RUN_X)
 				{
-					if (weapon_monster && ((CKoopa*)weapon_monster)->IsMarioHolding())
+					if (IsHoldingKoopa())
 						aniId = ID_ANI_MARIO_HOLDING_RUNNING_RIGHT;
 					else
 						aniId = ID_ANI_MARIO_RUNNING_RIGHT;
@@ -422,7 +403,7 @@ int CMario::GetAniIdBig()
 					aniId = ID_ANI_MARIO_BRACE_LEFT;
 				else if (ax == -MARIO_ACCEL_RUN_X)
 				{
-					if (weapon_monster && ((CKoopa*)weapon_monster)->IsMarioHolding())
+					if (IsHoldingKoopa())
 						aniId = ID_ANI_MARIO_HOLDING_RUNNING_LEFT;
 					else
 						aniId = ID_ANI_MARIO_RUNNING_LEFT;
@@ -534,29 +515,96 @@ void CMario::Render()
 		aniId = GetAniIdSmall();
 	else if (level == MARIO_LEVEL_TAIL_SUIT)
 		aniId = GetAniIdTail();
-
 	CAnimations* animations = CAnimations::GetInstance();
 	LPANIMATION ani = animations->Get(aniId);
 	if (ani != nullptr)
 		ani->Render(x, y);
 }
 
-void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CMario::CheckRemainingPlayingTime()
 {
-	// time out -> die
 	if (CGameData::GetInstance()->GetRemainTime() <= 0)
 	{
 		SetState(MARIO_STATE_DIE);
 	}
+}
 
-	// jump to hole -> die
-	if (y >= ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetMaxObjectY()->GetY())
+void CMario::CheckJumpToHole()
+{
+	LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
+	if (scene)
 	{
-		SetState(MARIO_STATE_DIE);
-	}
+		LPGAMEOBJECT max_object_y = scene->GetMaxObjectY();
 
+		if (max_object_y && y >= max_object_y->GetY())
+		{
+			SetState(MARIO_STATE_DIE);
+		}
+	}
+}
+
+void CMario::UpdateV(DWORD dt)
+{
 	vy += ay * dt;
 	vx += ax * dt;
+
+	if (fabs(vx) > fabs(max_vx))
+		vx = max_vx;
+
+	if (is_appearance_changing)
+	{
+		vx = 0;
+		vy = 0;
+	}
+}
+void CMario::UpdatePositionAttackingZone(DWORD dt)
+{
+	if (level != MARIO_LEVEL_TAIL_SUIT) return;
+	float attacking_width = MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH + 1;
+	float attacking_height = GetHeight();
+	float attacking_x_right = GetRight() + attacking_width / 2 + vx * dt;
+	float attacking_x_left = GetLeft() - attacking_width / 2 + vx * dt;
+	float attacking_y = is_on_platform ? y : y + vy * dt;
+
+	LPPLAYSCENE scene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+
+	if (right_attacking_zone)
+	{
+		right_attacking_zone->SetPosition(attacking_x_right, attacking_y);
+		right_attacking_zone->SetHeight(attacking_height);
+	}
+	else
+		right_attacking_zone = (LPMARIO_ATTACKINGZONE)scene->AddObject(
+			new CMarioAttackingZone(
+				attacking_x_right,
+				attacking_y,
+				attacking_width,
+				attacking_height
+			));
+
+	if (left_attacking_zone)
+	{
+		left_attacking_zone->SetPosition(attacking_x_left, attacking_y);
+		left_attacking_zone->SetHeight(attacking_height);
+	}
+	else
+		left_attacking_zone = (LPMARIO_ATTACKINGZONE)scene->AddObject(
+			new CMarioAttackingZone(
+				attacking_x_left,
+				attacking_y,
+				attacking_width,
+				attacking_height
+			));
+}
+void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	// time out -> die
+	CheckRemainingPlayingTime();
+
+	// jump to hole -> die
+	CheckJumpToHole();
+
+	UpdateV(dt);
 
 	if (IsWinScene())
 	{
@@ -572,14 +620,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (IsDead())
 		{
 			pipe = nullptr;
+			weapon_monster = nullptr;
 			return;
 		}
 		else if (dynamic_cast<LPENTERABLE_PIPE>(pipe))
 		{
 			if (pipe->GetDirection() == PIPE_DIRECTION_UP)
 			{
-				if (GetTop() > pipe->GetTop())
+				if (!is_completely_inside_pipe && GetTop() > pipe->GetTop())
 				{
+					is_completely_inside_pipe = TRUE;
 					y = pipe->GetTop() + GetHeight() / 2 + 1;
 					vy = 0;
 					((LPENTERABLE_PIPE)pipe)->PlayerEntered();
@@ -587,8 +637,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			else if (pipe->GetDirection() == PIPE_DIRECTION_DOWN)
 			{
-				if (GetBottom() < pipe->GetBottom())
+				if (!is_completely_inside_pipe && GetBottom() < pipe->GetBottom())
 				{
+					is_completely_inside_pipe = TRUE;
 					y = pipe->GetBottom() - GetHeight() / 2 - 1;
 					vy = 0;
 					((LPENTERABLE_PIPE)pipe)->PlayerEntered();
@@ -642,28 +693,26 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			koopa->BeKick();
 		weapon_monster = nullptr;
 	}
-
-	// cannot exceed the allowed speed
-	if (fabs(vx) > fabs(max_vx))
-		vx = max_vx;
-	//if (is_flying && fabs(vy) > fabs(max_vy))
-	//	vy = max_vy;
-
 	UpdatePower();
+	UpdatePositionAttackingZone(dt);
 
 	ResetPositionIfOutOfWidthScreen(x, y);
 
-	// reset untouchable timer if untouchable time has passed
+	UpdateUntouchable();
+
+	is_on_platform = FALSE;
+
+	CCollision::GetInstance()->Process(this, dt, coObjects);
+}
+
+void CMario::UpdateUntouchable()
+{
 	if (untouchable && GetTickCount64() - time_untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
 		time_untouchable_start = 0;
 		untouchable = FALSE;
 		is_appearance_changing = FALSE;
 	}
-
-	is_on_platform = FALSE;
-
-	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void CMario::SetState(int state)
@@ -681,6 +730,7 @@ void CMario::SetState(int state)
 	case MARIO_STATE_ENTER_PIPE:
 		// can not enter pipe if not touching pipe
 		if (!dynamic_cast<LPENTERABLE_PIPE>(pipe)) return;
+		is_completely_inside_pipe = FALSE;
 		if (pipe->GetPlant())
 			pipe->GetPlant()->SetDisabledUpDown(TRUE);
 		x = pipe->GetX();
@@ -725,11 +775,14 @@ void CMario::SetState(int state)
 			max_vy = MARIO_FLYING_SPEED;
 			vy -= MARIO_JUMP_SPEED_Y / 3 * 2.3f;
 		}
+		break;
 	case MARIO_STATE_FLY_RELEASE:
 		if (is_sitting) break;
 		if (IsFullPower() && HasTail())
 		{
 		}
+		break;
+
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (is_sitting) break;
 		max_vx = MARIO_RUNNING_SPEED;
@@ -861,7 +914,7 @@ void CMario::GetBoundingBoxBig(float& left, float& top, float& right, float& bot
 
 void CMario::GetBoundingBoxTail(float& left, float& top, float& right, float& bottom)
 {
-	if (nx >= 0)
+	if (nx > 0)
 	{
 		if (is_sitting)
 		{
@@ -953,11 +1006,9 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	if (is_appearance_changing)
 	{
 		if (level == MARIO_LEVEL_TAIL_SUIT)
-		{
 			GetBoundingBoxTail(left, top, right, bottom);
-			return;
-		}
-		GetBoundingBoxBig(left, top, right, bottom);
+		else
+			GetBoundingBoxBig(left, top, right, bottom);
 		return;
 	}
 
@@ -973,31 +1024,40 @@ void CMario::SetLevel(int level)
 {
 	if (this->level == level) return; // nothing to change
 
-	// Adjust position to avoid falling off platform
+	// change to other level from small
 	if (this->level == MARIO_LEVEL_SMALL)
-	{
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2 + 1;
+
+	// change to tail level from big
+	if (this->level == MARIO_LEVEL_BIG && level == MARIO_LEVEL_TAIL_SUIT)
+	{
+		if (nx > 0)
+			x -= MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH + 1;
+		else
+			x += (MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH) / 2 + 1;
 	}
 
-	/*if (level == MARIO_LEVEL_TAIL_SUIT)
+	if (this->level == MARIO_LEVEL_TAIL_SUIT && level == MARIO_LEVEL_BIG)
 	{
-		if (!attacking_zone)
-		{
-			LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
-			float width_zone = MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH;
+		if (nx > 0)
+			x += (MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH) / 2 - 1;
+		else
+			x -= (MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH) / 2 - 1;
+	}
 
-			attacking_zone = (CMarioAttackingZone*)scene->AddObject(
-				new CMarioAttackingZone(GetRight() + width_zone / 2, y, width_zone, MARIO_BIG_BBOX_HEIGHT));
-		}
-	}*/
-	/*else
+	if (level == MARIO_LEVEL_TAIL_SUIT)
 	{
-		if (attacking_zone)
-		{
-			attacking_zone->Delete();
-			attacking_zone = nullptr;
-		}
-	}*/
+		UpdatePositionAttackingZone(0);
+	}
+	else
+	{
+		if (right_attacking_zone)
+			right_attacking_zone->Delete();
+		if (left_attacking_zone)
+			left_attacking_zone->Delete();
+		right_attacking_zone = nullptr;
+		left_attacking_zone = nullptr;
+	}
 
 	is_appearance_changing = TRUE;
 	StartUntouchable();

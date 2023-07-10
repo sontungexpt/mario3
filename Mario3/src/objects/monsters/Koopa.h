@@ -1,4 +1,6 @@
-﻿#include "configs/monsters/Koopa601000.h"
+﻿#pragma once
+
+#include "configs/monsters/Koopa601000.h"
 #include "Monster.h"
 
 class CKoopa : public CMonster

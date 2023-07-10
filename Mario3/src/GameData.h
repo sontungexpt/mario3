@@ -58,6 +58,7 @@ public:
 		mario_level = MARIO_LEVEL_SMALL;
 		available_items.clear();
 	};
+	~CGameData() {};
 
 	static CGameData* GetInstance();
 
@@ -97,6 +98,7 @@ public:
 
 	void CountDownRemainTime();
 	void InitRemainTime(ULONGLONG remain_time) { this->remain_time = remain_time; };
+	void SetRemainTime(ULONGLONG remain_time) { this->remain_time = remain_time; };
 	ULONGLONG GetRemainTime() { return remain_time; };
 
 	void SetMarioLevel(int mario_level) { this->mario_level = mario_level; };

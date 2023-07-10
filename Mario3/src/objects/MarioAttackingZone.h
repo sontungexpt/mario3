@@ -6,11 +6,6 @@
 #include "components/Animation/Animation.h"
 #include "components/Animation/Animations.h"
 
-#include "configs/Mario.h"
-#include "objects/monsters/Monster.h"
-//#include "Mario.h"
-//#include "scenes/PlayScene.h"
-
 class CMarioAttackingZone : public CGameObject
 {
 	float width;
@@ -19,25 +14,17 @@ class CMarioAttackingZone : public CGameObject
 	void OnCollisionWithMonster(LPCOLLISIONEVENT e);
 
 public:
-	CMarioAttackingZone(float x, float y, float width, float height) : CGameObject(x, y)
-	{
-		this->width = width;
-		this->height = height;
-	}
 
-	/*CMarioAttackingZone(float width) : CGameObject()
-	{
-		this->width = width;
-		CMario* mario = (CMario*)((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-		x = mario->GetRight() + width / 2;
-		y = mario->GetY();
-	}*/
+	CMarioAttackingZone(float x = 0.0f, float y = 0.0f, float width = 0.0f, float height = 0.0f)
+		: CGameObject(x, y), width(width), height(height)
+	{}
 
 	// core
-	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr);
 	void Render() {
 		RenderBoundingBox();
 	}
+
 	void SetHeight(float height) { this->height = height; }
 	void SetWidth(float width) { this->width = width; }
 
@@ -50,3 +37,5 @@ public:
 
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 };
+
+typedef CMarioAttackingZone* LPMARIO_ATTACKINGZONE;

@@ -1,4 +1,5 @@
 #pragma once
+
 #include "debug.h"
 #include "GameData.h"
 #include "GameObject.h"
@@ -9,6 +10,7 @@
 #include "materials/OuterablePipe.h"
 
 #include "monsters/Monster.h"
+#include "monsters/Koopa.h"
 
 #include "components/Animation/Animation.h"
 #include "components/Animation/Animations.h"
@@ -27,7 +29,9 @@ protected:
 
 	LPMONSTER weapon_monster;
 	LPPIPE pipe;
-	//CMarioAttackingZone* attacking_zone;
+
+	LPMARIO_ATTACKINGZONE right_attacking_zone;
+	LPMARIO_ATTACKINGZONE left_attacking_zone;
 
 	ULONGLONG time_untouchable_start;
 	ULONGLONG time_power_up_start;
@@ -40,6 +44,7 @@ protected:
 	BOOLEAN is_on_platform;
 	BOOLEAN is_want_holding_koopa;
 	BOOLEAN is_appearance_changing;
+	BOOLEAN is_completely_inside_pipe;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -55,42 +60,40 @@ protected:
 	int GetAniIdEnterOuterPipe();
 	int GetAniIdSmall();
 	int GetAniIdWinScene();
-
 	int GetAniIdWhenAppearanceChanging();
 
 	void GetBoundingBoxBig(float& left, float& top, float& right, float& bottom);
 	void GetBoundingBoxTail(float& left, float& top, float& right, float& bottom);
 	void GetBoundingBoxSmall(float& left, float& top, float& right, float& bottom);
 
+	void UpdateV(DWORD dt);
 	void UpdatePower();
-
+	void UpdateUntouchable();
+	void CheckRemainingPlayingTime();
+	void CheckJumpToHole();
+	void UpdatePositionAttackingZone(DWORD dt);
 public:
-	CMario(float x, float y) : CGameObject(x, y)
+	CMario(float x, float y)
+		: CGameObject(x, y, 0, 0, 0.0f, MARIO_GRAVITY, MARIO_RUNNING_SPEED),
+		is_sitting(FALSE),
+		is_flying(FALSE),
+		untouchable(FALSE),
+		is_on_platform(FALSE),
+		is_want_holding_koopa(FALSE),
+		is_appearance_changing(FALSE),
+		is_power_upping(FALSE),
+		weapon_monster(nullptr),
+		pipe(nullptr),
+		right_attacking_zone(nullptr),
+		left_attacking_zone(nullptr),
+		is_completely_inside_pipe(FALSE),
+		power(0),
+		nx(1),
+		time_untouchable_start(0),
+		time_power_up_start(0),
+		time_fly_start(0),
+		level(CGameData::GetInstance()->GetMarioLevel())
 	{
-		power = 0;
-		nx = 1;
-
-		ax = 0.0f;
-		ay = MARIO_GRAVITY;
-
-		max_vx = MARIO_RUNNING_SPEED;
-
-		is_sitting = FALSE;
-		is_flying = FALSE;
-		untouchable = FALSE;
-		is_on_platform = FALSE;
-		is_want_holding_koopa = FALSE;
-		is_appearance_changing = FALSE;
-		is_power_upping = FALSE;
-
-		weapon_monster = nullptr;
-		pipe = nullptr;
-
-		level = CGameData::GetInstance()->GetMarioLevel();
-
-		time_untouchable_start = 0;
-		time_power_up_start = 0;
-		time_fly_start = 0;
 	}
 
 	~CMario()
@@ -99,7 +102,13 @@ public:
 			delete weapon_monster;
 		if (pipe)
 			delete pipe;
+		if (right_attacking_zone)
+			delete right_attacking_zone;
+		if (left_attacking_zone)
+			delete left_attacking_zone;
 
+		right_attacking_zone = nullptr;
+		left_attacking_zone = nullptr;
 		weapon_monster = nullptr;
 		pipe = nullptr;
 	}
@@ -146,10 +155,18 @@ public:
 		return dynamic_cast<LPOUTERABLE_PIPE>(pipe) &&
 			state == MARIO_STATE_OUTER_PIPE;
 	}
+	BOOLEAN CanEnterPipe() { return dynamic_cast<LPENTERABLE_PIPE>(pipe) != nullptr; }
+	BOOLEAN IsHoldingKoopa() {
+		CKoopa* koopa = dynamic_cast<CKoopa*>(weapon_monster);
+		if (koopa)
+			return koopa->IsMarioHolding();
+		return FALSE;
+	}
 
 	LPPIPE GetPipe() { return pipe; }
 	void SetPipe(LPPIPE pipe) { this->pipe = pipe; }
 	void MoveOutPipe() { SetState(MARIO_STATE_OUTER_PIPE); }
+	void EnterPipe() { SetState(MARIO_STATE_ENTER_PIPE); }
 
 	void Shrink() { SetLevel(MARIO_LEVEL_SMALL); }
 	void Zoom() { SetLevel(MARIO_LEVEL_BIG); }

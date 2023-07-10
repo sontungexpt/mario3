@@ -509,31 +509,34 @@ void CPlayScene::Update(DWORD dt)
 	//player is dead not need to update other objects
 	CGame* game = CGame::GetInstance();
 
-	if (game->IsInTransitionScene())
-	{
-		CMario* mario = dynamic_cast<CMario*>(player);
+	if (game->IsInTransitionScene() && change_scene_effect)
+		change_scene_effect->Update(dt);
 
-		if (mario)
+	CMario* mario = dynamic_cast<CMario*>(player);
+	if (mario)
+	{
+		if (mario->IsDead())
 		{
-			if (mario->IsDead())
-				mario->Update(dt);
-			else if (mario->IsWinScene())
-			{
-				vector<LPGAMEOBJECT> coObjects;
-				for (size_t i = 0; i < objects.size(); i++)
-				{
-					// if win game scene, only colliable with wall
-					if (!objects[i]->IsBlocking())
-						continue;
-					coObjects.push_back(objects[i]);
-				}
-				mario->Update(dt, &coObjects);
-			}
+			mario->Update(dt);
+			return;
 		}
-		if (change_scene_effect)
-			change_scene_effect->Update(dt);
-		return;
+		else if (mario->IsWinScene())
+		{
+			vector<LPGAMEOBJECT> coObjects;
+			for (size_t i = 0; i < objects.size(); i++)
+			{
+				// if win game scene, only colliable with wall
+				if (!objects[i]->IsBlocking())
+					continue;
+				coObjects.push_back(objects[i]);
+			}
+			mario->Update(dt, &coObjects);
+			return;
+		}
 	}
+
+	// not update other objects except mario when transition scene
+	if (game->IsInTransitionScene()) return;
 
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way
@@ -590,7 +593,6 @@ void CPlayScene::Render()
 		}
 		objects[i]->Render();
 	}
-	if (hud) hud->Render();
 
 	// if player is not entering pipe then render player
 	// after other objects
@@ -602,6 +604,8 @@ void CPlayScene::Render()
 		if (mario->IsEnteringPipe() || mario->IsOuteringPipe())
 			mario->GetPipe()->Render();
 	}
+
+	if (hud) hud->Render();
 
 	// change scene effect is have to render last
 	if (change_scene_effect) change_scene_effect->Render();

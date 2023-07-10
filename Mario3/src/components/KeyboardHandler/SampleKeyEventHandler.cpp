@@ -22,33 +22,39 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	if (game->IsInTransitionScene())
 		return;
 
-	CMario* mario = (CMario*)((LPPLAYSCENE)game->GetCurrentScene())->GetPlayer();
+	LPPLAYSCENE scene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+	CMario* mario = scene ? dynamic_cast<CMario*>(scene->GetPlayer()) : nullptr;
 	if (!mario) return;
 
 	switch (KeyCode)
 	{
 	case DIK_UP:
-		if (dynamic_cast<LPENTERABLE_PIPE>(mario->GetPipe()))
+		if (mario->CanEnterPipe())
 		{
 			if (mario->GetPipe()->GetDirection() == PIPE_DIRECTION_DOWN)
 			{
-				mario->SetState(MARIO_STATE_ENTER_PIPE);
+				mario->EnterPipe();
 			}
 		}
 		break;
 	case DIK_DOWN:
-		if (dynamic_cast<LPENTERABLE_PIPE>(mario->GetPipe()))
+		if (mario->CanEnterPipe())
 		{
 			if (mario->GetPipe()->GetDirection() == PIPE_DIRECTION_UP)
 			{
-				mario->SetState(MARIO_STATE_ENTER_PIPE);
+				mario->EnterPipe();
 			}
 		}
 		else
+		{
 			mario->SetState(MARIO_STATE_SIT);
+		}
 		break;
 	case DIK_S:
 		mario->SetState(MARIO_STATE_JUMP);
+		break;
+	case DIK_A:
+		mario->WantHoldKoopa();
 		break;
 	case DIK_1:
 		mario->SetLevel(MARIO_LEVEL_SMALL);
@@ -62,7 +68,12 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_0:
 		mario->SetState(MARIO_STATE_DIE);
 		break;
-	case DIK_7:
+
+	case DIK_6: // make remain time 10s
+		CGameData::GetInstance()->SetRemainTime(10);
+		break;
+		// testing keys
+	case DIK_7: // move to wolrd map
 		CGame::GetInstance()->InitiateSwitchScene(ID_LEVEL_MAP_SCENE);
 		break;
 	case DIK_8: // move to hidden map 1
@@ -74,10 +85,6 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		CGameData::GetInstance()->SetMarioLevel(MARIO_LEVEL_SMALL);
 		CGame::GetInstance()->InitiateSwitchScene(ID_LEVEL_MAP_SCENE);
 		break;
-	case DIK_A:
-		mario->WantHoldKoopa();
-		break;
-
 	case DIK_R: // reset
 		//Reload();
 		break;
@@ -96,7 +103,9 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	if (game->IsInTransitionScene())
 		return;
 
-	CMario* mario = (CMario*)((LPPLAYSCENE)game->GetCurrentScene())->GetPlayer();
+	LPPLAYSCENE scene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+	CMario* mario = scene ? dynamic_cast<CMario*>(scene->GetPlayer()) : nullptr;
+
 	if (!mario) return;
 
 	switch (KeyCode)
@@ -123,7 +132,9 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 		return;
 	if (game->IsInTransitionScene())
 		return;
-	CMario* mario = (CMario*)((LPPLAYSCENE)game->GetCurrentScene())->GetPlayer();
+
+	LPPLAYSCENE scene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+	CMario* mario = scene ? dynamic_cast<CMario*>(scene->GetPlayer()) : nullptr;
 	if (!mario) return;
 
 	if (game->IsKeyDown(DIK_RIGHT))

@@ -199,12 +199,16 @@ void CKoopa::SetState(int state)
 		// if vx > 0, then mario kick it to right
 		// if vx < 0, then mario kick it to left
 		// if vx = 0, then mario kick it to the same direction
-		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-		CMario* mario = (CMario*)scene->GetPlayer();
-		vx = mario->GetVx();
-		ax = mario->GetNx() >= 0 ?
-			KOOPA_SLIDING_ACCELERATION :
-			-KOOPA_SLIDING_ACCELERATION;
+
+		LPPLAYSCENE scene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+		CMario* mario = scene ? dynamic_cast<CMario*>(scene->GetPlayer()) : nullptr;
+		if (mario)
+		{
+			vx = mario->GetVx();
+			ax = mario->GetNx() >= 0 ?
+				KOOPA_SLIDING_ACCELERATION :
+				-KOOPA_SLIDING_ACCELERATION;
+		}
 	}
 	break;
 	case KOOPA_STATE_COMEBACK:
@@ -264,10 +268,10 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 
 	if (is_mario_holding) {
 		// adjust position of koopa when mario is holding it
-		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-		CMario* mario = (CMario*)scene->GetPlayer();
+		LPPLAYSCENE scene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+		CMario* mario = scene ? dynamic_cast<CMario*>(scene->GetPlayer()) : nullptr;
 
-		if (!mario->IsDead())
+		if (mario && !mario->IsDead())
 		{
 			y = mario->GetY();
 			x = mario->GetNx() >= 0 ?
