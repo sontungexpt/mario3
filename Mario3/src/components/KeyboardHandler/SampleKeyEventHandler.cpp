@@ -54,7 +54,10 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetState(MARIO_STATE_JUMP);
 		break;
 	case DIK_A:
-		mario->WantHoldKoopa();
+		if (mario->HasTail())
+			mario->Hit();
+		else
+			mario->WantHoldKoopa();
 		break;
 	case DIK_1:
 		mario->SetLevel(MARIO_LEVEL_SMALL);

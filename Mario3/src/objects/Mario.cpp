@@ -424,13 +424,19 @@ int CMario::GetAniIdBig()
 int CMario::GetAniIdTail()
 {
 	int aniId = -1;
+	if (is_hitting)
+	{
+		if (nx >= 0)
+			return ID_ANI_TAIL_MARIO_TAIL_SMASH_RIGHT;
+		else
+			return ID_ANI_TAIL_MARIO_TAIL_SMASH_LEFT;
+	}
 
 	if (!is_on_platform)
 	{
 		if (abs(ax) == MARIO_ACCEL_RUN_X)
 		{
 			if (nx >= 0)
-
 				aniId = ID_ANI_TAIL_MARIO_FLY_RIGHT;
 			else
 				aniId = ID_ANI_TAIL_MARIO_FLY_LEFT;
@@ -560,7 +566,9 @@ void CMario::UpdateV(DWORD dt)
 void CMario::UpdatePositionAttackingZone(DWORD dt)
 {
 	if (level != MARIO_LEVEL_TAIL_SUIT) return;
-	float attacking_width = MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH + 1;
+
+	// because it too small so plus 5
+	float attacking_width = MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH + 5;
 	float attacking_height = GetHeight();
 	float attacking_x_right = GetRight() + attacking_width / 2 + vx * dt;
 	float attacking_x_left = GetLeft() - attacking_width / 2 + vx * dt;
@@ -596,6 +604,15 @@ void CMario::UpdatePositionAttackingZone(DWORD dt)
 				attacking_height
 			));
 }
+void CMario::UpdateHittingState()
+{
+	if (is_hitting && GetTickCount64() - time_hit_start > MARIO_HITTING_TIMEOUT)
+	{
+		is_hitting = FALSE;
+		time_hit_start = 0;
+	}
+}
+
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	// time out -> die
@@ -695,6 +712,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	UpdatePower();
 	UpdatePositionAttackingZone(dt);
+	UpdateHittingState();
 
 	ResetPositionIfOutOfWidthScreen(x, y);
 

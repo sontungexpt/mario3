@@ -36,10 +36,12 @@ protected:
 	ULONGLONG time_untouchable_start;
 	ULONGLONG time_power_up_start;
 	ULONGLONG time_fly_start;
+	ULONGLONG time_hit_start;
 
 	BOOLEAN untouchable;
 	BOOLEAN is_sitting;
 	BOOLEAN is_flying;
+	BOOLEAN is_hitting;
 	BOOLEAN is_power_upping;
 	BOOLEAN is_on_platform;
 	BOOLEAN is_want_holding_koopa;
@@ -72,6 +74,7 @@ protected:
 	void CheckRemainingPlayingTime();
 	void CheckJumpToHole();
 	void UpdatePositionAttackingZone(DWORD dt);
+	void UpdateHittingState();
 public:
 	CMario(float x, float y)
 		: CGameObject(x, y, 0, 0, 0.0f, MARIO_GRAVITY, MARIO_RUNNING_SPEED),
@@ -82,6 +85,7 @@ public:
 		is_want_holding_koopa(FALSE),
 		is_appearance_changing(FALSE),
 		is_power_upping(FALSE),
+		is_hitting(FALSE),
 		weapon_monster(nullptr),
 		pipe(nullptr),
 		right_attacking_zone(nullptr),
@@ -194,7 +198,14 @@ public:
 	void WantHoldKoopa() { is_want_holding_koopa = TRUE; }
 	void WantKickKoopa() { is_want_holding_koopa = FALSE; }
 
-	void SmashTail() {}
+	void Hit() {
+		if (HasTail()) {
+			is_hitting = TRUE;
+			time_hit_start = GetTickCount64();
+		}
+	}
+	void StopHitting() { is_hitting = FALSE; }
+	BOOLEAN IsHitting() { return is_hitting; }
 
 	void StartUntouchable() { SetState(MARIO_STATE_UNTOUCHABLE); }
 	void JumpDeflect() { vy = -MARIO_JUMP_DEFLECT_SPEED; }
