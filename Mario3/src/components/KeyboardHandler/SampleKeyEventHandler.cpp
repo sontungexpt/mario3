@@ -51,7 +51,10 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		}
 		break;
 	case DIK_S:
-		mario->SetState(MARIO_STATE_JUMP);
+		if (!mario->IsOnPlatform())
+			mario->SetState(MARIO_STATE_FLY);
+		else
+			mario->SetState(MARIO_STATE_JUMP);
 		break;
 	case DIK_A:
 		if (mario->HasTail())
@@ -122,6 +125,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 		break;
 	case DIK_A:
 		mario->WantKickKoopa();
+		//mario->SetIsPowerUping(FALSE);
 		break;
 	}
 }

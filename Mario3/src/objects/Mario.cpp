@@ -61,6 +61,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		if (e->IsCollidedFromTop())
 		{
+			is_full_power_time_out = FALSE;
+			is_flying = FALSE;
 			is_on_platform = TRUE;
 		}
 		vy = 0;
@@ -434,7 +436,7 @@ int CMario::GetAniIdTail()
 
 	if (!is_on_platform)
 	{
-		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		if (is_flying)
 		{
 			if (nx >= 0)
 				aniId = ID_ANI_TAIL_MARIO_FLY_RIGHT;
@@ -556,6 +558,8 @@ void CMario::UpdateV(DWORD dt)
 
 	if (fabs(vx) > fabs(max_vx))
 		vx = max_vx;
+	if (is_flying && vy < max_vy)
+		vy = max_vy;
 
 	if (is_appearance_changing)
 	{
@@ -567,42 +571,44 @@ void CMario::UpdatePositionAttackingZone(DWORD dt)
 {
 	if (level != MARIO_LEVEL_TAIL_SUIT) return;
 
-	// because it too small so plus 5
-	float attacking_width = MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH + 5;
+	LPPLAYSCENE scene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+	if (!scene) return;
+
+	float mario_right = GetRight();
+	float mario_left = GetLeft();
 	float attacking_height = GetHeight();
-	float attacking_x_right = GetRight() + attacking_width / 2 + vx * dt;
-	float attacking_x_left = GetLeft() - attacking_width / 2 + vx * dt;
 	float attacking_y = is_on_platform ? y : y + vy * dt;
 
-	LPPLAYSCENE scene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+	float each_attacking_width = (MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH + 5) / MARIO_ACCURACY_LEVEL_WHEN_HITTING;
+	float attacking_zone_x = nx > 0 ? mario_right : mario_left;
 
-	if (right_attacking_zone)
+	for (auto it = attacking_zones.begin(); it != attacking_zones.end();)
 	{
-		right_attacking_zone->SetPosition(attacking_x_right, attacking_y);
-		right_attacking_zone->SetHeight(attacking_height);
-	}
-	else
-		right_attacking_zone = (LPMARIO_ATTACKINGZONE)scene->AddObject(
-			new CMarioAttackingZone(
-				attacking_x_right,
-				attacking_y,
-				attacking_width,
-				attacking_height
-			));
+		if (!(*it)) {
+			DebugOut(L"Invalid attacking zone pointer\n");
+			it = attacking_zones.erase(it);
+			continue;
+		}
 
-	if (left_attacking_zone)
-	{
-		left_attacking_zone->SetPosition(attacking_x_left, attacking_y);
-		left_attacking_zone->SetHeight(attacking_height);
+		(*it)->SetPosition(attacking_zone_x, attacking_y);
+		(*it)->SetHeight(attacking_height);
+
+		attacking_zone_x += nx > 0 ? each_attacking_width : -each_attacking_width;
+		++it;
 	}
-	else
-		left_attacking_zone = (LPMARIO_ATTACKINGZONE)scene->AddObject(
-			new CMarioAttackingZone(
-				attacking_x_left,
-				attacking_y,
-				attacking_width,
-				attacking_height
-			));
+
+	while (attacking_zones.size() < MARIO_ACCURACY_LEVEL_WHEN_HITTING)
+	{
+		LPMARIO_ATTACKINGZONE attacking_zone = (LPMARIO_ATTACKINGZONE)scene->AddObject(new CMarioAttackingZone(
+			attacking_zone_x,
+			attacking_y,
+			each_attacking_width,
+			attacking_height
+		));
+		attacking_zones.push_back(attacking_zone);
+
+		attacking_zone_x += nx > 0 ? each_attacking_width : -each_attacking_width;
+	}
 }
 void CMario::UpdateHittingState()
 {
@@ -711,8 +717,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		weapon_monster = nullptr;
 	}
 	UpdatePower();
-	UpdatePositionAttackingZone(dt);
 	UpdateHittingState();
+	//UpdatePositionAttackingZone(dt);
 
 	ResetPositionIfOutOfWidthScreen(x, y);
 
@@ -786,19 +792,24 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_FLY:
 		if (is_sitting) break;
-		if (IsFullPower() && HasTail())
+		if (!HasTail()) break;
+		if (IsFullPower())
 		{
-			is_flying = TRUE;
-			max_vx = MARIO_RUNNING_SPEED;
-			max_vy = MARIO_FLYING_SPEED;
-			vy -= MARIO_JUMP_SPEED_Y / 3 * 2.3f;
+			max_vy = -MARIO_FLYING_SPEED_Y;
+			vy = -MARIO_FLYING_SPEED_Y;
+			if (time_fly_start <= 0)
+				time_fly_start = GetTickCount64();
 		}
+		else
+		{
+			time_fly_start = 0;
+			vy = -MARIO_TRY_FLYING_SPEED_Y;
+		}
+		is_flying = TRUE;
 		break;
 	case MARIO_STATE_FLY_RELEASE:
 		if (is_sitting) break;
-		if (IsFullPower() && HasTail())
-		{
-		}
+		if (!HasTail()) break;
 		break;
 
 	case MARIO_STATE_RUNNING_RIGHT:
@@ -982,9 +993,11 @@ void CMario::UpdatePower()
 	{
 		power = 0;
 		time_fly_start = 0;
-		is_flying = FALSE;
+		is_full_power_time_out = TRUE;
 		return;
 	}
+
+	if (is_full_power_time_out) return;
 
 	if (is_power_upping)
 	{
@@ -1038,6 +1051,16 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 		GetBoundingBoxSmall(left, top, right, bottom);
 }
 
+void CMario::ClearAttackingZones()
+{
+	for (size_t i = 0; i < attacking_zones.size(); i++)
+	{
+		attacking_zones[i]->Delete();
+		attacking_zones[i] == nullptr;
+	}
+	attacking_zones.clear();
+}
+
 void CMario::SetLevel(int level)
 {
 	if (this->level == level) return; // nothing to change
@@ -1061,20 +1084,6 @@ void CMario::SetLevel(int level)
 			x += (MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH) / 2 - 1;
 		else
 			x -= (MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH) / 2 - 1;
-	}
-
-	if (level == MARIO_LEVEL_TAIL_SUIT)
-	{
-		UpdatePositionAttackingZone(0);
-	}
-	else
-	{
-		if (right_attacking_zone)
-			right_attacking_zone->Delete();
-		if (left_attacking_zone)
-			left_attacking_zone->Delete();
-		right_attacking_zone = nullptr;
-		left_attacking_zone = nullptr;
 	}
 
 	is_appearance_changing = TRUE;

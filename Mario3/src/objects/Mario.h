@@ -30,8 +30,7 @@ protected:
 	LPMONSTER weapon_monster;
 	LPPIPE pipe;
 
-	LPMARIO_ATTACKINGZONE right_attacking_zone;
-	LPMARIO_ATTACKINGZONE left_attacking_zone;
+	vector<LPMARIO_ATTACKINGZONE> attacking_zones;
 
 	ULONGLONG time_untouchable_start;
 	ULONGLONG time_power_up_start;
@@ -47,6 +46,7 @@ protected:
 	BOOLEAN is_want_holding_koopa;
 	BOOLEAN is_appearance_changing;
 	BOOLEAN is_completely_inside_pipe;
+	BOOLEAN is_full_power_time_out;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -75,6 +75,8 @@ protected:
 	void CheckJumpToHole();
 	void UpdatePositionAttackingZone(DWORD dt);
 	void UpdateHittingState();
+	void ClearAttackingZones();
+
 public:
 	CMario(float x, float y)
 		: CGameObject(x, y, 0, 0, 0.0f, MARIO_GRAVITY, MARIO_RUNNING_SPEED),
@@ -86,18 +88,19 @@ public:
 		is_appearance_changing(FALSE),
 		is_power_upping(FALSE),
 		is_hitting(FALSE),
+		is_full_power_time_out(FALSE),
+		is_completely_inside_pipe(FALSE),
 		weapon_monster(nullptr),
 		pipe(nullptr),
-		right_attacking_zone(nullptr),
-		left_attacking_zone(nullptr),
-		is_completely_inside_pipe(FALSE),
 		power(0),
 		nx(1),
 		time_untouchable_start(0),
 		time_power_up_start(0),
 		time_fly_start(0),
+		time_hit_start(0),
 		level(CGameData::GetInstance()->GetMarioLevel())
 	{
+		attacking_zones.clear();
 	}
 
 	~CMario()
@@ -106,13 +109,7 @@ public:
 			delete weapon_monster;
 		if (pipe)
 			delete pipe;
-		if (right_attacking_zone)
-			delete right_attacking_zone;
-		if (left_attacking_zone)
-			delete left_attacking_zone;
 
-		right_attacking_zone = nullptr;
-		left_attacking_zone = nullptr;
 		weapon_monster = nullptr;
 		pipe = nullptr;
 	}
@@ -145,6 +142,7 @@ public:
 	int GetNx() { return nx; }
 
 	// states
+	BOOLEAN IsOnPlatform() { return is_on_platform; }
 	BOOLEAN IsSmall() { return level == MARIO_LEVEL_SMALL; };
 	BOOLEAN IsBig() { return level == MARIO_LEVEL_BIG; };
 	BOOLEAN HasTail() { return level == MARIO_LEVEL_TAIL_SUIT; }
@@ -183,10 +181,21 @@ public:
 	void LevelDown() { SetLevel(MARIO_LEVEL_SMALL); }
 
 	int GetPower() { return power; }
+	void SetIsPowerUping(BOOLEAN is_power_upping) { this->is_power_upping = is_power_upping; }
 	void StartPowerUp()
 	{
-		is_power_upping = TRUE;
-		time_power_up_start = GetTickCount64();
+		if (is_on_platform || IsFullPower())
+		{
+			is_power_upping = TRUE;
+
+			//if (time_power_up_start <= 0)
+			time_power_up_start = GetTickCount64();
+		}
+		else
+		{
+			is_power_upping = FALSE;
+			time_power_up_start = GetTickCount64();
+		}
 	}
 
 	void Die();
@@ -205,7 +214,7 @@ public:
 		}
 	}
 	void StopHitting() { is_hitting = FALSE; }
-	BOOLEAN IsHitting() { return is_hitting; }
+	bool IsHitting() { return  is_hitting && HasTail(); }
 
 	void StartUntouchable() { SetState(MARIO_STATE_UNTOUCHABLE); }
 	void JumpDeflect() { vy = -MARIO_JUMP_DEFLECT_SPEED; }
