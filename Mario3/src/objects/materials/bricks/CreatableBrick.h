@@ -10,6 +10,7 @@ protected:
 	BOOLEAN is_created_item;
 
 	virtual CItem* CreateItem(CItem* item);
+	virtual CItem* CreateItemBehind(CItem* item);
 
 	virtual float GetItemReferenceY(CItem* item) = 0;
 	virtual float GetItemReferenceX(CItem* item) = 0;

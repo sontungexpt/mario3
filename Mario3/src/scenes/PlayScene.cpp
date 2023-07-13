@@ -490,7 +490,12 @@ void CPlayScene::UpdateCamera()
 	float mario_y = player->GetY();
 
 	float new_cam_x = mario_x - camera_width / 2;
+
+	float max_cam_y = floor(max_object_y->GetY() / camera_height) * camera_height;
 	float new_cam_y = floor(mario_y / camera_height) * camera_height;
+
+	if (new_cam_y < max_cam_y)
+		new_cam_y = mario_y - camera_height / 2;
 
 	if (new_cam_x < 0) new_cam_x = 0;
 	if (new_cam_y < 0) new_cam_y = 0;
@@ -498,8 +503,8 @@ void CPlayScene::UpdateCamera()
 	float max_cam_x = max_object_x->GetRight() - camera_width;
 	if (max_object_x && new_cam_x > max_cam_x)
 		new_cam_x = max_cam_x;
-	if (max_object_y && new_cam_y > max_object_y->GetBottom())
-		new_cam_y = old_cam_y;
+	if (new_cam_y > max_cam_y)
+		new_cam_y = max_cam_y;
 
 	game->SetCamPos(new_cam_x, new_cam_y);
 }
@@ -694,7 +699,7 @@ LPGAMEOBJECT CPlayScene::AddObject(LPGAMEOBJECT obj)
 LPGAMEOBJECT CPlayScene::AddObjectToFirst(LPGAMEOBJECT obj)
 {
 	SetMaxCoordinate(obj);
-	objects.insert(objects.begin() + 1, obj);
+	objects.insert(objects.begin(), obj);
 
 	CEffect* effect = dynamic_cast<CEffect*>(objects.front());
 	if (effect && effect->GetType() == CHANGE_SCENE)

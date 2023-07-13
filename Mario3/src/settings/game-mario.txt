@@ -46,3 +46,4 @@ height	240
 180	src\assets\textures\dialogs_rmbg.png
 190	src\assets\textures\card.png
 200	src\assets\textures\enemies_3.png
+210	src\assets\textures\misc-4.png

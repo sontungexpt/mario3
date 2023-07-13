@@ -3,44 +3,22 @@
 limit_time	300
 background_color	255.0	216.0	154.0	255
 
-[HIDDEN_MAPS]
-
 [ASSETS]
 src\settings\objects\mario.txt
 src\settings\objects\platform.txt
 src\settings\objects\effect.txt
-src\settings\objects\hud.txt
+src\settings\objects\intro.txt
 
 # materials
 src\settings\objects\materials\cloud.txt
-src\settings\objects\materials\question_brick.txt
-src\settings\objects\materials\breakable_brick.txt
-src\settings\objects\materials\pipe.txt
-
-# items
-src\settings\objects\items\mushroom.txt
-src\settings\objects\items\coin.txt
-src\settings\objects\items\bullet.txt
-src\settings\objects\items\leaf.txt
 
 # monster
-src\settings\objects\monsters\plant_shooter.txt
 src\settings\objects\monsters\koopa.txt
 src\settings\objects\monsters\goomba.txt
-src\settings\objects\monsters\carnivorous_plant.txt
 
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # See OBJECT_TYPE constants in configs/core/ObjectTypes.h
 
 #Platform
-5	0	652	16	16	39	1000010	1000020	1000030	1	1
-5	624	652	16	16	29	1000110	1000120	1000130	1	1
-
-5	1152	652	16	16	22	1000010	1000020	1000030	1	1
-
-5	1536	652	16	16	6	1000010	1000020	1000030	1	1
-
-5	1680	652	16	16	35	1000010	1000020	1000030	1	1
-
-5	2256	652	16	16	29	1000010	1000020	1000030	1	1
+5	12	214	24	34	11	1003400	1003400	1003400	1	1

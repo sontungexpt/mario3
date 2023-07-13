@@ -44,6 +44,6 @@ public:
 	int IsBlocking() { return 1; }
 
 	// this part is the other name to call SetState
-	void Bounce() { SetState(BREAKABLE_BRICK_STATE_BOUNCE); }
+	void Bounce();
 	void Break() { SetState(BREAKABLE_BRICK_STATE_BREAK); }
 };

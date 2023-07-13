@@ -2,6 +2,8 @@
 #include "scenes/PlayScene.h"
 
 #include "objects/items/Coin.h"
+#include "objects/items/BreakableBrickSwitch.h"
+#include <objects/Mario.h>
 
 void CBreakableBrick::CreateItem()
 {
@@ -12,6 +14,14 @@ void CBreakableBrick::CreateItem()
 		CCreatableBrick::CreateItem(new CCoin());
 		break;
 	case BREAKABLE_BRICK_NONE:
+		break;
+	case BREAKABLE_BRICK_BUTTON:
+		((CBreakableBrickSwitch*)CCreatableBrick::CreateItemBehind(
+			new CBreakableBrickSwitch(
+				x,
+				y,
+				y - (BREAKABLE_BRICK_BBOX_HEIGHT + BREAKABLE_BRICK_SWITCH_BBOX_HEIGHT) / 2))
+			)->MoveOutBreakablerBrickSwitch();
 		break;
 	default:
 		DebugOut(L"[ERROR] Can not handle item_type of question brick in CQuestionBrick::CreateItem(int state): ", item_type);
@@ -29,6 +39,14 @@ void CBreakableBrick::GetBoundingBox(float& left, float& top, float& right, floa
 
 void CBreakableBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
+	LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
+	CMario* mario = scene ? dynamic_cast<CMario*>(scene->GetPlayer()) : nullptr;
+	if (mario && mario->IsPressedButtonBreakAbleBrick())
+	{
+		SetState(BREAKABLE_BRICK_STATE_DISAPPEAR);
+		return;
+	}
+
 	CCollision::GetInstance()->Process(this, dt, co_objects);
 
 	// the brick is blocked by something
@@ -63,7 +81,6 @@ void CBreakableBrick::Render()
 
 void CBreakableBrick::SetState(int state)
 {
-	CGameObject::SetState(state);
 	switch (state)
 	{
 	case BREAKABLE_BRICK_STATE_BREAK:
@@ -74,13 +91,20 @@ void CBreakableBrick::SetState(int state)
 		{
 			((CDebrisBrick*)CCreatableBrick::CreateItem(new CDebrisBrick()))->Splash();
 		}
-		CreateItem();
 		is_deleted = TRUE;
 	}
 	break;
 	case BREAKABLE_BRICK_STATE_BOUNCE:
+		if (item_type == BREAKABLE_BRICK_BUTTON)
+		{
+			CreateItem();
+			vy = 0;
+			ay = 0;
+			break;
+		}
 		vy = -BREAKABLE_BRICK_SPEED;
 		ay = BREAKABLE_BRICK_GRAVITY;
+
 		break;
 	case BREAKABLE_BRICK_STATE_NORMAL:
 		y = start_y;
@@ -90,11 +114,24 @@ void CBreakableBrick::SetState(int state)
 		ax = 0;
 		vx = 0;
 		break;
+	case BREAKABLE_BRICK_STATE_DISAPPEAR:
+		if (item_type == BREAKABLE_BRICK_BUTTON) return;
+		is_deleted = TRUE;
+		CreateItem();
+		break;
+	default:
+		break;
 	}
+	CGameObject::SetState(state);
 }
 
 void CBreakableBrick::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (e->IsCollidedFromBottom() && e->obj->IsBlocking())
 		is_blocked = TRUE;
+}
+
+void CBreakableBrick::Bounce()
+{
+	SetState(BREAKABLE_BRICK_STATE_BOUNCE);
 }

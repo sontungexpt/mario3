@@ -23,6 +23,7 @@ src\settings\objects\items\mushroom.txt
 src\settings\objects\items\coin.txt
 src\settings\objects\items\bullet.txt
 src\settings\objects\items\leaf.txt
+src\settings\objects\items\breakable_brick_switch.txt
 
 # monster
 src\settings\objects\monsters\plant_shooter.txt
@@ -263,7 +264,7 @@ src\settings\objects\monsters\carnivorous_plant.txt
 
 # ENTERABLE PIPE
 12	354	621	1	1	2	1	-1
-12	2264	409	1	0	2	1	-1
+12	2264	412	1	0	2	1	-1
 
 # OUTERING PIPE
 13	2336	621	1	0	2	1	1
@@ -308,26 +309,26 @@ src\settings\objects\monsters\carnivorous_plant.txt
 60	1951	636	1
 60	1968	636	1
 60	1985	636	1
-60	2002	636
+60	2002	636	1
 60	2019	636	1
 60	2036	636	1
-60	2053	636
+60	2053	636	1
 
 60	1968	619	1
 60	1985	619	1
 60	2002	619	1
-60	2019	619
-60	2036	619
+60	2019	619	1
+60	2036	619	1
 
-60	1985	602
-60	2002	602
-60	2019	602
-60	2036	602
+60	1985	602	1
+60	2002	602	1
+60	2019	602	1
+60	2036	602	3
 
-60	2096	636
-60	2113	636
+60	2096	636	1
+60	2113	636	1
 
-60	2113	619
+60	2113	619	1
 
 # RANDOM CARD
 14	2570	570

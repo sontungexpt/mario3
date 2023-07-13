@@ -47,6 +47,7 @@ protected:
 	BOOLEAN is_appearance_changing;
 	BOOLEAN is_completely_inside_pipe;
 	BOOLEAN is_full_power_time_out;
+	BOOLEAN is_pressed_breable_brick_switch;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -55,6 +56,7 @@ protected:
 	void OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
+	void OnCollisionWithBreakableBrickSwitch(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
@@ -90,6 +92,7 @@ public:
 		is_hitting(FALSE),
 		is_full_power_time_out(FALSE),
 		is_completely_inside_pipe(FALSE),
+		is_pressed_breable_brick_switch(FALSE),
 		weapon_monster(nullptr),
 		pipe(nullptr),
 		power(0),
@@ -218,6 +221,9 @@ public:
 
 	void StartUntouchable() { SetState(MARIO_STATE_UNTOUCHABLE); }
 	void JumpDeflect() { vy = -MARIO_JUMP_DEFLECT_SPEED; }
+
+	void PressButtonBreakAbleBrick();
+	BOOLEAN IsPressedButtonBreakAbleBrick() { return is_pressed_breable_brick_switch; }
 
 	void Reset();
 };

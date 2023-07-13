@@ -15,6 +15,7 @@
 #include "items/Bullet.h"
 #include "items/Coin.h"
 #include "items/Mushroom.h"
+#include "items/BreakableBrickSwitch.h"
 
 #include "materials/Portal.h"
 #include "materials/Door.h"
@@ -43,6 +44,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithKoopa(e);
 
 	// items
+	else if (dynamic_cast<CBreakableBrickSwitch*>(e->obj))
+		OnCollisionWithBreakableBrickSwitch(e);
 	else if (dynamic_cast<CItem*>(e->obj))
 		OnCollisionWithItem(e);
 
@@ -154,10 +157,18 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 }
 
 // collision with items
+void CMario::OnCollisionWithBreakableBrickSwitch(LPCOLLISIONEVENT e)
+{
+	if (e->IsCollidedFromTop())
+	{
+		CBreakableBrickSwitch* switch_brick = dynamic_cast<CBreakableBrickSwitch*>(e->obj);
+		switch_brick->BeCollected();
+	}
+}
+
 void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 {
 	CItem* item = dynamic_cast<CItem*>(e->obj);
-
 	item->BeCollected();
 }
 
@@ -617,6 +628,11 @@ void CMario::UpdateHittingState()
 		is_hitting = FALSE;
 		time_hit_start = 0;
 	}
+}
+
+void CMario::PressButtonBreakAbleBrick()
+{
+	is_pressed_breable_brick_switch = TRUE;
 }
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

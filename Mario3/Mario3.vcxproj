@@ -130,10 +130,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\components\KeyboardHandler\GameOverControlPanelKeyEventHandler.cpp" />
+    <ClCompile Include="src\components\KeyboardHandler\IntroKeyEventHandler.cpp" />
     <ClCompile Include="src\components\KeyboardHandler\LevelMapKeyEventHandler.cpp" />
     <ClCompile Include="src\DrawingManager.cpp" />
     <ClCompile Include="src\GameData.cpp" />
     <ClCompile Include="src\objects\GameOverControlPanel.cpp" />
+    <ClCompile Include="src\objects\items\BreakableBrickSwitch.cpp" />
     <ClCompile Include="src\objects\items\LifeUpMushroom.cpp" />
     <ClCompile Include="src\objects\items\RandomCard.cpp" />
     <ClCompile Include="src\objects\MarioAttackingZone.cpp" />
@@ -164,7 +166,7 @@
     <ClCompile Include="src\objects\monsters\plants\Plant.cpp" />
     <ClCompile Include="src\objects\monsters\WindGoomba.cpp" />
     <ClCompile Include="src\objects\monsters\WindKoopa.cpp" />
-    <ClCompile Include="src\scenes\HiddenMapScene.cpp" />
+    <ClCompile Include="src\scenes\IntroScene.cpp" />
     <ClCompile Include="src\scenes\LevelMapScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\components\Animation\Animation.cpp" />
@@ -186,10 +188,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\KeyboardHandler\GameOverControlPanelKeyEventHandler.h" />
+    <ClInclude Include="src\components\KeyboardHandler\IntroKeyEventHandler.h" />
     <ClInclude Include="src\components\KeyboardHandler\LevelMapKeyEventHandler.h" />
     <ClInclude Include="src\configs\All.h" />
     <ClInclude Include="src\configs\Effect.h" />
     <ClInclude Include="src\configs\GameOverControlPanel.h" />
+    <ClInclude Include="src\configs\Intro.h" />
+    <ClInclude Include="src\configs\items\BreakableBrickSwitch304000.h" />
     <ClInclude Include="src\configs\materials\Brick.h" />
     <ClInclude Include="src\configs\materials\Hud103000.h" />
     <ClInclude Include="src\configs\items\All.h" />
@@ -220,6 +225,7 @@
     <ClInclude Include="src\DrawingManager.h" />
     <ClInclude Include="src\GameData.h" />
     <ClInclude Include="src\objects\GameOverControlPanel.h" />
+    <ClInclude Include="src\objects\items\BreakableBrickSwitch.h" />
     <ClInclude Include="src\objects\items\LifeUpMushroom.h" />
     <ClInclude Include="src\objects\items\RandomCard.h" />
     <ClInclude Include="src\objects\MarioAttackingZone.h" />
@@ -248,7 +254,7 @@
     <ClInclude Include="src\objects\monsters\plants\Plant.h" />
     <ClInclude Include="src\objects\monsters\WindGoomba.h" />
     <ClInclude Include="src\objects\monsters\WindKoopa.h" />
-    <ClInclude Include="src\scenes\HiddenMapScene.h" />
+    <ClInclude Include="src\scenes\IntroScene.h" />
     <ClInclude Include="src\scenes\LevelMapScene.h" />
     <ClInclude Include="src\components\Animation\Animation.h" />
     <ClInclude Include="src\components\Animation\AnimationFrame.h" />
@@ -283,6 +289,8 @@
   <ItemGroup>
     <Text Include="src\settings\objects\effect.txt" />
     <Text Include="src\settings\objects\hud.txt" />
+    <Text Include="src\settings\objects\intro.txt" />
+    <Text Include="src\settings\objects\items\breakable_brick_switch.txt" />
     <Text Include="src\settings\objects\items\leaf.txt" />
     <Text Include="src\settings\objects\materials\breakable_brick.txt" />
     <Text Include="src\settings\objects\materials\cloud.txt" />

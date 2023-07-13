@@ -153,9 +153,6 @@
     <ClCompile Include="src\objects\items\LifeUpMushroom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\scenes\HiddenMapScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\objects\materials\EnterablePipe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -175,6 +172,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\objects\items\RandomCard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\KeyboardHandler\IntroKeyEventHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\IntroScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\items\BreakableBrickSwitch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -425,9 +431,6 @@
     <ClInclude Include="src\objects\items\LifeUpMushroom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\scenes\HiddenMapScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\objects\materials\EnterablePipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -450,6 +453,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\objects\items\RandomCard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\IntroScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\KeyboardHandler\IntroKeyEventHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\Intro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\items\BreakableBrickSwitch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs\items\BreakableBrickSwitch304000.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -493,6 +511,8 @@
     <Text Include="src\settings\scenes\scene6\scene06.txt" />
     <Text Include="src\settings\scenes\scene7\scene07.txt" />
     <Text Include="src\settings\scenes\scene7\hidden_map.txt" />
+    <Text Include="src\settings\objects\intro.txt" />
+    <Text Include="src\settings\objects\items\breakable_brick_switch.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\assets\textures\misc_left.png">

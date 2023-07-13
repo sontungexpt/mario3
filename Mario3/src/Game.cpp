@@ -10,6 +10,7 @@
 // scenes
 #include "scenes/PlayScene.h"
 #include "scenes/LevelMapScene.h"
+#include "scenes/IntroScene.h"
 
 #include "configs/core/SceneIds.h"
 #include "objects/materials/EffectManager.h"
@@ -466,6 +467,9 @@ void CGame::_ParseSection_SCENES(string line)
 	{
 	case ID_LEVEL_MAP_SCENE:
 		scene = new CLevelMapScene(id, path);
+		break;
+	case ID_INTRO_SCENE:
+		scene = new CIntroScene(id, path);
 		break;
 	default:
 		scene = new CPlayScene(id, path);
