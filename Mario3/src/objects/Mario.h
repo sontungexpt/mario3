@@ -30,7 +30,7 @@ protected:
 	LPMONSTER weapon_monster;
 	LPPIPE pipe;
 
-	vector<LPMARIO_ATTACKINGZONE> attacking_zones;
+	//vector<LPMARIO_ATTACKINGZONE> attacking_zones;
 
 	ULONGLONG time_untouchable_start;
 	ULONGLONG time_power_up_start;
@@ -48,6 +48,7 @@ protected:
 	BOOLEAN is_completely_inside_pipe;
 	BOOLEAN is_full_power_time_out;
 	BOOLEAN is_pressed_breable_brick_switch;
+	BOOLEAN is_allow_adjust_bbox;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -75,9 +76,9 @@ protected:
 	void UpdateUntouchable();
 	void CheckRemainingPlayingTime();
 	void CheckJumpToHole();
-	void UpdatePositionAttackingZone(DWORD dt);
+	//void UpdatePositionAttackingZone(DWORD dt);
 	void UpdateHittingState();
-	void ClearAttackingZones();
+	//void ClearAttackingZones();
 
 public:
 	CMario(float x, float y)
@@ -93,6 +94,7 @@ public:
 		is_full_power_time_out(FALSE),
 		is_completely_inside_pipe(FALSE),
 		is_pressed_breable_brick_switch(FALSE),
+		is_allow_adjust_bbox(TRUE),
 		weapon_monster(nullptr),
 		pipe(nullptr),
 		power(0),
@@ -103,7 +105,6 @@ public:
 		time_hit_start(0),
 		level(CGameData::GetInstance()->GetMarioLevel())
 	{
-		attacking_zones.clear();
 	}
 
 	~CMario()

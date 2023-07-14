@@ -4,8 +4,8 @@
 #include "objects/Mario.h"
 #include "scenes/PlayScene.h"
 #include "objects/Platform.h"
-#include <objects/materials/EffectManager.h>
-#include <GameData.h>
+#include "objects/materials/EffectManager.h"
+#include "GameData.h"
 
 void CMonster::OnNoCollision(DWORD dt)
 {
@@ -55,7 +55,10 @@ void CMonster::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
 	CMario* mario = dynamic_cast<CMario*>(e->obj);
 	if (!e->IsCollidedFromBottom())
-		mario->Die();
+	{
+		if (!mario->IsHitting())
+			mario->Die();
+	}
 }
 
 void CMonster::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
@@ -77,7 +80,6 @@ void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithMonster(e);
 
 	if (!e->obj->IsBlocking()) return;
-
 	if (e->IsCollidedInYDimension())
 	{
 		vy = 0;
@@ -104,6 +106,21 @@ void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 			ax = -ax;
 		}
 	}
+}
+
+void CMonster::InitVWhenMarioHit()
+{
+	LPPLAYSCENE scene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+	CMario* mario = scene ? dynamic_cast<CMario*>(scene->GetPlayer()) : nullptr;
+	if (mario)
+	{
+		vx = mario->GetNx() >= 0 ?
+			MONSTER_BE_HITTED_BY_MARIO_DEFLECT_VX :
+			-MONSTER_BE_HITTED_BY_MARIO_DEFLECT_VX;
+	}
+	vy = -MONSTER_BE_HITTED_BY_MARIO_DEFLECT_SPEED;
+	ay = GRAVITY;
+	ax = 0;
 }
 
 void CMonster::SetState(int state)
@@ -134,6 +151,11 @@ void CMonster::SetState(int state)
 		vx = fabs(vx) > 0 ? -fabs(vx) : -MONSTER_WALKING_SPEED;
 		ax = -fabs(ax);
 		break;
+	case MONSTER_STATE_BE_HITTED:
+	{
+		InitVWhenMarioHit();
+		break;
+	}
 	case MONSTER_STATE_WALKING_RIGHT:
 		// same as above
 		vy = 0;
@@ -203,7 +225,16 @@ int CMonster::CompareXWithMario()
 
 void CMonster::BeKickedByKoopa()
 {
+	is_deleted = TRUE;
+	is_kicked_by_koopa = TRUE;
 	CEffectManager::Gennerate(this, POINT_100, 0.0f);
 	CGameData::GetInstance()->IncreasePointBy(100);
-	is_deleted = true;
+}
+
+void CMonster::BeHitByMarioTail()
+{
+	is_deleted = TRUE;
+	is_mario_hitted = TRUE;
+	CEffectManager::Gennerate(this, POINT_100, 0.0f);
+	CGameData::GetInstance()->IncreasePointBy(100);
 }

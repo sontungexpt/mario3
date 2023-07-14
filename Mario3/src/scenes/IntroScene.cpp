@@ -117,12 +117,12 @@ void CIntroScene::UpdateCurtain(DWORD dt)
 
 void CIntroScene::RenderCurtain()
 {
-	LPANIMATION ani = CAnimations::GetInstance()->Get(ID_ANI_INTRO_CURTAIN);
+	/*LPANIMATION ani = CAnimations::GetInstance()->Get(ID_ANI_INTRO_CURTAIN);
 	float back_buffer_width = (float)CGame::GetInstance()->GetBackBufferWidth();
 	float back_buffer_height = (float)CGame::GetInstance()->GetBackBufferHeight();
 
-	int number_cell_width = ceil(back_buffer_width / INTRO_CURTAIN_BBOX_WIDTH);
-	int number_cell_height = ceil(back_buffer_height / INTRO_CURTAIN_BBOX_HEIGHT);
+	int number_cell_width = (int)ceil(back_buffer_width / INTRO_CURTAIN_BBOX_WIDTH);
+	int number_cell_height = (int)ceil(back_buffer_height / INTRO_CURTAIN_BBOX_HEIGHT);
 
 	for (int i = 0; i < number_cell_height; i++)
 	{
@@ -133,19 +133,31 @@ void CIntroScene::RenderCurtain()
 				INTRO_CURTAIN_BBOX_HEIGHT / 2 + i * INTRO_CURTAIN_BBOX_HEIGHT
 			);
 		}
-	}
+	}*/
 }
 
 void CIntroScene::Render()
 {
-	RenderCurtain();
+	//RenderCurtain();
 	for (int i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Render();
 	}
+	if (control_panel) control_panel->Render();
+
 	if (change_scene_effect) change_scene_effect->Render();
 }
+int CIntroScene::UpdateControlPanel(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
+{
+	if (!control_panel)
+		control_panel = new CIntroControlPanel(
+			SCREEN_WIDTH / 2.0f,
+			CGame::GetInstance()->GetBackBufferHeight() / 2.0f + 70
+		);
 
+	control_panel->Update(dt);
+	return 1;
+}
 void CIntroScene::Update(DWORD dt)
 {
 	vector<LPGAMEOBJECT> coObjects;
@@ -162,10 +174,14 @@ void CIntroScene::Update(DWORD dt)
 	}
 
 	UpdateCamera();
+	UpdateControlPanel(dt);
 	PurgeDeletedObjects();
 }
 
 void CIntroScene::Unload()
 {
+	if (control_panel)
+		delete control_panel;
+	control_panel = nullptr;
 	CPlayScene::Unload();
 }

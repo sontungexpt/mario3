@@ -10,12 +10,14 @@ protected:
 
 	ULONGLONG defend_time_start;
 	ULONGLONG comeback_time_start;
+	ULONGLONG hit_time_start;
 
 	BOOLEAN is_defend;
 	BOOLEAN is_comeback;
 	BOOLEAN is_mario_kicked;
 	BOOLEAN is_mario_holding;
 	BOOLEAN is_limit_moving_space;
+	BOOLEAN can_hit_again;
 
 	float limit_x_positive;
 	float limit_x_negative;
@@ -43,10 +45,12 @@ public:
 		is_comeback(FALSE),
 		is_mario_kicked(FALSE),
 		is_mario_holding(FALSE),
+		can_hit_again(TRUE),
 		is_limit_moving_space(is_limit_moving_space),
 		mario_speed_when_kicked(0.0f),
 		defend_time_start(-1),
 		comeback_time_start(-1),
+		hit_time_start(-1),
 		limit_x_positive(0.0f),
 		limit_x_negative(0.0f)
 
@@ -76,7 +80,9 @@ public:
 
 	virtual void MoveRight() { SetState(MONSTER_STATE_WALKING_RIGHT); }
 	virtual void MoveLeft() { SetState(MONSTER_STATE_WALKING_LEFT); }
+	virtual void StopMovingX() { SetState(KOOPA_STATE_BẸ_JUMP_ON_AFTER_KICKED); }
 
 	virtual void Die() { SetState(MONSTER_STATE_DIE); }
-	void BeKickedByKoopa();
+	virtual void BeKickedByKoopa();
+	virtual void BeHitByMarioTail();
 };

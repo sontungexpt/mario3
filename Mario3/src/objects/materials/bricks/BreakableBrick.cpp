@@ -16,12 +16,14 @@ void CBreakableBrick::CreateItem()
 	case BREAKABLE_BRICK_NONE:
 		break;
 	case BREAKABLE_BRICK_BUTTON:
+		if (is_created_switch) break;
 		((CBreakableBrickSwitch*)CCreatableBrick::CreateItemBehind(
 			new CBreakableBrickSwitch(
 				x,
 				y,
 				y - (BREAKABLE_BRICK_BBOX_HEIGHT + BREAKABLE_BRICK_SWITCH_BBOX_HEIGHT) / 2))
 			)->MoveOutBreakablerBrickSwitch();
+		is_created_switch = TRUE;
 		break;
 	default:
 		DebugOut(L"[ERROR] Can not handle item_type of question brick in CQuestionBrick::CreateItem(int state): ", item_type);
@@ -117,6 +119,7 @@ void CBreakableBrick::SetState(int state)
 	case BREAKABLE_BRICK_STATE_DISAPPEAR:
 		if (item_type == BREAKABLE_BRICK_BUTTON) return;
 		is_deleted = TRUE;
+		is_breaked = TRUE;
 		CreateItem();
 		break;
 	default:
@@ -134,4 +137,19 @@ void CBreakableBrick::OnCollisionWith(LPCOLLISIONEVENT e)
 void CBreakableBrick::Bounce()
 {
 	SetState(BREAKABLE_BRICK_STATE_BOUNCE);
+}
+
+void CBreakableBrick::Break()
+{
+	SetState(BREAKABLE_BRICK_STATE_BREAK);
+}
+
+void CBreakableBrick::BeMarioHit()
+{
+	if (is_breaked) return;
+	if (item_type == BREAKABLE_BRICK_BUTTON) {
+		Bounce();
+		return;
+	}
+	Break();
 }

@@ -4,12 +4,6 @@
 
 void CGameOverControlPanelKeyEventHandler::OnKeyDown(int KeyCode)
 {
-	if (KeyCode == DIK_ESCAPE)
-		CGame::GetInstance()->TogglePause();
-
-	// disable control key when pause game
-	if (CGame::GetInstance()->IsPaused())
-		return;
 	if (CGame::GetInstance()->IsInTransitionScene())
 		return;
 

@@ -30,4 +30,6 @@ public:
 
 	// reset to default state
 	void Defend();
+	void BeKickedByKoopa();
+	void BeHitByMarioTail();
 };

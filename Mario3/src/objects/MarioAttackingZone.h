@@ -12,6 +12,7 @@ class CMarioAttackingZone : public CGameObject
 	float height;
 
 	void OnCollisionWithMonster(LPCOLLISIONEVENT e);
+	void OnCollisiionWithCBreakableBrick(LPCOLLISIONEVENT e);
 
 public:
 
@@ -28,13 +29,13 @@ public:
 	void SetHeight(float height) { this->height = height; }
 	void SetWidth(float width) { this->width = width; }
 
-	void SetState(int state) {};
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void OnNoCollision(DWORD dt) {};
+	void SetState(int state) {};
 
 	int IsCollidable() { return 1; }
 	int IsBlocking() { return 0; }
 
+	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 };
 

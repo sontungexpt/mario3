@@ -109,3 +109,15 @@ void CWindGoomba::Die()
 	// if it has no wind, then it will die like a normal goomba
 	CGoomba::Die();
 }
+
+void CWindGoomba::BeKickedByKoopa()
+{
+	has_wind = FALSE;
+	CGoomba::BeKickedByKoopa();
+}
+
+void CWindGoomba::BeHitByMarioTail()
+{
+	has_wind = FALSE;
+	CGoomba::BeHitByMarioTail();
+}

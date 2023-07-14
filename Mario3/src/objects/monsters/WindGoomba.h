@@ -28,4 +28,6 @@ public:
 	void ReverseWind() { has_wind = TRUE; }
 
 	void Die();
+	void BeKickedByKoopa();
+	void BeHitByMarioTail();
 };

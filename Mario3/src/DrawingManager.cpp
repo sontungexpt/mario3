@@ -86,6 +86,8 @@ int CDrawingManager::GetAniIdChar(char char_)
 		return ID_ANI_CHAR_Z;
 	case '!':
 		return ID_ANI_CHAR_EXCLAMATION;
+	case '@':
+		return ID_ANI_CHAR_SHACKLE;
 	default:
 		return -1;
 	}

@@ -6,7 +6,8 @@
 void CPlant::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
 	CMario* mario = dynamic_cast<CMario*>(e->obj);
-	mario->Die();
+	if (!mario->IsHitting())
+		mario->Die();
 }
 
 void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

@@ -4,7 +4,7 @@ limit_time	300
 background_color	156.0	252.0	240.0	255
 
 [HIDDEN_MAPS]
--1	src\settings\scenes\scene7\hidden_map.txt
+-1	src\settings\scenes\scene8\hidden_map.txt
 
 [ASSETS]
 src\settings\objects\mario.txt
@@ -264,7 +264,7 @@ src\settings\objects\monsters\carnivorous_plant.txt
 
 # ENTERABLE PIPE
 12	354	621	1	1	2	1	-1
-12	2264	412	1	0	2	1	-1
+12	2263	413	1	0	2	1	-1
 
 # OUTERING PIPE
 13	2336	621	1	0	2	1	1
@@ -331,7 +331,7 @@ src\settings\objects\monsters\carnivorous_plant.txt
 60	2113	619	1
 
 # RANDOM CARD
-14	2570	570
+14	2560	570
 
 #Platform
 5	0	652	16	16	39	1000010	1000020	1000030	1	1

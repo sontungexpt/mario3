@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "objects/MarioLevelMap.h"
 #include "scenes/LevelMapScene.h"
+#include "configs/core/SceneIds.h"
 
 void CLevelMapKeyHandler::OnKeyDown(int KeyCode)
 {
@@ -33,7 +34,6 @@ void CLevelMapKeyHandler::OnKeyDown(int KeyCode)
 		mario->EnterDoor();
 		break;
 	case DIK_A:
-
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_LEVEL_MAP_STATE_MOVING_DOWN);
@@ -46,6 +46,10 @@ void CLevelMapKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_RIGHT:
 		mario->SetState(MARIO_LEVEL_MAP_STATE_MOVING_RIGHT);
+		break;
+	case DIK_R:
+		CGameData::GetInstance()->ClearOldData();
+		CGame::GetInstance()->InitiateSwitchScene(ID_INTRO_SCENE);
 		break;
 	default:
 		break;

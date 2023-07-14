@@ -121,3 +121,15 @@ void CWindKoopa::Defend()
 	// if it has no wind, then it will be a normal koopa
 	CKoopa::Defend();
 }
+
+void CWindKoopa::BeKickedByKoopa()
+{
+	has_wind = FALSE;
+	CKoopa::BeKickedByKoopa();
+}
+
+void CWindKoopa::BeHitByMarioTail()
+{
+	has_wind = FALSE;
+	CKoopa::BeHitByMarioTail();
+}

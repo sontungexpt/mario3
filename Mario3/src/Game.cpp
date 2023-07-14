@@ -535,7 +535,7 @@ void CGame::Load(LPCWSTR gameFile)
 
 	DebugOut(L"[INFO] Loading game file : %s has been loaded successfully\n", gameFile);
 
-	CGameData::GetInstance()->CreateNewGame();
+	//CGameData::GetInstance()->CreateNewGame();
 	SwitchScene();
 }
 
@@ -583,11 +583,13 @@ void CGame::SwitchScene()
 
 void CGame::InitiateSwitchScene(int scene_id)
 {
-	next_scene = scene_id;
-
-	// scene will not switch immediately, but wait until the current scene is done
-	switch_scene_time_start = GetTickCount64();
-	CEffectManager::GennerateChangeScene();
+	if (next_scene != scene_id)
+	{
+		next_scene = scene_id;
+		// scene will not switch immediately, but wait until the current scene is done
+		switch_scene_time_start = GetTickCount64();
+		CEffectManager::GennerateChangeScene();
+	}
 }
 
 /// <summary>

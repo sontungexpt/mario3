@@ -1,6 +1,5 @@
 ﻿#include <algorithm>
 #include "debug.h"
-
 #include "components/Collision/Collision.h"
 #include "scenes/PlayScene.h"
 
@@ -73,13 +72,21 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->IsCollidedInXDimension() && e->obj->IsBlocking())
 	{
 		vx = 0;
+		is_allow_adjust_bbox = FALSE;
 	}
 }
 
 // collision with monster
+
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+	if (is_hitting)
+	{
+		koopa->BeHitByMarioTail();
+		return;
+	}
+
 	if (!koopa->IsDefend())
 	{
 		if (e->IsCollidedFromTop())
@@ -107,7 +114,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		{
 			CEffectManager::Gennerate(koopa, POINT_100);
 			CGameData::GetInstance()->IncreasePointBy(100);
-
+			koopa->StopMovingX();
 			JumpDeflect();
 			return;
 		}
@@ -128,12 +135,23 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
+	CPlant* plant = dynamic_cast<CPlant*>(e->obj);
+	if (is_hitting)
+	{
+		plant->BeHitByMarioTail();
+		return;
+	}
 	Die();
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+	if (is_hitting)
+	{
+		goomba->BeHitByMarioTail();
+		return;
+	}
 
 	// jump on top >> kill Goomba and deflect a bit
 	if (e->IsCollidedFromTop())
@@ -187,11 +205,19 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
 {
-	if (e->IsCollidedFromBottom())
+	CBreakableBrick* breakable_brick = dynamic_cast<CBreakableBrick*>(e->obj);
+
+	if (is_hitting)
 	{
-		CBreakableBrick* breakable_brick = dynamic_cast<CBreakableBrick*>(e->obj);
-		breakable_brick->Bounce();
+		if (breakable_brick->GetItemType() == BREAKABLE_BRICK_BUTTON)
+			breakable_brick->Bounce();
+		else
+			breakable_brick->Break();
+		return;
 	}
+
+	if (e->IsCollidedFromBottom())
+		breakable_brick->Bounce();
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
@@ -534,6 +560,7 @@ void CMario::Render()
 		aniId = GetAniIdSmall();
 	else if (level == MARIO_LEVEL_TAIL_SUIT)
 		aniId = GetAniIdTail();
+
 	CAnimations* animations = CAnimations::GetInstance();
 	LPANIMATION ani = animations->Get(aniId);
 	if (ani != nullptr)
@@ -578,54 +605,63 @@ void CMario::UpdateV(DWORD dt)
 		vy = 0;
 	}
 }
-void CMario::UpdatePositionAttackingZone(DWORD dt)
-{
-	if (level != MARIO_LEVEL_TAIL_SUIT) return;
 
-	LPPLAYSCENE scene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
-	if (!scene) return;
+//void CMario::UpdatePositionAttackingZone(DWORD dt)
+//{
+//	if (level != MARIO_LEVEL_TAIL_SUIT)
+//	{
+//		ClearAttackingZones();
+//		return;
+//	}
+//
+//	LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
+//	if (!scene) return;
+//
+//	float mario_right = GetRight();
+//	float mario_left = GetLeft();
+//	float attacking_height = GetHeight();
+//	float attacking_y = is_on_platform ? y : y + vy * dt;
+//	float each_attacking_width = (MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH + 10) / MARIO_ACCURACY_LEVEL_WHEN_HITTING;
+//	float attacking_zone_x = nx > 0 ? mario_right + vx * dt : mario_left + vx * dt;
+//
+//	for (size_t i = 0; i < attacking_zones.size(); i++)
+//	{
+//		if (!attacking_zones[i]) {
+//			DebugOut(L"Invalid attacking zone pointer\n");
+//			continue;
+//		}
+//
+//		attacking_zones[i]->SetPosition(attacking_zone_x, attacking_y);
+//		attacking_zones[i]->SetHeight(attacking_height);
+//
+//		attacking_zone_x += nx > 0 ? each_attacking_width : -each_attacking_width;
+//	}
+//
+//	if (attacking_zones.size() < MARIO_ACCURACY_LEVEL_WHEN_HITTING)
+//	{
+//		attacking_zones.resize(MARIO_ACCURACY_LEVEL_WHEN_HITTING);
+//		for (size_t i = 0; i < MARIO_ACCURACY_LEVEL_WHEN_HITTING; i++)
+//		{
+//			LPMARIO_ATTACKINGZONE attacking_zone =
+//				(LPMARIO_ATTACKINGZONE)scene->AddObject(
+//					new CMarioAttackingZone(
+//						attacking_zone_x,
+//						attacking_y,
+//						each_attacking_width,
+//						attacking_height
+//					));
+//			attacking_zones[i] = attacking_zone;
+//			attacking_zone_x += nx > 0 ? each_attacking_width : -each_attacking_width;
+//		}
+//	}
+//}
 
-	float mario_right = GetRight();
-	float mario_left = GetLeft();
-	float attacking_height = GetHeight();
-	float attacking_y = is_on_platform ? y : y + vy * dt;
-
-	float each_attacking_width = (MARIO_BIG_TAIL_SUIT_BBOX_WIDTH - MARIO_BIG_BBOX_WIDTH + 5) / MARIO_ACCURACY_LEVEL_WHEN_HITTING;
-	float attacking_zone_x = nx > 0 ? mario_right : mario_left;
-
-	for (auto it = attacking_zones.begin(); it != attacking_zones.end();)
-	{
-		if (!(*it)) {
-			DebugOut(L"Invalid attacking zone pointer\n");
-			it = attacking_zones.erase(it);
-			continue;
-		}
-
-		(*it)->SetPosition(attacking_zone_x, attacking_y);
-		(*it)->SetHeight(attacking_height);
-
-		attacking_zone_x += nx > 0 ? each_attacking_width : -each_attacking_width;
-		++it;
-	}
-
-	while (attacking_zones.size() < MARIO_ACCURACY_LEVEL_WHEN_HITTING)
-	{
-		LPMARIO_ATTACKINGZONE attacking_zone = (LPMARIO_ATTACKINGZONE)scene->AddObject(new CMarioAttackingZone(
-			attacking_zone_x,
-			attacking_y,
-			each_attacking_width,
-			attacking_height
-		));
-		attacking_zones.push_back(attacking_zone);
-
-		attacking_zone_x += nx > 0 ? each_attacking_width : -each_attacking_width;
-	}
-}
 void CMario::UpdateHittingState()
 {
 	if (is_hitting && GetTickCount64() - time_hit_start > MARIO_HITTING_TIMEOUT)
 	{
 		is_hitting = FALSE;
+		is_allow_adjust_bbox = TRUE;
 		time_hit_start = 0;
 	}
 }
@@ -647,6 +683,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (IsWinScene())
 	{
+		CGameData* game_data = CGameData::GetInstance();
+		if (game_data->GetRemainTime() == 0)
+			CGame::GetInstance()->InitiateSwitchScene(ID_LEVEL_MAP_SCENE);
+		else
+			game_data->CountDownAndAddScore();
 		CCollision::GetInstance()->Process(this, dt, coObjects);
 		return;
 	}
@@ -734,7 +775,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	UpdatePower();
 	UpdateHittingState();
-	//UpdatePositionAttackingZone(dt);
 
 	ResetPositionIfOutOfWidthScreen(x, y);
 
@@ -827,7 +867,6 @@ void CMario::SetState(int state)
 		if (is_sitting) break;
 		if (!HasTail()) break;
 		break;
-
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (is_sitting) break;
 		max_vx = MARIO_RUNNING_SPEED;
@@ -897,7 +936,6 @@ void CMario::SetState(int state)
 		vy = 0;
 		CGameData* data = CGameData::GetInstance();
 		data->SetMaxDoorLevelPassed(data->GetEntryDoorLevel());
-		CGame::GetInstance()->InitiateSwitchScene(ID_LEVEL_MAP_SCENE);
 	}
 	break;
 	case MARIO_STATE_DIE:
@@ -959,7 +997,26 @@ void CMario::GetBoundingBoxBig(float& left, float& top, float& right, float& bot
 
 void CMario::GetBoundingBoxTail(float& left, float& top, float& right, float& bottom)
 {
-	if (nx > 0)
+	if (is_sitting)
+	{
+		left = x - MARIO_BIG_TAIL_SUIT_BBOX_WIDTH / 2;
+		top = y - MARIO_BIG_SITTING_BBOX_HEIGHT / 2;
+		right = left + MARIO_BIG_TAIL_SUIT_BBOX_WIDTH;
+		bottom = top + MARIO_BIG_SITTING_BBOX_HEIGHT;
+	}
+	else
+	{
+		left = x - MARIO_BIG_TAIL_SUIT_BBOX_WIDTH / 2;
+		top = y - MARIO_BIG_BBOX_HEIGHT / 2;
+		right = left + MARIO_BIG_TAIL_SUIT_BBOX_WIDTH;
+		bottom = top + MARIO_BIG_BBOX_HEIGHT;
+		if (is_allow_adjust_bbox && is_hitting)
+		{
+			right += nx > 0 ? MARIO_BIG_TAIL_SUIT_BBOX_WIDTH_ADJUST_HITTING : -MARIO_BIG_TAIL_SUIT_BBOX_WIDTH_ADJUST_HITTING;
+			left += nx > 0 ? MARIO_BIG_TAIL_SUIT_BBOX_WIDTH_ADJUST_HITTING : -MARIO_BIG_TAIL_SUIT_BBOX_WIDTH_ADJUST_HITTING;
+		}
+	}
+	/*if (nx > 0)
 	{
 		if (is_sitting)
 		{
@@ -992,7 +1049,7 @@ void CMario::GetBoundingBoxTail(float& left, float& top, float& right, float& bo
 			right = left + MARIO_BIG_BBOX_WIDTH;
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
-	}
+	}*/
 }
 
 void CMario::GetBoundingBoxSmall(float& left, float& top, float& right, float& bottom)
@@ -1002,7 +1059,6 @@ void CMario::GetBoundingBoxSmall(float& left, float& top, float& right, float& b
 	right = left + MARIO_SMALL_BBOX_WIDTH;
 	bottom = top + MARIO_SMALL_BBOX_HEIGHT;
 }
-
 void CMario::UpdatePower()
 {
 	if (is_flying && GetTickCount64() - time_fly_start > MARIO_POWER_DURATION_FLY)
@@ -1067,15 +1123,15 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 		GetBoundingBoxSmall(left, top, right, bottom);
 }
 
-void CMario::ClearAttackingZones()
-{
-	for (size_t i = 0; i < attacking_zones.size(); i++)
-	{
-		attacking_zones[i]->Delete();
-		attacking_zones[i] == nullptr;
-	}
-	attacking_zones.clear();
-}
+//void CMario::ClearAttackingZones()
+//{
+//	for (size_t i = 0; i < attacking_zones.size(); i++)
+//	{
+//		attacking_zones[i]->Delete();
+//		attacking_zones[i] = nullptr;
+//	}
+//	attacking_zones.clear();
+//}
 
 void CMario::SetLevel(int level)
 {
@@ -1103,6 +1159,7 @@ void CMario::SetLevel(int level)
 	}
 
 	is_appearance_changing = TRUE;
+	is_hitting = FALSE;
 	StartUntouchable();
 	this->level = level;
 	CGameData::GetInstance()->SetMarioLevel(level);

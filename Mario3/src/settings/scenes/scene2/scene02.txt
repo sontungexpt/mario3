@@ -264,7 +264,7 @@ src\settings\objects\monsters\carnivorous_plant.txt
 
 # ENTERABLE PIPE
 12	354	621	1	1	2	1	-1
-12	2264	412	1	0	2	1	-1
+12	2263	413	1	0	2	1	-1
 
 # OUTERING PIPE
 13	2336	621	1	0	2	1	1
@@ -331,7 +331,7 @@ src\settings\objects\monsters\carnivorous_plant.txt
 60	2113	619	1
 
 # RANDOM CARD
-14	2570	570
+14	2560	570
 
 #Platform
 5	0	652	16	16	39	1000010	1000020	1000030	1	1

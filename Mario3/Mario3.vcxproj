@@ -135,6 +135,7 @@
     <ClCompile Include="src\DrawingManager.cpp" />
     <ClCompile Include="src\GameData.cpp" />
     <ClCompile Include="src\objects\GameOverControlPanel.cpp" />
+    <ClCompile Include="src\objects\IntroControlPanel.cpp" />
     <ClCompile Include="src\objects\items\BreakableBrickSwitch.cpp" />
     <ClCompile Include="src\objects\items\LifeUpMushroom.cpp" />
     <ClCompile Include="src\objects\items\RandomCard.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="src\DrawingManager.h" />
     <ClInclude Include="src\GameData.h" />
     <ClInclude Include="src\objects\GameOverControlPanel.h" />
+    <ClInclude Include="src\objects\IntroControlPanel.h" />
     <ClInclude Include="src\objects\items\BreakableBrickSwitch.h" />
     <ClInclude Include="src\objects\items\LifeUpMushroom.h" />
     <ClInclude Include="src\objects\items\RandomCard.h" />

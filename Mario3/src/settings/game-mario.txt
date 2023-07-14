@@ -1,5 +1,5 @@
 [SETTINGS]
-start	10
+start	11
 width	310
 height	240
 
@@ -47,3 +47,4 @@ height	240
 190	src\assets\textures\card.png
 200	src\assets\textures\enemies_3.png
 210	src\assets\textures\misc-4.png
+220	src\assets\textures\title.png

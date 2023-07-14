@@ -267,11 +267,28 @@ int CLevelMapScene::UpdateGameOverPanel(DWORD dt, vector<LPGAMEOBJECT>* co_objec
 	}
 }
 
+void CLevelMapScene::UpdateTimeShowDialog()
+{
+	if (CGameData::GetInstance()->IsShowNewGameDialog())
+	{
+		if (show_dialog_time_start <= 0)
+			show_dialog_time_start = GetTickCount64();
+		else
+		{
+			if (GetTickCount64() - show_dialog_time_start > TIME_OUT_SHOW_DIALOG_NEW_GAME)
+			{
+				CGameData::GetInstance()->SetIsShowNewGameDialog(FALSE);
+				show_dialog_time_start = 0;
+			}
+		}
+	}
+}
+
 int CLevelMapScene::UpdateShowNewGameDialog()
 {
 	if (IsShowNewGameDialog())
 	{
-		CGameData::GetInstance()->UpdateShowNewGameDialog();
+		UpdateTimeShowDialog();
 		is_showed_follow_mario_effect = FALSE;
 		return 1;
 	}

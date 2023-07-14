@@ -183,6 +183,9 @@
     <ClCompile Include="src\objects\items\BreakableBrickSwitch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\IntroControlPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\Animation\Animation.h">
@@ -468,6 +471,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\configs\items\BreakableBrickSwitch304000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\IntroControlPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

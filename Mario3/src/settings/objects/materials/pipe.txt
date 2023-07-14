@@ -1,7 +1,7 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 # PIPE LONG UP GREEN
-101001	2	27	34	75	60
+101001	2	27	33	74	60
 
 # PIPE SHORT UP GREEN
 101002	2	27	34	59	60

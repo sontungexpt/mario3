@@ -92,7 +92,6 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		CGame::GetInstance()->InitiateSwitchScene(ID_LEVEL_MAP_SCENE);
 		break;
 	case DIK_R: // reset
-		//Reload();
 		break;
 	default:
 		break;

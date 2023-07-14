@@ -1,6 +1,6 @@
 #pragma once
 #include <Windows.h>
-
+#include "Game.h"
 #include "configs/GameData.h"
 #include "configs/Mario.h"
 #include "configs/Game.h"
@@ -38,6 +38,7 @@ class CGameData {
 	ULONGLONG count_down_time_start;
 	ULONGLONG show_dialog_time_start;
 	ULONGLONG remain_time;
+	ULONGLONG init_remain_time;
 
 	vector<CRandomCard::RandomItem> available_items;
 
@@ -47,6 +48,7 @@ public:
 		player_coin = 0;
 		player_point = 0;
 		remain_time = 0;
+		init_remain_time = 0;
 		entry_door_level = 0;
 		count_down_time_start = 0;
 		show_dialog_time_start = 0;
@@ -97,24 +99,20 @@ public:
 	BOOLEAN IsGameOver() { return is_lost_life == TRUE && player_life < 0; }
 
 	void CountDownRemainTime();
-	void InitRemainTime(ULONGLONG remain_time) { this->remain_time = remain_time; };
+	void CountDownAndAddScore();
+	void InitRemainTime(ULONGLONG remain_time) {
+		this->init_remain_time = remain_time;
+		this->remain_time = remain_time;
+	};
+	ULONGLONG GetInitRemainTime() { return init_remain_time; };
 	void SetRemainTime(ULONGLONG remain_time) { this->remain_time = remain_time; };
 	ULONGLONG GetRemainTime() { return remain_time; };
 
 	void SetMarioLevel(int mario_level) { this->mario_level = mario_level; };
 	int GetMarioLevel() { return mario_level; };
 
+	void SetIsShowNewGameDialog(BOOLEAN is_show_new_game_dialog) { this->is_show_new_game_dialog = is_show_new_game_dialog; };
 	BOOLEAN IsShowNewGameDialog() { return is_show_new_game_dialog; };
-	BOOLEAN IsStoppedUpdateNewGameDialog() { return !is_show_new_game_dialog && show_dialog_time_start == 0; };
-	void UpdateShowNewGameDialog()
-	{
-		if (show_dialog_time_start &&
-			GetTickCount64() - show_dialog_time_start > TIME_OUT_SHOW_DIALOG_NEW_GAME)
-		{
-			is_show_new_game_dialog = FALSE;
-			show_dialog_time_start = 0;
-		}
-	};
 
 	void CreateNewGame() {
 		ClearOldData();
@@ -129,6 +127,7 @@ public:
 		player_coin = 0;
 		player_point = 0;
 		remain_time = 0;
+		init_remain_time = 0;
 		entry_door_level = 0;
 		count_down_time_start = 0;
 		show_dialog_time_start = 0;
@@ -137,7 +136,6 @@ public:
 		is_lost_life = FALSE;
 		is_show_new_game_dialog = FALSE;
 		mario_level = MARIO_LEVEL_SMALL;
-
 		available_items.clear();
 	}
 };

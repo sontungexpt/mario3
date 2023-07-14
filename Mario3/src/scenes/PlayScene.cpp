@@ -366,7 +366,10 @@ void CPlayScene::_ParseSection_SETTINGS(string line)
 	if (tokens.size() < 2) return;
 	if (tokens[0] == "limit_time")
 	{
-		CGameData::GetInstance()->InitRemainTime(atoi(tokens[1].c_str()));
+		CGameData* data = CGameData::GetInstance();
+		if (data->IsMoveOutHiddenMap())
+			return;
+		data->InitRemainTime(atoi(tokens[1].c_str()));
 	}
 	else if (tokens[0] == "background_color")
 	{
@@ -545,6 +548,7 @@ void CPlayScene::Update(DWORD dt)
 
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way
+
 	vector<LPGAMEOBJECT> coObjects;
 
 	for (size_t i = 0; i < objects.size(); i++)

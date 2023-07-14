@@ -1,4 +1,4 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include "debug.h"
 #include "components/Scene/Scene.h"
 #include "scenes/PlayScene.h"
@@ -49,7 +49,10 @@ void CKoopa::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
 	CMario* mario = dynamic_cast<CMario*>(e->obj);
 	if (!is_defend && !is_mario_holding && !e->IsCollidedFromBottom())
-		mario->Die();
+	{
+		if (!mario->IsHitting())
+			mario->Die();
+	}
 }
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -73,6 +76,10 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 			limit_x_negative = l;
 			limit_x_positive = r;
 			is_on_platform = TRUE;
+		}
+		if ((is_kicked_by_koopa || is_mario_hitted) && is_defend && !is_mario_kicked)
+		{
+			vx = 0;
 		}
 	}
 
@@ -143,14 +150,17 @@ int CKoopa::GetAniIdRed()
 	case KOOPA_STATE_COMEBACK:
 		return ID_ANI_KOOPA_RED_COMEBACK;
 	case KOOPA_STATE_DEFEND:
-		return ID_ANI_KOOPA_RED_DEFEND;
 	case KOOPA_STATE_IS_HOLDING:
+		if (is_mario_hitted)
+			return ID_ANI_KOOPA_RED_DEFEND_OVERTURNED;
 		return ID_ANI_KOOPA_RED_DEFEND;
 	case MONSTER_STATE_WALKING_LEFT:
 		return ID_ANI_KOOPA_RED_WALKING_LEFT;
 	case MONSTER_STATE_WALKING_RIGHT:
 		return ID_ANI_KOOPA_RED_WALKING_RIGHT;
 	case KOOPA_STATE_IS_KICKED:
+		if (is_mario_hitted)
+			return ID_ANI_KOOPA_RED_IS_KICKED_OVERTURNED;
 		return ID_ANI_KOOPA_RED_IS_KICKED;
 	default:
 		return -1;
@@ -163,14 +173,17 @@ int CKoopa::GetAniIdGreen()
 	case KOOPA_STATE_COMEBACK:
 		return ID_ANI_KOOPA_GREEN_COMEBACK;
 	case KOOPA_STATE_DEFEND:
-		return ID_ANI_KOOPA_GREEN_DEFEND;
 	case KOOPA_STATE_IS_HOLDING:
+		if (is_mario_hitted)
+			return ID_ANI_KOOPA_GREEN_DEFEND_OVERTURNED;
 		return ID_ANI_KOOPA_GREEN_DEFEND;
 	case MONSTER_STATE_WALKING_LEFT:
 		return ID_ANI_KOOPA_GREEN_WALKING_LEFT;
 	case MONSTER_STATE_WALKING_RIGHT:
 		return ID_ANI_KOOPA_GREEN_WALKING_RIGHT;
 	case KOOPA_STATE_IS_KICKED:
+		if (is_mario_hitted)
+			return ID_ANI_KOOPA_GREEN_IS_KICKED_OVERTURNED;
 		return ID_ANI_KOOPA_GREEN_IS_KICKED;
 	default:
 		return -1;
@@ -211,6 +224,14 @@ void CKoopa::SetState(int state)
 		}
 	}
 	break;
+	case KOOPA_STATE_BẸ_JUMP_ON_AFTER_KICKED:
+		is_comeback = FALSE;
+		is_mario_holding = FALSE;
+		is_mario_kicked = FALSE;
+		is_defend = TRUE; // defend again if not completely comeback
+		SetState(KOOPA_STATE_DEFEND);
+		break;
+
 	case KOOPA_STATE_COMEBACK:
 		is_comeback = TRUE;
 		comeback_time_start = GetTickCount64();
@@ -251,6 +272,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 
 	// koopa only comeback if it is not kicked by mario
 	if (!is_mario_kicked && is_defend &&
+		!is_mario_hitted && !is_kicked_by_koopa &&
 		GetTickCount64() - defend_time_start > KOOPA_DEFEND_TIMEOUT)
 	{
 		if (!is_comeback)
@@ -292,6 +314,9 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 			SetState(MONSTER_STATE_WALKING_LEFT);
 	}
 
+	if (!can_hit_again && GetTickCount64() - hit_time_start > KOOPA_HIT_TIMEOUT)
+		can_hit_again = TRUE;
+
 	is_on_platform = FALSE;
 
 	vy += ay * dt;
@@ -312,8 +337,39 @@ void CKoopa::BeHold()
 
 void CKoopa::BeKickedByKoopa()
 {
+	if (!can_hit_again) return;
+
+	if (is_kicked_by_koopa) {
+		is_deleted = TRUE;
+	}
+	else
+	{
+		is_kicked_by_koopa = TRUE;
+		SetState(KOOPA_STATE_DEFEND);
+		CMonster::InitVWhenMarioHit();
+	}
 	CEffectManager::Gennerate(this, POINT_100, 0.0f);
-	is_deleted = true;
+	CGameData::GetInstance()->IncreasePointBy(100);
+	can_hit_again = FALSE;
+	hit_time_start = GetTickCount64();
+}
+
+void CKoopa::BeHitByMarioTail()
+{
+	if (!can_hit_again) return;
+	if (is_mario_hitted) {
+		is_deleted = TRUE;
+	}
+	else
+	{
+		is_mario_hitted = TRUE;
+		SetState(KOOPA_STATE_DEFEND);
+		CMonster::InitVWhenMarioHit();
+	}
+	CGameData::GetInstance()->IncreasePointBy(100);
+	CEffectManager::Gennerate(this, POINT_100, 0.0f);
+	can_hit_again = FALSE;
+	hit_time_start = GetTickCount64();
 }
 
 void CKoopa::Defend()

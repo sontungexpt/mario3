@@ -13,6 +13,8 @@ private:
 	CEffect* star_follow_mario_effect;
 	BOOLEAN is_showed_follow_mario_effect;
 
+	ULONGLONG show_dialog_time_start;
+
 	float start_x;
 	float start_y;
 
@@ -33,6 +35,7 @@ private:
 	BOOLEAN IsShowNewGameDialog();
 
 	int UpdateGameOverPanel(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr);
+	void UpdateTimeShowDialog();
 	int UpdateShowNewGameDialog();
 	void UpdateHud(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr);
 	void UpdateCamera();
@@ -45,13 +48,13 @@ private:
 	}
 
 public:
-
-	CLevelMapScene(int id, LPCWSTR filePath) : CPlayScene(id, filePath)
+	CLevelMapScene(int id, LPCWSTR filePath) : CPlayScene(id, filePath),
+		show_dialog_time_start(0),
+		star_follow_mario_effect(nullptr),
+		is_showed_follow_mario_effect(FALSE)
 	{
-		SetPlayerStartPos(0, 0);
 		game_over_control_panel = nullptr;
-		star_follow_mario_effect = nullptr;
-		is_showed_follow_mario_effect = FALSE;
+		SetPlayerStartPos(0, 0);
 		key_handler = new CLevelMapKeyHandler(this);
 	};
 	void Render();

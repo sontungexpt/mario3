@@ -13,6 +13,8 @@ protected:
 	BOOLEAN dead; // is dead or not
 	BOOLEAN is_enemy; // is enemy with mario or not
 	BOOLEAN is_on_platform; // is on platform or not
+	BOOLEAN is_mario_hitted; // is on platform or not
+	BOOLEAN is_kicked_by_koopa; // is on platform or not
 
 	ULONGLONG dead_time; // time die
 	ULONGLONG disapear_time; // time to disappear after dead
@@ -35,7 +37,8 @@ public:
 	CMonster(float x = 0, float y = 0, ULONGLONG disapear_time = MONSTER_DISAPPEAR_TIME)
 		: CGameObject(x, y, MONSTER_WALKING_SPEED, 0, 0, GRAVITY, -1, -1, MONSTER_STATE_WALKING_LEFT, 1, 0),
 		dead_time(0), disapear_time(disapear_time),
-		dead(FALSE), is_enemy(TRUE), is_on_platform(FALSE)
+		dead(FALSE), is_enemy(TRUE), is_on_platform(FALSE),
+		is_mario_hitted(FALSE), is_kicked_by_koopa(FALSE)
 	{
 		SetState(MONSTER_STATE_WALKING_LEFT);
 	};
@@ -71,6 +74,8 @@ public:
 	virtual void OnNoCollision(DWORD dt);
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
+	void InitVWhenMarioHit();
+
 	virtual int IsEnemy() { return is_enemy; }
 	virtual void SetIsEnemy(BOOLEAN is_enemy) { this->is_enemy = is_enemy; }
 
@@ -99,10 +104,11 @@ public:
 	int CompareXWithMario(); //1 if mario left to plant, -1 if mario right to plant
 
 	// this part is a other name for the same state
-	BOOLEAN IsDead() { return dead == TRUE; }
+	virtual BOOLEAN IsDead() { return dead == TRUE; }
 	virtual void Die() { SetState(MONSTER_STATE_DIE); }
 
 	virtual void BeKickedByKoopa();
+	virtual void BeHitByMarioTail();
 };
 
 typedef  CMonster* LPMONSTER;
