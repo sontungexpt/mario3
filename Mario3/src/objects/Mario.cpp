@@ -66,6 +66,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 			is_full_power_time_out = FALSE;
 			is_flying = FALSE;
 			is_on_platform = TRUE;
+			ay = MARIO_GRAVITY;
 		}
 		vy = 0;
 	}
@@ -596,9 +597,13 @@ void CMario::UpdateV(DWORD dt)
 
 	if (fabs(vx) > fabs(max_vx))
 		vx = max_vx;
-	if (is_flying && vy < max_vy)
-		vy = max_vy;
-
+	if (is_flying)
+	{
+		if (vy < max_vy)
+			vy = max_vy;
+		else if (vy > 0 && vy > MARIO_FLY_FALLING_SPEED)
+			vy = MARIO_FLY_FALLING_SPEED;
+	}
 	if (is_appearance_changing)
 	{
 		vx = 0;
@@ -866,6 +871,8 @@ void CMario::SetState(int state)
 	case MARIO_STATE_FLY_RELEASE:
 		if (is_sitting) break;
 		if (!HasTail()) break;
+		if (is_flying)
+			ay = 0.0005f;
 		break;
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (is_sitting) break;
@@ -1016,40 +1023,6 @@ void CMario::GetBoundingBoxTail(float& left, float& top, float& right, float& bo
 			left += nx > 0 ? MARIO_BIG_TAIL_SUIT_BBOX_WIDTH_ADJUST_HITTING : -MARIO_BIG_TAIL_SUIT_BBOX_WIDTH_ADJUST_HITTING;
 		}
 	}
-	/*if (nx > 0)
-	{
-		if (is_sitting)
-		{
-			left = x + MARIO_BIG_TAIL_SUIT_BBOX_WIDTH / 2 - MARIO_BIG_BBOX_WIDTH;
-			top = y - MARIO_BIG_SITTING_BBOX_HEIGHT / 2;
-			right = left + MARIO_BIG_BBOX_WIDTH;
-			bottom = top + MARIO_BIG_SITTING_BBOX_HEIGHT;
-		}
-		else
-		{
-			left = x + MARIO_BIG_TAIL_SUIT_BBOX_WIDTH / 2 - MARIO_BIG_BBOX_WIDTH;
-			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
-			right = left + MARIO_BIG_BBOX_WIDTH;
-			bottom = top + MARIO_BIG_BBOX_HEIGHT;
-		}
-	}
-	else
-	{
-		if (is_sitting)
-		{
-			left = x - MARIO_BIG_TAIL_SUIT_BBOX_WIDTH / 2;
-			top = y - MARIO_BIG_SITTING_BBOX_HEIGHT / 2;
-			right = left + MARIO_BIG_BBOX_WIDTH;
-			bottom = top + MARIO_BIG_SITTING_BBOX_HEIGHT;
-		}
-		else
-		{
-			left = x - MARIO_BIG_TAIL_SUIT_BBOX_WIDTH / 2;
-			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
-			right = left + MARIO_BIG_BBOX_WIDTH;
-			bottom = top + MARIO_BIG_BBOX_HEIGHT;
-		}
-	}*/
 }
 
 void CMario::GetBoundingBoxSmall(float& left, float& top, float& right, float& bottom)

@@ -220,6 +220,8 @@ public:
 	void StopHitting() { is_hitting = FALSE; }
 	bool IsHitting() { return  is_hitting && HasTail(); }
 
+	BOOLEAN IsFlying() { return is_flying; }
+
 	void StartUntouchable() { SetState(MARIO_STATE_UNTOUCHABLE); }
 	void JumpDeflect() { vy = -MARIO_JUMP_DEFLECT_SPEED; }
 
