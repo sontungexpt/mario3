@@ -1032,6 +1032,7 @@ void CMario::GetBoundingBoxSmall(float& left, float& top, float& right, float& b
 	right = left + MARIO_SMALL_BBOX_WIDTH;
 	bottom = top + MARIO_SMALL_BBOX_HEIGHT;
 }
+
 void CMario::UpdatePower()
 {
 	if (is_flying && GetTickCount64() - time_fly_start > MARIO_POWER_DURATION_FLY)

@@ -341,6 +341,7 @@ void CKoopa::BeKickedByKoopa()
 
 	if (is_kicked_by_koopa) {
 		is_deleted = TRUE;
+		dead = TRUE;
 	}
 	else
 	{
@@ -359,6 +360,7 @@ void CKoopa::BeHitByMarioTail()
 	if (!can_hit_again) return;
 	if (is_mario_hitted) {
 		is_deleted = TRUE;
+		dead = TRUE;
 	}
 	else
 	{

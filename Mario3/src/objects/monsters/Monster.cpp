@@ -79,19 +79,17 @@ void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CMonster*>(e->obj))
 		OnCollisionWithMonster(e);
 
-	if (!e->obj->IsBlocking()) return;
-	if (e->IsCollidedInYDimension())
+	if (e->obj->IsBlocking() && e->IsCollidedInYDimension())
 	{
 		vy = 0;
 		if (e->IsCollidedFromTop())
 		{
-			OnCollisionWithPlatForm(e);
 			is_on_platform = TRUE;
 		}
 	}
 
 	// collide with blocking
-	if (e->IsCollidedInXDimension())
+	if (e->obj->IsBlocking() && e->IsCollidedInXDimension())
 	{
 		// meet the blocking then change direction
 		if (state == MONSTER_STATE_WALKING_LEFT ||
@@ -193,7 +191,11 @@ void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 
 	if (max_vx > 0 && abs(vx) > max_vx)
 		vx = vx > 0 ? max_vx : -max_vx;
-
+	if (is_on_platform && vy > 0)
+	{
+		vy = 0;
+		y -= 0.6f;
+	}
 	is_on_platform = FALSE;
 	CCollision::GetInstance()->Process(this, dt, co_objects);
 }
@@ -233,8 +235,8 @@ void CMonster::BeKickedByKoopa()
 
 void CMonster::BeHitByMarioTail()
 {
-	is_deleted = TRUE;
 	is_mario_hitted = TRUE;
 	CEffectManager::Gennerate(this, POINT_100, 0.0f);
 	CGameData::GetInstance()->IncreasePointBy(100);
+	is_deleted = TRUE;
 }

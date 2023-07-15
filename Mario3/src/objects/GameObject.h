@@ -88,6 +88,10 @@ public:
 	float GetVy() { return vy; }
 	void SetVx(float vx) { this->vx = vx; }
 	void SetVy(float vy) { this->vy = vy; }
+	void SetAx(float ax) { this->ax = ax; }
+	void SetAy(float ay) { this->ay = ay; }
+	float GetAx() { return ax; }
+	float GetAy() { return ay; }
 
 	// delete
 	virtual void Delete() { is_deleted = true; }
