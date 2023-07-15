@@ -116,7 +116,8 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_S:
-		mario->SetState(MARIO_STATE_RELEASE_JUMP);
+		if (!mario->IsFlying())
+			mario->SetState(MARIO_STATE_RELEASE_JUMP);
 		break;
 	case DIK_DOWN:
 		if (mario->IsEnteringPipe()) break;

@@ -20,7 +20,7 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);
 		break;
 	case WM_CHAR:
-		DebugOut(L"[INFO] key: %c\n", wParam);
+		//	DebugOut(L"[INFO] key: %c\n", wParam);
 		break;
 	case WM_KEYDOWN:
 		//DebugOut(L"[INFO] key: %c\n", wParam);

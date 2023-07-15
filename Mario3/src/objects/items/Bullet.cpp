@@ -7,7 +7,10 @@
 
 void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 {
-	if (!IsInCamera()) return; // lazy load
+	if (!IsInCamera()) {
+		is_deleted = true;
+		return;
+	}// lazy load
 	CItem::Update(dt, co_objects);
 }
 

@@ -99,9 +99,9 @@ void CBreakableBrick::SetState(int state)
 	case BREAKABLE_BRICK_STATE_BOUNCE:
 		if (item_type == BREAKABLE_BRICK_BUTTON)
 		{
-			CreateItem();
 			vy = 0;
 			ay = 0;
+			CreateItem();
 			break;
 		}
 		vy = -BREAKABLE_BRICK_SPEED;

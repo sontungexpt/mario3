@@ -679,6 +679,7 @@ void CMario::PressButtonBreakAbleBrick()
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	// time out -> die
+	DebugOut(L"is flying: %d\n", is_flying);
 	CheckRemainingPlayingTime();
 
 	// jump to hole -> die
@@ -858,12 +859,12 @@ void CMario::SetState(int state)
 		{
 			max_vy = -MARIO_FLYING_SPEED_Y;
 			vy = -MARIO_FLYING_SPEED_Y;
-			if (time_fly_start <= 0)
+			if (!is_flying)
 				time_fly_start = GetTickCount64();
 		}
 		else
 		{
-			time_fly_start = 0;
+			//time_fly_start = 0;
 			vy = -MARIO_TRY_FLYING_SPEED_Y;
 		}
 		is_flying = TRUE;
@@ -910,6 +911,7 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_RELEASE_JUMP:
 		if (is_on_platform) return;
+		if (is_flying) break;
 		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
 		break;
 	case MARIO_STATE_SIT:

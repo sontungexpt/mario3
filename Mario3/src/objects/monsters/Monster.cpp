@@ -102,6 +102,7 @@ void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 		{
 			vx = -vx;
 			ax = -ax;
+			vy = 0;
 		}
 	}
 }
@@ -194,7 +195,7 @@ void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	if (is_on_platform && vy > 0)
 	{
 		vy = 0;
-		y -= 0.6f;
+		y -= 0.600006f;
 	}
 	is_on_platform = FALSE;
 	CCollision::GetInstance()->Process(this, dt, co_objects);
