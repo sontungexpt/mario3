@@ -329,11 +329,11 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	{
 		vx = vx > 0 ? max_vx : -max_vx;
 	}
-	if (is_on_platform && vy >= 0)
-	{
-		vy = 0;
-		y -= 0.600006f;
-	}
+	//if (is_on_platform && vy >= 0)
+	//{
+	//	vy -= ay * dt;
+	//	y -= 0.600006f;
+	//}
 
 	CCollision::GetInstance()->Process(this, dt, co_objects);
 }

@@ -593,7 +593,10 @@ void CMario::CheckJumpToHole()
 void CMario::UpdateV(DWORD dt)
 {
 	vy += ay * dt;
+
 	vx += ax * dt;
+	if (is_hitting)
+		vx += nx > 0 ? MARIO_HITTING_SPEED : -MARIO_HITTING_SPEED;
 
 	if (fabs(vx) > fabs(max_vx))
 		vx = max_vx;

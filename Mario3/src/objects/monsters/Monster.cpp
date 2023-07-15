@@ -6,6 +6,7 @@
 #include "objects/Platform.h"
 #include "objects/materials/EffectManager.h"
 #include "GameData.h"
+#include <objects/materials/bricks/QuestionBrick.h>
 
 void CMonster::OnNoCollision(DWORD dt)
 {
@@ -197,7 +198,7 @@ void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 		vx = vx > 0 ? max_vx : -max_vx;
 	if (is_on_platform && vy >= 0)
 	{
-		vy = 0;
+		vy -= ay * dt;
 		y -= 0.600006f;
 	}
 	is_on_platform = FALSE;

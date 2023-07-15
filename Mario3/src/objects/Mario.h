@@ -206,6 +206,7 @@ public:
 	void Hit() {
 		if (HasTail()) {
 			is_hitting = TRUE;
+			x += nx > 0 ? -MARIO_BIG_TAIL_SUIT_BBOX_WIDTH_ADJUST_HITTING - 1 : MARIO_BIG_TAIL_SUIT_BBOX_WIDTH_ADJUST_HITTING + 1;
 			time_hit_start = GetTickCount64();
 		}
 	}

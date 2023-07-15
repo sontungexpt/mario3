@@ -10,6 +10,8 @@ class CGoomba : public CMonster
 protected:
 	ULONGLONG time_hit_start;
 	ULONGLONG time_kick_start;
+	void OnCollisionWithPipe(LPCOLLISIONEVENT e);
+	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 
 public:
 
@@ -17,6 +19,7 @@ public:
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects = nullptr);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void OnCollisionWith(LPCOLLISIONEVENT e);
 	virtual void Render();
 	virtual void SetState(int state);
 

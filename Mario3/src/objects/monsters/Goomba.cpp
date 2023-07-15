@@ -2,6 +2,8 @@
 #include "debug.h"
 #include "scenes/PlayScene.h"
 #include <GameData.h>
+#include <objects/materials/bricks/QuestionBrick.h>
+#include <objects/materials/EnterablePipe.h>
 
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -20,11 +22,43 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 		bottom = top + GOOMBA_BBOX_HEIGHT;
 	}
 }
+void CGoomba::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
+{
+	// this is dirty way to prevent the goomba is falling out of platform
+	if (e->IsCollidedInXDimension())
+	{
+		y -= 2.0f;
+		vx = -vx;
+		ax = -ax;
+		vy = 0;
+	}
+}
 
-//void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
-//{
-//	CMonster::OnCollisionWith(e); // use general collision for monster
-//}
+void CGoomba::OnCollisionWithPipe(LPCOLLISIONEVENT e)
+{
+	if (e->IsCollidedInXDimension())
+	{
+		y -= 2.0f;
+		vx = -vx;
+		vy = 0;
+		ax = -ax;
+	}
+}
+void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
+{
+	/*if (dynamic_cast<CQuestionBrick*>(e->obj))
+	{
+		OnCollisionWithQuestionBrick(e);
+		return;
+	}
+	else if (dynamic_cast<CPipe*>(e->obj))
+	{
+		OnCollisionWithPipe(e);
+		return;
+	}*/
+
+	CMonster::OnCollisionWith(e); // use general collision for monster
+}
 
 void CGoomba::Render()
 {

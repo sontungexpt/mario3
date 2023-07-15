@@ -57,6 +57,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 			mario->SetState(MARIO_STATE_JUMP);
 		break;
 	case DIK_A:
+		if (mario->IsEnteringPipe()) break;
 		if (mario->HasTail())
 			mario->Hit();
 		else
@@ -112,6 +113,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	CMario* mario = scene ? dynamic_cast<CMario*>(scene->GetPlayer()) : nullptr;
 
 	if (!mario) return;
+	if (mario->IsEnteringPipe()) return;
 
 	switch (KeyCode)
 	{
@@ -120,7 +122,6 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 			mario->SetState(MARIO_STATE_RELEASE_JUMP);
 		break;
 	case DIK_DOWN:
-		if (mario->IsEnteringPipe()) break;
 		mario->SetState(MARIO_STATE_SIT_RELEASE);
 		break;
 	case DIK_A:
