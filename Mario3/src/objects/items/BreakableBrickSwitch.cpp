@@ -63,7 +63,7 @@ void CBreakableBrickSwitch::SetState(int state)
 void CBreakableBrickSwitch::BeCollected()
 {
 	if (is_collected) return;
-	y += (BREAKABLE_BRICK_SWITCH_BBOX_HEIGHT - BREAKABLE_BRICK_SWITCH__PRESSED_BBOX_HEIGHT) / 2 + 1; // adjust position
+	y += (BREAKABLE_BRICK_SWITCH_BBOX_HEIGHT - BREAKABLE_BRICK_SWITCH__PRESSED_BBOX_HEIGHT) / 2; // adjust position
 	CItem::BeCollected();
 	LPPLAYSCENE scene = dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene());
 	CMario* mario = scene ? dynamic_cast<CMario*>(scene->GetPlayer()) : nullptr;

@@ -106,7 +106,6 @@ void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 		{
 			vx = -vx;
 			ax = -ax;
-			vy = 0;
 		}
 	}
 }
