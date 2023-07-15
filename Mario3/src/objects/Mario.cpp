@@ -565,7 +565,6 @@ void CMario::Render()
 	LPANIMATION ani = animations->Get(aniId);
 	if (ani != nullptr)
 		ani->Render(x, y);
-	RenderBoundingBox();
 }
 
 void CMario::CheckRemainingPlayingTime()
