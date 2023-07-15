@@ -16,6 +16,12 @@
   - UP, DOWM: go in or go out pipe
   - a: turbochargers
   - s: jump
+  - 1: Init small mario  - 2: Init big mario  - 3: Init tail mario
+  - 6: Decrease remain time to ten
+  - 7: Change to Level map scene
+  - 8: Change to hidden map scene
+  - 9: Make game over immediately
+  - 0: Make mario die
 
 ## HOW TO FLY
   - If mario has tail then when you hold a and your power is full then press s repeatedly
