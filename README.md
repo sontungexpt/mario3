@@ -31,5 +31,9 @@
   - If mario has tail then when you hold a and your power is full then press s repeatedly
   - NOTE: don't release a when flying
 
+### HOW TO HOLD KOOPA
+  - If koopa is defend then you hold a to hold and release to throw koopa
+  - NOTE: mario tail can't not hold koopa
+
 ## AUTHORS
   - TRAN VO SON TUNG
