@@ -82,7 +82,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
-	if (is_hitting)
+	if (is_hitting && e->IsCollidedInXDimension())
 	{
 		koopa->BeHitByMarioTail();
 		return;
@@ -137,7 +137,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
 	CPlant* plant = dynamic_cast<CPlant*>(e->obj);
-	if (is_hitting)
+	if (is_hitting && e->IsCollidedInXDimension())
 	{
 		plant->BeHitByMarioTail();
 		return;
@@ -148,7 +148,7 @@ void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-	if (is_hitting)
+	if (is_hitting && e->IsCollidedInXDimension())
 	{
 		goomba->BeHitByMarioTail();
 		return;
@@ -208,7 +208,7 @@ void CMario::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
 {
 	CBreakableBrick* breakable_brick = dynamic_cast<CBreakableBrick*>(e->obj);
 
-	if (is_hitting)
+	if (is_hitting && e->IsCollidedInXDimension())
 	{
 		if (breakable_brick->GetItemType() == BREAKABLE_BRICK_BUTTON)
 			breakable_brick->Bounce();
@@ -561,11 +561,11 @@ void CMario::Render()
 		aniId = GetAniIdSmall();
 	else if (level == MARIO_LEVEL_TAIL_SUIT)
 		aniId = GetAniIdTail();
-
 	CAnimations* animations = CAnimations::GetInstance();
 	LPANIMATION ani = animations->Get(aniId);
 	if (ani != nullptr)
 		ani->Render(x, y);
+	RenderBoundingBox();
 }
 
 void CMario::CheckRemainingPlayingTime()

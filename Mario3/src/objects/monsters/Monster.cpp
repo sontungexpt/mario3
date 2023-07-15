@@ -54,11 +54,14 @@ void CMonster::OnCollisionWithMonster(LPCOLLISIONEVENT e)
 void CMonster::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
 	CMario* mario = dynamic_cast<CMario*>(e->obj);
-	if (!e->IsCollidedFromBottom())
+	if (mario->IsHitting() && e->IsCollidedInXDimension())
 	{
-		if (!mario->IsHitting())
-			mario->Die();
+		BeHitByMarioTail();
+		return;
 	}
+
+	if (!e->IsCollidedFromBottom())
+		mario->Die();
 }
 
 void CMonster::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
@@ -192,7 +195,7 @@ void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 
 	if (max_vx > 0 && abs(vx) > max_vx)
 		vx = vx > 0 ? max_vx : -max_vx;
-	if (is_on_platform && vy > 0)
+	if (is_on_platform && vy >= 0)
 	{
 		vy = 0;
 		y -= 0.600006f;

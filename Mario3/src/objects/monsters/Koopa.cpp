@@ -48,11 +48,14 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 void CKoopa::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
 	CMario* mario = dynamic_cast<CMario*>(e->obj);
-	if (!is_defend && !is_mario_holding && !e->IsCollidedFromBottom())
+	if (mario->IsHitting() && e->IsCollidedInXDimension())
 	{
-		if (!mario->IsHitting())
-			mario->Die();
+		BeHitByMarioTail();
+		return;
 	}
+
+	if (!is_defend && !is_mario_holding && !e->IsCollidedFromBottom())
+		mario->Die();
 }
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -325,6 +328,11 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 	if (max_vx > 0 && abs(vx) > max_vx)
 	{
 		vx = vx > 0 ? max_vx : -max_vx;
+	}
+	if (is_on_platform && vy >= 0)
+	{
+		vy = 0;
+		y -= 0.600006f;
 	}
 
 	CCollision::GetInstance()->Process(this, dt, co_objects);

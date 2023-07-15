@@ -130,14 +130,6 @@ public:
 			state != MARIO_STATE_ENTER_PIPE &&
 			state != MARIO_STATE_OUTER_PIPE;
 	}
-	/*int IsBlocking()
-	{
-		return state != MARIO_STATE_DIE &&
-			state != MARIO_STATE_ENTER_PIPE &&
-			state != MARIO_STATE_OUTER_PIPE &&
-			state != MARIO_STATE_WIN_SCENE &&
-			!untouchable;
-	}*/
 
 	int IsBlocking() { return 0; }
 

@@ -6,7 +6,9 @@
 void CPlant::OnCollisionWithPlayer(LPCOLLISIONEVENT e)
 {
 	CMario* mario = dynamic_cast<CMario*>(e->obj);
-	if (!mario->IsHitting())
+	if (mario->IsHitting() && e->IsCollidedInXDimension())
+		BeHitByMarioTail();
+	else
 		mario->Die();
 }
 
