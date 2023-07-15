@@ -6,7 +6,7 @@
 
 void CLevelMapKeyHandler::OnKeyDown(int KeyCode)
 {
-	if (KeyCode == DIK_ESCAPE)
+	if (KeyCode == DIK_ESCAPE || KeyCode == DIK_W)
 		CGame::GetInstance()->TogglePause();
 
 	// disable control key when pause game

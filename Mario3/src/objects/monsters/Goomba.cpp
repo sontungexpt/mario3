@@ -27,10 +27,9 @@ void CGoomba::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	// this is dirty way to prevent the goomba is falling out of platform
 	if (e->IsCollidedInXDimension())
 	{
-		y -= 2.0f;
+		y -= 10.0f;
 		vx = -vx;
 		ax = -ax;
-		vy = 0;
 	}
 }
 
@@ -46,17 +45,6 @@ void CGoomba::OnCollisionWithPipe(LPCOLLISIONEVENT e)
 }
 void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	/*if (dynamic_cast<CQuestionBrick*>(e->obj))
-	{
-		OnCollisionWithQuestionBrick(e);
-		return;
-	}
-	else if (dynamic_cast<CPipe*>(e->obj))
-	{
-		OnCollisionWithPipe(e);
-		return;
-	}*/
-
 	CMonster::OnCollisionWith(e); // use general collision for monster
 }
 

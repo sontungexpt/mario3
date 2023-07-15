@@ -17,6 +17,7 @@ void CMonster::OnNoCollision(DWORD dt)
 void CMonster::OnCollisionWithMonster(LPCOLLISIONEVENT e)
 {
 	CMonster* monster_dest = dynamic_cast<CMonster*>(e->obj);
+
 	if (!IsDead() && !monster_dest->IsDead())
 	{
 		if (e->IsCollidedInXDimension())
@@ -83,15 +84,6 @@ void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CMonster*>(e->obj))
 		OnCollisionWithMonster(e);
 
-	if (e->obj->IsBlocking() && e->IsCollidedInYDimension())
-	{
-		vy = 0;
-		if (e->IsCollidedFromTop())
-		{
-			is_on_platform = TRUE;
-		}
-	}
-
 	// collide with blocking
 	if (e->obj->IsBlocking() && e->IsCollidedInXDimension())
 	{
@@ -106,6 +98,15 @@ void CMonster::OnCollisionWith(LPCOLLISIONEVENT e)
 		{
 			vx = -vx;
 			ax = -ax;
+		}
+	}
+
+	if (e->obj->IsBlocking() && e->IsCollidedInYDimension())
+	{
+		vy = 0;
+		if (e->IsCollidedFromTop())
+		{
+			is_on_platform = TRUE;
 		}
 	}
 }
@@ -195,12 +196,12 @@ void CMonster::Update(DWORD dt, vector<LPGAMEOBJECT>* co_objects)
 
 	if (max_vx > 0 && abs(vx) > max_vx)
 		vx = vx > 0 ? max_vx : -max_vx;
-	if (is_on_platform && vy >= 0)
-	{
-		vy -= ay * dt;
-		y -= 0.600006f;
-	}
+
 	is_on_platform = FALSE;
+	if (!is_on_platform)
+	{
+		y -= 0.43f;
+	}
 	CCollision::GetInstance()->Process(this, dt, co_objects);
 }
 
