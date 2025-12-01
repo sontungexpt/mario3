@@ -3,6 +3,9 @@
   - This is a game made by C++ and directX library
   - This game is a clone of scenario 1 of Super Mario Bros 3
   - This game is made for the purpose of studying SE102(UIT)
+## PREVIEW
+
+[Video](https://www.facebook.com/reel/373601332054484)
 
 ## KEY BINDINGS
 ### INTRO SCENE
@@ -12,7 +15,15 @@
 ### LEVEL SCENE
   - LEFT, RIGHT, UP, DOWN: Move
   - s: Enter door
-  - ESC, w: Pause  - r: Reset to intro scene  - 1: Init small mario  - 2: Init big mario  - 3: Init tail mario  - 4: Bypass block door rule### GAME OVER PANEL  - DOWN, UP: move selection
+  - ESC, w: Pause
+  - r: Reset to intro scene
+  - 1: Init small mario
+  - 2: Init big mario
+  - 3: Init tail mario
+  - 4: Bypass block door rule
+
+### GAME OVER PANEL
+  - DOWN, UP: move selection
   - w: select
 
 ### PLAYSCENE
@@ -20,7 +31,9 @@
   - UP, DOWM: go in or go out pipe
   - a: turbochargers
   - s: jump
-  - 1: Init small mario  - 2: Init big mario  - 3: Init tail mario
+  - 1: Init small mario
+  - 2: Init big mario
+  - 3: Init tail mario
   - 6: Decrease remain time to ten
   - 7: Change to Level map scene
   - 8: Change to hidden map scene
@@ -36,4 +49,5 @@
   - NOTE: mario tail can't not hold koopa
 
 ## AUTHORS
+
   - TRAN VO SON TUNG
